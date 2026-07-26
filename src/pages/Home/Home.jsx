@@ -218,7 +218,7 @@ const Home = () => {
         <div className="highlights-grid">
           <div className="highlight-card">
             <FaRegCalendarCheck className="highlight-icon" />
-            <h3>Est. 2024</h3>
+            <h3>Est. 2021</h3>
             <p>Founded on Engineering Rigor</p>
           </div>
           <div className="highlight-card">
