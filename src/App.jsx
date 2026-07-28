@@ -1,14 +1,17 @@
-import "./App.css";
-
+// App.jsx
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/layout/Layout/Layout";
 import Home from "./pages/Home/Home";
-import Footer from "./components/layout/Footer/Footer";
+import Contact from "./pages/Contact/Contact";
 
 function App() {
   return (
-    <>
-      <Home />
-      <Footer />
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="contact" element={<Contact />} />
+      </Route>
+    </Routes>
   );
 }
 

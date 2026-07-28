@@ -21,83 +21,78 @@ import {
   FaAward,
   FaRegCalendarCheck,
 } from "react-icons/fa";
+import heroImg from "../../assets/home.webp";
 import "./Home.css";
+
+const officeMapLink =
+  "https://www.google.com/maps/search/?api=1&query=3rd+Floor%2C+Qutub+Complex%2C+Opposite+JK+Bank+%28TP%29%2C+Baramulla%2C+Jammu+%26+Kashmir+193101";
 
 const Home = () => {
   return (
     <>
-      {/* ===================== HERO SECTION ===================== */}
       <section className="hero">
-        <div className="hero-pattern"></div>
-        <div className="hero-glow"></div>
+        <img src={heroImg} alt="" className="hero-bg-image" />
+        <div className="hero-overlay"></div>
 
         <div className="hero-container">
-          <div className="brand-mark">
-            <div className="brand-logo">
-              <img src="/logo.png" alt="Nayaab Engineering Innovations Pvt. Ltd. Logo" />
+          <div className="hero-content">
+            <span className="hero-tag">
+              ENGINEERING <i></i> ARCHITECTURE <i></i> CONSTRUCTION
+            </span>
+
+            <h1>
+              Building Tomorrow&apos;s <span>Infrastructure</span>
+              <br />
+              Engineered Today
+            </h1>
+
+            <p>
+              Nayaab Engineering Innovations Pvt. Ltd. delivers modern
+              architectural design, structural engineering, construction
+              management, and sustainable infrastructure solutions across
+              residential, commercial, and public projects.
+            </p>
+
+            <div className="hero-buttons">
+              <a
+                href="https://wa.me/919858765435"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="primary-btn whatsapp-btn"
+              >
+                <FaWhatsapp /> WhatsApp Us
+              </a>
+              <a
+                href="mailto:info@nayaabengineering.com"
+                className="secondary-btn light"
+              >
+                <FaEnvelope /> Email Us
+              </a>
+              <a
+                href={officeMapLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="secondary-btn light location-btn"
+              >
+                <FaMapMarkerAlt />
+                <span>Office Location</span>
+              </a>
             </div>
-            <div className="brand-name">
-              <h4>Nayaab Engineering</h4>
-              <p>Innovations Pvt. Ltd.</p>
+
+            <div className="hero-status-strip">
+              <div className="status-dot"></div>
+              <span>Website Under Development - In Progress</span>
             </div>
-          </div>
-
-          <span className="hero-tag">
-            ENGINEERING <i></i> ARCHITECTURE <i></i> CONSTRUCTION
-          </span>
-
-          <h1>
-            Building Tomorrow's <span>Infrastructure</span>
-            <br />
-            Engineered Today
-          </h1>
-
-          <p>
-            Nayaab Engineering Innovations Pvt. Ltd. delivers modern
-            architectural design, structural engineering, construction
-            management, and sustainable infrastructure solutions across
-            residential, commercial, and public projects.
-          </p>
-
-          <div className="hero-buttons">
-            <a
-              href="https://wa.me/91XXXXXXXXXX"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="primary-btn whatsapp-btn"
-            >
-              <FaWhatsapp /> WhatsApp Us
-            </a>
-            <a href="mailto:info@nayaabengineering.com" className="secondary-btn light">
-              <FaEnvelope /> Email Us
-            </a>
-          </div>
-
-          <div className="hero-location">
-            <FaMapMarkerAlt className="location-icon" />
-            <div>
-              <h4>Office Location</h4>
-              <p>
-                3rd Floor, Qutub Complex, Opposite JK Bank (TP), Baramulla,
-                Jammu &amp; Kashmir – 193101
-              </p>
-            </div>
-          </div>
-
-          <div className="hero-status-strip">
-            <div className="status-dot"></div>
-            <span>Website Under Development — In Progress</span>
           </div>
         </div>
       </section>
 
-      {/* ===================== ABOUT PREVIEW ===================== */}
       <section className="about-preview">
         <div className="section-title">
           <span>WHO WE ARE</span>
           <h2>Engineering Excellence, Built on Trust</h2>
           <p>
-            Established in 2024, Nayaab Engineering Innovations Pvt. Ltd.
+            Established in 2022, Nayaab Engineering Innovations Pvt. Ltd.
             specializes in architecture, engineering consultancy, construction
             management, and turnkey infrastructure projects.
           </p>
@@ -133,15 +128,14 @@ const Home = () => {
             </div>
             <h3>Why Choose Us</h3>
             <p>
-              A dedicated team combining technical expertise with a
-              client-first approach, ensuring every project meets the highest
-              engineering standards.
+              A dedicated team combining technical expertise with a client-first
+              approach, ensuring every project meets the highest engineering
+              standards.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ===================== SERVICES ===================== */}
       <section className="services-preview">
         <div className="section-title">
           <span>WHAT WE DO</span>
@@ -208,7 +202,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===================== HIGHLIGHTS ===================== */}
       <section className="highlights">
         <div className="section-title">
           <span>OUR FOUNDATION</span>
@@ -239,7 +232,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ===================== WHY CHOOSE US ===================== */}
       <section className="why-choose">
         <div className="section-title">
           <span>OUR STRENGTH</span>
@@ -250,36 +242,46 @@ const Home = () => {
           <div className="why-card">
             <FaUsers className="why-icon" />
             <h3>Experienced Team</h3>
-            <p>Skilled engineers and architects with hands-on project expertise.</p>
+            <p>
+              Skilled engineers and architects with hands-on project expertise.
+            </p>
           </div>
 
           <div className="why-card">
             <FaLightbulb className="why-icon" />
             <h3>Innovative Design</h3>
-            <p>Modern, functional, and sustainable design approaches for every project.</p>
+            <p>
+              Modern, functional, and sustainable design approaches for every
+              project.
+            </p>
           </div>
 
           <div className="why-card">
             <FaClock className="why-icon" />
             <h3>Timely Delivery</h3>
-            <p>Disciplined project timelines with proactive schedule management.</p>
+            <p>
+              Disciplined project timelines with proactive schedule management.
+            </p>
           </div>
 
           <div className="why-card">
             <FaShieldAlt className="why-icon" />
             <h3>Quality Assurance</h3>
-            <p>Rigorous quality checks at every stage of design and construction.</p>
+            <p>
+              Rigorous quality checks at every stage of design and construction.
+            </p>
           </div>
 
           <div className="why-card">
             <FaSmile className="why-icon" />
             <h3>Client Satisfaction</h3>
-            <p>Transparent communication and a client-first execution philosophy.</p>
+            <p>
+              Transparent communication and a client-first execution philosophy.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ===================== CTA ===================== */}
       <section className="cta-section">
         <div className="cta-pattern"></div>
         <div className="cta-content">
@@ -288,14 +290,17 @@ const Home = () => {
           <p>We look forward to serving you soon.</p>
           <div className="cta-buttons">
             <a
-              href="https://wa.me/91XXXXXXXXXX"
+              href="https://wa.me/919858765435"
               target="_blank"
               rel="noopener noreferrer"
               className="primary-btn whatsapp-btn"
             >
               <FaWhatsapp /> WhatsApp Us
             </a>
-            <a href="mailto:info@nayaabengineering.com" className="secondary-btn light">
+            <a
+              href="mailto:info@nayaabengineering.com"
+              className="secondary-btn light"
+            >
               <FaEnvelope /> Email Us
             </a>
           </div>
