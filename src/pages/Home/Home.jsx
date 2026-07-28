@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  FaArrowRight,
   FaWhatsapp,
   FaEnvelope,
   FaMapMarkerAlt,
@@ -21,6 +22,7 @@ import {
   FaAward,
   FaRegCalendarCheck,
 } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 import heroImg from "../../assets/home.webp";
 import "./Home.css";
 
@@ -54,20 +56,9 @@ const Home = () => {
             </p>
 
             <div className="hero-buttons">
-              <a
-                href="https://wa.me/919858765435"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="primary-btn whatsapp-btn"
-              >
-                <FaWhatsapp /> WhatsApp Us
-              </a>
-              <a
-                href="mailto:info@nayaabengineering.com"
-                className="secondary-btn light"
-              >
-                <FaEnvelope /> Email Us
-              </a>
+              <NavLink to="/contact" className="primary-btn">
+                Contact Us <FaArrowRight />
+              </NavLink>
               <a
                 href={officeMapLink}
                 target="_blank"
