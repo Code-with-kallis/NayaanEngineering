@@ -1,14 +1,13 @@
 /* index.css */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import "./styles/tokens.css";
+@import "./styles/global.css";
 
 :root {
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color: #ffffff;
-  background: #061b3a;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -30,7 +29,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
-  background: #061b3a;
+  background-color: var(--color-bg-page);
+  color: var(--color-text-primary);
 }
 
 img {

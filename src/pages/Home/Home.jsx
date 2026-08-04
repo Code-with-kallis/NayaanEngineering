@@ -27,7 +27,7 @@ import heroImg from "../../assets/home.webp";
 import "./Home.css";
 
 const officeMapLink =
-  "https://www.google.com/maps/search/?api=1&query=3rd+Floor%2C+Qutub+Complex%2C+Opposite+JK+Bank+%28TP%29%2C+Baramulla%2C+Jammu+%26+Kashmir+193101";
+  "https://maps.app.goo.gl/2eVktdmG7WoQGscE6";
 
 const Home = () => {
   return (

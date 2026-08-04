@@ -20,12 +20,10 @@ const officeAddress =
   "3rd Floor, Qutub Complex, Opp. JK Bank (TP), Main Bazar, Baramulla, Jammu & Kashmir - 193101";
 
 const officeMapLink =
-  "https://www.google.com/maps/search/?api=1&query=3rd+Floor%2C+Qutub+Complex%2C+Opposite+JK+Bank+%28TP%29%2C+Baramulla%2C+Jammu+%26+Kashmir+193101";
+  "https://maps.app.goo.gl/2eVktdmG7WoQGscE6";
 
 const officeMapEmbed =
-  "https://www.google.com/maps?q=3rd+Floor,+Qutub+Complex,+Opposite+JK+Bank+(TP),+Baramulla,+Jammu+%26+Kashmir+193101&z=16&output=embed";
-
-const serviceOptions = [
+  "https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d13199.385365087526!2d74.35188535!3d34.20140225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x38e107b7aa028b1b%3A0x62f20694ef46156d!2sNayaab%20Engineering%20Innovations%20Private%20Limited%2C%203rd%20Floor%2C%20Qutub%20Complex%2C%20opp.%20JKBank%2C%20Baramulla%2C%20Jammu%20and%20Kashmir%20193101!3m2!1d34.2062866!2d74.3427435!5e0!3m2!1sen!2sin!4v1785871591762!5m2!1sen!2sin";const serviceOptions = [
   {
     title: "Architectural Design",
     icon: <FaDraftingCompass />,
