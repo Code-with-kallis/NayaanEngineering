@@ -15,6 +15,7 @@
 }
 
 .profile-breadcrumb {
+  margin-top: 96px; /* Push below fixed navbar */
   padding-block: 18px 16px;
   border-bottom: 1px solid rgba(9, 20, 38, 0.08);
   background: rgba(255, 255, 255, 0.72);
@@ -204,52 +205,9 @@
   box-shadow: 0 8px 20px rgba(7, 22, 43, 0.04);
 }
 
-.profile-section__contact-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding-inline: 14px;
-  border-radius: 999px;
-  background: #184e9e;
-  color: #ffffff;
-  font-size: 0.94rem;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 10px 22px rgba(24, 78, 158, 0.22);
-}
 
-.profile-section__contact-link:hover {
-  background: #153f7f;
-}
 
-.profile-nav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  padding-block: 34px 10px;
-}
 
-.profile-nav__item {
-  display: grid;
-  gap: 10px;
-}
-
-.profile-nav__item--next {
-  align-items: end;
-  text-align: right;
-}
-
-.profile-nav__label {
-  font-size: 0.76rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: rgba(28, 39, 58, 0.46);
-}
-
-.profile-nav .team-card--compact {
-  width: 100%;
-}
 
 /* ---------------------------------------------------------------------
    RESPONSIVE
@@ -271,14 +229,7 @@
     grid-template-columns: 1fr;
   }
 
-  .profile-nav {
-    grid-template-columns: 1fr;
-  }
 
-  .profile-nav__item--next {
-    align-items: start;
-    text-align: left;
-  }
 
   .profile-section {
     max-width: 100%;
@@ -302,7 +253,5 @@
     padding: 18px;
   }
 
-  .profile-nav {
-    padding-top: 24px;
-  }
+
 }

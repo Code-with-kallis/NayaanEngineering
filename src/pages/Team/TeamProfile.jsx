@@ -1,12 +1,9 @@
 // src/pages/Team/TeamProfile.jsx
+
 import { useEffect } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import TeamProfileHero from "../../components/team/TeamProfileHero";
-import TeamCard from "../../components/team/TeamCard";
-import {
-  getEmployeeById,
-  getAdjacentEmployees,
-} from "../../data/team";
+import { getEmployeeById } from "../../data/team";
 import "./TeamProfile.css";
 
 function TeamProfile() {
@@ -23,8 +20,7 @@ function TeamProfile() {
     return <Navigate to="/team" replace />;
   }
 
-  const { previous, next } = getAdjacentEmployees(employeeId);
-  const { bio, skills, projects, contact, name } = employee;
+  const { bio, skills, projects, name } = employee;
 
   return (
     <main id="main">
@@ -41,20 +37,29 @@ function TeamProfile() {
 
       <TeamProfileHero employee={employee} />
 
-      <section className="container profile-section" aria-labelledby="overview-heading">
+      <section
+        className="container profile-section"
+        aria-labelledby="overview-heading"
+      >
         <h2 id="overview-heading" className="profile-section__title">
           Professional Overview
         </h2>
+
         <p className="profile-section__body">
-          {bio || `${name} contributes to Nayaab Engineering Innovations as ${employee.designation}, within ${employee.department}.`}
+          {bio ||
+            `${name} contributes to Nayaab Engineering Innovations as ${employee.designation}, within ${employee.department}.`}
         </p>
       </section>
 
       {skills.length > 0 && (
-        <section className="container profile-section" aria-labelledby="skills-heading">
+        <section
+          className="container profile-section"
+          aria-labelledby="skills-heading"
+        >
           <h2 id="skills-heading" className="profile-section__title">
             Skills
           </h2>
+
           <ul className="profile-skills" role="list">
             {skills.map((skill) => (
               <li key={skill} className="profile-skills__item">
@@ -66,10 +71,14 @@ function TeamProfile() {
       )}
 
       {projects.length > 0 && (
-        <section className="container profile-section" aria-labelledby="projects-heading">
+        <section
+          className="container profile-section"
+          aria-labelledby="projects-heading"
+        >
           <h2 id="projects-heading" className="profile-section__title">
             Projects
           </h2>
+
           <ul className="profile-projects" role="list">
             {projects.map((project) => (
               <li key={project.name} className="profile-projects__item">
@@ -79,32 +88,6 @@ function TeamProfile() {
           </ul>
         </section>
       )}
-
-      {contact?.phone && (
-        <section className="container profile-section" aria-labelledby="contact-heading">
-          <h2 id="contact-heading" className="profile-section__title">
-            Contact
-          </h2>
-          <a href={`tel:${contact.phone}`} className="profile-section__contact-link">
-            {contact.phone}
-          </a>
-        </section>
-      )}
-
-      <nav className="container profile-nav" aria-label="Other team members">
-        {previous && (
-          <div className="profile-nav__item profile-nav__item--previous">
-            <span className="profile-nav__label">Previous</span>
-            <TeamCard employee={previous} variant="compact" />
-          </div>
-        )}
-        {next && (
-          <div className="profile-nav__item profile-nav__item--next">
-            <span className="profile-nav__label">Next</span>
-            <TeamCard employee={next} variant="compact" />
-          </div>
-        )}
-      </nav>
     </main>
   );
 }
