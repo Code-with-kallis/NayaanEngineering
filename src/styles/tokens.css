@@ -1,0 +1,125 @@
+/* src/styles/tokens.css */
+/* ==========================================================================
+   NAYAAB ENGINEERING INNOVATIONS — DESIGN TOKENS
+   Single source of truth for all visual decisions.
+   Tier 1: Primitives — raw values, never used directly by components.
+   Tier 2: Semantic — intent-based aliases, consumed by components.
+   ========================================================================== */
+
+:root {
+  /* ---------------------------------------------------------------------
+     TIER 1 — PRIMITIVES
+     --------------------------------------------------------------------- */
+
+  /* Neutral scale (grayscale backbone) */
+  --nei-neutral-0: #ffffff;
+  --nei-neutral-50: #f7f8f9;
+  --nei-neutral-100: #eceef0;
+  --nei-neutral-200: #d8dbe0;
+  --nei-neutral-300: #b6bbc4;
+  --nei-neutral-400: #8b919c;
+  --nei-neutral-500: #666d78;
+  --nei-neutral-600: #4a505a;
+  --nei-neutral-700: #333841;
+  --nei-neutral-800: #1e2128;
+  --nei-neutral-900: #101216;
+
+  /* Brand scale (engineering blue — trust, precision) */
+  --nei-brand-50: #eef4ff;
+  --nei-brand-100: #d9e6ff;
+  --nei-brand-300: #7fa6ff;
+  --nei-brand-500: #2f5fe0;
+  --nei-brand-600: #2549b3;
+  --nei-brand-700: #1c3a8c;
+
+  /* Feedback */
+  --nei-success-500: #1e9e6a;
+  --nei-danger-500: #d33a3a;
+
+  /* Spacing — strict 8pt system */
+  --nei-space-1: 4px;
+  --nei-space-2: 8px;
+  --nei-space-3: 12px;
+  --nei-space-4: 16px;
+  --nei-space-5: 24px;
+  --nei-space-6: 32px;
+  --nei-space-7: 48px;
+  --nei-space-8: 64px;
+  --nei-space-9: 96px;
+  --nei-space-10: 128px;
+
+  /* Radius */
+  --nei-radius-sm: 6px;
+  --nei-radius-md: 10px;
+  --nei-radius-lg: 16px;
+  --nei-radius-full: 999px;
+
+  /* Elevation (shadows) — soft, directional, low-opacity */
+  --nei-shadow-sm: 0 1px 2px rgba(16, 18, 22, 0.06);
+  --nei-shadow-md: 0 4px 12px rgba(16, 18, 22, 0.08);
+  --nei-shadow-lg: 0 12px 32px rgba(16, 18, 22, 0.12);
+  --nei-shadow-focus: 0 0 0 3px var(--nei-brand-300);
+
+  /* Motion */
+  --nei-ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --nei-duration-fast: 120ms;
+  --nei-duration-base: 200ms;
+  --nei-duration-slow: 320ms;
+
+  /* Container */
+  --nei-container-max: 1280px;
+  --nei-container-pad: clamp(20px, 5vw, 64px);
+
+  /* Fluid type scale — clamp(min, preferred, max) */
+  --nei-font-display: clamp(2.75rem, 5vw + 1rem, 5rem);
+  --nei-font-h1: clamp(2.25rem, 3.5vw + 1rem, 3.5rem);
+  --nei-font-h2: clamp(1.75rem, 2vw + 1rem, 2.5rem);
+  --nei-font-h3: clamp(1.375rem, 1.2vw + 1rem, 1.75rem);
+  --nei-font-body-lg: clamp(1.125rem, 0.5vw + 1rem, 1.25rem);
+  --nei-font-body: 1rem;
+  --nei-font-small: 0.875rem;
+  --nei-font-caption: 0.75rem;
+
+  --nei-leading-tight: 1.1;
+  --nei-leading-snug: 1.3;
+  --nei-leading-normal: 1.6;
+
+  --nei-font-family-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+
+  /* ---------------------------------------------------------------------
+     TIER 2 — SEMANTIC TOKENS (what components actually consume)
+     --------------------------------------------------------------------- */
+
+  --color-bg-page: var(--nei-neutral-0);
+  --color-bg-subtle: var(--nei-neutral-50);
+  --color-bg-inverse: var(--nei-neutral-900);
+
+  --color-surface-card: var(--nei-neutral-0);
+  --color-surface-card-hover: var(--nei-neutral-50);
+
+  --color-border-default: var(--nei-neutral-200);
+  --color-border-strong: var(--nei-neutral-300);
+
+  --color-text-primary: var(--nei-neutral-900);
+  --color-text-secondary: var(--nei-neutral-600);
+  --color-text-muted: var(--nei-neutral-400);
+  --color-text-inverse: var(--nei-neutral-0);
+  --color-text-brand: var(--nei-brand-500);
+
+  --color-action-default: var(--nei-brand-500);
+  --color-action-hover: var(--nei-brand-600);
+  --color-action-active: var(--nei-brand-700);
+
+  --color-focus-ring: var(--nei-shadow-focus);
+
+  --shadow-card: var(--nei-shadow-sm);
+  --shadow-card-hover: var(--nei-shadow-md);
+  --shadow-overlay: var(--nei-shadow-lg);
+
+  --radius-card: var(--nei-radius-md);
+  --radius-pill: var(--nei-radius-full);
+
+  --transition-standard: var(--nei-duration-base) var(--nei-ease-standard);
+}

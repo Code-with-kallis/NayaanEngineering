@@ -1,0 +1,103 @@
+/* src/components/team/TeamProfileHero.css */
+/* ==========================================================================
+   TEAM PROFILE HERO
+   Depends on: tokens.css, global.css (.container)
+   ========================================================================== */
+
+.profile-hero {
+  padding-block: var(--nei-space-8) var(--nei-space-9);
+  background-color: var(--color-bg-subtle);
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.profile-hero__inner {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--nei-space-7);
+  align-items: center;
+}
+
+.profile-hero__media {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card-hover);
+  background-color: var(--nei-neutral-100);
+}
+
+.profile-hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-hero__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--nei-space-2);
+}
+
+.profile-hero__name {
+  font-size: var(--nei-font-h1);
+  color: var(--color-text-primary);
+}
+
+.profile-hero__designation {
+  font-size: var(--nei-font-body-lg);
+  font-weight: 500;
+  color: var(--color-text-brand);
+}
+
+.profile-hero__department {
+  font-size: var(--nei-font-body);
+  color: var(--color-text-secondary);
+  margin-block-end: var(--nei-space-4);
+}
+
+.profile-hero__contact-btn {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: var(--nei-space-3) var(--nei-space-5);
+  background-color: var(--color-action-default);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-pill);
+  font-size: var(--nei-font-body);
+  font-weight: 600;
+  transition: background-color var(--transition-standard);
+}
+
+.profile-hero__contact-btn:hover {
+  background-color: var(--color-action-hover);
+}
+
+.profile-hero__contact-btn:active {
+  background-color: var(--color-action-active);
+}
+
+/* ---------------------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .profile-hero__inner {
+    grid-template-columns: 200px 1fr;
+    gap: var(--nei-space-5);
+  }
+}
+
+@media (max-width: 560px) {
+  .profile-hero__inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .profile-hero__media {
+    width: 160px;
+    margin-inline: auto;
+  }
+
+  .profile-hero__contact-btn {
+    margin-inline: auto;
+  }
+}

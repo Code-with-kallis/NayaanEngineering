@@ -1,0 +1,311 @@
+/* src/components/team/TeamHero.css */
+/* ==========================================================================
+   TEAM HERO
+   Full-bleed architecture image hero with premium text overlay.
+   Depends on: tokens.css, global.css (.container)
+   ========================================================================== */
+
+.team-hero {
+  --team-hero-image: none;
+
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(620px, 78vh, 860px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background-color: #061b3a;
+  background-image: var(--team-hero-image);
+  background-size: cover;
+  background-position: center center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.team-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background-image: var(--team-hero-image);
+  background-size: cover;
+  background-position: center center;
+  transform: scale(1.02);
+}
+
+.team-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 13, 29, 0.92) 0%,
+      rgba(4, 13, 29, 0.76) 34%,
+      rgba(4, 13, 29, 0.46) 62%,
+      rgba(4, 13, 29, 0.26) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(4, 13, 29, 0.18) 0%,
+      rgba(4, 13, 29, 0.3) 42%,
+      rgba(4, 13, 29, 0.84) 100%
+    );
+}
+
+.team-hero__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(
+      circle at 18% 22%,
+      rgba(37, 99, 235, 0.2),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 80% 18%,
+      rgba(56, 189, 248, 0.12),
+      transparent 28%
+    );
+  pointer-events: none;
+}
+
+.team-hero__inner {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(240px, 0.55fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: end;
+  padding-top: clamp(112px, 14vh, 160px);
+  padding-bottom: clamp(56px, 8vw, 88px);
+}
+
+.team-hero__content {
+  max-width: 760px;
+}
+
+.team-hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding-inline: 14px;
+  margin-block-end: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(236, 244, 255, 0.92);
+}
+
+.team-hero__title {
+  margin: 0;
+  max-width: 11ch;
+  font-size: clamp(3.25rem, 5vw, 6.2rem);
+  line-height: 0.94;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  color: #ffffff;
+  text-wrap: balance;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
+}
+
+.team-hero__description {
+  margin: 24px 0 0;
+  max-width: 58ch;
+  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.2rem);
+  line-height: 1.72;
+  color: rgba(225, 233, 242, 0.9);
+}
+
+.team-hero__stats {
+  align-self: end;
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.06) 100%
+    );
+  backdrop-filter: blur(18px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.18);
+}
+
+.team-hero__stat {
+  padding-block: 8px;
+}
+
+.team-hero__stat + .team-hero__stat {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.team-hero__stat-label {
+  margin: 0 0 6px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(218, 227, 238, 0.72);
+}
+
+.team-hero__stat-value {
+  margin: 0;
+  font-size: clamp(1.8rem, 1.2rem + 1vw, 2.8rem);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------------------------
+   MOTION
+   --------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .team-hero::before {
+    animation: team-hero-image-settle 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .team-hero__content {
+    animation: team-hero-copy-in 900ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+  }
+
+  .team-hero__stats {
+    animation: team-hero-panel-in 950ms cubic-bezier(0.16, 1, 0.3, 1) 260ms both;
+  }
+}
+
+@keyframes team-hero-image-settle {
+  from {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes team-hero-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes team-hero-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-hero::before,
+  .team-hero__content,
+  .team-hero__stats {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .team-hero__inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .team-hero__title {
+    max-width: 12ch;
+  }
+
+  .team-hero__stats {
+    max-width: 360px;
+  }
+}
+
+@media (max-width: 768px) {
+  .team-hero {
+    min-height: 560px;
+    background-position: center;
+  }
+
+  .team-hero::after {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(4, 13, 29, 0.56) 0%,
+        rgba(4, 13, 29, 0.72) 46%,
+        rgba(4, 13, 29, 0.9) 100%
+      );
+  }
+
+  .team-hero__inner {
+    padding-top: 120px;
+    padding-bottom: 48px;
+  }
+
+  .team-hero__title {
+    max-width: none;
+    font-size: clamp(2.45rem, 10vw, 4rem);
+  }
+
+  .team-hero__description {
+    margin-top: 18px;
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+
+  .team-hero__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: none;
+    padding: 18px;
+  }
+
+  .team-hero__stat + .team-hero__stat {
+    border-top: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .team-hero {
+    min-height: 520px;
+  }
+
+  .team-hero__eyebrow {
+    min-height: 32px;
+    padding-inline: 12px;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  .team-hero__stats {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    border-radius: 20px;
+  }
+
+  .team-hero__stat {
+    padding-block: 10px;
+  }
+
+  .team-hero__stat + .team-hero__stat {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+}

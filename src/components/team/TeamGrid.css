@@ -1,0 +1,39 @@
+/* src/components/team/TeamGrid.css */
+/* ==========================================================================
+   TEAM GRID
+   Depends on: tokens.css
+   ========================================================================== */
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--nei-space-6);
+}
+
+.team-grid__item {
+  display: flex;
+}
+
+.team-grid__item > * {
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------------
+   RESPONSIVE
+   auto-fill + minmax already handles most cases fluidly; these
+   overrides tighten spacing at smaller breakpoints intentionally.
+   --------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .team-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--nei-space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: var(--nei-space-4);
+  }
+}
