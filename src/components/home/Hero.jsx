@@ -1,37 +1,39 @@
 import React, { useEffect, useRef } from "react";
-import "./Hero.css";
-import { FaFacebookF, FaInstagram } from "react-icons/fa"; // Import Facebook and Instagram icons
+import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import styles from "./Hero.module.css";
 
-// Social media links for Nayaab Engineering, using links found in Contact.jsx
 const SOCIAL_LINKS = [
   { label: "Facebook", href: "https://www.facebook.com/nayaabengineering/", icon: <FaFacebookF /> },
   { label: "Instagram", href: "https://www.instagram.com/nayaabengineering/", icon: <FaInstagram /> },
 ];
 
-const VIDEO_SRC =
-  "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/HOME/hero.mp4";
+const VIDEO_SRC = "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/HOME/hero.mp4";
 
 const HeroContent = () => (
-  <div className="hero-content">
-    <div className="text-wrapper">
-      <p className="greeting animate-fade-up delay-1">
-        NAYAAB
-        <span className="company-suffix">Engineering</span>
+  <div className={styles.heroContent}>
+    <div className={styles.textWrapper}>
+      <p className={`${styles.greeting} ${styles.animateFadeUp} ${styles.delay1}`}>
+        NAYAAB <span className={styles.companySuffix}>Engineering</span>
       </p>
-      <h1 className="main-title animate-fade-up delay-2">
+      <h1 className={`${styles.mainTitle} ${styles.animateFadeUp} ${styles.delay2}`}>
         Engineering Excellence
         <br />
         &amp; Innovation
       </h1>
-      <h2 className="sub-title animate-fade-up delay-3">
+      <h2 className={`${styles.subTitle} ${styles.animateFadeUp} ${styles.delay3}`}>
         Building the future with precision.
       </h2>
 
-      <div className="cta-group animate-fade-up delay-4">
-        <a href="/contact" className="btn btn-primary">
+      <div className={`${styles.ctaGroup} ${styles.animateFadeUp} ${styles.delay4}`}>
+        <a href="/contact" className={`${styles.btn} ${styles.btnPrimary}`}>
           Contact Us
         </a>
-        <a href="https://maps.app.goo.gl/2eVktdmG7WoQGscE6" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+        <a
+          href="https://maps.app.goo.gl/2eVktdmG7WoQGscE6"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${styles.btn} ${styles.btnOutline}`}
+        >
           Our Location
         </a>
       </div>
@@ -40,9 +42,9 @@ const HeroContent = () => (
 );
 
 const SocialLinks = () => (
-  <div className="social-links" aria-label="Social media links">
+  <div className={styles.socialLinks} aria-label="Social media links">
     {SOCIAL_LINKS.map((social) => (
-      <a key={social.label} href={social.href} aria-label={social.label}>
+      <a key={social.label} href={social.href} aria-label={social.label} target="_blank" rel="noopener noreferrer">
         {social.icon}
       </a>
     ))}
@@ -50,9 +52,9 @@ const SocialLinks = () => (
 );
 
 const AvailabilityCard = () => (
-  <div className="availability-card" role="status">
-    <div className="availability-status">
-      <span className="pulse-dot" aria-hidden="true" />
+  <div className={styles.availabilityCard} role="status">
+    <div className={styles.availabilityStatus}>
+      <span className={styles.pulseDot} aria-hidden="true" />
       <span>Available for Work</span>
     </div>
     <p>
@@ -62,8 +64,8 @@ const AvailabilityCard = () => (
 );
 
 const HeroFooter = () => (
-  <div className="hero-footer">
-    <div className="footer-left">
+  <div className={styles.heroFooter}>
+    <div className={styles.footerLeft}>
       <SocialLinks />
     </div>
     <AvailabilityCard />
@@ -71,19 +73,19 @@ const HeroFooter = () => (
 );
 
 const ScrollIndicator = () => (
-  <div className="scroll-indicator" aria-hidden="true">
-    <div className="scroll-mouse">
-      <div className="wheel" />
+  <div className={styles.scrollIndicator} aria-hidden="true">
+    <div className={styles.scrollMouse}>
+      <div className={styles.wheel} />
     </div>
   </div>
 );
 
 const VideoBackground = ({ videoRef }) => (
-  <div className="video-container">
+  <div className={styles.videoContainer}>
     <video ref={videoRef} muted playsInline aria-hidden="true">
-      <source src={VIDEO_SRC} type="video/webm" />
+      <source src={VIDEO_SRC} type="video/mp4" />
     </video>
-    <div className="video-overlay" />
+    <div className={styles.videoOverlay} />
   </div>
 );
 
@@ -118,7 +120,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="hero-section" aria-label="Hero">
+    <section className={styles.heroSection} aria-label="Hero">
       <VideoBackground videoRef={videoRef} />
       <HeroContent />
       <HeroFooter />

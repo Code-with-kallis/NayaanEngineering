@@ -1,0 +1,240 @@
+/* ===== FOOTER BASE WITH LOCAL BACKGROUND IMAGE & BLUE OVERLAY ===== */
+.footer {
+  position: relative;
+  background-image: url("/assets/footer/footer.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #FFFFFF;
+  padding-top: 4.5rem;
+  padding-bottom: 2rem;
+  font-family: var(--nei-font-primary, "Outfit", sans-serif);
+  overflow: hidden;
+}
+
+/* Semi-Transparent Blue Gradient Overlay for High Content Contrast */
+.footerOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.92) 0%,
+    rgba(11, 30, 60, 0.90) 50%,
+    rgba(53, 144, 206, 0.85) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 1:1 Alignment with Navbar Container */
+.footerContainer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  padding-inline: 4rem;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 4rem;
+  box-sizing: border-box;
+}
+
+/* ===== LOGO & COMPANY COLUMN ===== */
+.companyColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Styled Container for Logo with Background & Border */
+.logoWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(53, 144, 206, 0.4);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.25rem;
+  backdrop-filter: blur(8px);
+}
+
+.footerLogo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.companyDescription {
+  font-size: 0.925rem;
+  line-height: 1.65;
+  color: #E2E8F0;
+  max-width: 520px;
+  margin: 0 0 1.75rem 0;
+}
+
+/* ===== SOCIAL ICONS ===== */
+.socialIcons {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.socialIcons a {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.socialIcons a:hover {
+  background: #3590CE;
+  color: #FFFFFF;
+  border-color: #3590CE;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(53, 144, 206, 0.4);
+}
+
+/* ===== CONTACT COLUMN ===== */
+.columnTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin: 0 0 1.5rem 0;
+  position: relative;
+}
+
+.columnTitle::after {
+  content: "";
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: #3590CE;
+  margin-top: 0.5rem;
+  border-radius: 2px;
+}
+
+.contactList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contactList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  font-size: 0.9rem;
+  color: #E2E8F0;
+  line-height: 1.5;
+}
+
+.contactIcon {
+  font-size: 1rem;
+  color: #00D2FF;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.contactList a {
+  color: #E2E8F0;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contactList a:hover {
+  color: #00D2FF;
+  text-decoration: underline;
+}
+
+/* ===== FOOTER BOTTOM BAR ===== */
+.footerBottom {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: none;
+  margin: 3.5rem auto 0;
+  padding-inline: 4rem;
+  padding-top: 1.5rem;
+  padding-bottom: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.825rem;
+  color: #CBD5E1;
+  box-sizing: border-box;
+}
+
+.footerBottom a {
+  color: #FFFFFF;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footerBottom a:hover {
+  text-decoration: underline;
+}
+
+.devBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #E2E8F0;
+}
+/* ===== SCROLL TO TOP BUTTON (Fixed Overlap Issue) ===== */
+.scrollTop {
+  position: absolute;
+  z-index: 3;
+  right: 2.5rem;
+  bottom: 4.5rem; /* Lifted above the footerBottom divider bar */
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+}
+
+.scrollTop:hover {
+  background: #3590CE;
+  color: #FFFFFF;
+  border-color: #3590CE;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(53, 144, 206, 0.4);
+}
+
+/* Responsive Offsets */
+@media (max-width: 768px) {
+  .scrollTop {
+    right: 1.5rem;
+    bottom: 5.5rem;
+  }
+}

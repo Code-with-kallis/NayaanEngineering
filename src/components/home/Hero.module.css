@@ -1,0 +1,311 @@
+/* src/components/home/Hero.module.css */
+
+.heroSection {
+  position: relative;
+  z-index: var(--nei-z-card);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  padding: 5rem var(--nei-container-pad) 2rem;
+  color: var(--color-text-title);
+  font-family: var(--nei-font-primary);
+  box-sizing: border-box;
+}
+
+.videoContainer {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--color-bg-page);
+}
+
+.videoContainer video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.videoOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(5, 7, 10, 0.75) 0%,
+    rgba(5, 7, 10, 0.5) 50%,
+    var(--nei-obsidian-950) 100%
+  );
+}
+
+/* BUTTONS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--nei-space-2);
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--nei-radius-sm);
+  font-family: var(--nei-font-primary);
+  font-size: var(--nei-font-small);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: all var(--nei-transition-base);
+  border: none;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btnPrimary {
+  background: var(--nei-gradient-brand);
+  color: var(--nei-steel-000);
+  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.25);
+}
+
+.btnPrimary:hover {
+  background: var(--nei-gradient-brand-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--nei-shadow-glow);
+}
+
+.btnOutline {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--nei-steel-000);
+  border: 1px solid var(--nei-glass-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.btnOutline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--nei-glass-border-hover);
+  transform: translateY(-2px);
+}
+
+/* HERO CONTENT */
+.heroContent {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 3rem 0;
+}
+
+.textWrapper {
+  max-width: 720px;
+  width: 100%;
+}
+
+/* CLEAN BADGE (Background box removed to fix muddy overlay) */
+.greeting {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--nei-font-primary);
+  font-size: var(--nei-font-small);
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--nei-kinetic-cyan);
+  margin-bottom: 1rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+}
+
+.greeting::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--nei-kinetic-cyan);
+  box-shadow: 0 0 8px var(--nei-kinetic-cyan);
+}
+
+.companySuffix {
+  color: var(--nei-steel-000);
+  margin-left: 0.2rem;
+}
+
+/* REFINED TITLE (Removed forced uppercase & large sizes) */
+.mainTitle {
+  font-size: var(--nei-font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--nei-steel-000);
+  margin-bottom: 0.8rem;
+  text-transform: none;
+}
+
+.subTitle {
+  font-size: var(--nei-font-h2);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: var(--nei-steel-200);
+}
+
+.description {
+  font-family: var(--nei-font-primary);
+  font-size: var(--nei-font-body-lg);
+  color: var(--nei-steel-200);
+  max-width: 540px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.ctaGroup {
+  display: flex;
+  gap: 1rem;
+}
+
+/* FOOTER */
+.heroFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--nei-glass-border);
+}
+
+.footerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.socialLinks {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.socialLinks a {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--nei-glass-border);
+  background: var(--nei-glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all var(--nei-transition-base);
+  font-size: 1rem;
+  color: var(--nei-steel-000);
+  text-decoration: none;
+}
+
+.socialLinks a:hover {
+  background: var(--nei-steel-000);
+  color: var(--nei-obsidian-950);
+  transform: translateY(-2px);
+}
+
+.availabilityCard {
+  background: var(--nei-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--nei-glass-border);
+  border-radius: var(--nei-radius-md);
+  padding: 1rem 1.25rem;
+  max-width: 280px;
+}
+
+.availabilityStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: var(--nei-font-small);
+}
+
+.pulseDot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+.availabilityCard p {
+  font-size: var(--nei-font-small);
+  color: var(--nei-steel-200);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.scrollIndicator {
+  position: absolute;
+  right: var(--nei-container-pad);
+  bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scrollMouse {
+  width: 20px;
+  height: 32px;
+  border: 1px solid var(--nei-glass-border);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.wheel {
+  width: 3px;
+  height: 6px;
+  background: var(--nei-kinetic-cyan);
+  border-radius: 2px;
+  animation: scrollWheel 2s infinite;
+}
+
+@keyframes scrollWheel {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(12px); opacity: 0; }
+}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 768px) {
+  .heroSection {
+    padding: 4.5rem 1.25rem 1.5rem;
+  }
+
+  .mainTitle {
+    font-size: 1.85rem;
+    line-height: 1.2;
+  }
+
+  .subTitle {
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .ctaGroup {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .heroFooter {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+  }
+
+  .scrollIndicator {
+    display: none;
+  }
+
+  .availabilityCard {
+    max-width: 100%;
+  }
+}

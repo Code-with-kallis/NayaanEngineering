@@ -1,7 +1,5 @@
-// src/components/team/TeamProfileHero.jsx
-
 import { Link } from "react-router-dom";
-import "./TeamProfileHero.css";
+import styles from "./TeamProfileHero.module.css";
 
 function TeamProfileHero({ employee }) {
   if (!employee) return null;
@@ -16,48 +14,48 @@ function TeamProfileHero({ employee }) {
   } = employee;
 
   return (
-    <header className="profile-hero">
-      <div className="profile-hero__inner">
+    <header className={styles.profileHero}>
+      <div className={styles.profileHeroInner}>
         {/* Left Portrait Column */}
-        <div className="profile-hero__portrait-column">
-          <div className="profile-hero__media">
+        <div className={styles.portraitColumn}>
+          <div className={styles.media}>
             <img
               src={image || "/images/team/placeholder.jpg"}
               alt={name}
-              className="profile-hero__image"
+              className={styles.image}
             />
           </div>
         </div>
 
         {/* Right Details Column */}
-        <div className="profile-hero__details">
-          <div className="profile-hero__role-tag">
-            <span className="pulse-dot" />
+        <div className={styles.details}>
+          <div className={styles.roleTag}>
+            <span className={styles.pulseDot} />
             {department}
           </div>
 
-          <h1 className="profile-hero__name">{name}</h1>
-          <p className="profile-hero__designation">{designation}</p>
+          <h1 className={styles.name}>{name}</h1>
+          <p className={styles.designation}>{designation}</p>
 
-          {/* Executive Quote (If available) */}
+          {/* Executive Quote */}
           {quote && (
-            <div className="profile-hero__quote-card">
-              <p className="quote-text">“{quote}”</p>
-              <span className="quote-author">— {name}</span>
+            <div className={styles.quoteCard}>
+              <p className={styles.quoteText}>“{quote}”</p>
+              <span className={styles.quoteAuthor}>— {name}</span>
             </div>
           )}
 
           {/* Action CTAs */}
-          <div className="profile-hero__actions">
+          <div className={styles.actions}>
             {contact?.email && (
               <a
                 href={`mailto:${contact.email}`}
-                className="btn-primary"
+                className={styles.btnPrimary}
               >
                 Send Official Email
               </a>
             )}
-            <Link to="/team" className="btn-outline">
+            <Link to="/team" className={styles.btnOutline}>
               ← Back to Roster
             </Link>
           </div>

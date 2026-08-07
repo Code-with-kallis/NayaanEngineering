@@ -1,21 +1,20 @@
-/* src/pages/Team/TeamProfile.css
+/* src/pages/Team/TeamProfile.module.css
    ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — TEAM PROFILE STYLES v3.0 (LIGHT STUDIO)
-   Clean Studio Alabaster Canvas, Structural Slate & Terracotta Accents
+   NAYAAB ENGINEERING INNOVATIONS — TEAM PROFILE STYLES v4.0
+   Brand Accent: Cerulean Logo Blue (#3590CE)
    ========================================================================== */
 
-.profile-page {
+.profilePage {
   position: relative;
   min-height: 100vh;
   width: 100%;
   color: var(--color-text-title, #0F172A);
   font-family: var(--font-primary, "Outfit", sans-serif);
 
-  /* Architectural Light Canvas */
   background:
     radial-gradient(
       800px circle at 85% 15%,
-      rgba(194, 65, 12, 0.04) 0%,
+      rgba(53, 144, 206, 0.04) 0%,
       transparent 60%
     ),
     radial-gradient(
@@ -31,29 +30,29 @@
     );
 }
 
-.profile-layout {
+.profileLayout {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(300px, 0.8fr);
   gap: clamp(32px, 4vw, 64px);
   align-items: start;
   width: 100%;
-  padding-inline: 4rem;
+  padding-inline: clamp(1.25rem, 5vw, 4rem);
   padding-block: clamp(36px, 4vw, 60px) clamp(72px, 7vw, 120px);
   box-sizing: border-box;
 }
 
-.profile-content {
+.profileContent {
   min-width: 0;
 }
 
-.profile-sidebar {
+.profileSidebar {
   position: sticky;
   top: 110px;
   display: grid;
   gap: 24px;
 }
 
-.profile-panel {
+.profilePanel {
   position: relative;
   padding: 24px 28px;
   border: 1px solid rgba(15, 23, 42, 0.08);
@@ -61,52 +60,54 @@
   background: #FFFFFF;
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
   overflow: hidden;
-  transition: border-color var(--nei-transition-base, 300ms ease), transform var(--nei-transition-base, 300ms ease), box-shadow var(--nei-transition-base, 300ms ease);
+  transition: border-color var(--nei-transition-base, 300ms ease),
+    transform var(--nei-transition-base, 300ms ease),
+    box-shadow var(--nei-transition-base, 300ms ease);
 }
 
-.profile-panel::before {
+.profilePanel::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #C2410C, transparent);
+  background: linear-gradient(90deg, transparent, #3590CE, transparent);
   opacity: 0;
   transition: opacity var(--nei-transition-base, 300ms ease);
 }
 
-.profile-panel:hover {
-  border-color: rgba(194, 65, 12, 0.25);
+.profilePanel:hover {
+  border-color: rgba(53, 144, 206, 0.25);
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
 }
 
-.profile-panel:hover::before {
+.profilePanel:hover::before {
   opacity: 1;
 }
 
-.profile-panel__title {
+.profilePanelTitle {
   margin: 0 0 18px;
   font-family: var(--font-primary, "Outfit", sans-serif);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: #C2410C;
+  color: #3590CE;
 }
 
-.profile-panel__list {
+.profilePanelList {
   display: grid;
   gap: 16px;
 }
 
-.profile-meta {
+.profileMeta {
   display: grid;
   gap: 4px;
 }
 
-.profile-meta__row {
+.profileMetaRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -115,18 +116,18 @@
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
 
-.profile-meta__row:last-child {
+.profileMetaRow:last-child {
   border-bottom: 0;
   padding-bottom: 0;
 }
 
-.profile-meta__label {
+.profileMetaLabel {
   font-size: 0.85rem;
   font-family: var(--font-secondary, "Inter", sans-serif);
   color: #64748B;
 }
 
-.profile-meta__value {
+.profileMetaValue {
   font-size: 0.95rem;
   font-weight: 600;
   font-family: var(--font-primary, "Outfit", sans-serif);
@@ -134,17 +135,17 @@
   text-align: right;
 }
 
-.profile-section {
+.profileSection {
   padding-block: 36px;
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
   max-width: 820px;
 }
 
-.profile-section--wide {
+.profileSectionWide {
   max-width: 100%;
 }
 
-.profile-section__title {
+.profileSectionTitle {
   margin: 0 0 18px;
   font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);
   line-height: 1.15;
@@ -153,7 +154,7 @@
   color: #0F172A;
 }
 
-.profile-section__body {
+.profileSectionBody {
   max-width: 68ch;
   margin: 0;
   font-family: var(--font-secondary, "Inter", sans-serif);
@@ -162,7 +163,7 @@
   color: #475569;
 }
 
-.profile-info-card {
+.profileInfoCard {
   padding: 18px 20px;
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: var(--nei-radius-md, 16px);
@@ -171,24 +172,24 @@
   transition: all var(--nei-transition-base, 300ms ease);
 }
 
-.profile-info-card:hover {
+.profileInfoCard:hover {
   background: #FFFFFF;
-  border-color: #C2410C;
+  border-color: #3590CE;
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px -5px rgba(194, 65, 12, 0.12);
+  box-shadow: 0 10px 25px -5px rgba(53, 144, 206, 0.12);
 }
 
-.profile-info-card__label {
+.profileInfoCardLabel {
   margin: 0 0 6px;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: #C2410C;
+  color: #3590CE;
   display: block;
 }
 
-.profile-info-card__value {
+.profileInfoCardValue {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
@@ -196,7 +197,7 @@
   color: #0F172A;
 }
 
-.profile-skills {
+.profileSkills {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -205,27 +206,27 @@
   padding: 0;
 }
 
-.profile-skills__item {
+.profileSkillsItem {
   padding: 8px 18px;
-  background: rgba(194, 65, 12, 0.06);
-  border: 1px solid rgba(194, 65, 12, 0.2);
+  background: rgba(53, 144, 206, 0.06);
+  border: 1px solid rgba(53, 144, 206, 0.2);
   border-radius: 9999px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #C2410C;
+  color: #3590CE;
   letter-spacing: 0.3px;
   transition: all var(--nei-transition-fast, 150ms ease);
 }
 
-.profile-skills__item:hover {
-  background: #C2410C;
-  border-color: #C2410C;
+.profileSkillsItem:hover {
+  background: #3590CE;
+  border-color: #3590CE;
   color: #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(194, 65, 12, 0.25);
+  box-shadow: 0 6px 15px rgba(53, 144, 206, 0.25);
 }
 
-.profile-projects {
+.profileProjects {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
@@ -234,7 +235,7 @@
   padding: 0;
 }
 
-.profile-projects__item {
+.profileProjectsItem {
   position: relative;
   padding: 20px 22px;
   border: 1px solid rgba(15, 23, 42, 0.08);
@@ -248,51 +249,51 @@
   transition: all var(--nei-transition-base, 300ms ease);
 }
 
-.profile-projects__item:hover {
+.profileProjectsItem:hover {
   background: #FFFFFF;
-  border-color: #C2410C;
+  border-color: #3590CE;
   transform: translateY(-4px);
-  box-shadow: 0 10px 30px -5px rgba(194, 65, 12, 0.15);
+  box-shadow: 0 10px 30px -5px rgba(53, 144, 206, 0.15);
 }
 
 @media (max-width: 1200px) {
-  .profile-layout {
+  .profileLayout {
     padding-inline: 2rem;
   }
 }
 
 @media (max-width: 1024px) {
-  .profile-layout {
+  .profileLayout {
     grid-template-columns: 1fr;
   }
 
-  .profile-sidebar {
+  .profileSidebar {
     position: static;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 768px) {
-  .profile-layout {
+  .profileLayout {
     padding-inline: 1.5rem;
   }
 
-  .profile-sidebar {
+  .profileSidebar {
     grid-template-columns: 1fr;
   }
 
-  .profile-section {
+  .profileSection {
     max-width: 100%;
     padding-block: 28px;
   }
 }
 
 @media (max-width: 520px) {
-  .profile-layout {
+  .profileLayout {
     padding-inline: 1rem;
   }
 
-  .profile-panel {
+  .profilePanel {
     padding: 20px 18px;
   }
 }

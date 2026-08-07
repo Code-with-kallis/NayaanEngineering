@@ -1,16 +1,13 @@
-// src/components/team/TeamCard.jsx
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
-import "./TeamCard.css";
+import styles from "./TeamCard.module.css";
 
 /**
- * TeamCard — single employee card. Single responsibility: display one
- * employee's identity + link into their profile. No data fetching.
+ * TeamCard — single employee card.
  *
  * @param {Object} props
- * @param {Object} props.employee - Employee object (see data/team.js shape)
- * @param {"grid" | "compact"} [props.variant="grid"] - grid = Team page,
- *   compact = Previous/Next preview on TeamProfile page
+ * @param {Object} props.employee - Employee object
+ * @param {"grid" | "compact"} [props.variant="grid"]
  */
 function TeamCard({ employee, variant = "grid" }) {
   const { employeeId, name, designation, department, image, contact } = employee;
@@ -20,54 +17,54 @@ function TeamCard({ employee, variant = "grid" }) {
   return (
     <Link
       to={`/team/${employeeId}`}
-      className={`team-card team-card--${variant}`}
+      className={`${styles.teamCard} ${styles[variant] || ""}`.trim()}
       aria-label={`View profile of ${name}, ${designation}`}
     >
-      <div className="team-card__media">
+      <div className={styles.media}>
         <img
           src={image}
           alt=""
           loading="lazy"
           decoding="async"
-          className="team-card__image"
+          className={styles.image}
         />
       </div>
 
-      <div className="team-card__body">
+      <div className={styles.body}>
         {variant === "grid" && (
-          <p className="team-card__department">{department}</p>
+          <p className={styles.department}>{department}</p>
         )}
 
-        <h3 className="team-card__name">{name}</h3>
-        <p className="team-card__designation">{designation}</p>
+        <h3 className={styles.name}>{name}</h3>
+        <p className={styles.designation}>{designation}</p>
 
         {variant === "grid" && (
           <>
-            <div className="team-card__meta" aria-label="Profile details">
+            <div className={styles.meta} aria-label="Profile details">
               {hasPhone && (
-                <span className="team-card__meta-item">
+                <span className={styles.metaItem}>
                   <FaPhoneAlt aria-hidden="true" />
                   Direct contact
                 </span>
               )}
 
               {hasEmail && (
-                <span className="team-card__meta-item">
+                <span className={styles.metaItem}>
                   <FaEnvelope aria-hidden="true" />
                   Email available
                 </span>
               )}
 
               {!hasPhone && !hasEmail && (
-                <span className="team-card__meta-item team-card__meta-item--muted">
+                <span className={`${styles.metaItem} ${styles.muted}`}>
                   Profile available
                 </span>
               )}
             </div>
 
-            <div className="team-card__footer">
-              <span className="team-card__link-label">View profile</span>
-              <span className="team-card__link-icon" aria-hidden="true">
+            <div className={styles.footer}>
+              <span className={styles.linkLabel}>View profile</span>
+              <span className={styles.linkIcon} aria-hidden="true">
                 <FaArrowRight />
               </span>
             </div>

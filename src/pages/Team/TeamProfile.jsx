@@ -1,10 +1,8 @@
-// src/pages/Team/TeamProfile.jsx
-
 import { useEffect } from "react";
 import { useParams, Navigate, Link } from "react-router-dom";
 import TeamProfileHero from "../../components/team/TeamProfileHero";
 import { getEmployeeById, getAdjacentEmployees } from "../../data/team";
-import "./TeamProfile.css";
+import styles from "./TeamProfile.module.css";
 
 function TeamProfile() {
   const { employeeId } = useParams();
@@ -33,24 +31,24 @@ function TeamProfile() {
   } = employee;
 
   return (
-    <main id="main" className="profile-page">
+    <main id="main" className={styles.profilePage}>
       {/* Executive Profile Hero Section */}
       <TeamProfileHero employee={employee} />
 
       {/* Main Editorial Layout (2-Column Grid) */}
-      <div className="profile-layout">
+      <div className={styles.profileLayout}>
         {/* Left Primary Content Section */}
-        <div className="profile-content">
+        <div className={styles.profileContent}>
           {/* Professional Biography */}
           <section
-            className="profile-section"
+            className={styles.profileSection}
             aria-labelledby="overview-heading"
           >
-            <h2 id="overview-heading" className="profile-section__title">
+            <h2 id="overview-heading" className={styles.profileSectionTitle}>
               Professional Overview
             </h2>
 
-            <p className="profile-section__body">
+            <p className={styles.profileSectionBody}>
               {bio ||
                 `${name} serves as ${designation} within ${department} at Nayaab Engineering Innovations, orchestrating operational strategy, structural integrity, and precision site execution.`}
             </p>
@@ -59,16 +57,16 @@ function TeamProfile() {
           {/* Technical Skills & Competencies */}
           {skills.length > 0 && (
             <section
-              className="profile-section"
+              className={styles.profileSection}
               aria-labelledby="skills-heading"
             >
-              <h2 id="skills-heading" className="profile-section__title">
+              <h2 id="skills-heading" className={styles.profileSectionTitle}>
                 Core Competencies & Expertise
               </h2>
 
-              <ul className="profile-skills" role="list">
+              <ul className={styles.profileSkills} role="list">
                 {skills.map((skill) => (
-                  <li key={skill} className="profile-skills__item">
+                  <li key={skill} className={styles.profileSkillsItem}>
                     {skill}
                   </li>
                 ))}
@@ -78,27 +76,27 @@ function TeamProfile() {
         </div>
 
         {/* Right Sticky Sidebar Metadata & Navigation Panels */}
-        <aside className="profile-sidebar" aria-label="Executive Metadata">
+        <aside className={styles.profileSidebar} aria-label="Executive Metadata">
           {/* Executive Information Panel */}
-          <div className="profile-panel">
-            <h3 className="profile-panel__title">Executive Information</h3>
-            <div className="profile-meta">
-              <div className="profile-meta__row">
-                <span className="profile-meta__label">Employee ID</span>
-                <span className="profile-meta__value">{id?.toUpperCase()}</span>
+          <div className={styles.profilePanel}>
+            <h3 className={styles.profilePanelTitle}>Executive Information</h3>
+            <div className={styles.profileMeta}>
+              <div className={styles.profileMetaRow}>
+                <span className={styles.profileMetaLabel}>Employee ID</span>
+                <span className={styles.profileMetaValue}>{id?.toUpperCase()}</span>
               </div>
-              <div className="profile-meta__row">
-                <span className="profile-meta__label">Designation</span>
-                <span className="profile-meta__value">{designation}</span>
+              <div className={styles.profileMetaRow}>
+                <span className={styles.profileMetaLabel}>Designation</span>
+                <span className={styles.profileMetaValue}>{designation}</span>
               </div>
-              <div className="profile-meta__row">
-                <span className="profile-meta__label">Department</span>
-                <span className="profile-meta__value">{department}</span>
+              <div className={styles.profileMetaRow}>
+                <span className={styles.profileMetaLabel}>Department</span>
+                <span className={styles.profileMetaValue}>{department}</span>
               </div>
               {contact?.email && (
-                <div className="profile-meta__row">
-                  <span className="profile-meta__label">Official Email</span>
-                  <span className="profile-meta__value">{contact.email}</span>
+                <div className={styles.profileMetaRow}>
+                  <span className={styles.profileMetaLabel}>Official Email</span>
+                  <span className={styles.profileMetaValue}>{contact.email}</span>
                 </div>
               )}
             </div>
@@ -106,31 +104,31 @@ function TeamProfile() {
 
           {/* Roster Navigation Cycling Panel */}
           {(previous || next) && (
-            <div className="profile-panel">
-              <h3 className="profile-panel__title">Roster Navigation</h3>
-              <div className="profile-panel__list">
+            <div className={styles.profilePanel}>
+              <h3 className={styles.profilePanelTitle}>Roster Navigation</h3>
+              <div className={styles.profilePanelList}>
                 {previous && (
                   <Link
                     to={`/team/${previous.employeeId}`}
-                    className="profile-info-card"
+                    className={styles.profileInfoCard}
                     style={{ textDecoration: "none", display: "block" }}
                   >
-                    <span className="profile-info-card__label">
+                    <span className={styles.profileInfoCardLabel}>
                       ← Previous Profile
                     </span>
-                    <p className="profile-info-card__value">{previous.name}</p>
+                    <p className={styles.profileInfoCardValue}>{previous.name}</p>
                   </Link>
                 )}
                 {next && (
                   <Link
                     to={`/team/${next.employeeId}`}
-                    className="profile-info-card"
+                    className={styles.profileInfoCard}
                     style={{ textDecoration: "none", display: "block" }}
                   >
-                    <span className="profile-info-card__label">
+                    <span className={styles.profileInfoCardLabel}>
                       Next Profile →
                     </span>
-                    <p className="profile-info-card__value">{next.name}</p>
+                    <p className={styles.profileInfoCardValue}>{next.name}</p>
                   </Link>
                 )}
               </div>

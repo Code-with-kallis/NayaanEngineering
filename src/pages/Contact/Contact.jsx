@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   FaBuilding,
-  FaCalendarCheck,
   FaClipboardList,
   FaDraftingCompass,
   FaEnvelope,
@@ -14,7 +13,7 @@ import {
   FaProjectDiagram,
   FaWhatsapp,
 } from "react-icons/fa";
-import "./Contact.css";
+import styles from "./Contact.module.css";
 
 const officeAddress =
   "3rd Floor, Qutub Complex, Opp. JK Bank (TP), Main Bazar, Baramulla, Jammu & Kashmir - 193101";
@@ -23,60 +22,15 @@ const officeMapLink =
   "https://maps.app.goo.gl/2eVktdmG7WoQGscE6";
 
 const officeMapEmbed =
-  "https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d13199.385365087526!2d74.35188535!3d34.20140225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x38e107b7aa028b1b%3A0x62f20694ef46156d!2sNayaab%20Engineering%20Innovations%20Private%20Limited%2C%203rd%20Floor%2C%20Qutub%20Complex%2C%20opp.%20JKBank%2C%20Baramulla%2C%20Jammu%20and%20Kashmir%20193101!3m2!1d34.2062866!2d74.3427435!5e0!3m2!1sen!2sin!4v1785871591762!5m2!1sen!2sin";const serviceOptions = [
-  {
-    title: "Architectural Design",
-    icon: <FaDraftingCompass />,
-  },
-  {
-    title: "Structural Engineering",
-    icon: <FaBuilding />,
-  },
-  {
-    title: "Construction Management",
-    icon: <FaHardHat />,
-  },
-  {
-    title: "Engineering Consultancy",
-    icon: <FaClipboardList />,
-  },
-  {
-    title: "Project Planning",
-    icon: <FaProjectDiagram />,
-  },
-  {
-    title: "Turnkey Solutions",
-    icon: <FaKey />,
-  },
-];
+  "https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d13199.385365087526!2d74.35188535!3d34.20140225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x38e107b7aa028b1b%3A0x62f20694ef46156d!2sNayaab%20Engineering%20Innovations%20Private%20Limited%2C%203rd%20Floor%2C%20Qutub%20Complex%2C%20opp.%20JKBank%2C%20Baramulla%2C%20Jammu%20and%20Kashmir%20193101!3m2!1d34.2062866!2d74.3427435!5e0!3m2!1sen!2sin!4v1785871591762!5m2!1sen!2sin";
 
-const contactChannels = [
-  {
-    title: "Call Our Office",
-    value: "+91 1952-455465",
-    href: "tel:+911952455465",
-    icon: <FaPhoneAlt />,
-  },
-  {
-    title: "Email Your Brief",
-    value: "info@nayaabengineering.com",
-    href: "mailto:info@nayaabengineering.com",
-    icon: <FaEnvelope />,
-  },
-  {
-    title: "WhatsApp Direct",
-    value: "+91 98587 65435",
-    href: "https://wa.me/919858765435",
-    icon: <FaWhatsapp />,
-    external: true,
-  },
-  {
-    title: "Visit Our Office",
-    value: "Open Google Maps",
-    href: officeMapLink,
-    icon: <FaMapMarkerAlt />,
-    external: true,
-  },
+const serviceOptions = [
+  { title: "Architectural Design", icon: <FaDraftingCompass /> },
+  { title: "Structural Engineering", icon: <FaBuilding /> },
+  { title: "Construction Management", icon: <FaHardHat /> },
+  { title: "Engineering Consultancy", icon: <FaClipboardList /> },
+  { title: "Project Planning", icon: <FaProjectDiagram /> },
+  { title: "Turnkey Solutions", icon: <FaKey /> },
 ];
 
 const faqItems = [
@@ -111,7 +65,6 @@ function Contact() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-
     setFormData((current) => ({
       ...current,
       [name]: value,
@@ -150,97 +103,97 @@ function Contact() {
   )}`;
 
   const openEmailInquiry = () => {
-    if (!isInquiryReady) {
-      return;
-    }
-
+    if (!isInquiryReady) return;
     window.location.href = emailInquiryHref;
   };
 
   const openWhatsAppInquiry = () => {
-    if (!isInquiryReady) {
-      return;
-    }
-
+    if (!isInquiryReady) return;
     window.open(whatsappInquiryHref, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <main className="contact-page">
-      <section className="contact-hero">
-        <div className="contact-hero__mesh" aria-hidden="true"></div>
-        <div className="contact-hero__container">
-          <div className="contact-hero__content">
-            <p className="contact-hero__eyebrow">Contact Nayaab Engineering</p>
-            <h1 className="contact-hero__title">
-              Start the Right Conversation for Your Next Project
+    <main className={styles.contactPage}>
+      {/* SECTION 1: HERO WITH EMBEDDED MAP AT TOP */}
+      <section className={styles.contactHero}>
+        <div className={styles.contactHeroMesh} aria-hidden="true" />
+        <div className={styles.contactHeroContainer}>
+          <div className={styles.contactHeroContent}>
+            <p className={styles.contactHeroEyebrow}>Contact Nayaab Engineering</p>
+            <h1 className={styles.contactHeroTitle}>
+              Start Your Next Project Discussion
             </h1>
-            <p className="contact-hero__subtitle">
+            <p className={styles.contactHeroSubtitle}>
               Reach us for architectural planning, structural engineering,
-              construction coordination, consultancy, and turnkey project
-              discussions. This page gives you direct access to our office,
-              leadership contacts, inquiry form, and live location map.
+              construction coordination, and turnkey project execution. Visit our
+              office in Baramulla or connect directly via phone or WhatsApp.
             </p>
 
-            <div className="contact-hero__actions">
-              <a href="tel:+911952455465" className="contact-button contact-button--primary">
+            <div className={styles.contactHeroActions}>
+              <a
+                href="tel:+911952455465"
+                className={`${styles.contactButton} ${styles.contactButtonPrimary}`}
+              >
                 <FaPhoneAlt />
-                <span>Call Our Office</span>
+                <span>Call +91 1952-455465</span>
               </a>
               <a
                 href="https://wa.me/919858765435"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="contact-button contact-button--secondary"
+                className={`${styles.contactButton} ${styles.contactButtonWhatsapp}`}
               >
                 <FaWhatsapp />
-                <span>WhatsApp Now</span>
+                <span>WhatsApp Direct</span>
               </a>
             </div>
           </div>
 
-          <aside className="contact-hero__panel">
-            <div className="contact-hero__panel-header">
-              <span>Quick Access</span>
-              <p>Everything you usually expect from a full corporate contact page.</p>
+          {/* Location Map Embedded directly at top */}
+          <div className={styles.contactTopMapCard}>
+            <div className={styles.contactTopMapFrame}>
+              <iframe
+                src={officeMapEmbed}
+                title="Nayaab Engineering office location map"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
-
-            <div className="contact-hero__panel-grid">
-              {contactChannels.map((channel) => (
-                <a
-                  key={channel.title}
-                  href={channel.href}
-                  className="contact-hero__panel-card"
-                  target={channel.external ? "_blank" : undefined}
-                  rel={channel.external ? "noopener noreferrer" : undefined}
-                >
-                  <div className="contact-hero__panel-icon">{channel.icon}</div>
-                  <div>
-                    <h2>{channel.title}</h2>
-                    <p>{channel.value}</p>
-                  </div>
-                </a>
-              ))}
+            <div className={styles.contactTopMapFooter}>
+              <div className={styles.contactTopMapAddress}>
+                <FaMapMarkerAlt className={styles.contactTopMapIcon} />
+                <span>{officeAddress}</span>
+              </div>
+              <a
+                href={officeMapLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.contactButtonSecondaryInline}
+              >
+                Open in Maps
+              </a>
             </div>
-          </aside>
+          </div>
         </div>
       </section>
 
-      <section className="contact-main">
-        <div className="contact-main__container">
-          <div className="contact-form-card">
-            <div className="contact-form-card__header">
-              <span className="contact-form-card__eyebrow">Project Inquiry</span>
-              <h2>Draft Your Message Once, Send It by Email or WhatsApp</h2>
+      {/* SECTION 2: FORM & SERVICE SIDEBAR */}
+      <section className={styles.contactMain}>
+        <div className={styles.contactMainContainer}>
+          {/* Main Inquiry Form */}
+          <div className={styles.contactFormCard}>
+            <div className={styles.contactFormCardHeader}>
+              <span className={styles.contactFormCardEyebrow}>Project Inquiry</span>
+              <h2>Send Us Your Project Brief</h2>
               <p>
-                Fill in the details below and this page will prepare your
-                inquiry for the contact channel you prefer.
+                Fill in the details below and select your preferred channel to
+                transmit your brief directly to our engineering desk.
               </p>
             </div>
 
-            <form className="contact-form" onSubmit={(event) => event.preventDefault()}>
-              <div className="contact-form__grid">
-                <label className="contact-form__field">
+            <form className={styles.contactForm} onSubmit={(e) => e.preventDefault()}>
+              <div className={styles.contactFormGrid}>
+                <label className={styles.contactFormField}>
                   <span>Name</span>
                   <input
                     type="text"
@@ -251,7 +204,7 @@ function Contact() {
                   />
                 </label>
 
-                <label className="contact-form__field">
+                <label className={styles.contactFormField}>
                   <span>Company / Organization</span>
                   <input
                     type="text"
@@ -262,7 +215,7 @@ function Contact() {
                   />
                 </label>
 
-                <label className="contact-form__field">
+                <label className={styles.contactFormField}>
                   <span>Email Address</span>
                   <input
                     type="email"
@@ -273,7 +226,7 @@ function Contact() {
                   />
                 </label>
 
-                <label className="contact-form__field">
+                <label className={styles.contactFormField}>
                   <span>Phone Number</span>
                   <input
                     type="tel"
@@ -285,7 +238,7 @@ function Contact() {
                 </label>
               </div>
 
-              <label className="contact-form__field">
+              <label className={styles.contactFormField}>
                 <span>Service Required</span>
                 <select name="service" value={formData.service} onChange={handleInputChange}>
                   {serviceOptions.map((service) => (
@@ -296,21 +249,21 @@ function Contact() {
                 </select>
               </label>
 
-              <label className="contact-form__field">
+              <label className={styles.contactFormField}>
                 <span>Project Details</span>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Tell us about your project scope, site, timeline, or support you need."
-                  rows="7"
-                ></textarea>
+                  placeholder="Tell us about your project scope, site, timeline, or required support."
+                  rows="6"
+                />
               </label>
 
-              <div className="contact-form__actions">
+              <div className={styles.contactFormActions}>
                 <button
                   type="button"
-                  className="contact-button contact-button--primary"
+                  className={`${styles.contactButton} ${styles.contactButtonPrimary}`}
                   onClick={openEmailInquiry}
                   disabled={!isInquiryReady}
                 >
@@ -320,7 +273,7 @@ function Contact() {
 
                 <button
                   type="button"
-                  className="contact-button contact-button--whatsapp"
+                  className={`${styles.contactButton} ${styles.contactButtonWhatsapp}`}
                   onClick={openWhatsAppInquiry}
                   disabled={!isInquiryReady}
                 >
@@ -329,161 +282,68 @@ function Contact() {
                 </button>
               </div>
 
-              <p className="contact-form__note">
-                Add your name, contact information, and project details to
-                enable the action buttons above.
+              <p className={styles.contactFormNote}>
+                * Complete name, message, and at least one contact method to enable submission.
               </p>
             </form>
           </div>
 
-          <aside className="contact-sidebar">
-            <article className="contact-sidebar__card">
-              <span className="contact-sidebar__eyebrow">Office Information</span>
-              <h2>Baramulla Office Desk</h2>
-
-              <ul className="contact-sidebar__list">
-                <li>
-                  <FaMapMarkerAlt />
-                  <span>{officeAddress}</span>
-                </li>
-                <li>
-                  <FaPhoneAlt />
-                  <a href="tel:+911952455465">+91 1952-455465</a>
-                </li>
-                <li>
-                  <FaEnvelope />
-                  <a href="mailto:info@nayaabengineering.com">
-                    info@nayaabengineering.com
-                  </a>
-                </li>
-                <li>
-                  <FaWhatsapp />
-                  <a
-                    href="https://wa.me/919858765435"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    +91 98587 65435
-                  </a>
-                </li>
-              </ul>
-            </article>
-
-            <article className="contact-sidebar__card">
-              <span className="contact-sidebar__eyebrow">Service Coverage</span>
-              <h2>Discuss Any of Our Core Services</h2>
-
-              <div className="contact-service-chips">
+          {/* Clean Sidebar */}
+          <aside className={styles.contactSidebar}>
+            <article className={styles.contactSidebarCard}>
+              <span className={styles.contactSidebarEyebrow}>Service Coverage</span>
+              <h2>Core Expertise</h2>
+              <div className={styles.contactServiceChips}>
                 {serviceOptions.map((service) => (
-                  <div className="contact-service-chip" key={service.title}>
-                    <span className="contact-service-chip__icon">{service.icon}</span>
+                  <div className={styles.contactServiceChip} key={service.title}>
+                    <span className={styles.contactServiceChipIcon}>{service.icon}</span>
                     <span>{service.title}</span>
                   </div>
                 ))}
               </div>
             </article>
 
-            <article className="contact-sidebar__card">
-              <span className="contact-sidebar__eyebrow">Project Coordination</span>
-              <h2>Need a Meeting or Technical Discussion?</h2>
-              <p>
-                Use the inquiry form for a structured brief, call the office for
-                direct coordination, or use WhatsApp for faster back-and-forth
-                communication and location support.
-              </p>
-
-              <a
-                href={officeMapLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-sidebar__maps-link"
-              >
-                <FaCalendarCheck />
-                <span>Open Office Location in Google Maps</span>
-              </a>
+            <article className={styles.contactSidebarCard}>
+              <span className={styles.contactSidebarEyebrow}>Direct Channels</span>
+              <h2>Email &amp; Social Media</h2>
+              <ul className={styles.contactSidebarList}>
+                <li>
+                  <FaEnvelope />
+                  <a href="mailto:info@nayaabengineering.com">info@nayaabengineering.com</a>
+                </li>
+              </ul>
+              <div className={styles.contactMapSocials}>
+                <a
+                  href="https://www.facebook.com/nayaabengineering/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Nayaab Engineering on Facebook"
+                >
+                  <FaFacebookF />
+                </a>
+                <a
+                  href="https://www.instagram.com/nayaabengineering/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Nayaab Engineering on Instagram"
+                >
+                  <FaInstagram />
+                </a>
+              </div>
             </article>
           </aside>
         </div>
       </section>
 
-      <section className="contact-map">
-        <div className="contact-section-heading">
-          <span className="contact-section-heading__eyebrow">Office Location</span>
-          <h2>Find the Office Directly from the Contact Page</h2>
-          <p>
-            The live Google Maps embed below shows the office location, and the
-            action button opens the same address in Google Maps for navigation.
-          </p>
-        </div>
-
-        <div className="contact-map__layout">
-          <div className="contact-map__frame">
-            <iframe
-              src={officeMapEmbed}
-              title="Nayaab Engineering office location"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-
-          <div className="contact-map__details">
-            <h3>Nayaab Engineering Innovations Pvt. Ltd.</h3>
-            <p>{officeAddress}</p>
-
-            <div className="contact-map__actions">
-              <a
-                href={officeMapLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact-button contact-button--primary"
-              >
-                <FaMapMarkerAlt />
-                <span>Open in Google Maps</span>
-              </a>
-              <a href="mailto:info@nayaabengineering.com" className="contact-button contact-button--ghost">
-                <FaEnvelope />
-                <span>Email Before Visiting</span>
-              </a>
-            </div>
-
-            <div className="contact-map__socials">
-              <a
-                href="https://www.facebook.com/nayaabengineering/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Nayaab Engineering on Facebook"
-              >
-                <FaFacebookF />
-              </a>
-              <a
-                href="https://www.instagram.com/nayaabengineering/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Nayaab Engineering on Instagram"
-              >
-                <FaInstagram />
-              </a>
-              <a href="mailto:info@nayaabengineering.com" aria-label="Email Nayaab Engineering">
-                <FaEnvelope />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="contact-faq">
-        <div className="contact-faq__container">
-          <div className="contact-faq__content">
-            <span className="contact-section-heading__eyebrow">Questions</span>
+      {/* SECTION 3: FAQ */}
+      <section className={styles.contactFaq}>
+        <div className={styles.contactFaqContainer}>
+          <div className={styles.contactFaqContent}>
+            <span className={styles.contactSectionHeadingEyebrow}>Questions</span>
             <h2>Common Contact Questions</h2>
-            <p>
-              A professional contact page should answer the first few practical
-              questions before the client even picks up the phone.
-            </p>
-
-            <div className="contact-faq__items">
+            <div className={styles.contactFaqItems}>
               {faqItems.map((item) => (
-                <details className="contact-faq__item" key={item.question}>
+                <details className={styles.contactFaqItem} key={item.question}>
                   <summary>{item.question}</summary>
                   <p>{item.answer}</p>
                 </details>

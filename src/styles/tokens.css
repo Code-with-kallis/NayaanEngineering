@@ -1,7 +1,7 @@
 /* src/styles/tokens.css */
 /* ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — DESIGN TOKENS v3.0
-   Signature Identity: Obsidian Steel & Kinetic Precision
+   NAYAAB ENGINEERING INNOVATIONS — DESIGN TOKENS v4.0
+   Brand Primary: Logo Cerulean Blue (#3590CE)
    ========================================================================== */
 
 :root {
@@ -9,14 +9,14 @@
      TIER 1 — PRIMITIVES
      --------------------------------------------------------------------- */
 
-  /* Base Canvas: Deep Architectural Obsidian (Rich, light-absorbing darks) */
+  /* Base Canvas: Deep Architectural Obsidian */
   --nei-obsidian-950: #05070A; /* Page root background */
   --nei-obsidian-900: #0B0E14; /* Default section background */
   --nei-obsidian-850: #11151F; /* Card & panel surfaces */
   --nei-obsidian-800: #171D2A; /* Elevated surfaces & hover states */
   --nei-obsidian-700: #21293B; /* Active elements & structural borders */
 
-  /* Metallic & Neutral Scale (Architectural Titanium & Machined Steel) */
+  /* Metallic & Neutral Scale */
   --nei-steel-000: #FFFFFF; /* High-contrast headers */
   --nei-steel-100: #F1F3F7; /* Primary body text */
   --nei-steel-200: #CBD3E1; /* Secondary subtext */
@@ -24,25 +24,28 @@
   --nei-steel-600: #4B5569; /* Structural grid lines & subtle dividers */
   --nei-steel-800: #262D3D; /* Subtle input backgrounds */
 
-  /* Brand Signature Accents: Kinetic Blue-Cyan & Engineering Amber */
-  --nei-kinetic-cyan: #00F0FF;   /* High-precision highlight / laser focus */
-  --nei-kinetic-azure: #0066FF;  /* Primary CTA action base */
-  --nei-kinetic-amber: #FF5A1F;  /* Secondary accent / innovation focal point */
+  /* Logo Color Matched Accent System (#3590CE) */
+  --nei-brand-primary: #3590CE;               /* Main Logo Blue Accent */
+  --nei-brand-hover: #287CB7;                 /* Hover State */
+  --nei-brand-active: #1F67A1;                /* Pressed State */
+  --nei-brand-soft: rgba(53, 144, 206, 0.08); /* Light Badge/Pill Background */
 
-  /* Glassmorphism & Elevation Overlay Constants */
+  /* Hero & High-Vibrancy Cyan Accents */
+  --nei-hero-cyan: #00F0FF;
+  --nei-hero-azure: #3590CE;
+
+  /* Glassmorphism Constants */
   --nei-glass-bg: rgba(17, 21, 31, 0.65);
   --nei-glass-bg-hover: rgba(23, 29, 42, 0.85);
   --nei-glass-border: rgba(255, 255, 255, 0.08);
-  --nei-glass-border-hover: rgba(0, 240, 255, 0.25);
+  --nei-glass-border-hover: rgba(53, 144, 206, 0.35);
 
-  /* Gradients */
-  --nei-gradient-brand: linear-gradient(135deg, var(--nei-kinetic-azure) 0%, #00D2FF 100%);
-  --nei-gradient-brand-hover: linear-gradient(135deg, #1A75FF 0%, #33DCFF 100%);
-  --nei-gradient-accent: linear-gradient(135deg, var(--nei-kinetic-amber) 0%, #FF8A00 100%);
+  /* Brand Gradients (Matched to #3590CE) */
+  --nei-gradient-brand: linear-gradient(135deg, #3590CE 0%, #00D2FF 100%);
+  --nei-gradient-brand-hover: linear-gradient(135deg, #287CB7 0%, #00B8E6 100%);
   --nei-gradient-text: linear-gradient(180deg, #FFFFFF 0%, #CBD3E1 100%);
-  --nei-gradient-glow: linear-gradient(90deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 102, 255, 0) 100%);
 
-  /* Spacing Scale (Strict 8pt System) */
+  /* Spacing Scale (8pt System) */
   --nei-space-1:  0.25rem;  /* 4px */
   --nei-space-2:  0.5rem;   /* 8px */
   --nei-space-3:  0.75rem;  /* 12px */
@@ -60,13 +63,13 @@
   --nei-section-pad-y: clamp(4rem, 8vw, 7.5rem);
 
   /* Typography Fluid Scale */
-  --nei-font-display: clamp(2.8rem, 6vw + 1rem, 5.2rem);
-  --nei-font-h1:      clamp(2.2rem, 3.5vw + 1rem, 3.6rem);
-  --nei-font-h2:      clamp(1.6rem, 2vw + 1rem, 2.4rem);
-  --nei-font-h3:      clamp(1.25rem, 1vw + 1rem, 1.6rem);
-  --nei-font-body-lg: clamp(1.1rem, 0.5vw + 1rem, 1.25rem);
-  --nei-font-body:    1rem;
-  --nei-font-small:   0.875rem;
+  --nei-font-display: clamp(2rem, 3.8vw, 3.2rem);
+  --nei-font-h1:      clamp(1.75rem, 2.8vw, 2.4rem);
+  --nei-font-h2:      clamp(1.25rem, 1.8vw, 1.75rem);
+  --nei-font-h3:      clamp(1.1rem, 1.2vw, 1.4rem);
+  --nei-font-body-lg: clamp(0.95rem, 1vw, 1.1rem);
+  --nei-font-body:    0.95rem;
+  --nei-font-small:   0.825rem;
 
   --nei-font-primary: "Outfit", "Inter", system-ui, -apple-system, sans-serif;
   --nei-font-mono:    "JetBrains Mono", Consolas, monospace;
@@ -77,12 +80,11 @@
   --nei-radius-lg: 20px;
   --nei-radius-full: 9999px;
 
-  /* Elevation & Shadows */
+  /* Shadows */
   --nei-shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-  --nei-shadow-glow: 0 0 25px rgba(0, 240, 255, 0.2);
-  --nei-shadow-accent-glow: 0 0 25px rgba(255, 90, 31, 0.25);
+  --nei-shadow-glow: 0 0 25px rgba(53, 144, 206, 0.35);
 
-  /* Motion & Transitions */
+  /* Transitions */
   --nei-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --nei-transition-fast: 150ms var(--nei-ease-out);
   --nei-transition-base: 300ms var(--nei-ease-out);
@@ -104,33 +106,31 @@
   --color-surface-card:      var(--nei-obsidian-850);
   --color-surface-hover:     var(--nei-obsidian-800);
 
-  /* Borders */
+  /* Global Borders */
   --color-border-subtle:     var(--nei-glass-border);
   --color-border-interactive:var(--nei-steel-600);
-  --color-border-focus:      var(--nei-kinetic-cyan);
+  --color-border-focus:      var(--nei-brand-primary);
 
-  /* Typography */
+  /* Global Typography */
   --color-text-title:        var(--nei-steel-000);
   --color-text-body:         var(--nei-steel-100);
   --color-text-muted:        var(--nei-steel-400);
-  --color-text-accent:       var(--nei-kinetic-cyan);
+  --color-text-accent:       var(--nei-brand-primary);
 
-  /* Actions */
-  --color-action-primary:    var(--nei-kinetic-azure);
+  /* Global Actions */
+  --color-action-primary:    var(--nei-brand-primary);
   --color-action-gradient:   var(--nei-gradient-brand);
-  --color-action-amber:      var(--nei-kinetic-amber);
 
-  /* Legacy Compatibility Mapping (Hero & Existing Components) */
+  /* Legacy Compatibility Mapping */
   --bg:                      var(--color-bg-page);
   --text-primary:            var(--color-text-title);
   --text-secondary:          var(--color-text-body);
-  --accent:                  var(--nei-kinetic-cyan);
+  --accent:                  var(--nei-brand-primary);
   --success:                 #00FF9D;
   --glass-bg:                var(--nei-glass-bg);
   --glass-border:            var(--nei-glass-border);
   --accent-gradient:         var(--nei-gradient-brand);
   --accent-gradient-hover:   var(--nei-gradient-brand-hover);
-  --accent-text-gradient:    linear-gradient(90deg, #FFFFFF 0%, var(--nei-kinetic-cyan) 100%);
   --font-primary:            var(--nei-font-primary);
   --font-secondary:          var(--nei-font-primary);
 }
