@@ -2,31 +2,35 @@
 import { useEffect } from "react";
 import TeamHero from "../../components/team/TeamHero";
 import TeamSection from "../../components/team/TeamSection";
-import { getMembersBySection } from "../../data/team";
+import { TEAM_SECTIONS, getMembersBySection, teamMembers } from "../../data/team";
 import "./Team.css";
 
 const SECTION_CONTENT = [
   {
     id: "leadership",
+    eyebrow: "Direction & governance",
     title: "Leadership Team",
     description:
       "The people setting direction, strategy, and standards for Nayaab Engineering Innovations.",
   },
   {
     id: "architecture",
+    eyebrow: "Concept & planning",
     title: "Architecture Team",
     description:
       "Designers translating client vision into buildable architectural and interior plans.",
   },
   {
     id: "engineering",
+    eyebrow: "Technical coordination",
     title: "Engineering Team",
     description:
       "Technical specialists handling structural, electrical, and CAD engineering work.",
   },
   {
     id: "construction",
-    title: "Construction Team",
+    eyebrow: "On-site execution",
+    title: "Field Operations Team",
     description:
       "Skilled tradespeople and site staff who execute every project on the ground.",
   },
@@ -37,28 +41,37 @@ function Team() {
     document.title = "Our Team | Nayaab Engineering Innovations";
   }, []);
 
+  const sections = SECTION_CONTENT.map((section) => ({
+    ...section,
+    members: getMembersBySection(section.id),
+  }));
+
   return (
-    <main id="main">
+    <main id="main" className="team-page">
       <TeamHero
         eyebrow="Our People"
-        title="The team building Nayaab's reputation, project by project"
-        description="From boardroom strategy to on-site execution, meet the people across leadership, architecture, engineering, and construction who deliver every Nayaab project."
+        title="The people behind NEIPL"
+        description="From leadership and concept planning to engineering coordination and site execution, every Nayaab project is delivered by one connected team."
         image="/assets/team/team-hero.webp"
         stats={[
-          { value: "11", label: "Team members" },
-          { value: "4", label: "Departments" },
+          { value: `${teamMembers.length}`, label: "Team members" },
+          { value: `${TEAM_SECTIONS.length}`, label: "Departments" },
         ]}
+        primaryAction={{ href: "#leadership", label: "Meet the team" }}
+        secondaryAction={{ href: "/contact", label: "Start a project" }}
       />
 
-      {SECTION_CONTENT.map((section) => (
-        <TeamSection
-          key={section.id}
-          id={section.id}
-          title={section.title}
-          description={section.description}
-          members={getMembersBySection(section.id)}
-        />
-      ))}
+      <div className="team-page__sections">
+        {sections.map((section, index) => (
+          <TeamSection
+            key={section.id}
+            id={section.id}
+            title={section.title}
+            description={section.description}
+            members={section.members}
+          />
+        ))}
+      </div>
     </main>
   );
 }

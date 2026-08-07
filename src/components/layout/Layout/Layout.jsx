@@ -6,11 +6,10 @@ import Footer from "../Footer/Footer";
 function Layout() {
   return (
     <>
-      <a href="#main" className="skip-link">
-        Skip to main content
-      </a>
       <Navbar />
-      <Outlet />
+      <main id="main">
+        <Outlet />
+      </main>
       <Footer />
     </>
   );

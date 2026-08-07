@@ -1,46 +1,69 @@
 // src/components/team/TeamProfileHero.jsx
+
+import { Link } from "react-router-dom";
 import "./TeamProfileHero.css";
 
-/**
- * TeamProfileHero — large profile-page hero for a single employee.
- * Single responsibility: identity display + primary contact action.
- *
- * @param {Object} props
- * @param {Object} props.employee - Employee object (see data/team.js shape)
- */
 function TeamProfileHero({ employee }) {
-  const { name, designation, department, image, contact } = employee;
+  if (!employee) return null;
+
+  const {
+    name,
+    designation,
+    department,
+    image,
+    quote,
+    contact,
+  } = employee;
 
   return (
-    <section className="profile-hero" aria-labelledby="profile-hero-heading">
-      <div className="container profile-hero__inner">
-        <div className="profile-hero__media">
-          <img
-            src={image}
-            alt={`Portrait of ${name}`}
-            className="profile-hero__image"
-          />
+    <header className="profile-hero">
+      <div className="profile-hero__inner">
+        {/* Left Portrait Column */}
+        <div className="profile-hero__portrait-column">
+          <div className="profile-hero__media">
+            <img
+              src={image || "/images/team/placeholder.jpg"}
+              alt={name}
+              className="profile-hero__image"
+            />
+          </div>
         </div>
 
+        {/* Right Details Column */}
         <div className="profile-hero__details">
-          <h1 id="profile-hero-heading" className="profile-hero__name">
-            {name}
-          </h1>
-          <p className="profile-hero__designation">{designation}</p>
-          <p className="profile-hero__department">{department}</p>
+          <div className="profile-hero__role-tag">
+            <span className="pulse-dot" />
+            {department}
+          </div>
 
-          {contact?.phone && (
-            <a
-              href={`tel:${contact.phone}`}
-              className="profile-hero__contact-btn"
-              aria-label={`Call ${name} at ${contact.phone}`}
-            >
-              Call {contact.phone}
-            </a>
+          <h1 className="profile-hero__name">{name}</h1>
+          <p className="profile-hero__designation">{designation}</p>
+
+          {/* Executive Quote (If available) */}
+          {quote && (
+            <div className="profile-hero__quote-card">
+              <p className="quote-text">“{quote}”</p>
+              <span className="quote-author">— {name}</span>
+            </div>
           )}
+
+          {/* Action CTAs */}
+          <div className="profile-hero__actions">
+            {contact?.email && (
+              <a
+                href={`mailto:${contact.email}`}
+                className="btn-primary"
+              >
+                Send Official Email
+              </a>
+            )}
+            <Link to="/team" className="btn-outline">
+              ← Back to Roster
+            </Link>
+          </div>
         </div>
       </div>
-    </section>
+    </header>
   );
 }
 

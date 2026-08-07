@@ -1,9 +1,7 @@
 /* src/styles/tokens.css */
 /* ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — DESIGN TOKENS
-   Single source of truth for all visual decisions.
-   Tier 1: Primitives — raw values, never used directly by components.
-   Tier 2: Semantic — intent-based aliases, consumed by components.
+   NAYAAB ENGINEERING INNOVATIONS — DESIGN TOKENS v3.0
+   Signature Identity: Obsidian Steel & Kinetic Precision
    ========================================================================== */
 
 :root {
@@ -11,115 +9,128 @@
      TIER 1 — PRIMITIVES
      --------------------------------------------------------------------- */
 
-  /* Neutral scale (grayscale backbone) */
-  --nei-neutral-0: #ffffff;
-  --nei-neutral-50: #f7f8f9;
-  --nei-neutral-100: #eceef0;
-  --nei-neutral-200: #d8dbe0;
-  --nei-neutral-300: #b6bbc4;
-  --nei-neutral-400: #8b919c;
-  --nei-neutral-500: #666d78;
-  --nei-neutral-600: #4a505a;
-  --nei-neutral-700: #333841;
-  --nei-neutral-800: #1e2128;
-  --nei-neutral-900: #101216;
+  /* Base Canvas: Deep Architectural Obsidian (Rich, light-absorbing darks) */
+  --nei-obsidian-950: #05070A; /* Page root background */
+  --nei-obsidian-900: #0B0E14; /* Default section background */
+  --nei-obsidian-850: #11151F; /* Card & panel surfaces */
+  --nei-obsidian-800: #171D2A; /* Elevated surfaces & hover states */
+  --nei-obsidian-700: #21293B; /* Active elements & structural borders */
 
-  /* Brand scale (engineering blue — trust, precision) */
-  --nei-brand-50: #eef4ff;
-  --nei-brand-100: #d9e6ff;
-  --nei-brand-300: #7fa6ff;
-  --nei-brand-500: #2f5fe0;
-  --nei-brand-600: #2549b3;
-  --nei-brand-700: #1c3a8c;
+  /* Metallic & Neutral Scale (Architectural Titanium & Machined Steel) */
+  --nei-steel-000: #FFFFFF; /* High-contrast headers */
+  --nei-steel-100: #F1F3F7; /* Primary body text */
+  --nei-steel-200: #CBD3E1; /* Secondary subtext */
+  --nei-steel-400: #8E9AAF; /* Muted metadata / labels */
+  --nei-steel-600: #4B5569; /* Structural grid lines & subtle dividers */
+  --nei-steel-800: #262D3D; /* Subtle input backgrounds */
 
-  /* Feedback */
-  --nei-success-500: #1e9e6a;
-  --nei-danger-500: #d33a3a;
+  /* Brand Signature Accents: Kinetic Blue-Cyan & Engineering Amber */
+  --nei-kinetic-cyan: #00F0FF;   /* High-precision highlight / laser focus */
+  --nei-kinetic-azure: #0066FF;  /* Primary CTA action base */
+  --nei-kinetic-amber: #FF5A1F;  /* Secondary accent / innovation focal point */
 
-  /* Spacing — strict 8pt system */
-  --nei-space-1: 4px;
-  --nei-space-2: 8px;
-  --nei-space-3: 12px;
-  --nei-space-4: 16px;
-  --nei-space-5: 24px;
-  --nei-space-6: 32px;
-  --nei-space-7: 48px;
-  --nei-space-8: 64px;
-  --nei-space-9: 96px;
-  --nei-space-10: 128px;
+  /* Glassmorphism & Elevation Overlay Constants */
+  --nei-glass-bg: rgba(17, 21, 31, 0.65);
+  --nei-glass-bg-hover: rgba(23, 29, 42, 0.85);
+  --nei-glass-border: rgba(255, 255, 255, 0.08);
+  --nei-glass-border-hover: rgba(0, 240, 255, 0.25);
 
-  /* Radius */
+  /* Gradients */
+  --nei-gradient-brand: linear-gradient(135deg, var(--nei-kinetic-azure) 0%, #00D2FF 100%);
+  --nei-gradient-brand-hover: linear-gradient(135deg, #1A75FF 0%, #33DCFF 100%);
+  --nei-gradient-accent: linear-gradient(135deg, var(--nei-kinetic-amber) 0%, #FF8A00 100%);
+  --nei-gradient-text: linear-gradient(180deg, #FFFFFF 0%, #CBD3E1 100%);
+  --nei-gradient-glow: linear-gradient(90deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 102, 255, 0) 100%);
+
+  /* Spacing Scale (Strict 8pt System) */
+  --nei-space-1:  0.25rem;  /* 4px */
+  --nei-space-2:  0.5rem;   /* 8px */
+  --nei-space-3:  0.75rem;  /* 12px */
+  --nei-space-4:  1.0rem;   /* 16px */
+  --nei-space-5:  1.5rem;   /* 24px */
+  --nei-space-6:  2.0rem;   /* 32px */
+  --nei-space-7:  3.0rem;   /* 48px */
+  --nei-space-8:  4.0rem;   /* 64px */
+  --nei-space-9:  6.0rem;   /* 96px */
+  --nei-space-10: 8.0rem;   /* 128px */
+
+  /* Container & Layout Constraints */
+  --nei-container-max: 1340px;
+  --nei-container-pad: clamp(1.25rem, 5vw, 4rem);
+  --nei-section-pad-y: clamp(4rem, 8vw, 7.5rem);
+
+  /* Typography Fluid Scale */
+  --nei-font-display: clamp(2.8rem, 6vw + 1rem, 5.2rem);
+  --nei-font-h1:      clamp(2.2rem, 3.5vw + 1rem, 3.6rem);
+  --nei-font-h2:      clamp(1.6rem, 2vw + 1rem, 2.4rem);
+  --nei-font-h3:      clamp(1.25rem, 1vw + 1rem, 1.6rem);
+  --nei-font-body-lg: clamp(1.1rem, 0.5vw + 1rem, 1.25rem);
+  --nei-font-body:    1rem;
+  --nei-font-small:   0.875rem;
+
+  --nei-font-primary: "Outfit", "Inter", system-ui, -apple-system, sans-serif;
+  --nei-font-mono:    "JetBrains Mono", Consolas, monospace;
+
+  /* Border Radii */
   --nei-radius-sm: 6px;
-  --nei-radius-md: 10px;
-  --nei-radius-lg: 16px;
-  --nei-radius-full: 999px;
+  --nei-radius-md: 12px;
+  --nei-radius-lg: 20px;
+  --nei-radius-full: 9999px;
 
-  /* Elevation (shadows) — soft, directional, low-opacity */
-  --nei-shadow-sm: 0 1px 2px rgba(16, 18, 22, 0.06);
-  --nei-shadow-md: 0 4px 12px rgba(16, 18, 22, 0.08);
-  --nei-shadow-lg: 0 12px 32px rgba(16, 18, 22, 0.12);
-  --nei-shadow-focus: 0 0 0 3px var(--nei-brand-300);
+  /* Elevation & Shadows */
+  --nei-shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --nei-shadow-glow: 0 0 25px rgba(0, 240, 255, 0.2);
+  --nei-shadow-accent-glow: 0 0 25px rgba(255, 90, 31, 0.25);
 
-  /* Motion */
-  --nei-ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --nei-duration-fast: 120ms;
-  --nei-duration-base: 200ms;
-  --nei-duration-slow: 320ms;
+  /* Motion & Transitions */
+  --nei-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --nei-transition-fast: 150ms var(--nei-ease-out);
+  --nei-transition-base: 300ms var(--nei-ease-out);
 
-  /* Container */
-  --nei-container-max: 1280px;
-  --nei-container-pad: clamp(20px, 5vw, 64px);
-
-  /* Fluid type scale — clamp(min, preferred, max) */
-  --nei-font-display: clamp(2.75rem, 5vw + 1rem, 5rem);
-  --nei-font-h1: clamp(2.25rem, 3.5vw + 1rem, 3.5rem);
-  --nei-font-h2: clamp(1.75rem, 2vw + 1rem, 2.5rem);
-  --nei-font-h3: clamp(1.375rem, 1.2vw + 1rem, 1.75rem);
-  --nei-font-body-lg: clamp(1.125rem, 0.5vw + 1rem, 1.25rem);
-  --nei-font-body: 1rem;
-  --nei-font-small: 0.875rem;
-  --nei-font-caption: 0.75rem;
-
-  --nei-leading-tight: 1.1;
-  --nei-leading-snug: 1.3;
-  --nei-leading-normal: 1.6;
-
-  --nei-font-family-sans:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
+  /* Z-Index Scale */
+  --nei-z-base:     0;
+  --nei-z-card:     1;
+  --nei-z-sticky:   50;
+  --nei-z-overlay:  90;
+  --nei-z-modal:    100;
 
   /* ---------------------------------------------------------------------
-     TIER 2 — SEMANTIC TOKENS (what components actually consume)
+     TIER 2 — SEMANTIC MAPPING
      --------------------------------------------------------------------- */
 
-  --color-bg-page: var(--nei-neutral-0);
-  --color-bg-subtle: var(--nei-neutral-50);
-  --color-bg-inverse: var(--nei-neutral-900);
+  /* Global Canvas & Surfaces */
+  --color-bg-page:           var(--nei-obsidian-950);
+  --color-bg-section:        var(--nei-obsidian-900);
+  --color-surface-card:      var(--nei-obsidian-850);
+  --color-surface-hover:     var(--nei-obsidian-800);
 
-  --color-surface-card: var(--nei-neutral-0);
-  --color-surface-card-hover: var(--nei-neutral-50);
+  /* Borders */
+  --color-border-subtle:     var(--nei-glass-border);
+  --color-border-interactive:var(--nei-steel-600);
+  --color-border-focus:      var(--nei-kinetic-cyan);
 
-  --color-border-default: var(--nei-neutral-200);
-  --color-border-strong: var(--nei-neutral-300);
+  /* Typography */
+  --color-text-title:        var(--nei-steel-000);
+  --color-text-body:         var(--nei-steel-100);
+  --color-text-muted:        var(--nei-steel-400);
+  --color-text-accent:       var(--nei-kinetic-cyan);
 
-  --color-text-primary: var(--nei-neutral-900);
-  --color-text-secondary: var(--nei-neutral-600);
-  --color-text-muted: var(--nei-neutral-400);
-  --color-text-inverse: var(--nei-neutral-0);
-  --color-text-brand: var(--nei-brand-500);
+  /* Actions */
+  --color-action-primary:    var(--nei-kinetic-azure);
+  --color-action-gradient:   var(--nei-gradient-brand);
+  --color-action-amber:      var(--nei-kinetic-amber);
 
-  --color-action-default: var(--nei-brand-500);
-  --color-action-hover: var(--nei-brand-600);
-  --color-action-active: var(--nei-brand-700);
-
-  --color-focus-ring: var(--nei-shadow-focus);
-
-  --shadow-card: var(--nei-shadow-sm);
-  --shadow-card-hover: var(--nei-shadow-md);
-  --shadow-overlay: var(--nei-shadow-lg);
-
-  --radius-card: var(--nei-radius-md);
-  --radius-pill: var(--nei-radius-full);
-
-  --transition-standard: var(--nei-duration-base) var(--nei-ease-standard);
+  /* Legacy Compatibility Mapping (Hero & Existing Components) */
+  --bg:                      var(--color-bg-page);
+  --text-primary:            var(--color-text-title);
+  --text-secondary:          var(--color-text-body);
+  --accent:                  var(--nei-kinetic-cyan);
+  --success:                 #00FF9D;
+  --glass-bg:                var(--nei-glass-bg);
+  --glass-border:            var(--nei-glass-border);
+  --accent-gradient:         var(--nei-gradient-brand);
+  --accent-gradient-hover:   var(--nei-gradient-brand-hover);
+  --accent-text-gradient:    linear-gradient(90deg, #FFFFFF 0%, var(--nei-kinetic-cyan) 100%);
+  --font-primary:            var(--nei-font-primary);
+  --font-secondary:          var(--nei-font-primary);
 }

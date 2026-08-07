@@ -1,103 +1,326 @@
-/* src/components/team/TeamProfileHero.css */
-/* ==========================================================================
-   TEAM PROFILE HERO
-   Depends on: tokens.css, global.css (.container)
+/* src/components/team/TeamProfileHero.css
+   ==========================================================================
+   NAYAAB ENGINEERING INNOVATIONS — EXECUTIVE PROFILE HERO v4.1 (LIGHT STUDIO)
+   Centered Profile Image & Clean Mobile Alignment
    ========================================================================== */
 
 .profile-hero {
-  padding-block: var(--nei-space-8) var(--nei-space-9);
-  background-color: var(--color-bg-subtle);
-  border-bottom: 1px solid var(--color-border-default);
+  position: relative;
+  width: 100%;
+  padding-top: clamp(6.5rem, 9vw, 8.5rem);
+  padding-bottom: clamp(3rem, 5vw, 4.5rem);
+  padding-inline: 4rem;
+  background: #F8F9FA;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Subtle Architectural Grid Pattern Overlay */
+.profile-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle Warm Ambient Lighting behind Portrait */
+.profile-hero::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: 5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(194, 65, 12, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .profile-hero__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: none;
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: var(--nei-space-7);
-  align-items: center;
+  grid-template-columns: 200px 1fr;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+/* ===== PORTRAIT COLUMN ===== */
+.profile-hero__portrait-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
 .profile-hero__media {
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius-card);
+  position: relative;
+  width: 160px;
+  height: 160px;
+  min-width: 160px;
+  min-height: 160px;
+  border-radius: 50%;
   overflow: hidden;
-  box-shadow: var(--shadow-card-hover);
-  background-color: var(--nei-neutral-100);
+  background-color: #F1F5F9;
+  border: 3px solid #FFFFFF;
+  outline: 1px solid rgba(15, 23, 42, 0.1);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  transition: all var(--nei-transition-base, 300ms ease);
+}
+
+.profile-hero__media:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(194, 65, 12, 0.15);
+  outline-color: rgba(194, 65, 12, 0.4);
 }
 
 .profile-hero__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: top center;
+  border-radius: 50%;
 }
 
+.profile-hero__phone-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 160px;
+  padding: 10px 14px;
+  border-radius: var(--nei-radius-md, 10px);
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  color: #0F172A;
+  font-family: var(--font-primary, "Outfit", sans-serif);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
+  transition: all var(--nei-transition-fast, 150ms ease);
+}
+
+.profile-hero__phone-badge:hover {
+  background: #F8F9FA;
+  color: #C2410C;
+  border-color: rgba(194, 65, 12, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -5px rgba(194, 65, 12, 0.15);
+}
+
+/* ===== DETAILS COLUMN ===== */
 .profile-hero__details {
   display: flex;
   flex-direction: column;
-  gap: var(--nei-space-2);
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.profile-hero__role-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  background: rgba(194, 65, 12, 0.08);
+  border: 1px solid rgba(194, 65, 12, 0.2);
+  color: #C2410C;
+  font-family: var(--font-primary, "Outfit", sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #C2410C;
+  box-shadow: 0 0 6px rgba(194, 65, 12, 0.5);
 }
 
 .profile-hero__name {
-  font-size: var(--nei-font-h1);
-  color: var(--color-text-primary);
+  font-family: var(--font-primary, "Outfit", sans-serif);
+  font-size: clamp(2.2rem, 3.8vw + 1rem, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: #0F172A;
 }
 
 .profile-hero__designation {
-  font-size: var(--nei-font-body-lg);
+  margin: -0.5rem 0 0;
+  font-family: var(--font-secondary, "Inter", sans-serif);
+  font-size: 1.05rem;
   font-weight: 500;
-  color: var(--color-text-brand);
+  color: #475569;
 }
 
-.profile-hero__department {
-  font-size: var(--nei-font-body);
-  color: var(--color-text-secondary);
-  margin-block-end: var(--nei-space-4);
+/* EXECUTIVE QUOTE CARD */
+.profile-hero__quote-card {
+  position: relative;
+  padding: 18px 22px;
+  border-radius: var(--nei-radius-md, 12px);
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.03);
 }
 
-.profile-hero__contact-btn {
+.quote-icon {
+  color: #C2410C;
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+.quote-text {
+  font-family: var(--font-secondary, "Inter", sans-serif);
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.08rem);
+  line-height: 1.6;
+  color: #334155;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.quote-author {
+  font-family: var(--font-primary, "Outfit", sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #64748B;
+}
+
+/* ACTION BUTTONS */
+.profile-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.btn-primary,
+.btn-outline {
   display: inline-flex;
   align-items: center;
-  width: fit-content;
-  padding: var(--nei-space-3) var(--nei-space-5);
-  background-color: var(--color-action-default);
-  color: var(--color-text-inverse);
-  border-radius: var(--radius-pill);
-  font-size: var(--nei-font-body);
+  justify-content: center;
+  padding: 12px 26px;
+  border-radius: var(--nei-radius-md, 8px);
+  font-family: var(--font-primary, "Outfit", sans-serif);
+  font-size: 0.825rem;
   font-weight: 600;
-  transition: background-color var(--transition-standard);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all var(--nei-transition-fast, 150ms ease);
+  cursor: pointer;
 }
 
-.profile-hero__contact-btn:hover {
-  background-color: var(--color-action-hover);
+.btn-primary {
+  background: linear-gradient(135deg, #C2410C 0%, #EA580C 100%);
+  color: #ffffff;
+  border: 1px solid rgba(194, 65, 12, 0.2);
+  box-shadow: 0 6px 18px -3px rgba(194, 65, 12, 0.3);
 }
 
-.profile-hero__contact-btn:active {
-  background-color: var(--color-action-active);
+.btn-primary:hover {
+  background: linear-gradient(135deg, #9A3412 0%, #C2410C 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(194, 65, 12, 0.35);
 }
 
-/* ---------------------------------------------------------------------
-   RESPONSIVE
-   --------------------------------------------------------------------- */
+.btn-outline {
+  background: #FFFFFF;
+  color: #0F172A;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+}
 
-@media (max-width: 768px) {
-  .profile-hero__inner {
-    grid-template-columns: 200px 1fr;
-    gap: var(--nei-space-5);
+.btn-outline:hover {
+  background: #F8F9FA;
+  border-color: rgba(194, 65, 12, 0.4);
+  color: #C2410C;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -5px rgba(194, 65, 12, 0.15);
+}
+
+/* ===== RESPONSIVE BREAKPOINTS (Mobile Centered Image & Content) ===== */
+@media (max-width: 1200px) {
+  .profile-hero {
+    padding-inline: 2rem;
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 900px) {
   .profile-hero__inner {
     grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .profile-hero__portrait-column {
+    align-items: center;
+    width: 100%;
+  }
+
+  .profile-hero__details {
+    align-items: center;
     text-align: center;
   }
 
-  .profile-hero__media {
-    width: 160px;
-    margin-inline: auto;
+  .profile-hero__quote-card {
+    text-align: left;
   }
 
-  .profile-hero__contact-btn {
-    margin-inline: auto;
+  .profile-hero__actions {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-hero {
+    padding-inline: 1.5rem;
+    padding-top: 5.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .profile-hero__media {
+    width: 140px;
+    height: 140px;
+    min-width: 140px;
+    min-height: 140px;
+  }
+
+  .profile-hero__phone-badge {
+    max-width: 140px;
+  }
+
+  .profile-hero__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-hero {
+    padding-inline: 1rem;
+    padding-top: 5rem;
   }
 }

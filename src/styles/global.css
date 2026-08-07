@@ -1,21 +1,80 @@
-/* src/styles/global.css */
-/* ==========================================================================
-   GLOBAL BASE STYLES
-   Depends on: tokens.css (must be imported first in main.jsx / index.css)
+/* src/styles/global.css
+   ==========================================================================
+   NAYAAB ENGINEERING INNOVATIONS — ARCHITECTURAL LIGHT DESIGN SYSTEM v3.0
+   Clean Studio Alabaster, Blueprint Navy & Architectural Bronze Tokens
    ========================================================================== */
 
-/* ---------------------------------------------------------------------
-   1. RESET — minimal, intentional, auditable
-   --------------------------------------------------------------------- */
+/* ==========================================================================
+   DESIGN TOKENS & COLOR PALETTE (Architectural Light Mode)
+   ========================================================================== */
+
+:root {
+  /* ===== Typography ===== */
+  --font-primary: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-secondary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* ===== Canvas & Surfaces (Limestone, Concrete & Studio Whites) ===== */
+  --bg: #F8F9FA;                     /* Studio Alabaster Canvas */
+  --bg-surface: #FFFFFF;             /* Pure Structural White Surface */
+  --bg-muted: #F1F5F9;               /* Subtle Concrete Gray */
+  --bg-card: #FFFFFF;                /* Card Base */
+  --bg-elevated: #FFFFFF;            /* Floating Modal/Elevated Base */
+
+  /* ===== Text & Typography (Charcoal & Muted Slate) ===== */
+  --text-primary: #0F172A;           /* Deep Architectural Slate */
+  --text-secondary: #334155;         /* Medium Steel Gray */
+  --text-muted: #64748B;             /* Muted CAD Draft Gray */
+  --color-text-title: #0F172A;       /* High-Contrast Title Slate */
+
+  /* ===== Brand & Accents (Blueprint Navy & Warm Construction Ochre) ===== */
+  --nei-blueprint-50: #EFF6FF;
+  --nei-blueprint-100: #DBEAFE;
+  --nei-blueprint-600: #1D4ED8;
+  --nei-blueprint-700: #0B4EA2;      /* Primary Structural Blueprint Blue */
+  --nei-blueprint-900: #1E293B;
+
+  --nei-bronze-500: #C2410C;         /* Architectural Ochre / Terracotta Accent */
+  --nei-bronze-600: #B45309;
+
+  /* Theme Mapping Variables */
+  --accent: var(--nei-blueprint-700);
+  --accent-hover: #083B7A;
+  --accent-secondary: var(--nei-bronze-500);
+  --nei-kinetic-cyan: var(--nei-blueprint-700);
+  --nei-kinetic-amber: var(--nei-bronze-500);
+
+  /* ===== Borders & Glasswork ===== */
+  --glass-border: rgba(15, 23, 42, 0.08);     /* Crisp Hairline Border */
+  --border-hover: rgba(11, 78, 162, 0.25);
+  --nei-glass-border: rgba(15, 23, 42, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+
+  /* ===== Shadows & Elevation ===== */
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 20px 45px -15px rgba(15, 23, 42, 0.12);
+
+  /* ===== Radii & Transitions ===== */
+  --nei-radius-sm: 8px;
+  --nei-radius-md: 14px;
+  --nei-radius-lg: 20px;
+  --nei-radius-full: 9999px;
+
+  --nei-transition-fast: 150ms ease;
+  --nei-transition-base: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  --nei-leading-normal: 1.6;
+}
+
+/* ==========================================================================
+   RESET & BASE STYLES
+   ========================================================================== */
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-* {
   margin: 0;
+  padding: 0;
 }
 
 html,
@@ -30,13 +89,18 @@ html {
 
 body {
   line-height: var(--nei-leading-normal);
-  font-family: var(--nei-font-family-sans);
-  font-size: var(--nei-font-body);
-  color: var(--color-text-primary);
-  background-color: var(--color-bg-page);
+  font-family: var(--font-secondary);
+  font-size: 1rem;
+  color: var(--text-primary);
+  background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
+
+/* ==========================================================================
+   MEDIA ELEMENTS
+   ========================================================================== */
 
 img,
 picture,
@@ -45,6 +109,7 @@ canvas,
 svg {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 input,
@@ -61,30 +126,9 @@ button {
   cursor: pointer;
 }
 
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  text-wrap: balance;
-  line-height: var(--nei-leading-tight);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
 ul,
 ol {
   list-style: none;
-  padding: 0;
 }
 
 a {
@@ -92,7 +136,76 @@ a {
   text-decoration: none;
 }
 
-/* Respect reduced-motion preference — overrides smooth scroll + transitions */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+figcaption {
+  overflow-wrap: break-word;
+}
+
+/* ==========================================================================
+   UNIFIED PAGE CONTAINER ENGINE
+   ========================================================================== */
+
+.page-container,
+.container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 4rem;
+}
+
+.section {
+  padding-block: 6rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  .page-container,
+  .container {
+    padding-inline: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container,
+  .container {
+    padding-inline: 1.5rem;
+  }
+
+  .section {
+    padding-block: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container,
+  .container {
+    padding-inline: 1rem;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY & UTILITIES
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -104,69 +217,5 @@ a {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
-}
-
-/* ---------------------------------------------------------------------
-   2. ACCESSIBILITY PRIMITIVES
-   --------------------------------------------------------------------- */
-
-/* Visible only to screen readers */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Skip link — hidden until focused via keyboard */
-.skip-link {
-  position: absolute;
-  top: -48px;
-  left: var(--nei-space-4);
-  z-index: 100;
-  padding: var(--nei-space-2) var(--nei-space-4);
-  background-color: var(--color-bg-inverse);
-  color: var(--color-text-inverse);
-  border-radius: var(--radius-card);
-  font-size: var(--nei-font-small);
-  font-weight: 600;
-  transition: top var(--transition-standard);
-}
-
-.skip-link:focus-visible {
-  top: var(--nei-space-4);
-}
-
-/* Global focus-visible ring — every interactive element inherits this */
-:focus-visible {
-  outline: 2px solid var(--color-action-default);
-  outline-offset: 2px;
-  border-radius: var(--nei-radius-sm);
-}
-
-/* Remove default focus ring only where we've replaced it above */
-:focus:not(:focus-visible) {
-  outline: none;
-}
-
-/* ---------------------------------------------------------------------
-   3. LAYOUT PRIMITIVES — shared by every page (Team, Home, etc.)
-   --------------------------------------------------------------------- */
-
-.container {
-  width: 100%;
-  max-width: var(--nei-container-max);
-  margin-inline: auto;
-  padding-inline: var(--nei-container-pad);
-}
-
-.visually-hidden-focusable {
-  clip: auto;
 }

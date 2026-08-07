@@ -13,7 +13,7 @@ function TeamGrid({ members }) {
   if (!members || members.length === 0) return null;
 
   return (
-    <ul className="team-grid" role="list">
+    <ul className="team-grid" role="list" data-count={members.length}>
       {members.map((employee) => (
         <li key={employee.employeeId} className="team-grid__item">
           <TeamCard employee={employee} variant="grid" />
