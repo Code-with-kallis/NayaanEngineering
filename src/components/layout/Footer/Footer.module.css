@@ -10,9 +10,11 @@
   padding-bottom: 2rem;
   font-family: var(--nei-font-primary, "Outfit", sans-serif);
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Semi-Transparent Blue Gradient Overlay for High Content Contrast */
+/* Semi-Transparent Blue Gradient Overlay */
 .footerOverlay {
   position: absolute;
   inset: 0;
@@ -26,28 +28,28 @@
   pointer-events: none;
 }
 
-/* 1:1 Alignment with Navbar Container */
+/* Footer Main Grid Container */
 .footerContainer {
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: none;
   margin: 0 auto;
-  padding-inline: 4rem;
+  padding-inline: clamp(1.25rem, 5vw, 4rem);
   display: grid;
   grid-template-columns: 1.4fr 1fr;
-  gap: 4rem;
+  gap: 3.5rem;
   box-sizing: border-box;
 }
 
-/* ===== LOGO & COMPANY COLUMN ===== */
+/* COMPANY COLUMN */
 .companyColumn {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
 }
 
-/* Styled Container for Logo with Background & Border */
 .logoWrapper {
   display: inline-flex;
   align-items: center;
@@ -76,7 +78,7 @@
   margin: 0 0 1.75rem 0;
 }
 
-/* ===== SOCIAL ICONS ===== */
+/* SOCIAL ICONS */
 .socialIcons {
   display: flex;
   gap: 0.75rem;
@@ -106,7 +108,12 @@
   box-shadow: 0 4px 15px rgba(53, 144, 206, 0.4);
 }
 
-/* ===== CONTACT COLUMN ===== */
+/* CONTACT COLUMN */
+.footerColumn {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .columnTitle {
   font-size: 1.1rem;
   font-weight: 700;
@@ -133,7 +140,8 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
+  width: 100%;
 }
 
 .contactList li {
@@ -143,6 +151,8 @@
   font-size: 0.9rem;
   color: #E2E8F0;
   line-height: 1.5;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .contactIcon {
@@ -156,6 +166,8 @@
   color: #E2E8F0;
   text-decoration: none;
   transition: color 0.2s ease;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .contactList a:hover {
@@ -163,14 +175,14 @@
   text-decoration: underline;
 }
 
-/* ===== FOOTER BOTTOM BAR ===== */
+/* FOOTER BOTTOM BAR */
 .footerBottom {
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: none;
   margin: 3.5rem auto 0;
-  padding-inline: 4rem;
+  padding-inline: clamp(1.25rem, 5vw, 4rem);
   padding-top: 1.5rem;
   padding-bottom: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
@@ -203,12 +215,13 @@
   letter-spacing: 0.05em;
   color: #E2E8F0;
 }
-/* ===== SCROLL TO TOP BUTTON (Fixed Overlap Issue) ===== */
+
+/* SCROLL TO TOP BUTTON */
 .scrollTop {
   position: absolute;
   z-index: 3;
   right: 2.5rem;
-  bottom: 4.5rem; /* Lifted above the footerBottom divider bar */
+  bottom: 4.5rem;
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -231,10 +244,40 @@
   box-shadow: 0 6px 20px rgba(53, 144, 206, 0.4);
 }
 
-/* Responsive Offsets */
-@media (max-width: 768px) {
+/* ===== RESPONSIVE BREAKPOINTS (FIX MOBILE OVERFLOW) ===== */
+@media (max-width: 900px) {
+  .footerContainer {
+    grid-template-columns: 1fr !important;
+    gap: 2.5rem;
+  }
+
+  .companyDescription {
+    max-width: 100%;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
   .scrollTop {
     right: 1.5rem;
     bottom: 5.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding-top: 3rem;
+  }
+
+  .footerLogo {
+    height: 32px;
+  }
+
+  .scrollTop {
+    right: 1rem;
+    bottom: 6rem;
   }
 }
