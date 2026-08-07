@@ -13,7 +13,25 @@
   font-family: var(--nei-font-primary);
   box-sizing: border-box;
 }
+.availabilityCard {
+  background: var(--nei-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--nei-glass-border);
+  border-radius: var(--nei-radius-md);
+  padding: 1rem 1.25rem;
+  max-width: 280px;
+}
 
+.availabilityStatus {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: var(--nei-font-small);
+  color: var(--nei-steel-000); /* Fix: Text ko high-contrast white rakha hai */
+}
 .videoContainer {
   position: absolute;
   inset: 0;
