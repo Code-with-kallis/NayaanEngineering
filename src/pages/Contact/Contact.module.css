@@ -1,7 +1,7 @@
 /* src/pages/Contact/Contact.module.css
    ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — CONTACT PAGE STYLES v4.4
-   Electric Blue Primary Button Update
+   NAYAAB ENGINEERING INNOVATIONS — CONTACT PAGE STYLES v5.3
+   Full Bleed Specificity Fix
    ========================================================================== */
 
 .contactPage {
@@ -11,7 +11,6 @@
   --contact-border: var(--glass-border, rgba(15, 23, 42, 0.08));
   --contact-surface: var(--bg-surface, #ffffff);
   --contact-surface-alt: var(--bg, #f8f9fa);
-  --contact-shadow: var(--shadow-md, 0 10px 30px rgba(15, 23, 42, 0.04));
   --contact-shadow-lg: var(--shadow-lg, 0 20px 40px rgba(15, 23, 42, 0.08));
 
   --contact-accent: #0066FF;
@@ -22,10 +21,12 @@
   color: var(--contact-text);
   background: var(--contact-surface);
   font-family: var(--font-primary, "Outfit", sans-serif);
+  overflow-x: hidden;
 }
 
-/* SECTION PADDING ALIGNMENT */
-.contactPage section {
+/* EXPLICIT SECTION PADDING (prevents polluting ContactForm component) */
+.contactHero,
+.contactFaq {
   width: 100%;
   box-sizing: border-box;
   padding-inline: var(--nei-container-pad, clamp(1.25rem, 5vw, 4rem));
@@ -72,9 +73,7 @@
 }
 
 .contactHeroEyebrow,
-.contactSectionHeadingEyebrow,
-.contactFormCardEyebrow,
-.contactSidebarEyebrow {
+.contactSectionHeadingEyebrow {
   display: inline-block;
   margin-bottom: 12px;
   font-size: var(--nei-font-small, 0.825rem);
@@ -211,7 +210,6 @@
   transform: translateY(-2px);
 }
 
-/* ELECTRIC BLUE PRIMARY BUTTON (MATCHED TO SCREENSHOT) */
 .contactButtonPrimary {
   background: linear-gradient(135deg, #0066FF 0%, #00D2FF 100%);
   color: #ffffff;
@@ -224,7 +222,6 @@
   box-shadow: 0 12px 28px rgba(0, 240, 255, 0.45);
 }
 
-/* WhatsApp Button */
 .contactButtonWhatsapp {
   background: linear-gradient(135deg, var(--contact-green), #1aac50);
   color: #ffffff;
@@ -235,50 +232,13 @@
   box-shadow: 0 12px 28px rgba(37, 211, 102, 0.32);
 }
 
-.contactButton:disabled {
-  cursor: not-allowed;
-  transform: none;
-  opacity: 0.55;
-  box-shadow: none;
-}
-
-/* ===== SECTIONS LAYOUT ===== */
-.contactMain,
+/* ===== FAQ SECTION ===== */
 .contactFaq {
   padding-top: 60px;
   padding-bottom: 60px;
   background: var(--contact-surface-alt);
 }
 
-.contactMainContainer {
-  width: 100%;
-  max-width: none;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.7fr);
-  gap: 28px;
-  align-items: start;
-}
-
-.contactFormCard,
-.contactSidebarCard {
-  border: 1px solid var(--contact-border);
-  border-radius: var(--nei-radius-lg, 20px);
-  background: var(--contact-surface);
-  box-shadow: var(--contact-shadow);
-}
-
-.contactFormCard {
-  padding: 32px;
-}
-
-.contactFormCardHeader {
-  max-width: 680px;
-  margin-bottom: 24px;
-}
-
-.contactFormCardHeader h2,
-.contactSidebarCard h2,
 .contactFaqContent h2 {
   margin: 0 0 10px;
   font-size: var(--nei-font-h2, clamp(1.75rem, 2.5vw, 2.25rem));
@@ -288,7 +248,6 @@
   color: var(--contact-navy);
 }
 
-.contactFormCardHeader p,
 .contactFaqContent p {
   margin: 0;
   color: var(--contact-text-muted);
@@ -297,167 +256,6 @@
   font-family: var(--font-secondary, "Inter", sans-serif);
 }
 
-.contactForm {
-  display: grid;
-  gap: 16px;
-}
-
-.contactFormGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.contactFormField {
-  display: grid;
-  gap: 6px;
-}
-
-.contactFormField span {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--contact-navy);
-}
-
-.contactFormField input,
-.contactFormField select,
-.contactFormField textarea {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--contact-border);
-  border-radius: var(--nei-radius-sm, 8px);
-  background: var(--contact-surface-alt);
-  color: var(--contact-text);
-  font: inherit;
-  font-size: 0.9rem;
-  transition: all var(--nei-transition-fast, 150ms ease);
-}
-
-.contactFormField input:focus,
-.contactFormField select:focus,
-.contactFormField textarea:focus {
-  outline: none;
-  border-color: var(--contact-accent);
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.12);
-  background: var(--contact-surface);
-}
-
-.contactFormField textarea {
-  min-height: 140px;
-  resize: vertical;
-}
-
-.contactFormActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.contactFormNote {
-  font-size: 0.8rem;
-  color: var(--contact-text-muted);
-  font-family: var(--font-secondary, "Inter", sans-serif);
-  margin-top: 4px;
-}
-
-/* SIDEBAR CARDS */
-.contactSidebar {
-  display: grid;
-  gap: 20px;
-}
-
-.contactSidebarCard {
-  padding: 24px;
-}
-
-.contactSidebarList {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 12px 0 16px;
-  padding: 0;
-  list-style: none;
-}
-
-.contactSidebarList li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--contact-text-muted);
-  font-size: 0.9rem;
-  font-family: var(--font-secondary, "Inter", sans-serif);
-}
-
-.contactSidebarList svg {
-  color: var(--contact-accent);
-  flex-shrink: 0;
-}
-
-.contactSidebarList a {
-  color: var(--contact-text-muted);
-  text-decoration: none;
-  transition: color var(--nei-transition-fast, 150ms ease);
-}
-
-.contactSidebarList a:hover {
-  color: var(--contact-accent);
-}
-
-.contactServiceChips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.contactServiceChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: var(--nei-radius-full, 999px);
-  background: var(--contact-surface-alt);
-  border: 1px solid var(--contact-border);
-  color: var(--contact-navy);
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-
-.contactServiceChipIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--contact-accent);
-  font-size: 0.75rem;
-}
-
-.contactMapSocials {
-  display: flex;
-  gap: 10px;
-}
-
-.contactMapSocials a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--contact-surface-alt);
-  border: 1px solid var(--contact-border);
-  color: var(--contact-navy);
-  transition: all var(--nei-transition-base, 300ms ease);
-}
-
-.contactMapSocials a:hover {
-  transform: translateY(-2px);
-  background: var(--contact-accent);
-  border-color: var(--contact-accent);
-  color: #ffffff;
-}
-
-/* ===== FAQ SECTION ===== */
 .contactFaqContainer {
   width: 100%;
   max-width: 860px;
@@ -474,7 +272,6 @@
   border: 1px solid var(--contact-border);
   border-radius: var(--nei-radius-md, 12px);
   background: var(--contact-surface);
-  box-shadow: var(--contact-shadow);
 }
 
 .contactFaqItem summary {
@@ -517,37 +314,31 @@
 
 /* ===== RESPONSIVE BREAKPOINTS ===== */
 @media (max-width: 1024px) {
-  .contactHeroContainer,
-  .contactMainContainer {
+  .contactHeroContainer {
     grid-template-columns: 1fr;
     gap: 28px;
   }
 }
 
 @media (max-width: 768px) {
-  .contactPage section {
+  .contactHero,
+  .contactFaq {
     padding-inline: 1.5rem;
   }
 
-  .contactMain,
   .contactFaq {
     padding-top: 40px;
     padding-bottom: 40px;
   }
 
-  .contactFormGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .contactFormCard,
-  .contactSidebarCard,
   .contactTopMapCard {
     border-radius: var(--nei-radius-md, 16px);
   }
 }
 
 @media (max-width: 480px) {
-  .contactPage section {
+  .contactHero,
+  .contactFaq {
     padding-inline: 1rem;
   }
 
@@ -560,23 +351,16 @@
     font-size: 1.85rem;
   }
 
-  .contactFormCard,
-  .contactSidebarCard {
-    padding: 18px;
-  }
-
   .contactTopMapFooter {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .contactButton,
-  .contactFormActions .contactButton {
+  .contactButton {
     width: 100%;
   }
 
-  .contactHeroActions,
-  .contactFormActions {
+  .contactHeroActions {
     flex-direction: column;
   }
 }

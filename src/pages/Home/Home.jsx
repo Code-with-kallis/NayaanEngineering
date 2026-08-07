@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  FaEnvelope,
   FaDraftingCompass,
   FaBuilding,
   FaHardHat,
@@ -18,10 +17,33 @@ import {
   FaLayerGroup,
   FaAward,
   FaRegCalendarCheck,
-  FaWhatsapp,
 } from "react-icons/fa";
 import Hero from "../../components/home/Hero";
+import ContactForm from "../../components/common/ContactForm/ContactForm";
 import styles from "./Home.module.css";
+
+const highlightItems = [
+  {
+    icon: <FaRegCalendarCheck className={styles.highlightIcon} />,
+    title: "Est. 2022",
+    subtitle: "Founded on Engineering Rigor",
+  },
+  {
+    icon: <FaLayerGroup className={styles.highlightIcon} />,
+    title: "Multi-Discipline",
+    subtitle: "Architecture to Structural Design",
+  },
+  {
+    icon: <FaProjectDiagram className={styles.highlightIcon} />,
+    title: "End-to-End",
+    subtitle: "Concept to Turnkey Delivery",
+  },
+  {
+    icon: <FaAward className={styles.highlightIcon} />,
+    title: "100%",
+    subtitle: "Quality Commitment",
+  },
+];
 
 const Home = () => {
   return (
@@ -89,7 +111,7 @@ const Home = () => {
 
         <div className={styles.serviceGrid}>
           <div className={styles.serviceCard}>
-            <FaDraftingCompass />
+            <FaDraftingCompass className={styles.serviceIcon} />
             <h3>Architectural Design</h3>
             <p>
               Residential, commercial and public building architectural
@@ -98,7 +120,7 @@ const Home = () => {
           </div>
 
           <div className={styles.serviceCard}>
-            <FaBuilding />
+            <FaBuilding className={styles.serviceIcon} />
             <h3>Structural Engineering</h3>
             <p>
               Structural engineering, supervision, estimation and technical
@@ -107,7 +129,7 @@ const Home = () => {
           </div>
 
           <div className={styles.serviceCard}>
-            <FaHardHat />
+            <FaHardHat className={styles.serviceIcon} />
             <h3>Construction Management</h3>
             <p>
               End-to-end site supervision, scheduling, and quality-controlled
@@ -116,7 +138,7 @@ const Home = () => {
           </div>
 
           <div className={styles.serviceCard}>
-            <FaClipboardList />
+            <FaClipboardList className={styles.serviceIcon} />
             <h3>Engineering Consultancy</h3>
             <p>
               Technical advisory, feasibility studies, and compliance-driven
@@ -125,7 +147,7 @@ const Home = () => {
           </div>
 
           <div className={styles.serviceCard}>
-            <FaProjectDiagram />
+            <FaProjectDiagram className={styles.serviceIcon} />
             <h3>Project Planning</h3>
             <p>
               Detailed project scheduling, resource allocation, and risk
@@ -134,7 +156,7 @@ const Home = () => {
           </div>
 
           <div className={styles.serviceCard}>
-            <FaKey />
+            <FaKey className={styles.serviceIcon} />
             <h3>Turnkey Solutions</h3>
             <p>
               Turnkey construction projects with complete project management.
@@ -143,35 +165,43 @@ const Home = () => {
         </div>
       </section>
 
-      <section className={styles.highlights}>
-        <div className={styles.sectionTitle}>
-          <span>OUR FOUNDATION</span>
-          <h2>Engineered for the Long Term</h2>
-        </div>
+      {/* INFINITE AUTO-MOVING TICKER SECTION */}
+      <section className={styles.tickerSection}>
+        <div className={styles.tickerContainer}>
+          <div className={styles.tickerTrack}>
+            {/* Set 1 */}
+            {highlightItems.map((item, index) => (
+              <div className={styles.tickerItem} key={`ticker-1-${index}`}>
+                {item.icon}
+                <div className={styles.tickerContent}>
+                  <h3>{item.title}</h3>
+                  <p>{item.subtitle}</p>
+                </div>
+                <span className={styles.tickerDot}>•</span>
+              </div>
+            ))}
 
-        <div className={styles.highlightsGrid}>
-          <div className={styles.highlightCard}>
-            <FaRegCalendarCheck className={styles.highlightIcon} />
-            <h3>Est. 2022</h3>
-            <p>Founded on Engineering Rigor</p>
-          </div>
-          <div className={styles.highlightCard}>
-            <FaLayerGroup className={styles.highlightIcon} />
-            <h3>Multi-Discipline</h3>
-            <p>Architecture to Structural Design</p>
-          </div>
-          <div className={styles.highlightCard}>
-            <FaProjectDiagram className={styles.highlightIcon} />
-            <h3>End-to-End</h3>
-            <p>Concept to Turnkey Delivery</p>
-          </div>
-          <div className={styles.highlightCard}>
-            <FaAward className={styles.highlightIcon} />
-            <h3>100%</h3>
-            <p>Quality Commitment</p>
+            {/* Set 2 (Duplicated for seamless continuous loop) */}
+            {highlightItems.map((item, index) => (
+              <div className={styles.tickerItem} key={`ticker-2-${index}`}>
+                {item.icon}
+                <div className={styles.tickerContent}>
+                  <h3>{item.title}</h3>
+                  <p>{item.subtitle}</p>
+                </div>
+                <span className={styles.tickerDot}>•</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
+
+      {/* CONTACT FORM DIRECTLY BELOW TICKER SECTION */}
+      <ContactForm
+        eyebrow="GET IN TOUCH"
+        title="Let's talk"
+        subtitle="To request a quote or want to meet up for coffee, contact us directly or fill out the form and we will get back to you promptly."
+      />
 
       <section className={styles.whyChoose}>
         <div className={styles.sectionTitle}>
@@ -219,31 +249,6 @@ const Home = () => {
             <p>
               Transparent communication and a client-first execution philosophy.
             </p>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.ctaSection}>
-        <div className={styles.ctaPattern} />
-        <div className={styles.ctaContent}>
-          <span className={styles.ctaTag}>COMING SOON</span>
-          <h2>Our complete corporate website is currently under development.</h2>
-          <p>We look forward to serving you soon.</p>
-          <div className={styles.ctaButtons}>
-            <a
-              href="https://wa.me/919858765435"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${styles.primaryBtn} ${styles.whatsappBtn}`}
-            >
-              <FaWhatsapp /> WhatsApp Us
-            </a>
-            <a
-              href="mailto:info@nayaabengineering.com"
-              className={styles.secondaryBtn}
-            >
-              <FaEnvelope /> Email Us
-            </a>
           </div>
         </div>
       </section>
