@@ -692,6 +692,13 @@
     grid-template-columns: 1fr;
   }
 
+  /* Fix for Location & Design details in Mobile */
+  .cardMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
   .filterBar {
     overflow-x: auto;
     white-space: nowrap;
