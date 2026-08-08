@@ -1,13 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { FaWhatsapp } from "react-icons/fa";
+import {
+  FaHome,
+  FaBuilding,
+  FaUsers,
+  FaEnvelope,
+  FaArrowRight,
+} from "react-icons/fa";
 import styles from "./Navbar.module.css";
 import logo from "/logo.png";
 
 const NAV_LINKS = [
-  { to: "/", label: "Home", end: true },
-  { to: "/team", label: "Team" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", label: "Home", icon: FaHome, end: true },
+  { to: "/projects", label: "Projects", icon: FaBuilding },
+  { to: "/team", label: "Team", icon: FaUsers },
 ];
 
 const Navbar = () => {
@@ -17,9 +23,11 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const lastScrollY = useRef(0);
 
-  const isHomePage = pathname === "/";
-  const isTeamPage = pathname === "/team";
-  const isHeroPage = isHomePage || isTeamPage;
+  // Pages with Dark Video/Image Hero backgrounds
+  const isDarkHero = pathname === "/" || pathname === "/team";
+  
+  // Pages with Light/White Hero backgrounds
+  const isLightHero = pathname === "/projects" || pathname === "/contact";
 
   const toggleMenu = () => setIsOpen((prev) => !prev);
   const closeMenu = () => setIsOpen(false);
@@ -73,24 +81,27 @@ const Navbar = () => {
   }, [isOpen]);
 
   const renderNavLinks = () =>
-    NAV_LINKS.map(({ to, label, end }) => (
+    NAV_LINKS.map(({ to, label, icon: Icon, end }) => (
       <NavLink
         key={to}
         to={to}
         end={end}
         className={({ isActive }) =>
-          `${isActive ? styles.activeLink : ""}`.trim()
+          `${styles.navItem} ${isActive ? styles.activeLink : ""}`.trim()
         }
         onClick={closeMenu}
       >
-        {label}
+        <Icon className={styles.navIcon} aria-hidden="true" />
+        <span>{label}</span>
       </NavLink>
     ));
 
   return (
     <>
       <header
-        className={`${styles.navbar} ${isHeroPage ? styles.navbarTransparent : ""} ${
+        className={`${styles.navbar} ${
+          isDarkHero ? styles.navbarDarkHero : ""
+        } ${isLightHero ? styles.navbarLightHero : ""} ${
           !isVisible ? styles.navbarHidden : ""
         } ${scrolled ? styles.navbarScrolled : ""}`.trim()}
       >
@@ -99,21 +110,22 @@ const Navbar = () => {
             <img src={logo} alt="Nayaab Engineering Logo" />
           </NavLink>
 
-          <nav className={styles.navbarLinksDesktop} aria-label="Primary navigation">
+          <nav
+            className={styles.navbarLinksDesktop}
+            aria-label="Primary navigation"
+          >
             {renderNavLinks()}
           </nav>
 
           <div className={styles.navbarActions}>
-            <a
-              href="https://wa.me/919858765435"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${styles.navbarWhatsappBtn} ${styles.navbarWhatsappDesktop}`}
+            <NavLink
+              to="/contact"
+              className={`${styles.navbarContactBtn} ${styles.navbarContactDesktop}`}
               onClick={closeMenu}
             >
-              <FaWhatsapp />
-              <span>WhatsApp</span>
-            </a>
+              <FaEnvelope aria-hidden="true" />
+              <span>Contact</span>
+            </NavLink>
 
             <button
               className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
@@ -130,28 +142,34 @@ const Navbar = () => {
         </div>
       </header>
 
-      {/* Light Studio Mobile Drawer Panel */}
+      {/* Premium Mobile Drawer Panel */}
       <nav
         id="navbar-mobile-panel"
-        className={`${styles.navbarMobilePanel} ${isOpen ? styles.active : ""}`}
+        className={`${styles.navbarMobilePanel} ${
+          isOpen ? styles.active : ""
+        }`}
         aria-label="Mobile navigation"
       >
         <div className={styles.navbarMobileHeader}>
-          <img src={logo} alt="Nayaab Engineering Logo" className={styles.mobileLogo} />
+          <img
+            src={logo}
+            alt="Nayaab Engineering Logo"
+            className={styles.mobileLogo}
+          />
         </div>
 
         <div className={styles.navbarMobileLinks}>{renderNavLinks()}</div>
 
-        <a
-          href="https://wa.me/919858765435"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.navbarWhatsappMobile}
-          onClick={closeMenu}
-        >
-          <FaWhatsapp />
-          <span>WhatsApp</span>
-        </a>
+        <div className={styles.mobileFooterArea}>
+          <NavLink
+            to="/contact"
+            className={styles.navbarContactMobile}
+            onClick={closeMenu}
+          >
+            <span>Get in Touch</span>
+            <FaArrowRight aria-hidden="true" />
+          </NavLink>
+        </div>
       </nav>
 
       <div

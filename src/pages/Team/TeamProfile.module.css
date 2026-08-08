@@ -1,33 +1,16 @@
 /* src/pages/Team/TeamProfile.module.css
    ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — TEAM PROFILE STYLES v4.0
-   Brand Accent: Cerulean Logo Blue (#3590CE)
+   NAYAAB ENGINEERING INNOVATIONS — TEAM PROFILE STYLES v5.1
+   Rectangular Sharp Design & Rust Accent (#B7410E)
    ========================================================================== */
 
 .profilePage {
   position: relative;
   min-height: 100vh;
   width: 100%;
-  color: var(--color-text-title, #0F172A);
-  font-family: var(--font-primary, "Outfit", sans-serif);
-
-  background:
-    radial-gradient(
-      800px circle at 85% 15%,
-      rgba(53, 144, 206, 0.04) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      600px circle at 15% 85%,
-      rgba(15, 23, 42, 0.03) 0%,
-      transparent 55%
-    ),
-    linear-gradient(
-      180deg,
-      #F8F9FA 0%,
-      #FFFFFF 50%,
-      #F1F5F9 100%
-    );
+  color: #111111;
+  font-family: 'Inter', sans-serif;
+  background: #FFFFFF;
 }
 
 .profileLayout {
@@ -52,17 +35,16 @@
   gap: 24px;
 }
 
+/* SIDEBAR PANELS — RECTANGULAR SHARP DESIGN */
 .profilePanel {
   position: relative;
   padding: 24px 28px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: var(--nei-radius-lg, 20px);
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  border-radius: 0; /* Sharp rectangular layout */
   background: #FFFFFF;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 20px rgba(17, 17, 17, 0.03);
   overflow: hidden;
-  transition: border-color var(--nei-transition-base, 300ms ease),
-    transform var(--nei-transition-base, 300ms ease),
-    box-shadow var(--nei-transition-base, 300ms ease);
+  transition: border-color 300ms ease, transform 300ms ease, box-shadow 300ms ease;
 }
 
 .profilePanel::before {
@@ -72,29 +54,30 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #3590CE, transparent);
+  background: linear-gradient(90deg, transparent, #B7410E, transparent);
   opacity: 0;
-  transition: opacity var(--nei-transition-base, 300ms ease);
+  transition: opacity 300ms ease;
 }
 
 .profilePanel:hover {
-  border-color: rgba(53, 144, 206, 0.25);
+  border-color: #B7410E;
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 10px 25px rgba(183, 65, 14, 0.08);
 }
 
 .profilePanel:hover::before {
   opacity: 1;
 }
 
+/* SIDEBAR PANEL TITLE — BLACK BARLOW CONDENSED */
 .profilePanelTitle {
   margin: 0 0 18px;
-  font-family: var(--font-primary, "Outfit", sans-serif);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #3590CE;
+  color: #111111;
 }
 
 .profilePanelList {
@@ -113,7 +96,7 @@
   align-items: center;
   gap: 16px;
   padding-block: 12px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.06);
 }
 
 .profileMetaRow:last-child {
@@ -123,21 +106,22 @@
 
 .profileMetaLabel {
   font-size: 0.85rem;
-  font-family: var(--font-secondary, "Inter", sans-serif);
+  font-family: 'Inter', sans-serif;
   color: #64748B;
 }
 
 .profileMetaValue {
   font-size: 0.95rem;
-  font-weight: 600;
-  font-family: var(--font-primary, "Outfit", sans-serif);
-  color: #0F172A;
+  font-weight: 700;
+  font-family: 'Barlow Condensed', sans-serif;
+  color: #111111;
   text-align: right;
 }
 
+/* SECTION TITLES & CONTENT */
 .profileSection {
   padding-block: 36px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
   max-width: 820px;
 }
 
@@ -147,85 +131,89 @@
 
 .profileSectionTitle {
   margin: 0 0 18px;
-  font-size: clamp(1.8rem, 1.2rem + 1.2vw, 2.5rem);
-  line-height: 1.15;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: #0F172A;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #111111;
 }
 
 .profileSectionBody {
   max-width: 68ch;
   margin: 0;
-  font-family: var(--font-secondary, "Inter", sans-serif);
-  font-size: clamp(1rem, 0.96rem + 0.25vw, 1.125rem);
-  line-height: 1.8;
-  color: #475569;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  line-height: 1.75;
+  color: #555555;
 }
 
 .profileInfoCard {
   padding: 18px 20px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: var(--nei-radius-md, 16px);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-radius: 0; /* Sharp rectangular layout */
   background: #FFFFFF;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
-  transition: all var(--nei-transition-base, 300ms ease);
+  box-shadow: 0 2px 10px rgba(17, 17, 17, 0.03);
+  transition: all 300ms ease;
 }
 
 .profileInfoCard:hover {
   background: #FFFFFF;
-  border-color: #3590CE;
+  border-color: #B7410E;
   transform: translateY(-3px);
-  box-shadow: 0 10px 25px -5px rgba(53, 144, 206, 0.12);
+  box-shadow: 0 10px 25px -5px rgba(183, 65, 14, 0.12);
 }
 
 .profileInfoCardLabel {
   margin: 0 0 6px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: #3590CE;
+  letter-spacing: 1px;
+  color: #B7410E;
   display: block;
 }
 
 .profileInfoCardValue {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   line-height: 1.4;
-  color: #0F172A;
+  color: #333333;
 }
 
+/* SKILL BADGES — RECTANGULAR SHARP STYLE */
 .profileSkills {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 10px;
+  margin-top: 20px;
   list-style: none;
   padding: 0;
 }
 
 .profileSkillsItem {
-  padding: 8px 18px;
-  background: rgba(53, 144, 206, 0.06);
-  border: 1px solid rgba(53, 144, 206, 0.2);
-  border-radius: 9999px;
-  font-size: 0.85rem;
+  padding: 6px 16px;
+  background: #F8F9FA;
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  border-radius: 0; /* Sharp rectangular badge */
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #3590CE;
-  letter-spacing: 0.3px;
-  transition: all var(--nei-transition-fast, 150ms ease);
+  color: #111111;
+  letter-spacing: 0.2px;
+  transition: all 150ms ease;
 }
 
 .profileSkillsItem:hover {
-  background: #3590CE;
-  border-color: #3590CE;
+  background: #111111;
+  border-color: #111111;
   color: #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(53, 144, 206, 0.25);
+  box-shadow: 0 4px 12px rgba(17, 17, 17, 0.15);
 }
 
+/* PROJECT CARDS — RECTANGULAR SHARP STYLE */
 .profileProjects {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -238,24 +226,25 @@
 .profileProjectsItem {
   position: relative;
   padding: 20px 22px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: var(--nei-radius-md, 16px);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-radius: 0; /* Sharp rectangular layout */
   background: #FFFFFF;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03);
-  font-size: 0.975rem;
+  box-shadow: 0 2px 10px rgba(17, 17, 17, 0.03);
+  font-size: 0.925rem;
   font-weight: 500;
   line-height: 1.6;
-  color: #334155;
-  transition: all var(--nei-transition-base, 300ms ease);
+  color: #333333;
+  transition: all 300ms ease;
 }
 
 .profileProjectsItem:hover {
   background: #FFFFFF;
-  border-color: #3590CE;
-  transform: translateY(-4px);
-  box-shadow: 0 10px 30px -5px rgba(53, 144, 206, 0.15);
+  border-color: #B7410E;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -5px rgba(183, 65, 14, 0.12);
 }
 
+/* RESPONSIVE BREAKPOINTS */
 @media (max-width: 1200px) {
   .profileLayout {
     padding-inline: 2rem;

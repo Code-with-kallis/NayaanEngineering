@@ -54,15 +54,7 @@ function Contact() {
                 <FaPhoneAlt />
                 <span>Call +91 1952-455465</span>
               </a>
-              <a
-                href="https://wa.me/919858765435"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${styles.contactButton} ${styles.contactButtonWhatsapp}`}
-              >
-                <FaWhatsapp />
-                <span>WhatsApp Direct</span>
-              </a>
+             
             </div>
           </div>
 

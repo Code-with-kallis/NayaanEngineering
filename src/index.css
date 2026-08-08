@@ -1,41 +1,25 @@
-/* src/index.css
-   ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — GLOBAL INDEX STYLES v3.0
-   Primary Application Entry Point
-   ========================================================================== */
+/* src/index.css — Global Index & Light Theme System */
 
-/* Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap");
 
-/* Global Design Tokens & Base Engine */
 @import "./styles/tokens.css";
 @import "./styles/global.css";
 
-/* ==========================================================================
-   ROOT SYSTEM
-   ========================================================================== */
-
 :root {
-  /* Typography Variables linked to Token Pipeline */
-  --font-primary: var(--nei-font-primary, "Outfit", system-ui, -apple-system, sans-serif);
-  --font-secondary: var(--nei-font-primary, "Inter", system-ui, -apple-system, sans-serif);
-  --font-mono: var(--nei-font-mono, "JetBrains Mono", monospace);
+  /* Font System */
+  --font-primary: "Barlow Condensed", "Outfit", system-ui, -apple-system, sans-serif;
+  --font-secondary: "Inter", system-ui, -apple-system, sans-serif;
 
-  font-family: var(--font-primary);
-  line-height: var(--nei-leading-normal, 1.6);
+  font-family: var(--font-secondary);
+  line-height: 1.6;
   font-weight: 400;
 
-  /* High-Performance Rendering Settings */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color-scheme: dark;
+  color-scheme: light;
 }
-
-/* ==========================================================================
-   RESET & BASE CANVAS
-   ========================================================================== */
 
 *,
 *::before,
@@ -47,32 +31,26 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--color-bg-page, #05070A);
+  background-color: #ffffff;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
   overflow-x: hidden;
-
-  background-color: var(--color-bg-page, #05070A);
-  color: var(--color-text-body, #CBD3E1);
-
+  background-color: #ffffff;
+  color: #111111;
   font-family: var(--font-secondary);
   font-size: 16px;
-  line-height: var(--nei-leading-normal, 1.6);
+  line-height: 1.6;
 }
 
-/* Prevent layout shift/scroll when mobile nav modal is open */
+/* Modal Open Scroll Locking */
 html.nav-menu-open,
 body.nav-menu-open {
   overflow: hidden !important;
   overscroll-behavior: none;
 }
-
-/* ==========================================================================
-   MEDIA ELEMENTS
-   ========================================================================== */
 
 img,
 picture,
@@ -84,10 +62,6 @@ svg {
   height: auto;
 }
 
-/* ==========================================================================
-   TYPOGRAPHY SPECIFICATION
-   ========================================================================== */
-
 h1,
 h2,
 h3,
@@ -95,10 +69,10 @@ h4,
 h5,
 h6 {
   font-family: var(--font-primary);
-  font-weight: 700;
-  line-height: var(--nei-leading-tight, 1.15);
-  letter-spacing: -0.025em;
-  color: var(--color-text-title, #FFFFFF);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #111111;
 }
 
 p,
@@ -111,20 +85,10 @@ button {
   font-family: var(--font-secondary);
 }
 
-code,
-pre,
-kbd {
-  font-family: var(--font-mono);
-}
-
-/* ==========================================================================
-   INTERACTION & FORMS
-   ========================================================================== */
-
 a {
   color: inherit;
   text-decoration: none;
-  transition: color var(--nei-transition-fast, 150ms ease);
+  transition: color 150ms ease;
 }
 
 button,
@@ -142,45 +106,21 @@ button {
   cursor: pointer;
 }
 
-/* ==========================================================================
-   APPLICATION ROOT CONTAINER
-   ========================================================================== */
-
-#root {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--color-bg-page, #05070A);
-}
-
-/* ==========================================================================
-   KINETIC SELECTION STATES
-   ========================================================================== */
-
-::selection {
-  background: rgba(0, 240, 255, 0.25);
-  color: var(--nei-kinetic-cyan, #00F0FF);
-}
-
-/* ==========================================================================
-   OBSIDIAN STEEL CUSTOM SCROLLBAR
-   ========================================================================== */
-
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--nei-obsidian-950, #05070A);
+  background: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--nei-obsidian-700, #21293B);
-  border-radius: var(--nei-radius-full, 9999px);
-  border: 2px solid var(--nei-obsidian-950, #05070A);
+  background: #cccccc;
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--nei-kinetic-cyan, #00F0FF);
+  background: #ea8a35;
 }

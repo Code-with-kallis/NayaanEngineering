@@ -27,22 +27,23 @@
   margin-bottom: 3rem;
 }
 
+/* TITLE IN ACCENT RUST (#B7410E) */
 .title {
   margin: 0 0 0.85rem 0;
   font-size: clamp(2.5rem, 4vw, 3.5rem);
   font-weight: 800;
-  color: #0066FF; /* Electric Blue Brand Primary */
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  font-family: var(--font-primary, "Outfit", sans-serif);
+  color: #B7410E;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  font-family: 'Barlow Condensed', sans-serif;
 }
 
 .subtitle {
   margin: 0;
   font-size: 0.95rem;
-  color: #64748B;
+  color: #555555;
   line-height: 1.6;
-  font-family: var(--font-secondary, "Inter", sans-serif);
+  font-family: 'Inter', sans-serif;
   max-width: 520px;
 }
 
@@ -72,8 +73,8 @@
 .field label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #0F172A;
-  font-family: var(--font-secondary, "Inter", sans-serif);
+  color: #111111;
+  font-family: 'Inter', sans-serif;
 }
 
 /* UNDERLINE INPUT STYLING */
@@ -83,10 +84,10 @@
   width: 100%;
   padding: 0.6rem 0;
   border: none;
-  border-bottom: 2px solid #0F172A;
+  border-bottom: 2px solid #111111;
   background: transparent;
-  color: #0F172A;
-  font-family: inherit;
+  color: #111111;
+  font-family: 'Inter', sans-serif;
   font-size: 1rem;
   box-sizing: border-box;
   transition: border-color 200ms ease;
@@ -102,7 +103,7 @@
 .field select:focus,
 .field textarea:focus {
   outline: none;
-  border-bottom-color: #0066FF; /* Electric Blue focus line */
+  border-bottom-color: #B7410E;
 }
 
 /* ACTION FOOTER */
@@ -122,7 +123,7 @@
   flex-wrap: wrap;
 }
 
-/* BRAND BLUE PRIMARY SUBMIT BUTTON */
+/* RECTANGULAR SUBMIT BUTTON */
 .submitBtn {
   display: inline-flex;
   align-items: center;
@@ -130,20 +131,22 @@
   gap: 0.75rem;
   height: 52px;
   padding: 0 2rem;
-  background: linear-gradient(135deg, #0066FF 0%, #00D2FF 100%);
+  background: #B7410E;
   color: #FFFFFF;
   border: none;
+  border-radius: 0;
+  font-family: 'Inter', sans-serif;
   font-size: 0.925rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.25);
+  box-shadow: 0 4px 14px rgba(183, 65, 14, 0.25);
   transition: all 250ms ease;
 }
 
 .submitBtn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #0052CC 0%, #00B8E6 100%);
+  background: #9E370C;
   transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(0, 102, 255, 0.35);
+  box-shadow: 0 6px 18px rgba(183, 65, 14, 0.35);
 }
 
 .btnArrow {
@@ -155,7 +158,7 @@
   transform: translateX(4px);
 }
 
-/* WHATSAPP BUTTON */
+/* RECTANGULAR WHATSAPP BUTTON */
 .whatsappBtn {
   display: inline-flex;
   align-items: center;
@@ -163,19 +166,22 @@
   gap: 0.5rem;
   height: 52px;
   padding: 0 1.5rem;
-  background: linear-gradient(135deg, #25D366 0%, #1AAC50 100%);
+  background: #25D366;
   color: #FFFFFF;
   border: none;
+  border-radius: 0;
+  font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.22);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.22);
   transition: all 250ms ease;
 }
 
 .whatsappBtn:hover:not(:disabled) {
+  background: #1DB954;
   transform: translateY(-2px);
-  box-shadow: 0 12px 25px rgba(37, 211, 102, 0.32);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.32);
 }
 
 .submitBtn:disabled,
@@ -195,7 +201,8 @@
 .socialFollow span {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #64748B;
+  color: #777777;
+  font-family: 'Inter', sans-serif;
 }
 
 .socialIcons {
@@ -206,8 +213,8 @@
 .socialIcons a {
   width: 38px;
   height: 38px;
-  border-radius: 50%;
-  background: #0066FF;
+  border-radius: 0;
+  background: #111111;
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -218,8 +225,8 @@
 }
 
 .socialIcons a:hover {
-  transform: scale(1.1);
-  background: #0052CC;
+  transform: translateY(-2px);
+  background: #B7410E;
 }
 
 .successBanner,
@@ -228,9 +235,10 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.85rem 1rem;
-  border-radius: 4px;
+  border-radius: 0;
   font-size: 0.875rem;
   font-weight: 600;
+  font-family: 'Inter', sans-serif;
 }
 
 .successBanner {
@@ -243,13 +251,13 @@
   color: #B91C1C;
 }
 
-/* RIGHT COLUMN: ICE BLUE ART PANEL */
+/* RIGHT COLUMN: RESTORED ICE BLUE BG (#EBF3FF) & ENLARGED ART */
 .artCol {
-  background: #EBF3FF; /* Ice Blue tint matching site theme */
+  background: #EBF3FF;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem 2rem;
+  padding: 2rem;
   overflow: hidden;
   width: 100%;
   height: 100%;
@@ -259,13 +267,19 @@
 
 .artContainer {
   width: 100%;
-  max-width: 440px;
+  max-width: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.artSvg {
+.artSvg,
+.artContainer img {
   width: 100%;
   height: auto;
+  max-height: 75vh;
   display: block;
+  object-fit: contain;
 }
 
 /* RESPONSIVE LAYOUT */
@@ -278,7 +292,6 @@
     padding: 3.5rem 2rem;
   }
 
-  /* HIDE ART PANEL ON MOBILE / TABLET */
   .artCol {
     display: none !important;
   }

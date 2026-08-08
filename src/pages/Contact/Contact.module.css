@@ -1,35 +1,37 @@
 /* src/pages/Contact/Contact.module.css
    ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — CONTACT PAGE STYLES v5.3
-   Full Bleed Specificity Fix
+   NAYAAB ENGINEERING INNOVATIONS — CONTACT PAGE STYLES
+   Rectangular Sharp Design, Rust Accent (#B7410E), & Barlow/Inter Typography
    ========================================================================== */
 
-.contactPage {
-  --contact-navy: var(--text-primary, #0F172A);
-  --contact-text: var(--text-primary, #0F172A);
-  --contact-text-muted: var(--text-muted, #64748B);
-  --contact-border: var(--glass-border, rgba(15, 23, 42, 0.08));
-  --contact-surface: var(--bg-surface, #ffffff);
-  --contact-surface-alt: var(--bg, #f8f9fa);
-  --contact-shadow-lg: var(--shadow-lg, 0 20px 40px rgba(15, 23, 42, 0.08));
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-  --contact-accent: #0066FF;
-  --contact-accent-soft: rgba(0, 102, 255, 0.08);
+.contactPage {
+  --contact-navy: #111111;
+  --contact-text: #111111;
+  --contact-text-muted: #555555;
+  --contact-border: rgba(17, 17, 17, 0.08);
+  --contact-surface: #ffffff;
+  --contact-surface-alt: #f8f9fa;
+  --contact-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+  --contact-accent: #B7410E;
+  --contact-accent-soft: rgba(183, 65, 14, 0.1);
   --contact-green: #25D366;
 
   width: 100%;
   color: var(--contact-text);
   background: var(--contact-surface);
-  font-family: var(--font-primary, "Outfit", sans-serif);
+  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
-/* EXPLICIT SECTION PADDING (prevents polluting ContactForm component) */
+/* EXPLICIT SECTION PADDING */
 .contactHero,
 .contactFaq {
   width: 100%;
   box-sizing: border-box;
-  padding-inline: var(--nei-container-pad, clamp(1.25rem, 5vw, 4rem));
+  padding-inline: clamp(1.25rem, 5vw, 4rem);
 }
 
 /* ===== CONTACT HERO SECTION ===== */
@@ -42,8 +44,8 @@
   padding-top: clamp(6.5rem, 9vw, 8.5rem);
   padding-bottom: clamp(3.5rem, 5vw, 5rem);
   background:
-    radial-gradient(circle at top left, rgba(0, 102, 255, 0.05), transparent 35%),
-    radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.03), transparent 35%),
+    radial-gradient(circle at top left, rgba(183, 65, 14, 0.05), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(17, 17, 17, 0.03), transparent 35%),
     var(--contact-surface-alt);
   color: var(--contact-text);
   border-bottom: 1px solid var(--contact-border);
@@ -53,8 +55,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(17, 17, 17, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(17, 17, 17, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent);
   pointer-events: none;
@@ -76,37 +78,39 @@
 .contactSectionHeadingEyebrow {
   display: inline-block;
   margin-bottom: 12px;
-  font-size: var(--nei-font-small, 0.825rem);
+  font-size: 0.825rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
 }
 
 .contactHeroEyebrow {
   color: var(--contact-accent);
-  padding: 4px 12px;
+  padding: 6px 14px;
   background: var(--contact-accent-soft);
-  border: 1px solid rgba(0, 102, 255, 0.18);
-  border-radius: var(--nei-radius-full, 9999px);
+  border: 1px solid rgba(183, 65, 14, 0.3);
+  border-radius: 0; /* Rectangular no curves */
 }
 
 .contactHeroTitle {
   max-width: 14ch;
   margin: 0 0 16px;
-  font-size: var(--nei-font-display, clamp(2.4rem, 4.5vw, 3.8rem));
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
   font-weight: 800;
   color: var(--contact-navy);
+  font-family: 'Barlow Condensed', sans-serif;
 }
 
 .contactHeroSubtitle {
   max-width: 580px;
   margin: 0;
-  font-size: var(--nei-font-body-lg, 1.025rem);
-  line-height: var(--nei-leading-normal, 1.6);
+  font-size: 1.025rem;
+  line-height: 1.6;
   color: var(--contact-text-muted);
-  font-family: var(--font-secondary, "Inter", sans-serif);
+  font-family: 'Inter', sans-serif;
 }
 
 .contactHeroActions {
@@ -116,11 +120,11 @@
   margin-top: 28px;
 }
 
-/* TOP MAP CARD */
+/* TOP MAP CARD — Sharp Rectangular */
 .contactTopMapCard {
   background: var(--contact-surface);
   border: 1px solid var(--contact-border);
-  border-radius: var(--nei-radius-lg, 20px);
+  border-radius: 0; /* Rectangular no curves */
   box-shadow: var(--contact-shadow-lg);
   overflow: hidden;
   display: flex;
@@ -130,7 +134,7 @@
 .contactTopMapFrame {
   width: 100%;
   height: 280px;
-  background: var(--bg-muted, #e2e8f0);
+  background: #e2e8f0;
 }
 
 .contactTopMapFrame iframe {
@@ -156,7 +160,7 @@
   font-size: 0.85rem;
   color: var(--contact-text-muted);
   line-height: 1.4;
-  font-family: var(--font-secondary, "Inter", sans-serif);
+  font-family: 'Inter', sans-serif;
 }
 
 .contactTopMapIcon {
@@ -169,15 +173,16 @@
   display: inline-flex;
   align-items: center;
   padding: 8px 14px;
-  border-radius: var(--nei-radius-sm, 8px);
-  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 0; /* Rectangular no curves */
+  border: 1px solid rgba(17, 17, 17, 0.12);
   background: var(--contact-surface);
   color: var(--contact-navy);
   font-size: 0.8rem;
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
-  transition: all var(--nei-transition-base, 300ms ease);
+  font-family: 'Inter', sans-serif;
+  transition: all 200ms ease;
 }
 
 .contactButtonSecondaryInline:hover {
@@ -186,7 +191,7 @@
   background: var(--contact-surface-alt);
 }
 
-/* ===== BUTTON SYSTEM ===== */
+/* ===== RECTANGULAR BUTTON SYSTEM ===== */
 .contactButton {
   display: inline-flex;
   align-items: center;
@@ -195,15 +200,15 @@
   min-height: 48px;
   padding: 12px 24px;
   border: 1px solid transparent;
-  border-radius: var(--nei-radius-sm, 8px);
-  font-family: var(--font-primary, "Outfit", sans-serif);
+  border-radius: 0; /* Sharp rectangular shape */
+  font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  transition: all var(--nei-transition-base, 300ms ease);
+  transition: all 200ms ease;
 }
 
 .contactButton:hover {
@@ -211,25 +216,27 @@
 }
 
 .contactButtonPrimary {
-  background: linear-gradient(135deg, #0066FF 0%, #00D2FF 100%);
+  background: #B7410E;
   color: #ffffff;
-  box-shadow: 0 8px 24px rgba(0, 102, 255, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 14px rgba(183, 65, 14, 0.25);
+  border: none;
 }
 
 .contactButtonPrimary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #0052CC 0%, #00B8E6 100%);
-  box-shadow: 0 12px 28px rgba(0, 240, 255, 0.45);
+  background: #9E370C;
+  box-shadow: 0 6px 18px rgba(183, 65, 14, 0.35);
 }
 
 .contactButtonWhatsapp {
-  background: linear-gradient(135deg, var(--contact-green), #1aac50);
+  background: var(--contact-green);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.22);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.22);
+  border: none;
 }
 
 .contactButtonWhatsapp:hover:not(:disabled) {
-  box-shadow: 0 12px 28px rgba(37, 211, 102, 0.32);
+  background: #1DB954;
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.32);
 }
 
 /* ===== FAQ SECTION ===== */
@@ -237,15 +244,17 @@
   padding-top: 60px;
   padding-bottom: 60px;
   background: var(--contact-surface-alt);
+  border-top: 1px solid var(--contact-border);
 }
 
 .contactFaqContent h2 {
   margin: 0 0 10px;
-  font-size: var(--nei-font-h2, clamp(1.75rem, 2.5vw, 2.25rem));
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-  font-weight: 700;
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  font-weight: 800;
   color: var(--contact-navy);
+  font-family: 'Barlow Condensed', sans-serif;
 }
 
 .contactFaqContent p {
@@ -253,7 +262,7 @@
   color: var(--contact-text-muted);
   line-height: 1.65;
   font-size: 0.95rem;
-  font-family: var(--font-secondary, "Inter", sans-serif);
+  font-family: 'Inter', sans-serif;
 }
 
 .contactFaqContainer {
@@ -270,7 +279,7 @@
 
 .contactFaqItem {
   border: 1px solid var(--contact-border);
-  border-radius: var(--nei-radius-md, 12px);
+  border-radius: 0; /* Rectangular no curves */
   background: var(--contact-surface);
 }
 
@@ -282,6 +291,7 @@
   color: var(--contact-navy);
   cursor: pointer;
   font-size: 0.925rem;
+  font-family: 'Inter', sans-serif;
 }
 
 .contactFaqItem summary::-webkit-details-marker {
@@ -309,7 +319,7 @@
   color: var(--contact-text-muted);
   line-height: 1.65;
   font-size: 0.9rem;
-  font-family: var(--font-secondary, "Inter", sans-serif);
+  font-family: 'Inter', sans-serif;
 }
 
 /* ===== RESPONSIVE BREAKPOINTS ===== */
@@ -332,7 +342,7 @@
   }
 
   .contactTopMapCard {
-    border-radius: var(--nei-radius-md, 16px);
+    border-radius: 0;
   }
 }
 
@@ -348,7 +358,7 @@
   }
 
   .contactHeroTitle {
-    font-size: 1.85rem;
+    font-size: 2rem;
   }
 
   .contactTopMapFooter {

@@ -3,20 +3,12 @@ import { FaArrowRight } from "react-icons/fa";
 import styles from "./TeamHero.module.css";
 
 function TeamHero({
-  eyebrow,
-  title,
-  description,
+  image = "/assets/team/team-hero.webp",
   stats = [],
-  image,
-  primaryAction,
-  secondaryAction,
 }) {
   return (
-    <section
-      className={styles.heroSection}
-      aria-labelledby="team-hero-heading"
-    >
-      {/* Image Background */}
+    <section className={styles.heroSection} aria-labelledby="team-hero-heading">
+      {/* Background Image Container & Overlay */}
       <div className={styles.heroImageContainer}>
         <div
           className={styles.heroImage}
@@ -25,35 +17,32 @@ function TeamHero({
         <div className={styles.heroOverlay} />
       </div>
 
-      {/* Hero Content */}
+      {/* Hero Content — Matches Home Hero Structure */}
       <div className={styles.heroContent}>
         <div className={styles.textWrapper}>
-          {eyebrow && <p className={styles.greeting}>{eyebrow}</p>}
+          <p className={styles.greeting}>
+            NAYAAB <span className={styles.companySuffix}>ENGINEERING</span>
+          </p>
+
           <h1 id="team-hero-heading" className={styles.mainTitle}>
-            {title}
+            Engineering
+            <br />
+            Built Around Expertise
           </h1>
-          {description && <p className={styles.description}>{description}</p>}
-          {(primaryAction || secondaryAction) && (
-            <div className={styles.ctaGroup}>
-              {primaryAction && (
-                <a
-                  href={primaryAction.href}
-                  className={`${styles.btn} ${styles.btnPrimary}`}
-                >
-                  <span>{primaryAction.label}</span>
-                  <FaArrowRight aria-hidden="true" />
-                </a>
-              )}
-              {secondaryAction && (
-                <a
-                  href={secondaryAction.href}
-                  className={`${styles.btn} ${styles.btnOutline}`}
-                >
-                  {secondaryAction.label}
-                </a>
-              )}
-            </div>
-          )}
+
+          <h2 className={styles.subTitle}>
+            People. Precision. Performance.
+          </h2>
+
+          <div className={styles.ctaGroup}>
+            <a href="#leadership" className={`${styles.btn} ${styles.btnPrimary}`}>
+              <span>Meet Our Team</span>
+              <FaArrowRight aria-hidden="true" />
+            </a>
+            <a href="/contact" className={`${styles.btn} ${styles.btnOutline}`}>
+              Contact Us
+            </a>
+          </div>
         </div>
       </div>
 
@@ -61,11 +50,7 @@ function TeamHero({
       <div className={styles.heroFooter}>
         <div className={styles.footerLeft}>
           {stats.length > 0 && (
-            <div
-              className={styles.statsGroup}
-              role="list"
-              aria-label="Team statistics"
-            >
+            <div className={styles.statsGroup} role="list" aria-label="Team statistics">
               {stats.map((stat, index) => (
                 <Fragment key={stat.label}>
                   <div className={styles.statItem} role="listitem">
@@ -82,6 +67,7 @@ function TeamHero({
         </div>
       </div>
 
+      {/* Scroll Indicator */}
       <div className={styles.scrollIndicator} aria-hidden="true">
         <div className={styles.scrollMouse}>
           <div className={styles.wheel} />

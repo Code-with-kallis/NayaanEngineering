@@ -34,25 +34,25 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(5, 7, 10, 0.75) 0%,
-    rgba(5, 7, 10, 0.5) 50%,
-    var(--nei-obsidian-950) 100%
+    rgba(5, 7, 10, 0.8) 0%,
+    rgba(5, 7, 10, 0.55) 50%,
+    var(--nei-obsidian-950, #05070a) 100%
   );
 }
 
-/* BUTTONS */
+/* BUTTONS — 1:1 Match with Home Hero Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--nei-space-2);
-  padding: 0.75rem 1.75rem;
-  border-radius: var(--nei-radius-sm);
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  border-radius: 14px;
   font-family: var(--nei-font-primary);
-  font-size: var(--nei-font-small);
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  transition: all var(--nei-transition-base);
+  letter-spacing: 0.02em;
+  transition: all 250ms ease;
   border: none;
   white-space: nowrap;
   text-decoration: none;
@@ -60,28 +60,29 @@
 }
 
 .btnPrimary {
-  background: var(--nei-gradient-brand);
-  color: var(--nei-steel-000);
-  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.25);
+  background: #FFFFFF;
+  color: #0F172A;
+  border: 1px solid #FFFFFF;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
 }
 
 .btnPrimary:hover {
-  background: var(--nei-gradient-brand-hover);
+  background: #F1F5F9;
   transform: translateY(-2px);
-  box-shadow: var(--nei-shadow-glow);
+  box-shadow: 0 12px 28px rgba(255, 255, 255, 0.25);
 }
 
 .btnOutline {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--nei-steel-000);
-  border: 1px solid var(--nei-glass-border);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .btnOutline:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: var(--nei-glass-border-hover);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.45);
   transform: translateY(-2px);
 }
 
@@ -98,7 +99,7 @@
   width: 100%;
 }
 
-/* CLEAN BADGE (Background box removed) */
+/* GREETING BADGE — Exact sizing & spacing */
 .greeting {
   display: inline-flex;
   align-items: center;
@@ -108,14 +109,12 @@
   font-weight: 600;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: var(--nei-kinetic-cyan);
+  color: #00D2FF;
   margin-bottom: 1rem;
   background: transparent;
   border: none;
   padding: 0;
   box-shadow: none;
-  opacity: 0;
-  animation: fadeUp 0.8s var(--nei-ease-out) 0.1s forwards;
 }
 
 .greeting::before {
@@ -123,39 +122,46 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--nei-kinetic-cyan);
-  box-shadow: 0 0 8px var(--nei-kinetic-cyan);
+  background: #00D2FF;
+  box-shadow: 0 0 8px #00D2FF;
 }
 
-/* REFINED TITLE */
+.companySuffix {
+  color: #FFFFFF;
+  margin-left: 0.2rem;
+}
+
+/* TYPOGRAPHY — Exact match to var(--nei-font-display) and var(--nei-font-h2) */
 .mainTitle {
   font-size: var(--nei-font-display);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  color: var(--nei-steel-000);
+  color: #FFFFFF;
   margin-bottom: 0.8rem;
   text-transform: none;
-  opacity: 0;
-  animation: fadeUp 0.8s var(--nei-ease-out) 0.25s forwards;
+}
+
+.subTitle {
+  font-size: var(--nei-font-h2);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: #CBD5E1;
 }
 
 .description {
   font-family: var(--nei-font-primary);
   font-size: var(--nei-font-body-lg);
-  color: var(--nei-steel-200);
+  color: #CBD5E1;
   max-width: 540px;
   line-height: 1.6;
   margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeUp 0.8s var(--nei-ease-out) 0.4s forwards;
 }
 
 .ctaGroup {
   display: flex;
+  align-items: center;
   gap: 1rem;
-  opacity: 0;
-  animation: fadeUp 0.8s var(--nei-ease-out) 0.55s forwards;
 }
 
 /* FOOTER */
@@ -164,15 +170,13 @@
   justify-content: space-between;
   align-items: flex-end;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--nei-glass-border);
-  opacity: 0;
-  animation: fadeUp 0.8s var(--nei-ease-out) 0.7s forwards;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .footerLeft {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .statsGroup {
@@ -190,12 +194,12 @@
   font-family: var(--nei-font-primary);
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--nei-steel-000);
+  color: #FFFFFF;
 }
 
 .statItem .statLabel {
   font-size: 0.75rem;
-  color: var(--nei-steel-400);
+  color: #94A3B8;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -203,7 +207,7 @@
 .statLine {
   width: 1px;
   height: 28px;
-  background: var(--nei-glass-border);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .scrollIndicator {
@@ -213,14 +217,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  opacity: 0;
-  animation: fadeUp 0.8s var(--nei-ease-out) 0.85s forwards;
 }
 
 .scrollMouse {
   width: 20px;
   height: 32px;
-  border: 1px solid var(--nei-glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -230,20 +232,9 @@
 .wheel {
   width: 3px;
   height: 6px;
-  background: var(--nei-kinetic-cyan);
+  background: #00D2FF;
   border-radius: 2px;
   animation: scrollWheel 2s infinite;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 @keyframes scrollWheel {
@@ -251,29 +242,38 @@
   100% { transform: translateY(12px); opacity: 0; }
 }
 
-/* MOBILE RESPONSIVENESS */
+/* MOBILE RESPONSIVENESS — Exact match to Home Hero Mobile */
 @media (max-width: 768px) {
   .heroSection {
-    padding: 4.5rem 1.25rem 1.5rem;
+    padding: 5.5rem 1.25rem 1.5rem;
   }
 
   .mainTitle {
-    font-size: 1.85rem;
+    font-size: 1.9rem;
     line-height: 1.2;
+  }
+
+  .subTitle {
+    font-size: 1.1rem;
+    margin-bottom: 1.25rem;
   }
 
   .ctaGroup {
     flex-direction: column;
-    gap: 0.75rem;
+    width: 100%;
+    gap: 0.85rem;
   }
 
   .btn {
     width: 100%;
+    padding: 0.9rem 1.5rem;
+    font-size: 0.95rem;
+    text-align: center;
   }
 
   .heroFooter {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 1.25rem;
   }
 

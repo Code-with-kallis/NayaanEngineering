@@ -10,8 +10,8 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+  box-shadow: 0 2px 12px rgba(17, 17, 17, 0.04);
   transition: 
     transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
     background 0.3s ease, 
@@ -25,8 +25,8 @@
 
 .navbarScrolled {
   background: rgba(255, 255, 255, 0.98) !important;
-  border-bottom-color: rgba(15, 23, 42, 0.12) !important;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08) !important;
+  border-bottom-color: rgba(17, 17, 17, 0.12) !important;
+  box-shadow: 0 6px 20px rgba(17, 17, 17, 0.08) !important;
 }
 
 .navbarContainer {
@@ -41,8 +41,8 @@
   box-sizing: border-box;
 }
 
-/* ===== TRANSPARENT DARK HERO OVERLAY MODE (When on top of dark Hero video) ===== */
-.navbarTransparent:not(.navbarScrolled) {
+/* ===== TRANSPARENT DARK HERO MODE (Home & Team Page) ===== */
+.navbarDarkHero:not(.navbarScrolled) {
   background: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
@@ -50,22 +50,48 @@
   box-shadow: none !important;
 }
 
-.navbarTransparent:not(.navbarScrolled) .navbarLinksDesktop a {
+.navbarDarkHero:not(.navbarScrolled) .navItem {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.navbarTransparent:not(.navbarScrolled) .navbarLinksDesktop a:hover,
-.navbarTransparent:not(.navbarScrolled) .navbarLinksDesktop a.activeLink {
-  color: var(--nei-kinetic-amber, #FF5A1F);
+.navbarDarkHero:not(.navbarScrolled) .navItem:hover,
+.navbarDarkHero:not(.navbarScrolled) .navItem.activeLink {
+  color: #B7410E;
 }
 
-.navbarTransparent:not(.navbarScrolled) .navbarLinksDesktop a.activeLink::after {
-  background: var(--nei-kinetic-amber, #FF5A1F);
-  box-shadow: 0 0 10px rgba(255, 90, 31, 0.6);
+.navbarDarkHero:not(.navbarScrolled) .navItem.activeLink::after {
+  background: #B7410E;
+  box-shadow: 0 0 10px rgba(183, 65, 14, 0.6);
 }
 
-.navbarTransparent:not(.navbarScrolled) .hamburger span {
+.navbarDarkHero:not(.navbarScrolled) .hamburger span {
   background: #FFFFFF;
+}
+
+/* ===== TRANSPARENT LIGHT HERO MODE (Projects & Contact Page) ===== */
+.navbarLightHero:not(.navbarScrolled) {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.navbarLightHero:not(.navbarScrolled) .navItem {
+  color: #111111; /* Dark high-contrast text on white heroes */
+}
+
+.navbarLightHero:not(.navbarScrolled) .navItem:hover,
+.navbarLightHero:not(.navbarScrolled) .navItem.activeLink {
+  color: #B7410E;
+}
+
+.navbarLightHero:not(.navbarScrolled) .navItem.activeLink::after {
+  background: #B7410E;
+}
+
+.navbarLightHero:not(.navbarScrolled) .hamburger span {
+  background: #111111;
 }
 
 /* ===== LOGO ===== */
@@ -92,25 +118,40 @@
 .navbarLinksDesktop {
   display: flex;
   align-items: center;
-  gap: 36px;
+  gap: 32px;
 }
 
-.navbarLinksDesktop a {
-  font-family: var(--nei-font-primary, "Outfit", sans-serif);
-  font-size: 0.825rem;
+.navItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   text-decoration: none;
-  color: #334155;
+  color: #111111;
   text-transform: uppercase;
   transition: color 0.2s ease;
   position: relative;
   padding-block: 6px;
 }
 
+.navIcon {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.navItem:hover .navIcon,
+.navItem.activeLink .navIcon {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
 .navbarLinksDesktop a:hover,
 .navbarLinksDesktop a.activeLink {
-  color: var(--nei-kinetic-amber, #FF5A1F);
+  color: #B7410E;
 }
 
 .navbarLinksDesktop a.activeLink::after {
@@ -120,43 +161,46 @@
   right: 0;
   bottom: 0;
   height: 2px;
-  background: var(--nei-kinetic-amber, #FF5A1F);
-  border-radius: 2px;
+  background: #B7410E;
 }
 
-/* ===== ACTIONS & BUTTONS ===== */
+/* ===== ACTIONS & SOLID BLACK BUTTON ===== */
 .navbarActions {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.navbarWhatsappBtn {
+.navbarContactBtn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  height: 36px;
-  padding: 0 18px;
-  background: linear-gradient(135deg, #25D366 0%, #1EBD5A 100%);
+  gap: 8px;
+  height: 38px;
+  padding: 0 20px;
+  background: #111111;
   color: #ffffff;
-  border-radius: 6px;
+  border-radius: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   text-decoration: none;
-  font-family: var(--nei-font-primary, "Outfit", sans-serif);
-  font-size: 0.775rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  box-shadow: 0 2px 10px rgba(37, 211, 102, 0.2);
-  transition: all 180ms ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: all 200ms ease;
 }
 
-.navbarWhatsappBtn svg {
-  font-size: 15px;
+.navbarContactBtn svg {
+  font-size: 0.85rem;
+  color: #B7410E;
 }
 
-.navbarWhatsappBtn:hover {
+.navbarContactBtn:hover {
+  background: #222222;
+  border-color: #B7410E;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 /* ===== HAMBURGER TOGGLE ===== */
@@ -177,14 +221,13 @@
   display: block;
   width: 100%;
   height: 2px;
-  background: #0F172A;
-  border-radius: 2px;
+  background: #111111;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hamburger.open span:nth-child(1) {
   transform: translateY(7px) rotate(45deg);
-  background: var(--nei-kinetic-amber, #FF5A1F) !important;
+  background: #B7410E !important;
 }
 
 .hamburger.open span:nth-child(2) {
@@ -194,27 +237,26 @@
 
 .hamburger.open span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
-  background: var(--nei-kinetic-amber, #FF5A1F) !important;
+  background: #B7410E !important;
 }
 
-/* ===== COMPACT LIGHT MOBILE DRAWER PANEL (200px / 50vw) ===== */
+/* ===== PREMIUM MOBILE DRAWER PANEL ===== */
 .navbarMobilePanel {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 200px;
-  max-width: 55vw;
+  width: 280px;
+  max-width: 80vw;
   height: 100vh;
   height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 16px;
-  padding: 20px 16px 24px;
+  padding: 24px 20px 28px;
   background: #FFFFFF;
-  border-left: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: -10px 0 30px rgba(15, 23, 42, 0.1);
+  border-left: 1px solid rgba(17, 17, 17, 0.1);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
   transform: translateX(100%);
   opacity: 0;
   visibility: hidden;
@@ -234,12 +276,12 @@
 .navbarMobileHeader {
   display: flex;
   align-items: center;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
 }
 
 .mobileLogo {
-  height: 28px;
+  height: 30px;
   width: auto;
   object-fit: contain;
 }
@@ -247,56 +289,78 @@
 .navbarMobileLinks {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
+  margin-top: 16px;
 }
 
-.navbarMobileLinks a {
+.navbarMobileLinks .navItem {
   width: 100%;
-  padding: 10px 0;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-  font-family: var(--nei-font-primary, "Outfit", sans-serif);
-  font-size: 0.85rem;
+  padding: 12px 14px;
+  border-radius: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-decoration: none;
-  color: #0F172A;
+  color: #111111;
   text-transform: uppercase;
-  transition: color 0.2s ease, padding-left 0.2s ease;
+  background: #F8F9FA;
+  border: 1px solid rgba(17, 17, 17, 0.06);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
-.navbarMobileLinks a:hover,
-.navbarMobileLinks a.activeLink {
-  color: var(--nei-kinetic-amber, #FF5A1F);
-  padding-left: 4px;
+.navbarMobileLinks .navItem .navIcon {
+  color: #B7410E;
 }
 
-.navbarWhatsappMobile {
-  display: inline-flex;
+.navbarMobileLinks .navItem:hover,
+.navbarMobileLinks .navItem.activeLink {
+  background: #111111;
+  color: #FFFFFF;
+  border-color: #111111;
+}
+
+.navbarMobileLinks .navItem:hover .navIcon,
+.navbarMobileLinks .navItem.activeLink .navIcon {
+  color: #B7410E;
+}
+
+.mobileFooterArea {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.navbarContactMobile {
+  display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
-  gap: 6px;
-  height: 40px;
-  margin-top: auto;
-  background: linear-gradient(135deg, #25D366 0%, #1EBD5A 100%);
+  gap: 10px;
+  height: 46px;
+  background: #111111;
   color: #FFFFFF;
-  border-radius: 6px;
-  font-family: var(--nei-font-primary, "Outfit", sans-serif);
-  font-size: 0.775rem;
+  border-radius: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  transition: background 200ms ease;
+}
+
+.navbarContactMobile:hover {
+  background: #B7410E;
 }
 
 /* ===== OVERLAY BACKDROP ===== */
 .navbarOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.35);
+  background: rgba(17, 17, 17, 0.4);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 1003;
@@ -325,7 +389,7 @@
   }
 
   .navbarLinksDesktop,
-  .navbarWhatsappDesktop {
+  .navbarContactDesktop {
     display: none;
   }
 
@@ -354,8 +418,7 @@
   }
 
   .navbarMobilePanel {
-    width: 200px;
-    max-width: 60vw;
-    padding: 18px 14px 20px;
+    width: 250px;
+    padding: 18px 16px 20px;
   }
 }

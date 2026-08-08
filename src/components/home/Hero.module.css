@@ -13,25 +13,7 @@
   font-family: var(--nei-font-primary);
   box-sizing: border-box;
 }
-.availabilityCard {
-  background: var(--nei-glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--nei-glass-border);
-  border-radius: var(--nei-radius-md);
-  padding: 1rem 1.25rem;
-  max-width: 280px;
-}
 
-.availabilityStatus {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.4rem;
-  font-weight: 600;
-  font-size: var(--nei-font-small);
-  color: var(--nei-steel-000); /* Fix: Text ko high-contrast white rakha hai */
-}
 .videoContainer {
   position: absolute;
   inset: 0;
@@ -51,54 +33,57 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(5, 7, 10, 0.75) 0%,
-    rgba(5, 7, 10, 0.5) 50%,
-    var(--nei-obsidian-950) 100%
+    rgba(5, 7, 10, 0.8) 0%,
+    rgba(5, 7, 10, 0.55) 50%,
+    var(--nei-obsidian-950, #05070a) 100%
   );
 }
 
-/* BUTTONS */
+/* BUTTONS — High-Contrast Glass & Solid Layout */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--nei-space-2);
-  padding: 0.75rem 1.75rem;
-  border-radius: var(--nei-radius-sm);
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  border-radius: 14px;
   font-family: var(--nei-font-primary);
-  font-size: var(--nei-font-small);
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  transition: all var(--nei-transition-base);
+  letter-spacing: 0.02em;
+  transition: all 250ms ease;
   border: none;
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
 }
 
+/* High-Visibility Primary Button */
 .btnPrimary {
-  background: var(--nei-gradient-brand);
-  color: var(--nei-steel-000);
-  box-shadow: 0 8px 20px rgba(0, 102, 255, 0.25);
+  background: #FFFFFF;
+  color: #0F172A;
+  border: 1px solid #FFFFFF;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
 }
 
 .btnPrimary:hover {
-  background: var(--nei-gradient-brand-hover);
+  background: #F1F5F9;
   transform: translateY(-2px);
-  box-shadow: var(--nei-shadow-glow);
+  box-shadow: 0 12px 28px rgba(255, 255, 255, 0.25);
 }
 
+/* Glassmorphic Secondary Button */
 .btnOutline {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--nei-steel-000);
-  border: 1px solid var(--nei-glass-border);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .btnOutline:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: var(--nei-glass-border-hover);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.45);
   transform: translateY(-2px);
 }
 
@@ -115,7 +100,7 @@
   width: 100%;
 }
 
-/* CLEAN BADGE (Background box removed to fix muddy overlay) */
+/* GREETING BADGE */
 .greeting {
   display: inline-flex;
   align-items: center;
@@ -125,7 +110,7 @@
   font-weight: 600;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: var(--nei-kinetic-cyan);
+  color: #00D2FF;
   margin-bottom: 1rem;
   background: transparent;
   border: none;
@@ -138,22 +123,22 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--nei-kinetic-cyan);
-  box-shadow: 0 0 8px var(--nei-kinetic-cyan);
+  background: #00D2FF;
+  box-shadow: 0 0 8px #00D2FF;
 }
 
 .companySuffix {
-  color: var(--nei-steel-000);
+  color: #FFFFFF;
   margin-left: 0.2rem;
 }
 
-/* REFINED TITLE (Removed forced uppercase & large sizes) */
+/* REFINED TITLE */
 .mainTitle {
   font-size: var(--nei-font-display);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  color: var(--nei-steel-000);
+  color: #FFFFFF;
   margin-bottom: 0.8rem;
   text-transform: none;
 }
@@ -162,13 +147,13 @@
   font-size: var(--nei-font-h2);
   font-weight: 500;
   margin-bottom: 1.5rem;
-  color: var(--nei-steel-200);
+  color: #CBD5E1;
 }
 
 .description {
   font-family: var(--nei-font-primary);
   font-size: var(--nei-font-body-lg);
-  color: var(--nei-steel-200);
+  color: #CBD5E1;
   max-width: 540px;
   line-height: 1.6;
   margin-bottom: 2rem;
@@ -176,6 +161,7 @@
 
 .ctaGroup {
   display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
@@ -185,7 +171,7 @@
   justify-content: space-between;
   align-items: flex-end;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--nei-glass-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .footerLeft {
@@ -200,34 +186,34 @@
 }
 
 .socialLinks a {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 1px solid var(--nei-glass-border);
-  background: var(--nei-glass-bg);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: all var(--nei-transition-base);
+  transition: all 200ms ease;
   font-size: 1rem;
-  color: var(--nei-steel-000);
+  color: #FFFFFF;
   text-decoration: none;
 }
 
 .socialLinks a:hover {
-  background: var(--nei-steel-000);
-  color: var(--nei-obsidian-950);
+  background: #FFFFFF;
+  color: #0F172A;
   transform: translateY(-2px);
 }
 
 .availabilityCard {
-  background: var(--nei-glass-bg);
+  background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--nei-glass-border);
-  border-radius: var(--nei-radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
   padding: 1rem 1.25rem;
   max-width: 280px;
 }
@@ -239,6 +225,7 @@
   margin-bottom: 0.4rem;
   font-weight: 600;
   font-size: var(--nei-font-small);
+  color: #FFFFFF;
 }
 
 .pulseDot {
@@ -246,12 +233,12 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--success);
+  background: #10B981;
 }
 
 .availabilityCard p {
   font-size: var(--nei-font-small);
-  color: var(--nei-steel-200);
+  color: #CBD5E1;
   line-height: 1.4;
   margin: 0;
 }
@@ -268,7 +255,7 @@
 .scrollMouse {
   width: 20px;
   height: 32px;
-  border: 1px solid var(--nei-glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -278,7 +265,7 @@
 .wheel {
   width: 3px;
   height: 6px;
-  background: var(--nei-kinetic-cyan);
+  background: #00D2FF;
   border-radius: 2px;
   animation: scrollWheel 2s infinite;
 }
@@ -291,11 +278,11 @@
 /* MOBILE RESPONSIVENESS */
 @media (max-width: 768px) {
   .heroSection {
-    padding: 4.5rem 1.25rem 1.5rem;
+    padding: 5.5rem 1.25rem 1.5rem;
   }
 
   .mainTitle {
-    font-size: 1.85rem;
+    font-size: 1.9rem;
     line-height: 1.2;
   }
 
@@ -306,11 +293,15 @@
 
   .ctaGroup {
     flex-direction: column;
-    gap: 0.75rem;
+    width: 100%;
+    gap: 0.85rem;
   }
 
   .btn {
     width: 100%;
+    padding: 0.9rem 1.5rem;
+    font-size: 0.95rem;
+    text-align: center;
   }
 
   .heroFooter {

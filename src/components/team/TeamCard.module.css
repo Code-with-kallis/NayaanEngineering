@@ -1,7 +1,7 @@
 /* src/components/team/TeamCard.module.css
    ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — CIRCLE PROFILE CARD
-   Brand Primary: Cerulean Logo Blue (#3590CE)
+   NAYAAB ENGINEERING INNOVATIONS — EXECUTIVE PROFILE CARD
+   Solid Organic Curve Accent Backdrop & Visible Rust Border
    ========================================================================== */
 
 .teamCard {
@@ -11,43 +11,84 @@
   align-items: center;
   text-align: center;
   height: 100%;
-  padding: 1.25rem 1rem 1rem;
+  padding: 2.25rem 1.5rem 1.5rem;
   overflow: hidden;
-  border: 1px solid var(--glass-border, rgba(15, 23, 42, 0.08));
-  border-radius: var(--nei-radius-md, 12px);
-  background: var(--bg-surface, #FFFFFF);
-  color: var(--text-primary, #0F172A);
+  /* Always-visible accent border */
+  border: 1px solid rgba(183, 65, 14, 0.5);
+  border-radius: 0; /* Sharp rectangular design */
+  background: #FFFFFF;
+  color: #111111;
   text-decoration: none;
-  box-shadow: var(--shadow-sm, 0 2px 8px rgba(15, 23, 42, 0.03));
-  transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  box-shadow: 0 4px 16px rgba(17, 17, 17, 0.03);
+  transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+}
+
+/* SOLID ORGANIC WAVE / CURVE BACKGROUND DESIGN (NO GRADIENT) */
+.teamCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 85px;
+  background: #B7410E; /* Solid brand accent rust */
+  border-radius: 0 0 50% 50% / 0 0 35px 35px; /* Organic smooth arch curve */
+  opacity: 0.12; /* Clean subtle backdrop behind portrait */
+  z-index: 0;
+  transition: opacity 250ms ease, transform 300ms ease;
+}
+
+/* SECONDARY ASYMMETRIC CURVE CORNER ACCENT */
+.teamCard::after {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 90px;
+  height: 90px;
+  background: #B7410E;
+  border-radius: 40% 60% 70% 30% / 50% 30% 70% 50%; /* Organic fluid shape */
+  opacity: 0.18;
+  z-index: 0;
+  transition: transform 300ms ease;
+}
+
+.teamCard:hover::before {
+  opacity: 0.2;
+  transform: scaleY(1.08);
+}
+
+.teamCard:hover::after {
+  transform: scale(1.15) rotate(10deg);
 }
 
 .teamCard:hover,
 .teamCard:focus-visible {
-  transform: translateY(-3px);
-  border-color: rgba(53, 144, 206, 0.35);
-  box-shadow: 0 10px 24px -6px rgba(15, 23, 42, 0.08);
+  transform: translateY(-4px);
+  border-color: #B7410E;
+  box-shadow: 0 12px 30px rgba(183, 65, 14, 0.15);
 }
 
 .teamCard:focus-visible {
-  outline: 2px solid var(--nei-brand-primary, #3590CE);
+  outline: 2px solid #B7410E;
   outline-offset: 2px;
 }
 
-/* AVATAR PROFILE PICTURE */
+/* AVATAR PORTRAIT */
 .media {
   position: relative;
-  width: 72px;
-  height: 72px;
-  min-width: 72px;
-  min-height: 72px;
+  z-index: 1;
+  width: 104px;
+  height: 104px;
+  min-width: 104px;
+  min-height: 104px;
   border-radius: 50%;
   overflow: hidden;
-  margin: 0 auto 0.85rem;
-  background: #F1F5F9;
-  border: 2px solid #FFFFFF;
-  outline: 1px solid rgba(15, 23, 42, 0.1);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  margin: 0 auto 1.25rem;
+  background: #FFFFFF;
+  border: 3px solid #FFFFFF;
+  outline: 1px solid rgba(183, 65, 14, 0.3);
+  box-shadow: 0 6px 18px rgba(17, 17, 17, 0.08);
   flex-shrink: 0;
 }
 
@@ -67,50 +108,55 @@
 
 /* CARD CONTENT BODY */
 .body {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  gap: 0.3rem;
+  gap: 0.35rem;
   padding: 0;
 }
 
+/* DEPARTMENT TITLE */
 .department {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: fit-content;
-  margin-bottom: 0.2rem;
-  padding: 2px 8px;
-  border-radius: 4px;
-  background: rgba(53, 144, 206, 0.08);
-  border: 1px solid rgba(53, 144, 206, 0.2);
-  font-family: var(--font-primary, "Outfit", sans-serif);
-  font-size: 0.6rem;
+  margin-bottom: 0.25rem;
+  padding: 0;
+  background: transparent !important;
+  border: none !important;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--nei-brand-primary, #3590CE);
+  color: #B7410E;
 }
 
+/* EMPLOYEE NAME — Refined Font Weight */
 .name {
   margin: 0;
-  font-family: var(--font-primary, "Outfit", sans-serif);
-  font-size: 0.975rem;
-  line-height: 1.25;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--text-primary, #0F172A);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.15;
+  font-weight: 600; /* Medium-bold contrast */
+  letter-spacing: 0.01em;
+  color: #111111;
 }
 
 .designation {
-  margin: 0;
-  font-family: var(--font-secondary, "Inter", sans-serif);
-  font-size: 0.78rem;
+  margin: 0 0 0.25rem 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
   line-height: 1.35;
-  color: var(--text-muted, #475569);
-  font-weight: 400;
+  color: #64748B;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* METADATA BADGES */
@@ -119,89 +165,96 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.35rem;
-  margin-top: 0.35rem;
+  margin-top: 0.5rem;
 }
 
 .metaItem {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 2px 6px;
-  border-radius: 4px;
+  gap: 0.4rem;
+  padding: 4px 10px;
+  border-radius: 0;
   background: #F8F9FA;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  font-family: var(--font-secondary, "Inter", sans-serif);
-  font-size: 0.65rem;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.725rem;
   font-weight: 500;
-  color: #64748B;
+  color: #555555;
 }
 
 .metaItem svg {
-  font-size: 0.65rem;
-  color: var(--nei-brand-primary, #3590CE);
+  font-size: 0.725rem;
+  color: #B7410E;
 }
 
 .muted {
-  color: #94A3B8;
+  color: #777777;
 }
 
-/* FOOTER CTA */
+/* FOOTER CTA BAR */
 .footer {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-top: auto;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(15, 23, 42, 0.06);
+  margin-top: 1.5rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(17, 17, 17, 0.08);
 }
 
 .linkLabel {
-  font-family: var(--font-primary, "Outfit", sans-serif);
-  font-size: 0.68rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.725rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-primary, #0F172A);
+  color: #111111;
   transition: color 150ms ease;
 }
 
 .teamCard:hover .linkLabel {
-  color: var(--nei-brand-primary, #3590CE);
+  color: #B7410E;
 }
 
 .linkIcon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background: #0F172A;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0;
+  background: #111111;
   color: #FFFFFF;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   transition: background 150ms ease, transform 150ms ease;
 }
 
 .teamCard:hover .linkIcon {
-  background: var(--nei-brand-primary, #3590CE);
-  transform: translateX(2px);
+  background: #B7410E;
+  transform: translateX(3px);
 }
 
-/* COMPACT VARIANT (Used on TeamProfile previous/next previews) */
+/* COMPACT VARIANT */
 .compact {
   flex-direction: row;
   align-items: center;
   text-align: left;
-  gap: 0.75rem;
-  padding: 0.6rem 0.75rem;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+.compact::before,
+.compact::after {
+  display: none;
 }
 
 .compact .media {
-  width: 2.75rem;
-  height: 2.75rem;
-  min-width: 2.75rem;
-  min-height: 2.75rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  min-width: 3.25rem;
+  min-height: 3.25rem;
   margin: 0;
 }
 
@@ -217,25 +270,29 @@
 }
 
 .compact .name {
-  font-size: 0.875rem;
+  font-size: 1.1rem;
 }
 
 .compact .designation {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE BREAKPOINTS */
 @media (max-width: 600px) {
   .teamCard {
-    padding: 1rem 0.85rem 0.85rem;
+    padding: 1.75rem 1rem 1.25rem;
   }
 
   .media {
-    width: 64px;
-    height: 64px;
-    min-width: 64px;
-    min-height: 64px;
-    margin-bottom: 0.65rem;
+    width: 88px;
+    height: 88px;
+    min-width: 88px;
+    min-height: 88px;
+    margin-bottom: 1rem;
+  }
+
+  .name {
+    font-size: 1.25rem;
   }
 }
 

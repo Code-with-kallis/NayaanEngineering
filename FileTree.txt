@@ -1,0 +1,114 @@
+NayaabEngineering/
+├─ dist/
+│  ├─ assets/
+│  │  ├─ team/
+│  │  │  ├─ neipl-0101.png
+│  │  │  ├─ neipl-0102.png
+│  │  │  ├─ neipl-0103.png
+│  │  │  ├─ neipl-0104.png
+│  │  │  ├─ neipl-0105.png
+│  │  │  ├─ neipl-0106.jpeg
+│  │  │  ├─ neipl-0107.png
+│  │  │  ├─ neipl-0120.png
+│  │  │  ├─ neipl-0121.png
+│  │  │  ├─ neipl-0122.png
+│  │  │  ├─ neipl-0123.png
+│  │  │  └─ team-hero.webp
+│  │  ├─ index-9yuTuSOX.css
+│  │  └─ index-BC-gKvaY.js
+│  ├─ favicon.svg
+│  ├─ icons.svg
+│  ├─ index.html
+│  ├─ logo.png
+│  ├─ logo.svg
+│  └─ logo2.png
+├─ public/
+│  ├─ assets/
+│  │  ├─ contact/
+│  │  │  └─ form.png
+│  │  ├─ footer/
+│  │  │  ├─ footer.jpg
+│  │  │  └─ footer.webp
+│  │  └─ team/
+│  │     ├─ neipl-0101.png
+│  │     ├─ neipl-0102.png
+│  │     ├─ neipl-0103.png
+│  │     ├─ neipl-0104.png
+│  │     ├─ neipl-0105.png
+│  │     ├─ neipl-0106.jpeg
+│  │     ├─ neipl-0107.png
+│  │     ├─ neipl-0120.png
+│  │     ├─ neipl-0121.png
+│  │     ├─ neipl-0122.png
+│  │     ├─ neipl-0123.png
+│  │     └─ team-hero.webp
+│  ├─ favicon.svg
+│  ├─ icons.svg
+│  ├─ logo.png
+│  ├─ logo.svg
+│  └─ logo2.png
+├─ src/
+│  ├─ assets/
+│  │  ├─ hero.png
+│  │  ├─ home.webp
+│  │  ├─ react.svg
+│  │  └─ vite.svg
+│  ├─ components/
+│  │  ├─ common/
+│  │  │  └─ ContactForm/
+│  │  │     ├─ ContactForm.jsx
+│  │  │     └─ ContactForm.module.css
+│  │  ├─ home/
+│  │  │  ├─ Hero.jsx
+│  │  │  └─ Hero.module.css
+│  │  ├─ layout/
+│  │  │  ├─ Footer/
+│  │  │  │  ├─ Footer.jsx
+│  │  │  │  └─ Footer.module.css
+│  │  │  ├─ Layout/
+│  │  │  │  └─ Layout.jsx
+│  │  │  └─ Navbar/
+│  │  │     ├─ Navbar.jsx
+│  │  │     └─ Navbar.module.css
+│  │  ├─ team/
+│  │  │  ├─ TeamCard.jsx
+│  │  │  ├─ TeamCard.module.css
+│  │  │  ├─ TeamGrid.css
+│  │  │  ├─ TeamGrid.jsx
+│  │  │  ├─ TeamHero.jsx
+│  │  │  ├─ TeamHero.module.css
+│  │  │  ├─ TeamProfileHero.jsx
+│  │  │  ├─ TeamProfileHero.module.css
+│  │  │  ├─ TeamSection.css
+│  │  │  └─ TeamSection.jsx
+│  │  └─ ScrollToTop.jsx
+│  ├─ data/
+│  │  └─ team.js
+│  ├─ pages/
+│  │  ├─ Contact/
+│  │  │  ├─ Contact.jsx
+│  │  │  └─ Contact.module.css
+│  │  ├─ Home/
+│  │  │  ├─ Home.jsx
+│  │  │  └─ Home.module.css
+│  │  └─ Team/
+│  │     ├─ Team.css
+│  │     ├─ Team.jsx
+│  │     ├─ TeamProfile.jsx
+│  │     └─ TeamProfile.module.css
+│  ├─ styles/
+│  │  ├─ global.css
+│  │  └─ tokens.css
+│  ├─ App.css
+│  ├─ App.jsx
+│  ├─ index.css
+│  └─ main.jsx
+├─ .env
+├─ .gitignore
+├─ .oxlintrc.json
+├─ index.html
+├─ package-lock.json
+├─ package.json
+├─ README.md
+├─ vercel.json
+└─ vite.config.js

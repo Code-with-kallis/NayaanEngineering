@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
 import logo from "/logo.png";
 
@@ -9,6 +10,7 @@ import {
   FaFacebookF,
   FaInstagram,
   FaArrowUp,
+  FaChevronRight,
 } from "react-icons/fa";
 
 const Footer = () => {
@@ -25,6 +27,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.footerOverlay} />
       <div className={styles.footerContainer}>
+        {/* Column 1: Company Info */}
         <div className={`${styles.footerColumn} ${styles.companyColumn}`}>
           <div className={styles.logoWrapper}>
             <img src={logo} alt="Nayaab Engineering" className={styles.footerLogo} />
@@ -62,6 +65,38 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Column 2: Page Navigation Links */}
+        <div className={styles.footerColumn}>
+          <h3 className={styles.columnTitle}>Quick Links</h3>
+          <ul className={styles.navLinksList}>
+            <li>
+              <Link to="/" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Home</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/projects" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Projects</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/team" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Our Team</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Contact Us</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Column 3: Contact Info */}
         <div className={styles.footerColumn}>
           <h3 className={styles.columnTitle}>Contact</h3>
 
