@@ -3,7 +3,7 @@ import { FaArrowRight } from "react-icons/fa";
 import styles from "./TeamHero.module.css";
 
 function TeamHero({
-  image = "/assets/team/team-hero.webp",
+  image = "assets/team/team-hero.webp",
   stats = [],
 }) {
   return (

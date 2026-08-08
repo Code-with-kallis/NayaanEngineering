@@ -52,7 +52,7 @@ function Team() {
         eyebrow="Our People"
         title="Engineering Excellence Delivered by One Team"
         description="From executive leadership and concept design to structural engineering and site execution, every Nayaab project is driven by our dedicated specialists."
-        image="https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/Projects/Hero/1.jpg"
+        image="/assets/team/team-hero.webp"
         stats={[
           { value: `${teamMembers.length}`, label: "Team members" },
           { value: `${TEAM_SECTIONS.length}`, label: "Departments" },

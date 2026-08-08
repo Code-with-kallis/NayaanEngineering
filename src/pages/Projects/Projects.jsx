@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
+import { Link } from "react-router-dom";
 import { 
   FaHome, 
   FaMapMarkerAlt, 
@@ -161,38 +162,35 @@ export default function Projects() {
           </h1>
 
           <p className={styles.heroText}>
-            At Nayaab Engineering Innovations, every project tells a story — a story of trust,
-            collaboration, and precision. From residential builds to
-            commercial developments and infrastructure solutions,
-            our portfolio reflects our commitment to quality.
+            Every project we complete is a reflection of our commitment to quality,
+            precision, and client satisfaction. At Nayaab Engineering Innovations, we
+            take pride in transforming ideas into built realities — from custom residential
+            builds to structural engineering solutions.
           </p>
 
-          <button 
-            className={styles.heroBtn}
-            onClick={() => filteredProjects.length > 0 && openProjectModal(filteredProjects[0])}
-          >
-            Our Service
-          </button>
+          <Link to="/contact" className={styles.heroBtn}>
+            Contact Us
+          </Link>
         </div>
 
         {/* Right Chamfered Image Composition */}
         <div className={styles.heroRightGrid}>
           <div className={styles.heroImageMain}>
             <img 
-              src="https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/Projects/3.jpg" 
+              src="/assets/projects/proj-04.webp" 
               alt="Engineers on site" 
             />
           </div>
           <div className={styles.heroSubGrid}>
             <div className={styles.heroImageSub1}>
               <img 
-                src="https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/Projects/Hero/2.webp" 
+                src="/assets/projects/hero/hero-01.webp" 
                 alt="Skyscraper architecture" 
               />
             </div>
             <div className={styles.heroImageSub2}>
               <img 
-                src="https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/Projects/Hero/1.jpg" 
+                src="/assets/projects/hero/hero-02.webp" 
                 alt="Construction site detailing" 
               />
             </div>
@@ -212,8 +210,7 @@ export default function Projects() {
             Discover Our Completed<br />Projects
           </h2>
           <p className={styles.sectionDescription}>
-            Every project we complete is a reflection of our commitment to quality, precision, and client satisfaction. At Nayaab Engineering, we take pride in transforming ideas into built realities — whether it's a modern residence.
-          </p>
+Our portfolio website is currently under active development. Complete project details and specifications will be published shortly.          </p>
         </div>
 
         {/* Category Filter Bar */}
