@@ -145,14 +145,14 @@ export default function Projects() {
       {/* ================= HERO SECTION ================= */}
       <section className={styles.heroSection}>
         <div className={styles.heroLeftCard}>
-          <div className={styles.breadcrumb}>
+          <div className={`${styles.breadcrumb} ${styles.animateSlideLeft} ${styles.delay1}`}>
             <FaHome className={styles.homeIcon} />
             <span>Home</span>
             <span className={styles.slash}>/</span>
             <strong className={styles.activeBreadcrumb}>Project</strong>
           </div>
 
-          <h1 className={styles.heroTitle}>
+          <h1 className={`${styles.heroTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
             <span className={styles.titleDark}>Our Work. </span>
             <span className={styles.titleMuted}>
               Your
@@ -161,14 +161,14 @@ export default function Projects() {
             </span>
           </h1>
 
-          <p className={styles.heroText}>
+          <p className={`${styles.heroText} ${styles.animateSlideLeft} ${styles.delay3}`}>
             Every project we complete is a reflection of our commitment to quality,
             precision, and client satisfaction. At Nayaab Engineering Innovations, we
             take pride in transforming ideas into built realities — from custom residential
             builds to structural engineering solutions.
           </p>
 
-          <Link to="/contact" className={styles.heroBtn}>
+          <Link to="/contact" className={`${styles.heroBtn} ${styles.animateSlideLeft} ${styles.delay4}`}>
             Contact Us
           </Link>
         </div>
@@ -210,7 +210,8 @@ export default function Projects() {
             Discover Our Completed<br />Projects
           </h2>
           <p className={styles.sectionDescription}>
-Our portfolio website is currently under active development. Complete project details and specifications will be published shortly.          </p>
+            Our portfolio website is currently under active development. Complete project details and specifications will be published shortly.
+          </p>
         </div>
 
         {/* Category Filter Bar */}

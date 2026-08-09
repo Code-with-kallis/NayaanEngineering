@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
-import logo from "/logo.png";
+import logo from "/logo-original.png";
 
 import {
   FaMapMarkerAlt,
@@ -11,6 +11,7 @@ import {
   FaInstagram,
   FaArrowUp,
   FaChevronRight,
+  FaBuilding,
 } from "react-icons/fa";
 
 const Footer = () => {
@@ -27,17 +28,16 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.footerOverlay} />
       <div className={styles.footerContainer}>
-        {/* Column 1: Company Info */}
+        {/* Column 1: Company Profile */}
         <div className={`${styles.footerColumn} ${styles.companyColumn}`}>
           <div className={styles.logoWrapper}>
-            <img src={logo} alt="Nayaab Engineering" className={styles.footerLogo} />
+            <img src={logo} alt="Nayaab Engineering Innovations" className={styles.footerLogo} />
           </div>
 
           <p className={styles.companyDescription}>
             Nayaab Engineering Innovations Pvt. Ltd. is committed to delivering
-            innovative engineering, architecture, interior design, and
-            construction solutions across residential, commercial, and public
-            infrastructure projects.
+            innovative engineering, architectural planning, interior design, and
+            turnkey construction solutions across residential and commercial developments.
           </p>
 
           <div className={styles.socialIcons}>
@@ -65,7 +65,44 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Column 2: Page Navigation Links */}
+        {/* Column 2: Core Services */}
+        <div className={styles.footerColumn}>
+          <h3 className={styles.columnTitle}>Core Services</h3>
+          <ul className={styles.navLinksList}>
+            <li>
+              <Link to="/services/architectural-design" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Architectural Design</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/services/structural-engineering" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Structural Engineering</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/services/turnkey-construction" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Turnkey Construction</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/services/interior-modular-design" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Interior &amp; Modular Design</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/services/regulatory-approvals" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Regulatory Approvals</span>
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Column 3: Quick Navigation */}
         <div className={styles.footerColumn}>
           <h3 className={styles.columnTitle}>Quick Links</h3>
           <ul className={styles.navLinksList}>
@@ -73,6 +110,12 @@ const Footer = () => {
               <Link to="/" onClick={scrollTop}>
                 <FaChevronRight className={styles.linkChevron} />
                 <span>Home</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/services" onClick={scrollTop}>
+                <FaChevronRight className={styles.linkChevron} />
+                <span>Services</span>
               </Link>
             </li>
             <li>
@@ -96,16 +139,16 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Column 3: Contact Info */}
+        {/* Column 4: Contact Info */}
         <div className={styles.footerColumn}>
-          <h3 className={styles.columnTitle}>Contact</h3>
+          <h3 className={styles.columnTitle}>Get In Touch</h3>
 
           <ul className={styles.contactList}>
             <li>
               <FaMapMarkerAlt className={styles.contactIcon} />
               <span>
                 3rd Floor, Qutub Complex, Opp. JK Bank (TP), Main Bazar,
-                Baramulla, Jammu &amp; Kashmir - 193101
+                Baramulla, J&amp;K - 193101
               </span>
             </li>
 
@@ -135,9 +178,12 @@ const Footer = () => {
         </div>
       </div>
 
+      {/* Footer Bottom Info */}
       <div className={styles.footerBottom}>
-        <p>&copy; {year} Nayaab Engineering Innovations Pvt. Ltd.</p>
-        <span className={styles.devBadge}>Website Under Development</span>
+        <p>&copy; {year} Nayaab Engineering Innovations Pvt. Ltd. All rights reserved.</p>
+        <span className={styles.devBadge}>
+          <FaBuilding className={styles.badgeIcon} /> Registered Private Limited
+        </span>
         <p>
           Designed &amp; Developed by{" "}
           <a href="https://www.kallis.in" target="_blank" rel="noopener noreferrer">

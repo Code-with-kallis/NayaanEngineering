@@ -11,9 +11,9 @@ import {
   FaDraftingCompass,
   FaBuilding,
   FaHardHat,
-  FaClipboardList,
+  FaPalette,
+  FaClipboardCheck,
   FaProjectDiagram,
-  FaKey,
   FaMapMarkerAlt,
   FaClock,
   FaArrowRight,
@@ -28,7 +28,16 @@ import {
 import Hero from "../../components/home/Hero";
 import ContactForm from "../../components/common/ContactForm/ContactForm";
 import { PROJECTS_DATA } from "../../data/projects";
+import { SERVICES_DATA } from "../../data/services";
 import styles from "./Home.module.css";
+
+const SERVICE_ICONS = {
+  FaDraftingCompass: <FaDraftingCompass />,
+  FaBuilding: <FaBuilding />,
+  FaHardHat: <FaHardHat />,
+  FaPalette: <FaPalette />,
+  FaClipboardCheck: <FaClipboardCheck />,
+};
 
 const highlightItems = [
   {
@@ -84,8 +93,20 @@ const Home = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [copied, setCopied] = useState(false);
   const copyTimerRef = useRef(null);
+  const servicesScrollRef = useRef(null);
 
   const featuredProjects = PROJECTS_DATA.slice(0, 3);
+
+  // Smooth Scroll Services Track
+  const scrollServices = (direction) => {
+    if (servicesScrollRef.current) {
+      const scrollAmount = direction === "left" ? -360 : 360;
+      servicesScrollRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -178,9 +199,7 @@ const Home = () => {
               <FaSquare className={styles.tagSquareIcon} />
               <span>About Our Company</span>
             </div>
-            <h2 className={styles.splitTitle}>
-            Driven by Quality
-            </h2>
+            <h2 className={styles.splitTitle}>Driven by Quality</h2>
           </div>
 
           <div className={styles.splitHeaderRight}>
@@ -335,7 +354,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 4. CORE SERVICES SECTION */}
+      {/* 4. DYNAMIC CORE SERVICES SECTION (HORIZONTAL SWIPE) */}
       <section className={styles.servicesPreview}>
         <div className={styles.splitHeaderContainer}>
           <div className={styles.splitHeaderLeft}>
@@ -346,62 +365,56 @@ const Home = () => {
             <h2 className={styles.splitTitle}>Our Core Services</h2>
           </div>
 
-          <div className={styles.splitHeaderRight}>
+          <div className={styles.splitHeaderRightControls}>
             <p className={styles.splitDesc}>
-              End-to-end civil engineering and construction solutions, tailored to
-              residential, commercial, and regional infrastructure needs.
+              End-to-end civil engineering and construction solutions across Jammu &amp; Kashmir.
             </p>
+            {/* Scroll Control Arrows */}
+            <div className={styles.sliderControls}>
+              <button
+                className={styles.sliderArrowBtn}
+                onClick={() => scrollServices("left")}
+                aria-label="Scroll services left"
+              >
+                <FaChevronLeft />
+              </button>
+              <button
+                className={styles.sliderArrowBtn}
+                onClick={() => scrollServices("right")}
+                aria-label="Scroll services right"
+              >
+                <FaChevronRight />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className={styles.serviceGrid}>
-          <div className={styles.serviceCard}>
-            <FaDraftingCompass className={styles.serviceIcon} />
-            <h3>Architectural Design</h3>
-            <p>
-              Complete 2D floor plans, 3D exterior visualization, and architectural elevation modeling.
-            </p>
-          </div>
+        {/* SWIPABLE HORIZONTAL TRACK */}
+        <div className={styles.serviceGridSlider} ref={servicesScrollRef}>
+          {SERVICES_DATA.map((service) => (
+            <Link
+              key={service.id || service.slug}
+              to={`/services/${service.slug}`}
+              className={styles.serviceCard}
+            >
+              <div className={styles.serviceIconBox}>
+                {SERVICE_ICONS[service.icon] || <FaBuilding />}
+              </div>
+              <h3>{service.title}</h3>
+              <p>{service.shortDesc}</p>
+              <div className={styles.serviceLinkBtn}>
+                <span>Explore Details</span>
+                <FaArrowRight className={styles.serviceArrow} />
+              </div>
+            </Link>
+          ))}
+        </div>
 
-          <div className={styles.serviceCard}>
-            <FaBuilding className={styles.serviceIcon} />
-            <h3>Structural Engineering</h3>
-            <p>
-              Structural load estimation, feasibility analysis, reinforced concrete design, and technical safety compliance.
-            </p>
-          </div>
-
-          <div className={styles.serviceCard}>
-            <FaHardHat className={styles.serviceIcon} />
-            <h3>Construction Management</h3>
-            <p>
-              Full on-site supervision, scheduling oversight, and quality-controlled site execution.
-            </p>
-          </div>
-
-          <div className={styles.serviceCard}>
-            <FaClipboardList className={styles.serviceIcon} />
-            <h3>Engineering Consultancy</h3>
-            <p>
-              Technical advisory, site topography evaluation, structural review, and compliance support.
-            </p>
-          </div>
-
-          <div className={styles.serviceCard}>
-            <FaProjectDiagram className={styles.serviceIcon} />
-            <h3>Project Planning</h3>
-            <p>
-              Detailed project estimation, resource allocation, structural budgeting, and schedule management.
-            </p>
-          </div>
-
-          <div className={styles.serviceCard}>
-            <FaKey className={styles.serviceIcon} />
-            <h3>Turnkey Solutions</h3>
-            <p>
-              Complete end-to-end project management from initial design drafting to final building handover.
-            </p>
-          </div>
+        <div className={styles.viewAllWrapper}>
+          <Link to="/services" className={styles.viewAllBtn}>
+            <span>View All Services</span>
+            <FaArrowRight />
+          </Link>
         </div>
       </section>
 

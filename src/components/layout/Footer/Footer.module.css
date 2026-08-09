@@ -1,4 +1,10 @@
-/* ===== FOOTER BASE WITH DARK OVERLAY & RUST ACCENT (#B7410E) ===== */
+/* src/components/layout/Footer/Footer.module.css
+   ==========================================================================
+   NAYAAB ENGINEERING INNOVATIONS — EXECUTIVE FOOTER STYLES
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+
 .footer {
   position: relative;
   background-image: url("/assets/footer/footer.webp");
@@ -6,29 +12,30 @@
   background-position: center;
   background-repeat: no-repeat;
   color: #FFFFFF;
-  padding-top: 4.5rem;
+  padding-top: 5rem;
   padding-bottom: 2rem;
   font-family: 'Inter', sans-serif;
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Semi-Transparent Dark Slate Gradient Overlay */
+/* Semi-Transparent Dark Overlay */
 .footerOverlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(15, 23, 42, 0.94) 0%,
-    rgba(15, 23, 42, 0.92) 60%,
-    rgba(17, 17, 17, 0.96) 100%
+    rgba(11, 15, 25, 0.96) 0%,
+    rgba(15, 23, 42, 0.94) 60%,
+    rgba(5, 7, 10, 0.98) 100%
   );
   z-index: 1;
   pointer-events: none;
 }
 
-/* Footer Main 3-Column Grid Container */
+/* Footer 4-Column Grid */
 .footerContainer {
   position: relative;
   z-index: 2;
@@ -37,8 +44,8 @@
   margin: 0 auto;
   padding-inline: clamp(1.25rem, 5vw, 4rem);
   display: grid;
-  grid-template-columns: 1.4fr 0.8fr 1.2fr;
-  gap: 3.5rem;
+  grid-template-columns: 1.2fr 1fr 0.8fr 1.1fr;
+  gap: 2.5rem;
   box-sizing: border-box;
 }
 
@@ -50,18 +57,17 @@
   width: 100%;
 }
 
-/* CURVED LOGO CONTAINER */
+/* LOGO CONTAINER */
 .logoWrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 8px 16px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(183, 65, 14, 0.4);
-  border-radius: 10px; /* Curved background */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   margin-bottom: 1.25rem;
-  backdrop-filter: blur(8px);
 }
 
 .footerLogo {
@@ -72,17 +78,17 @@
 }
 
 .companyDescription {
-  font-size: 0.925rem;
+  font-size: 0.875rem;
   line-height: 1.65;
-  color: #CBD5E1;
-  max-width: 520px;
-  margin: 0 0 1.75rem 0;
+  color: #94A3B8;
+  max-width: 480px;
+  margin: 0 0 1.5rem 0;
 }
 
 /* SOCIAL ICONS */
 .socialIcons {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.65rem;
   align-items: center;
 }
 
@@ -92,12 +98,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: #FFFFFF;
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: all 0.25s ease;
 }
 
@@ -106,7 +112,7 @@
   color: #FFFFFF;
   border-color: #B7410E;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(183, 65, 14, 0.4);
+  box-shadow: 0 6px 18px rgba(183, 65, 14, 0.35);
 }
 
 /* FOOTER COLUMNS & TITLES */
@@ -117,32 +123,32 @@
 
 .columnTitle {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #FFFFFF;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.25rem 0;
   position: relative;
 }
 
 .columnTitle::after {
   content: "";
   display: block;
-  width: 32px;
+  width: 28px;
   height: 2px;
   background: #B7410E;
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
 }
 
-/* PAGE NAVIGATION LINKS */
+/* PAGE NAVIGATION & SERVICE LINKS */
 .navLinksList {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 0.75rem;
 }
 
 .navLinksList a {
@@ -151,13 +157,13 @@
   gap: 0.5rem;
   color: #CBD5E1;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.2s ease;
 }
 
 .linkChevron {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #B7410E;
   transition: transform 0.2s ease;
 }
@@ -167,6 +173,10 @@
   transform: translateX(4px);
 }
 
+.navLinksList a:hover .linkChevron {
+  transform: translateX(2px);
+}
+
 /* CONTACT LIST */
 .contactList {
   list-style: none;
@@ -174,15 +184,15 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 1rem;
   width: 100%;
 }
 
 .contactList li {
   display: flex;
   align-items: flex-start;
-  gap: 0.85rem;
-  font-size: 0.9rem;
+  gap: 0.75rem;
+  font-size: 0.85rem;
   color: #CBD5E1;
   line-height: 1.5;
   overflow-wrap: anywhere;
@@ -190,23 +200,20 @@
 }
 
 .contactIcon {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #B7410E;
   flex-shrink: 0;
-  margin-top: 0.2rem;
+  margin-top: 0.15rem;
 }
 
 .contactList a {
   color: #CBD5E1;
   text-decoration: none;
   transition: color 0.2s ease;
-  overflow-wrap: anywhere;
-  word-break: break-word;
 }
 
 .contactList a:hover {
   color: #B7410E;
-  text-decoration: underline;
 }
 
 /* FOOTER BOTTOM BAR */
@@ -219,36 +226,43 @@
   padding-inline: clamp(1.25rem, 5vw, 4rem);
   padding-top: 1.5rem;
   padding-bottom: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  font-size: 0.825rem;
-  color: #94A3B8;
+  font-size: 0.8rem;
+  color: #64748B;
   box-sizing: border-box;
 }
 
 .footerBottom a {
-  color: #FFFFFF;
+  color: #CBD5E1;
   font-weight: 600;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .footerBottom a:hover {
   color: #B7410E;
-  text-decoration: underline;
 }
 
 .devBadge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 4px 12px;
-  border-radius: 0;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 0.75rem;
-  letter-spacing: 0.05em;
-  color: #CBD5E1;
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+.badgeIcon {
+  color: #B7410E;
+  font-size: 0.75rem;
 }
 
 /* SCROLL TO TOP BUTTON */
@@ -257,11 +271,11 @@
   z-index: 3;
   right: 2.5rem;
   bottom: 4.5rem;
-  width: 42px;
-  height: 42px;
-  border-radius: 0;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -269,6 +283,7 @@
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
 }
 
 .scrollTop:hover {
@@ -279,11 +294,24 @@
   box-shadow: 0 6px 20px rgba(183, 65, 14, 0.4);
 }
 
-/* RESPONSIVE BREAKPOINTS */
-@media (max-width: 900px) {
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
+   ========================================================================== */
+@media (max-width: 1024px) {
   .footerContainer {
-    grid-template-columns: 1fr !important;
-    gap: 2.5rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .footer {
+    padding-top: 3.5rem;
+  }
+
+  .footerContainer {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
   }
 
   .companyDescription {
@@ -297,22 +325,10 @@
   }
 
   .scrollTop {
-    right: 1.5rem;
-    bottom: 5.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .footer {
-    padding-top: 3rem;
-  }
-
-  .footerLogo {
-    height: 32px;
-  }
-
-  .scrollTop {
-    right: 1rem;
+    right: 1.25rem;
     bottom: 6rem;
+    width: 38px;
+    height: 38px;
+    font-size: 0.9rem;
   }
 }

@@ -12,6 +12,7 @@
   color: var(--color-text-title);
   font-family: var(--nei-font-primary);
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .heroImageContainer {
@@ -38,6 +39,40 @@
     rgba(5, 7, 10, 0.55) 50%,
     var(--nei-obsidian-950, #05070a) 100%
   );
+}
+
+/* OPENING SLIDE-IN FROM LEFT ANIMATIONS */
+.animateSlideLeft {
+  opacity: 0;
+  transform: translateX(-120px);
+  animation: slideInFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay1 {
+  animation-delay: 0.15s;
+}
+
+.delay2 {
+  animation-delay: 0.35s;
+}
+
+.delay3 {
+  animation-delay: 0.55s;
+}
+
+.delay4 {
+  animation-delay: 0.75s;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-120px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* BUTTONS — 1:1 Match with Home Hero Buttons */
@@ -288,5 +323,20 @@
 
   .statLine {
     display: none;
+  }
+
+  .animateSlideLeft {
+    transform: translateX(-60px);
+  }
+
+  @keyframes slideInFromLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 }

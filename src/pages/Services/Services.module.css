@@ -1,0 +1,350 @@
+/* src/pages/Services/Services.module.css
+   ==========================================================================
+   NAYAAB ENGINEERING INNOVATIONS — SERVICES PAGE STYLES
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== GLOBAL PAGE WRAPPER ===== */
+.pageWrapper {
+  width: 100%;
+  background: #FFFFFF;
+  color: #111111;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Base Sections Padding */
+.heroSection,
+.gridSection {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding-block: 3.5rem 2.5rem;
+  padding-inline: clamp(1.5rem, 5vw, 4rem);
+  box-sizing: border-box;
+}
+
+.heroSection {
+  padding-top: 8rem;
+}
+
+/* OPENING SLIDE-IN FROM LEFT ANIMATIONS */
+.animateSlideLeft {
+  opacity: 0;
+  transform: translateX(-120px);
+  animation: slideInFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.delay1 {
+  animation-delay: 0.15s;
+}
+
+.delay2 {
+  animation-delay: 0.35s;
+}
+
+.delay3 {
+  animation-delay: 0.55s;
+}
+
+.delay4 {
+  animation-delay: 0.75s;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-120px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===== SPLIT HEADER ===== */
+.splitHeaderContainer {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2.5rem;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.splitHeaderLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.sectionTagRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #B7410E;
+  font-size: 0.825rem;
+  font-weight: 700;
+  margin-bottom: 0.65rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.tagSquareIcon {
+  font-size: 0.5rem;
+  color: #B7410E;
+  flex-shrink: 0;
+}
+
+.splitTitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.2rem, 3.5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: #111111;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.splitHeaderRight {
+  display: flex;
+  align-items: flex-end;
+}
+
+.splitDesc {
+  color: #555555;
+  font-size: 0.925rem;
+  line-height: 1.65;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== SERVICES GRID ===== */
+.gridSection {
+  padding-bottom: 5rem;
+}
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.5rem 1.75rem;
+}
+
+.serviceCard {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 20px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.serviceCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* CHAMFERED IMAGE CONTAINER WITH FLOATING ICON BADGE */
+.cardImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: #E5E5E5;
+  clip-path: polygon(36px 0, 100% 0, 100% calc(100% - 36px), calc(100% - 36px) 100%, 0 100%, 0 36px);
+}
+
+.cardImageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.serviceCard:hover .cardImageWrapper img {
+  transform: scale(1.06);
+}
+
+.iconBadge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(183, 65, 14, 0.9);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* CARD CONTENT BODY */
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.75rem 1.5rem 1.5rem 1.5rem;
+}
+
+.cardTitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.cardDesc {
+  color: #666666;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0 0 1.25rem 0;
+}
+
+/* FEATURES PREVIEW LIST */
+.featuresList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid #F1F5F9;
+  padding-top: 1rem;
+}
+
+.featuresList li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+.checkIcon {
+  color: #B7410E;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* DETAILS BUTTON */
+.detailsBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #F8F9FA;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  color: #B7410E;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-top: auto;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.serviceCard:hover .detailsBtn {
+  background: #B7410E;
+  color: #FFFFFF;
+  border-color: #B7410E;
+}
+
+.btnArrow {
+  font-size: 0.75rem;
+  transition: transform 0.25s ease;
+}
+
+.serviceCard:hover .btnArrow {
+  transform: translateX(4px);
+}
+
+.ctaSection {
+  background: #F8F9FA;
+  border-top: 1px solid #E2E8F0;
+}
+
+/* ==========================================================================
+   RESPONSIVE OVERHAUL (TABLET & MOBILE)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .serviceGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .splitHeaderContainer {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection,
+  .gridSection {
+    padding-block: 3.5rem 2rem;
+    padding-inline: 1.25rem;
+  }
+
+  .heroSection {
+    padding-top: 6.5rem;
+  }
+
+  .splitTitle {
+    font-size: 1.85rem;
+    line-height: 1.15;
+  }
+
+  .splitDesc {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .serviceGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .cardImageWrapper {
+    height: 200px;
+    clip-path: polygon(24px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%, 0 24px);
+  }
+
+  .cardBody {
+    padding: 1.25rem;
+  }
+
+  .cardTitle {
+    font-size: 1.3rem;
+  }
+
+  .cardDesc {
+    font-size: 0.825rem;
+  }
+
+  .animateSlideLeft {
+    transform: translateX(-60px);
+  }
+
+  @keyframes slideInFromLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}

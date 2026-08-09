@@ -12,29 +12,24 @@ const VIDEO_SRC = "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/HOME/hero
 const HeroContent = () => (
   <div className={styles.heroContent}>
     <div className={styles.textWrapper}>
-      <p className={`${styles.greeting} ${styles.animateFadeUp} ${styles.delay1}`}>
+      <p className={`${styles.greeting} ${styles.animateSlideLeft} ${styles.delay1}`}>
         NAYAAB <span className={styles.companySuffix}>Engineering</span>
       </p>
-      <h1 className={`${styles.mainTitle} ${styles.animateFadeUp} ${styles.delay2}`}>
+      <h1 className={`${styles.mainTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
         Engineering Excellence
         <br />
         &amp; Innovation
       </h1>
-      <h2 className={`${styles.subTitle} ${styles.animateFadeUp} ${styles.delay3}`}>
+      <h2 className={`${styles.subTitle} ${styles.animateSlideLeft} ${styles.delay3}`}>
         Building the future with precision.
       </h2>
 
-      <div className={`${styles.ctaGroup} ${styles.animateFadeUp} ${styles.delay4}`}>
+      <div className={`${styles.ctaGroup} ${styles.animateSlideLeft} ${styles.delay4}`}>
         <a href="/contact" className={`${styles.btn} ${styles.btnPrimary}`}>
           Contact Us
         </a>
-        <a
-          href="https://maps.app.goo.gl/2eVktdmG7WoQGscE6"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`${styles.btn} ${styles.btnOutline}`}
-        >
-          Our Location
+        <a href="/services" className={`${styles.btn} ${styles.btnOutline}`}>
+          Our Services
         </a>
       </div>
     </div>

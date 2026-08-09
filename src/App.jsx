@@ -1,3 +1,5 @@
+// src/App.jsx
+
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout/Layout";
 import ScrollToTop from "./components/ScrollToTop";
@@ -8,6 +10,9 @@ import Team from "./pages/Team/Team";
 import TeamProfile from "./pages/Team/TeamProfile";
 import Projects from "./pages/Projects/Projects";
 import ProjectDetail from "./pages/Projects/ProjectDetail";
+
+import Services from "./pages/Services/Services";
+import ServiceDetail from "./pages/Services/ServiceDetail";
 
 function App() {
   return (
@@ -22,6 +27,10 @@ function App() {
           <Route path="team/:employeeId" element={<TeamProfile />} />
           <Route path="projects" element={<Projects />} />
           <Route path="projects/:slug" element={<ProjectDetail />} />
+          
+          {/* Services Routes */}
+          <Route path="services" element={<Services />} />
+          <Route path="services/:slug" element={<ServiceDetail />} />
         </Route>
       </Routes>
     </>

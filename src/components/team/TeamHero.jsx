@@ -20,21 +20,24 @@ function TeamHero({
       {/* Hero Content — Matches Home Hero Structure */}
       <div className={styles.heroContent}>
         <div className={styles.textWrapper}>
-          <p className={styles.greeting}>
+          <p className={`${styles.greeting} ${styles.animateSlideLeft} ${styles.delay1}`}>
             NAYAAB <span className={styles.companySuffix}>ENGINEERING</span>
           </p>
 
-          <h1 id="team-hero-heading" className={styles.mainTitle}>
+          <h1
+            id="team-hero-heading"
+            className={`${styles.mainTitle} ${styles.animateSlideLeft} ${styles.delay2}`}
+          >
             Engineering
             <br />
             Built Around Expertise
           </h1>
 
-          <h2 className={styles.subTitle}>
+          <h2 className={`${styles.subTitle} ${styles.animateSlideLeft} ${styles.delay3}`}>
             People. Precision. Performance.
           </h2>
 
-          <div className={styles.ctaGroup}>
+          <div className={`${styles.ctaGroup} ${styles.animateSlideLeft} ${styles.delay4}`}>
             <a href="#leadership" className={`${styles.btn} ${styles.btnPrimary}`}>
               <span>Meet Our Team</span>
               <FaArrowRight aria-hidden="true" />

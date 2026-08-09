@@ -1,0 +1,199 @@
+import React from "react";
+import { useParams, Link } from "react-router-dom";
+import { 
+  FaSquare, 
+  FaCheckCircle, 
+  FaArrowLeft, 
+  FaPhoneAlt, 
+  FaShieldAlt, 
+  FaBuilding, 
+  FaDraftingCompass, 
+  FaHardHat, 
+  FaChevronRight,
+  FaMapMarkerAlt,
+  FaAward,
+  FaLayerGroup,
+  FaClipboardCheck,
+  FaPalette
+} from "react-icons/fa";
+import { SERVICES_DATA } from "../../data/services";
+import styles from "./ServiceDetail.module.css";
+
+const SERVICE_ICONS = {
+  "architectural-design": <FaDraftingCompass />,
+  "structural-engineering": <FaBuilding />,
+  "turnkey-construction": <FaHardHat />,
+  "interior-modular-design": <FaPalette />,
+  "regulatory-approvals": <FaClipboardCheck />
+};
+
+export default function ServiceDetail() {
+  const { slug } = useParams();
+  const service = SERVICES_DATA.find((s) => s.slug === slug);
+
+  // Other services for sidebar navigation
+  const otherServices = SERVICES_DATA.filter((s) => s.slug !== slug);
+
+  if (!service) {
+    return (
+      <main className={styles.notFoundWrapper}>
+        <div className={styles.notFoundCard}>
+          <FaBuilding className={styles.notFoundIcon} />
+          <h2>Service Not Found</h2>
+          <p>The requested engineering or architectural service detail page could not be located.</p>
+          <Link to="/services" className={styles.backBtn}>
+            <FaArrowLeft /> Back to All Services
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main className={styles.pageWrapper}>
+      {/* ================= BREADCRUMB & HEADER ================= */}
+      <section className={styles.headerSection}>
+        <div className={styles.breadcrumbRow}>
+          <Link to="/services" className={styles.backLink}>
+            <FaArrowLeft className={styles.backIcon} />
+            <span>All Services</span>
+          </Link>
+          <span className={styles.slash}>/</span>
+          <span className={styles.currentBreadcrumb}>{service.title}</span>
+        </div>
+
+        <div className={styles.sectionTagRow}>
+          <FaSquare className={styles.tagSquareIcon} />
+          <span>CIVIL &amp; ARCHITECTURAL SERVICE</span>
+        </div>
+
+        <h1 className={styles.serviceTitle}>{service.title}</h1>
+        <p className={styles.serviceSubtitle}>{service.shortDesc}</p>
+      </section>
+
+      {/* ================= MAIN CONTENT & SIDEBAR ================= */}
+      <section className={styles.contentSection}>
+        <div className={styles.gridContainer}>
+          
+          {/* LEFT MAIN CONTENT */}
+          <div className={styles.mainContent}>
+            
+            {/* Main Chamfered Hero Image */}
+            <div className={styles.imageWrapper}>
+              <img src={service.coverImage} alt={service.title} />
+              <div className={styles.floatingIconBadge}>
+                {SERVICE_ICONS[service.slug] || <FaBuilding />}
+              </div>
+            </div>
+
+            {/* Scope of Work */}
+            <div className={styles.detailBlock}>
+              <h2 className={styles.subHeading}>Scope of Work &amp; Technical Approach</h2>
+              <p className={styles.fullDesc}>{service.fullDesc}</p>
+            </div>
+
+            {/* Key Capabilities Grid */}
+            <div className={styles.detailBlock}>
+              <h2 className={styles.subHeading}>Key Capabilities &amp; Deliverables</h2>
+              <div className={styles.featuresGrid}>
+                {service.features && service.features.map((feature, idx) => (
+                  <div key={idx} className={styles.featureCard}>
+                    <FaCheckCircle className={styles.checkIcon} />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Service-Specific Compliance Highlight Box */}
+            {service.complianceInfo && (
+              <div className={styles.complianceBox}>
+                <div className={styles.complianceHeader}>
+                  <FaShieldAlt className={styles.complianceIcon} />
+                  <div>
+                    <h3>{service.complianceInfo.title}</h3>
+                    <p>{service.complianceInfo.subtitle}</p>
+                  </div>
+                </div>
+                <ul className={styles.complianceList}>
+                  {service.complianceInfo.list.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Structured Execution Workflow */}
+            {service.workflow && service.workflow.length > 0 && (
+              <div className={styles.detailBlock}>
+                <h2 className={styles.subHeading}>Service Execution Workflow</h2>
+                <div className={styles.workflowGrid}>
+                  {service.workflow.map((item) => (
+                    <div key={item.step} className={styles.workflowStep}>
+                      <span className={styles.stepNumber}>{item.step}</span>
+                      <h4>{item.title}</h4>
+                      <p>{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+          </div>
+
+          {/* RIGHT SIDEBAR */}
+          <aside className={styles.sidebar}>
+            
+            {/* Dynamic Specs Card */}
+            {service.specs && (
+              <div className={styles.specsCard}>
+                <h3 className={styles.sidebarTitle}>Technical Specs</h3>
+                <div className={styles.specList}>
+                  {service.specs.map((spec, idx) => (
+                    <div key={idx} className={styles.specItem}>
+                      <div className={styles.specTextGroup}>
+                        <span className={styles.specLabel}>{spec.label}</span>
+                        <span className={styles.specValue}>{spec.value}</span>
+                      </div>
+                    </div>
+                  ))}
+                  <div className={styles.specItem}>
+                    <div className={styles.specTextGroup}>
+                      <span className={styles.specLabel}>Headquarters</span>
+                      <span className={styles.specValue}>Baramulla, J&amp;K</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Sticky Contact CTA */}
+            <div className={styles.ctaCard}>
+              <div className={styles.ctaBadge}>GET STARTED</div>
+              <h3>Need {service.title}?</h3>
+              <p>Schedule a technical discussion with our civil engineering team in Baramulla.</p>
+              <Link to="/contact" className={styles.primaryBtn}>
+                <FaPhoneAlt /> <span>Request Consultation</span>
+              </Link>
+            </div>
+
+            {/* Other Services Navigation List */}
+            <div className={styles.otherServicesCard}>
+              <h3 className={styles.sidebarTitle}>Other Core Services</h3>
+              <div className={styles.otherServicesList}>
+                {otherServices.map((item) => (
+                  <Link key={item.id} to={`/services/${item.slug}`} className={styles.otherServiceItem}>
+                    <span>{item.title}</span>
+                    <FaChevronRight className={styles.navArrow} />
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+          </aside>
+
+        </div>
+      </section>
+    </main>
+  );
+}
