@@ -33,7 +33,7 @@ import styles from "./Home.module.css";
 const highlightItems = [
   {
     icon: <FaRegCalendarCheck className={styles.highlightIcon} />,
-    title: "Est. 2024",
+    title: "Est. 2022",
     subtitle: "Incorporated in Baramulla, J&K",
   },
   {
@@ -186,7 +186,7 @@ const Home = () => {
           <div className={styles.splitHeaderRight}>
             <p className={styles.splitDesc}>
               Bringing a hands-on, client-first approach to civil and architectural engineering.
-              Incorporated in 2024 and headquartered in Baramulla, we combine formal corporate standards with regional expertise.
+              Incorporated in 2022 and headquartered in Baramulla, we combine formal corporate standards with regional expertise.
             </p>
           </div>
         </div>
@@ -206,9 +206,9 @@ const Home = () => {
               <div className={styles.brandHeader}>
                 <span className={styles.brandName}>Nayaab Engineering</span>
               </div>
-              <div className={styles.bigStatNum}>2024</div>
+              <div className={styles.bigStatNum}>2022</div>
               <p className={styles.bentoText}>
-                Incorporated as a Private Limited Engineering Company (CIN: U42900JK2024PTC015987) under RoC Jammu.
+                Incorporated as a Private Limited Engineering Company (CIN: U42900JK2022PTC015987) under RoC Jammu.
               </p>
               <div className={styles.avatarStack}>
                 <div className={styles.avatar} title="Junaid Bilal Sheikh">J</div>
