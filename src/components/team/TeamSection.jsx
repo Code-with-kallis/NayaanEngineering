@@ -1,38 +1,28 @@
-// src/components/team/TeamSection.jsx
-
+import React from "react";
 import TeamGrid from "./TeamGrid";
-import "./TeamSection.css";
+import styles from "./TeamSection.module.css";
 
-function TeamSection({ id, title, description, members }) {
+function TeamSection({ id, title, members = [] }) {
   const headingId = `${id}-heading`;
 
   return (
-    <section
-      id={id}
-      className="team-section"
-      aria-labelledby={headingId}
-    >
-      <div className="team-section__shell">
-        <header className="team-section__header">
-          <div className="team-section__copy">
-            <h2 id={headingId} className="team-section__title">
+    <section id={id} className={styles.section} aria-labelledby={headingId}>
+      <div className={styles.inner}>
+        <header className={styles.header}>
+          <div className={styles.headerLeft}>
+            <h2 id={headingId} className={styles.title}>
               {title}
             </h2>
-
-            {description && (
-              <p className="team-section__description">
-                {description}
-              </p>
-            )}
+            <span className={styles.pillBadge}>Roster</span>
           </div>
         </header>
 
         {members.length > 0 ? (
           <TeamGrid members={members} />
         ) : (
-          <p className="team-section__empty">
-            Team details for this department are being updated.
-          </p>
+          <div className={styles.emptyState}>
+            <p>Department details are currently being updated.</p>
+          </div>
         )}
       </div>
     </section>

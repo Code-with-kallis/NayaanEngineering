@@ -1,75 +1,51 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import { FaArrowRight, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
+import { FaArrowUp } from "react-icons/fa";
 import styles from "./TeamCard.module.css";
 
-/**
- * TeamCard — single employee card.
- *
- * @param {Object} props
- * @param {Object} props.employee - Employee object
- * @param {"grid" | "compact"} [props.variant="grid"]
- */
-function TeamCard({ employee, variant = "grid" }) {
-  const { employeeId, name, designation, department, image, contact } = employee;
-  const hasPhone = Boolean(contact?.phone);
-  const hasEmail = Boolean(contact?.email);
+function TeamCard({ employee }) {
+  if (!employee) return null;
+
+  const { employeeId, name, designation, image, bio } = employee;
+
+  // Extract first 10-12 words for concise card bio
+  const shortBio = bio
+    ? bio.split(" ").slice(0, 12).join(" ") + "..."
+    : "";
 
   return (
     <Link
       to={`/team/${employeeId}`}
-      className={`${styles.teamCard} ${styles[variant] || ""}`.trim()}
+      className={styles.card}
       aria-label={`View profile of ${name}, ${designation}`}
     >
-      <div className={styles.media}>
+      {/* Circular Profile Avatar */}
+      <div className={styles.imageContainer}>
         <img
-          src={image}
-          alt=""
-          loading="lazy"
-          decoding="async"
+          src={image || "/images/team/placeholder.jpg"}
+          alt={name}
           className={styles.image}
+          loading="lazy"
         />
       </div>
 
-      <div className={styles.body}>
-        {variant === "grid" && (
-          <p className={styles.department}>{department}</p>
-        )}
+      <div className={styles.content}>
+        <div>
+          <h3 className={styles.name}>{name}</h3>
+          <p className={styles.designation}>{designation}</p>
+          {shortBio && <p className={styles.bio}>{shortBio}</p>}
+        </div>
 
-        <h3 className={styles.name}>{name}</h3>
-        <p className={styles.designation}>{designation}</p>
+        <div className={styles.footer}>
+          <div className={styles.profileBadge}>
+            <span className={styles.badgeDot} />
+            <span>Profile</span>
+          </div>
 
-        {variant === "grid" && (
-          <>
-            <div className={styles.meta} aria-label="Profile details">
-              {hasPhone && (
-                <span className={styles.metaItem}>
-                  <FaPhoneAlt aria-hidden="true" />
-                  Direct contact
-                </span>
-              )}
-
-              {hasEmail && (
-                <span className={styles.metaItem}>
-                  <FaEnvelope aria-hidden="true" />
-                  Email available
-                </span>
-              )}
-
-              {!hasPhone && !hasEmail && (
-                <span className={`${styles.metaItem} ${styles.muted}`}>
-                  Profile available
-                </span>
-              )}
-            </div>
-
-            <div className={styles.footer}>
-              <span className={styles.linkLabel}>View profile</span>
-              <span className={styles.linkIcon} aria-hidden="true">
-                <FaArrowRight />
-              </span>
-            </div>
-          </>
-        )}
+          <div className={styles.arrowCircle}>
+            <FaArrowUp className={styles.arrowIcon} />
+          </div>
+        </div>
       </div>
     </Link>
   );

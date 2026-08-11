@@ -20,13 +20,7 @@ const SECTION_CONTENT = [
     description:
       "Designers translating client vision into buildable architectural and structural plans.",
   },
-  {
-    id: "engineering",
-    eyebrow: "Technical specialists",
-    title: "Electrical & Engineering Operations",
-    description:
-      "Specialists responsible for electrical installations, maintenance, technical consultancy, and site troubleshooting.",
-  },
+
   {
     id: "construction",
     eyebrow: "On-site execution",

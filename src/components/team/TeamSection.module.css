@@ -1,0 +1,83 @@
+/* src/components/team/TeamSection.module.css */
+
+.section {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  padding-block: clamp(1.5rem, 3vw, 2.5rem);
+  padding-inline: var(--nei-container-pad, clamp(1.25rem, 5vw, 4rem));
+  background: transparent;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.inner {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: #0F172A;
+  letter-spacing: -0.02em;
+}
+
+.pillBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.emptyState {
+  padding: 2rem;
+  text-align: center;
+  color: #64748B;
+  font-size: 0.875rem;
+}
+
+/* MOBILE ALIGNMENT FIX */
+@media (max-width: 640px) {
+  .section {
+    padding-block: 1rem;
+    /* Sets single padding-left on container so Title & Card 1 share the exact same starting point */
+    padding-left: var(--nei-container-pad, 1.25rem) !important;
+    padding-right: 0 !important; /* Unclipped right bleed */
+    overflow: visible !important;
+  }
+
+  .header {
+    padding-left: 0 !important;
+    padding-right: var(--nei-container-pad, 1.25rem) !important;
+  }
+
+  .title {
+    font-size: 1.35rem;
+  }
+}

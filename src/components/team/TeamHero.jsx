@@ -17,33 +17,34 @@ function TeamHero({
         <div className={styles.heroOverlay} />
       </div>
 
-      {/* Hero Content — Matches Home Hero Structure */}
+      {/* Hero Content */}
       <div className={styles.heroContent}>
         <div className={styles.textWrapper}>
-          <p className={`${styles.greeting} ${styles.animateSlideLeft} ${styles.delay1}`}>
-            NAYAAB <span className={styles.companySuffix}>ENGINEERING</span>
-          </p>
+          <div className={styles.eyebrowWrapper}>
+            <span className={styles.eyebrowDot} />
+            <span className={styles.eyebrowText}>CORE TEAM</span>
+          </div>
 
           <h1
             id="team-hero-heading"
-            className={`${styles.mainTitle} ${styles.animateSlideLeft} ${styles.delay2}`}
+            className={`${styles.mainTitle} ${styles.animateSlideLeft} ${styles.delay1}`}
           >
             Engineering
             <br />
             Built Around Expertise
           </h1>
 
-          <h2 className={`${styles.subTitle} ${styles.animateSlideLeft} ${styles.delay3}`}>
+          <h2 className={`${styles.subTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
             People. Precision. Performance.
           </h2>
 
-          <div className={`${styles.ctaGroup} ${styles.animateSlideLeft} ${styles.delay4}`}>
+          <div className={`${styles.ctaGroup} ${styles.animateSlideLeft} ${styles.delay3}`}>
             <a href="#leadership" className={`${styles.btn} ${styles.btnPrimary}`}>
               <span>Meet Our Team</span>
-              <FaArrowRight aria-hidden="true" />
+              <FaArrowRight aria-hidden="true" className={styles.btnIcon} />
             </a>
             <a href="/contact" className={`${styles.btn} ${styles.btnOutline}`}>
-              Contact Us
+              <span>Contact Us</span>
             </a>
           </div>
         </div>

@@ -31,7 +31,7 @@ export const teamMembers = [
     department: "Board of Directors",
     teamSection: "leadership",
     contact: { email: "info@nayaabengineering.com" },
-    image: "/assets/team/neipl-0101.png",
+    image: "/assets/team/waseemmanzoor.jpg",
     quote: "Our foundation is built on integrity, engineering rigor, and a sustainable vision. We build not just structures, but legacies.",
     bio: "Waseem Manzoor serves as Chairman of Nayaab Engineering Innovations, guiding corporate vision, governance, and long-term strategic expansion across major engineering and infrastructure sectors.",
     stats: [
@@ -52,6 +52,7 @@ export const teamMembers = [
       "Urban Redevelopment Review",
     ],
   },
+  
   {
     employeeId: "neipl-0102",
     name: "Saajid Rashid",
@@ -136,6 +137,7 @@ export const teamMembers = [
       "Institutional Facility Expansion",
     ],
   },
+  
   {
     employeeId: "neipl-0105",
     name: "Huma Gayas",
@@ -309,7 +311,7 @@ export const teamMembers = [
     name: "Sajid Hussain",
     designation: "Electrician",
     department: "Engineering & Technical Operations",
-    teamSection: "engineering",
+    teamSection: "construction",
     contact: { email: null },
     image: "/assets/team/neipl-0123.png",
     quote: "Flawless electrical wiring guarantees safety, reliability, and energy efficiency for every square foot.",

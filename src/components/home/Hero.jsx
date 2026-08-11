@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import styles from "./Hero.module.css";
 
@@ -9,27 +9,54 @@ const SOCIAL_LINKS = [
 
 const VIDEO_SRC = "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/HOME/hero.mp4";
 
+// Refined Agency-Grade Text Reveal (Matching site typography)
+const EyebrowTagline = () => {
+  const [text, setText] = useState("");
+  const fullText = "NAYAAB ENGINEERING";
+
+  useEffect(() => {
+    let index = 0;
+    const timer = setInterval(() => {
+      if (index <= fullText.length) {
+        setText(fullText.slice(0, index));
+        index++;
+      } else {
+        clearInterval(timer);
+      }
+    }, 100);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className={styles.eyebrowWrapper}>
+      <span className={styles.eyebrowDot} />
+      <span className={styles.eyebrowText}>{text}</span>
+    </div>
+  );
+};
+
 const HeroContent = () => (
   <div className={styles.heroContent}>
     <div className={styles.textWrapper}>
-      <p className={`${styles.greeting} ${styles.animateSlideLeft} ${styles.delay1}`}>
-        NAYAAB <span className={styles.companySuffix}>Engineering</span>
-      </p>
-      <h1 className={`${styles.mainTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
+      <EyebrowTagline />
+
+      <h1 className={`${styles.mainTitle} ${styles.animateSlideLeft} ${styles.delay1}`}>
         Engineering Excellence
         <br />
         &amp; Innovation
       </h1>
-      <h2 className={`${styles.subTitle} ${styles.animateSlideLeft} ${styles.delay3}`}>
+
+      <h2 className={`${styles.subTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
         Building the future with precision.
       </h2>
 
-      <div className={`${styles.ctaGroup} ${styles.animateSlideLeft} ${styles.delay4}`}>
+      <div className={`${styles.ctaGroup} ${styles.animateSlideLeft} ${styles.delay3}`}>
         <a href="/contact" className={`${styles.btn} ${styles.btnPrimary}`}>
-          Contact Us
+          <span>Contact Us</span>
         </a>
         <a href="/services" className={`${styles.btn} ${styles.btnOutline}`}>
-          Our Services
+          <span>Our Services</span>
         </a>
       </div>
     </div>
@@ -39,22 +66,16 @@ const HeroContent = () => (
 const SocialLinks = () => (
   <div className={styles.socialLinks} aria-label="Social media links">
     {SOCIAL_LINKS.map((social) => (
-      <a key={social.label} href={social.href} aria-label={social.label} target="_blank" rel="noopener noreferrer">
+      <a 
+        key={social.label} 
+        href={social.href} 
+        aria-label={social.label} 
+        target="_blank" 
+        rel="noopener noreferrer"
+      >
         {social.icon}
       </a>
     ))}
-  </div>
-);
-
-const AvailabilityCard = () => (
-  <div className={styles.availabilityCard} role="status">
-    <div className={styles.availabilityStatus}>
-      <span className={styles.pulseDot} aria-hidden="true" />
-      <span>Available for Work</span>
-    </div>
-    <p>
-      Our website is currently under development. We're preparing an enhanced digital experience and will be launching soon.
-    </p>
   </div>
 );
 
@@ -63,7 +84,6 @@ const HeroFooter = () => (
     <div className={styles.footerLeft}>
       <SocialLinks />
     </div>
-    <AvailabilityCard />
   </div>
 );
 
@@ -99,7 +119,6 @@ const Hero = () => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Explicitly set DOM properties to bypass Safari/iOS autoplay restrictions
     video.muted = true;
     video.defaultMuted = true;
 
