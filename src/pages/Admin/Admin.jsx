@@ -18,7 +18,8 @@ import {
   FaExclamationTriangle,
   FaInfoCircle,
   FaEye,
-  FaEyeSlash
+  FaEyeSlash,
+  FaCheckCircle
 } from "react-icons/fa";
 import styles from "./Admin.module.css";
 
@@ -88,7 +89,11 @@ const compressImageIfNeeded = (file, maxWidth = 1920, quality = 0.80) => {
 };
 
 export default function Admin() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // Restore login state from localStorage so page refresh doesn't lock out admin
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem("neipl_admin_auth") === "true";
+  });
+  
   const [passcode, setPasscode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -118,7 +123,10 @@ export default function Admin() {
   const [existingGalleryUrls, setExistingGalleryUrls] = useState([]);
 
   const [loading, setLoading] = useState(false);
+  
+  // Custom Status Message & Color Type State ("success" | "danger")
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("success");
 
   // Custom Modal State
   const [modal, setModal] = useState({
@@ -168,6 +176,7 @@ export default function Admin() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (passcode === "nayaab2026") {
+      localStorage.setItem("neipl_admin_auth", "true");
       setIsAuthenticated(true);
     } else {
       showAlert("Invalid Passcode", "The security passcode you entered is incorrect. Please try again.");
@@ -175,6 +184,7 @@ export default function Admin() {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("neipl_admin_auth");
     setIsAuthenticated(false);
     setPasscode("");
     setShowPassword(false);
@@ -338,7 +348,10 @@ export default function Admin() {
           if (dbError) throw dbError;
 
           setProjectsList((prev) => prev.filter((item) => item.id !== id));
-          setMessage(`Project "${projectTitle}" and images deleted successfully!`);
+          
+          // Red banner for deletion
+          setMessage(`Project "${projectTitle}" deleted successfully!`);
+          setMessageType("danger");
         } catch (err) {
           console.error("Delete Error:", err);
           showAlert("Delete Error", err.message);
@@ -347,7 +360,7 @@ export default function Admin() {
     });
   };
 
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!coverFile && !existingCoverUrl) {
       showAlert("Missing Cover Photo", "Please select a main cover photo for the project.");
@@ -368,7 +381,7 @@ const handleSubmit = async (e) => {
 
       let finalCoverUrl = existingCoverUrl;
       
-      // 1. Delete old cover image from Cloudflare R2 if a new cover photo is uploaded
+      // Delete old cover image from Cloudflare R2 if a new cover photo is uploaded
       if (coverFile) {
         if (existingCoverUrl) {
           await deleteFromCloudflareR2(existingCoverUrl);
@@ -377,7 +390,7 @@ const handleSubmit = async (e) => {
         finalCoverUrl = await uploadToCloudflareR2(coverFile, coverFileName);
       }
 
-      // 2. Upload new gallery files
+      // Upload new gallery files
       const newUploadedGalleryUrls = [];
       for (let i = 0; i < galleryFiles.length; i++) {
         const galleryFileName = `${titleSlug}-gallery-${i + 1}-${uniqueSuffix}`;
@@ -397,7 +410,7 @@ const handleSubmit = async (e) => {
       const slug = `${titleSlug}-${uniqueSuffix}`;
 
       if (editingId) {
-        // 3. Delete removed gallery images from Cloudflare R2
+        // Delete removed gallery images from Cloudflare R2
         const originalProject = projectsList.find((p) => p.id === editingId);
         if (originalProject && Array.isArray(originalProject.gallery_images)) {
           const removedGalleryUrls = originalProject.gallery_images.filter(
@@ -424,7 +437,10 @@ const handleSubmit = async (e) => {
           .eq("id", editingId);
 
         if (updateError) throw updateError;
-        setMessage("Project updated successfully and old images deleted from R2!");
+        
+        // Green banner for project update
+        setMessage("Project edited successfully!");
+        setMessageType("success");
       } else {
         const { error: insertError } = await supabase
           .from("projects")
@@ -444,7 +460,10 @@ const handleSubmit = async (e) => {
           ]);
 
         if (insertError) throw insertError;
-        setMessage("New project published successfully!");
+        
+        // Green banner for new project creation
+        setMessage("New project added successfully!");
+        setMessageType("success");
       }
 
       resetForm();
@@ -551,9 +570,13 @@ const handleSubmit = async (e) => {
         </div>
       </header>
 
+      {/* DYNAMIC ALERT BANNER WITH COLOR LOGIC */}
       {message && (
-        <div className={styles.alertBanner}>
-          <span>{message}</span>
+        <div className={`${styles.alertBanner} ${messageType === "danger" ? styles.alertBannerDanger : styles.alertBannerSuccess}`}>
+          <div className={styles.alertContent}>
+            {messageType === "danger" ? <FaExclamationTriangle className={styles.alertIcon} /> : <FaCheckCircle className={styles.alertIcon} />}
+            <span>{message}</span>
+          </div>
           <button onClick={() => setMessage("")} className={styles.closeAlertBtn}>
             <FaTimes />
           </button>
