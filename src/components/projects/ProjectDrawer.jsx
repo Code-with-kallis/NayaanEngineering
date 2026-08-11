@@ -2,11 +2,23 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  X, ChevronLeft, ChevronRight, Share2, 
-  Check, MapPin, Clock, CheckCircle2 
-} from "lucide-react";
-import useScrollLock from "../../hooks/useScrollLock";
+  FaTimes, 
+  FaChevronLeft, 
+  FaChevronRight, 
+  FaShareAlt, 
+  FaCheck, 
+  FaMapMarkerAlt, 
+  FaClock, 
+  FaCheckCircle 
+} from "react-icons/fa";
+import ProjectGallery from "./ProjectGallery";
 import styles from "./ProjectDrawer.module.css";
+
+const DEFAULT_DELIVERABLES = [
+  "Full architectural & structural engineering compliance.",
+  "On-time execution with continuous site supervision.",
+  "High-durability structural material selection."
+];
 
 export default function ProjectDrawer({
   isOpen,
@@ -20,9 +32,19 @@ export default function ProjectDrawer({
   const [copied, setCopied] = useState(false);
   const copyTimerRef = useRef(null);
 
-  useScrollLock(isOpen);
+  // Lock Body Scroll when Drawer is Open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
-  // Keyboard Navigation
+  // Keyboard Shortcuts (Esc, Left/Right)
   useEffect(() => {
     if (!isOpen) return;
 
@@ -36,7 +58,7 @@ export default function ProjectDrawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose, onNext, onPrev]);
 
-  // Copy Deep Link
+  // Copy Direct Link
   const handleCopyLink = useCallback(() => {
     if (!project) return;
     const shareableUrl = `${window.location.origin}${window.location.pathname}#${project.slug}`;
@@ -49,10 +71,27 @@ export default function ProjectDrawer({
 
   if (!isOpen || !project) return null;
 
+  const coverImageUrl = project.coverImage || project.cover_image || project.image;
+  const rawGallery = project.galleryImages || project.gallery_images || project.gallery || [];
+  
+  // Ensure Cover Image is included in the Gallery list
+  const galleryList = (coverImageUrl && !rawGallery.includes(coverImageUrl))
+    ? [coverImageUrl, ...rawGallery]
+    : rawGallery;
+
+  const projectDeliverables = (project.deliverables && project.deliverables.length > 0)
+    ? project.deliverables
+    : DEFAULT_DELIVERABLES;
+
+  const shortOverview = project.summary || project.description;
+  const detailedDescription = project.description && project.description !== project.summary 
+    ? project.description 
+    : null;
+
   return createPortal(
     <AnimatePresence>
       <div className={styles.portalWrapper} role="dialog" aria-modal="true">
-        {/* Backdrop Overlay */}
+        {/* Backdrop Fade */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -62,44 +101,40 @@ export default function ProjectDrawer({
           onClick={onClose}
         />
 
-        {/* Slide-over Panel */}
+        {/* Smooth Slide-over Panel */}
         <motion.aside
-          initial={{ x: "100%", opacity: 0.5 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: "100%", opacity: 0 }}
-          transition={{ type: "spring", damping: 32, stiffness: 320, mass: 0.85 }}
+          initial={{ x: "100%" }}
+          animate={{ x: 0 }}
+          exit={{ x: "100%" }}
+          transition={{ type: "spring", damping: 32, stiffness: 300, mass: 0.8 }}
           className={styles.drawerPanel}
         >
-          {/* Top Sticky Bar */}
+          {/* Sticky Header Bar */}
           <header className={styles.topBar}>
             <div className={styles.badge}>
               <span>{project.category || "Engineering"}</span>
             </div>
 
             <div className={styles.actionsGroup}>
-              {/* Share Link Button */}
               <button
                 onClick={handleCopyLink}
                 title="Copy direct project link"
                 className={styles.iconBtn}
+                type="button"
               >
-                {copied ? (
-                  <Check size={16} className={styles.successIcon} />
-                ) : (
-                  <Share2 size={16} />
-                )}
+                {copied ? <FaCheck className={styles.successIcon} /> : <FaShareAlt />}
               </button>
 
               <div className={styles.divider} />
 
-              {/* Prev/Next Counter Navigation */}
               <div className={styles.navControls}>
                 <button
                   onClick={onPrev}
                   aria-label="Previous project"
                   className={styles.iconBtn}
+                  type="button"
                 >
-                  <ChevronLeft size={16} />
+                  <FaChevronLeft />
                 </button>
                 <span className={styles.counter}>
                   {String(currentIndex + 1).padStart(2, "0")} / {String(totalProjects).padStart(2, "0")}
@@ -108,20 +143,21 @@ export default function ProjectDrawer({
                   onClick={onNext}
                   aria-label="Next project"
                   className={styles.iconBtn}
+                  type="button"
                 >
-                  <ChevronRight size={16} />
+                  <FaChevronRight />
                 </button>
               </div>
 
               <div className={styles.divider} />
 
-              {/* Close Button */}
               <button
                 onClick={onClose}
                 aria-label="Close modal"
                 className={styles.closeBtn}
+                type="button"
               >
-                <X size={18} />
+                <FaTimes />
               </button>
             </div>
           </header>
@@ -130,83 +166,57 @@ export default function ProjectDrawer({
           <div className={styles.scrollContent}>
             <header className={styles.contentHeader}>
               <h1 className={styles.title}>{project.title}</h1>
-              <p className={styles.summary}>{project.summary || project.description}</p>
 
               <div className={styles.metaGrid}>
-                <div className={styles.metaItem}>
-                  <MapPin size={15} className={styles.accentIcon} />
-                  <span>{project.location}</span>
-                </div>
-                <div className={styles.metaItem}>
-                  <Clock size={15} className={styles.accentIcon} />
-                  <span>{project.duration || project.year}</span>
-                </div>
+                {project.location && (
+                  <div className={styles.metaItem}>
+                    <FaMapMarkerAlt className={styles.accentIcon} />
+                    <span>{project.location}</span>
+                  </div>
+                )}
+                {project.duration && (
+                  <div className={styles.metaItem}>
+                    <FaClock className={styles.accentIcon} />
+                    <span>{project.duration}</span>
+                  </div>
+                )}
               </div>
             </header>
 
-            {/* Main Cover Image */}
-            <div className={styles.coverImageWrapper}>
-              <img
-                src={project.coverImage || project.image}
-                alt={project.title}
-                loading="lazy"
-              />
-            </div>
-
-            {/* Overview */}
+            {/* 1. PROJECT OVERVIEW (ABOVE GALLERY) */}
             <section className={styles.section}>
               <h3 className={styles.sectionTitle}>Project Overview</h3>
-              <p className={styles.description}>
-                {project.description || project.summary}
-              </p>
+              <p className={styles.description}>{shortOverview}</p>
             </section>
 
-            {/* Dynamic Specifications */}
-            {project.specifications && project.specifications.length > 0 && (
+            {/* 2. PROJECT GALLERY (IN MIDDLE) */}
+            {galleryList.length > 0 && (
               <section className={styles.section}>
-                <h3 className={styles.sectionTitle}>Technical Specifications</h3>
-                <dl className={styles.specGrid}>
-                  {project.specifications.map((spec, i) => (
-                    <div key={i} className={styles.specCard}>
-                      <dt className={styles.specLabel}>{spec.label}</dt>
-                      <dd className={styles.specValue}>{spec.value}</dd>
-                    </div>
-                  ))}
-                </dl>
+                <h3 className={styles.sectionTitle}>
+                  Project Gallery ({galleryList.length} Photos)
+                </h3>
+                <ProjectGallery gallery={galleryList} title={project.title} />
               </section>
             )}
 
-            {/* Gallery Grid */}
-            {project.gallery && project.gallery.length > 0 && (
+            {/* 3. DETAILED DESCRIPTION (BELOW GALLERY) */}
+            {detailedDescription && (
               <section className={styles.section}>
-                <h3 className={styles.sectionTitle}>Gallery ({project.gallery.length} Images)</h3>
-                <div className={styles.galleryGrid}>
-                  {project.gallery.map((img, i) => (
-                    <div key={i} className={styles.galleryItem}>
-                      <img src={img.url || img} alt={img.caption || `Gallery ${i + 1}`} loading="lazy" />
-                      {img.caption && <span className={styles.galleryCaption}>{img.caption}</span>}
-                    </div>
-                  ))}
-                </div>
+                <h3 className={styles.sectionTitle}>Detailed Description</h3>
+                <p className={styles.description}>{detailedDescription}</p>
               </section>
             )}
 
-            {/* Deliverables */}
+            {/* 4. KEY DELIVERABLES */}
             <section className={styles.section}>
               <h3 className={styles.sectionTitle}>Key Deliverables</h3>
               <ul className={styles.deliverablesList}>
-                <li>
-                  <CheckCircle2 size={16} className={styles.checkIcon} />
-                  <span>Executed in strict compliance with structural engineering standards.</span>
-                </li>
-                <li>
-                  <CheckCircle2 size={16} className={styles.checkIcon} />
-                  <span>Rigorous site safety and material testing protocols enforced.</span>
-                </li>
-                <li>
-                  <CheckCircle2 size={16} className={styles.checkIcon} />
-                  <span>On-time project delivery with full documentation handoff.</span>
-                </li>
+                {projectDeliverables.map((item, idx) => (
+                  <li key={idx}>
+                    <FaCheckCircle className={styles.checkIcon} />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </section>
           </div>

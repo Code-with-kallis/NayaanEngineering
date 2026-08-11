@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import {
   FaSquare,
@@ -17,9 +16,6 @@ import {
   FaMapMarkerAlt,
   FaClock,
   FaArrowRight,
-  FaTimes,
-  FaShareAlt,
-  FaCheck,
   FaChevronLeft,
   FaChevronRight,
   FaRegCalendarCheck,
@@ -27,7 +23,9 @@ import {
 } from "react-icons/fa";
 import Hero from "../../components/home/Hero";
 import ContactForm from "../../components/common/ContactForm/ContactForm";
-import { PROJECTS_DATA } from "../../data/projects";
+import ProjectDrawer from "../../components/projects/ProjectDrawer";
+import { supabase } from "../../lib/supabaseClient";
+import { PROJECTS_DATA as fallbackProjects } from "../../data/projects";
 import { SERVICES_DATA } from "../../data/services";
 import styles from "./Home.module.css";
 
@@ -90,12 +88,53 @@ const PROCESS_STEPS = [
 ];
 
 const Home = () => {
+  const [projects, setProjects] = useState([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [copied, setCopied] = useState(false);
-  const copyTimerRef = useRef(null);
+  
   const servicesScrollRef = useRef(null);
 
-  const featuredProjects = PROJECTS_DATA.slice(0, 3);
+  // Fetch Live Featured Projects from Supabase
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const { data, error } = await supabase
+          .from("projects")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          const formatted = data.map((item) => ({
+            id: item.id,
+            title: item.title,
+            slug: item.slug,
+            category: item.category,
+            location: item.location,
+            duration: item.duration,
+            summary: item.summary,
+            deliverables: item.deliverables || [],
+            description: item.description,
+            coverImage: item.cover_image,
+            galleryImages: item.gallery_images || [],
+          }));
+          setProjects(formatted);
+        } else {
+          setProjects(fallbackProjects);
+        }
+      } catch (err) {
+        console.error("Error loading live projects on Home:", err);
+        setProjects(fallbackProjects);
+      } finally {
+        setLoadingProjects(false);
+      }
+    }
+
+    loadProjects();
+  }, []);
+
+  const featuredProjects = projects.slice(0, 3);
 
   // Smooth Scroll Services Track
   const scrollServices = (direction) => {
@@ -108,11 +147,13 @@ const Home = () => {
     }
   };
 
+  // Sync state with URL Hash (#project-slug)
   useEffect(() => {
+    if (projects.length === 0) return;
     const handleHashChange = () => {
       const hash = window.location.hash.replace("#", "");
       if (hash) {
-        const found = PROJECTS_DATA.find((p) => p.slug === hash || String(p.id) === hash);
+        const found = projects.find((p) => p.slug === hash || String(p.id) === hash);
         if (found) setSelectedProject(found);
       } else {
         setSelectedProject(null);
@@ -122,18 +163,7 @@ const Home = () => {
     handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
-
-  useEffect(() => {
-    if (selectedProject) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [selectedProject]);
+  }, [projects]);
 
   const openProjectModal = (project) => {
     setSelectedProject(project);
@@ -148,43 +178,20 @@ const Home = () => {
   };
 
   const currentModalIndex = selectedProject
-    ? PROJECTS_DATA.findIndex((p) => (p.slug || p.id) === (selectedProject.slug || selectedProject.id))
+    ? projects.findIndex((p) => (p.slug || p.id) === (selectedProject.slug || selectedProject.id))
     : 0;
 
   const handleNextProject = useCallback(() => {
-    if (PROJECTS_DATA.length === 0) return;
-    const nextIdx = (currentModalIndex + 1) % PROJECTS_DATA.length;
-    openProjectModal(PROJECTS_DATA[nextIdx]);
-  }, [currentModalIndex]);
+    if (projects.length === 0) return;
+    const nextIdx = (currentModalIndex + 1) % projects.length;
+    openProjectModal(projects[nextIdx]);
+  }, [currentModalIndex, projects]);
 
   const handlePrevProject = useCallback(() => {
-    if (PROJECTS_DATA.length === 0) return;
-    const prevIdx = (currentModalIndex - 1 + PROJECTS_DATA.length) % PROJECTS_DATA.length;
-    openProjectModal(PROJECTS_DATA[prevIdx]);
-  }, [currentModalIndex]);
-
-  useEffect(() => {
-    if (!selectedProject) return;
-
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") closeProjectModal();
-      if (e.key === "ArrowLeft") handlePrevProject();
-      if (e.key === "ArrowRight") handleNextProject();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedProject, handleNextProject, handlePrevProject]);
-
-  const handleCopyLink = () => {
-    if (!selectedProject) return;
-    const shareableUrl = `${window.location.origin}${window.location.pathname}#${selectedProject.slug}`;
-    navigator.clipboard.writeText(shareableUrl);
-    setCopied(true);
-
-    clearTimeout(copyTimerRef.current);
-    copyTimerRef.current = setTimeout(() => setCopied(false), 2000);
-  };
+    if (projects.length === 0) return;
+    const prevIdx = (currentModalIndex - 1 + projects.length) % projects.length;
+    openProjectModal(projects[prevIdx]);
+  }, [currentModalIndex, projects]);
 
   return (
     <>
@@ -300,51 +307,60 @@ const Home = () => {
           </div>
         </div>
 
-        <div className={styles.projectGrid}>
-          {featuredProjects.map((project) => (
-            <article
-              key={project.id || project.slug}
-              className={styles.projectCard}
-              onClick={() => openProjectModal(project)}
-            >
-              <div className={styles.cardImageWrapper}>
-                <img
-                  src={project.coverImage || project.image}
-                  alt={project.title}
-                  loading="lazy"
-                />
-              </div>
-              <div className={styles.cardBody}>
-                <h3 className={styles.cardTitle}>{project.title}</h3>
-                <p className={styles.cardSummary}>
-                  {project.summary || project.description}
-                </p>
-
-                <div className={styles.cardMeta}>
-                  <div className={styles.metaItem}>
-                    <FaMapMarkerAlt className={styles.metaIcon} />
-                    <span>{project.location}</span>
-                  </div>
-                  <div className={styles.metaItem}>
-                    <FaClock className={styles.metaIcon} />
-                    <span>{project.duration || project.year}</span>
-                  </div>
-                </div>
-
-                <button
-                  className={styles.viewDetailBtn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openProjectModal(project);
-                  }}
+        {loadingProjects ? (
+          <div style={{ textAlign: "center", padding: "3rem", color: "#64748B" }}>
+            Loading featured work...
+          </div>
+        ) : (
+          <div className={styles.projectGrid}>
+            {featuredProjects.map((project) => {
+              const cover = project.coverImage || project.cover_image || project.image;
+              return (
+                <article
+                  key={project.id || project.slug}
+                  className={styles.projectCard}
+                  onClick={() => openProjectModal(project)}
                 >
-                  <span>View Details</span>
-                  <FaArrowRight className={styles.linkArrow} />
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
+                  <div className={styles.cardImageWrapper}>
+                    <img
+                      src={cover}
+                      alt={project.title}
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className={styles.cardBody}>
+                    <h3 className={styles.cardTitle}>{project.title}</h3>
+                    <p className={styles.cardSummary}>
+                      {project.summary || project.description}
+                    </p>
+
+                    <div className={styles.cardMeta}>
+                      <div className={styles.metaItem}>
+                        <FaMapMarkerAlt className={styles.metaIcon} />
+                        <span>{project.location}</span>
+                      </div>
+                      <div className={styles.metaItem}>
+                        <FaClock className={styles.metaIcon} />
+                        <span>{project.duration || project.year}</span>
+                      </div>
+                    </div>
+
+                    <button
+                      className={styles.viewDetailBtn}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openProjectModal(project);
+                      }}
+                    >
+                      <span>View Details</span>
+                      <FaArrowRight className={styles.linkArrow} />
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
 
         <div className={styles.viewAllWrapper}>
           <Link to="/projects" className={styles.viewAllBtn}>
@@ -551,133 +567,16 @@ const Home = () => {
         subtitle="To request a quote or meet for coffee at our Baramulla office, contact us directly or fill out the form below."
       />
 
-      {/* PROJECT POPUP MODAL DRAWER */}
-      {selectedProject &&
-        createPortal(
-          <div className={styles.drawerOverlay} onClick={closeProjectModal}>
-            <aside
-              className={styles.drawerPanel}
-              onClick={(e) => e.stopPropagation()}
-              role="dialog"
-              aria-modal="true"
-            >
-              <header className={styles.drawerHeader}>
-                <div className={styles.categoryBadge}>
-                  <span>{selectedProject.category || "Engineering"}</span>
-                </div>
-
-                <div className={styles.drawerActions}>
-                  <button
-                    className={styles.iconBtn}
-                    onClick={handleCopyLink}
-                    title="Copy direct project link"
-                  >
-                    {copied ? <FaCheck className={styles.successIcon} /> : <FaShareAlt />}
-                  </button>
-
-                  <div className={styles.divider} />
-
-                  <div className={styles.navGroup}>
-                    <button
-                      className={styles.iconBtn}
-                      onClick={handlePrevProject}
-                      title="Previous project"
-                    >
-                      <FaChevronLeft />
-                    </button>
-                    <span className={styles.navCounter}>
-                      {String(currentModalIndex + 1).padStart(2, "0")} /{" "}
-                      {String(PROJECTS_DATA.length).padStart(2, "0")}
-                    </span>
-                    <button
-                      className={styles.iconBtn}
-                      onClick={handleNextProject}
-                      title="Next project"
-                    >
-                      <FaChevronRight />
-                    </button>
-                  </div>
-
-                  <div className={styles.divider} />
-
-                  <button
-                    className={styles.closeBtn}
-                    onClick={closeProjectModal}
-                    title="Close drawer"
-                  >
-                    <FaTimes />
-                  </button>
-                </div>
-              </header>
-
-              <div className={styles.drawerContent}>
-                <h1 className={styles.drawerTitle}>{selectedProject.title}</h1>
-
-                <div className={styles.drawerMetaRow}>
-                  <div className={styles.drawerMetaItem}>
-                    <FaMapMarkerAlt className={styles.accentIcon} />
-                    <span>{selectedProject.location}</span>
-                  </div>
-                  <div className={styles.drawerMetaItem}>
-                    <FaClock className={styles.accentIcon} />
-                    <span>{selectedProject.duration || selectedProject.year}</span>
-                  </div>
-                </div>
-
-                <div className={styles.drawerCoverWrapper}>
-                  <img
-                    src={selectedProject.coverImage || selectedProject.image}
-                    alt={selectedProject.title}
-                  />
-                </div>
-
-                <section className={styles.drawerSection}>
-                  <h3>Project Overview</h3>
-                  <p>{selectedProject.description || selectedProject.summary}</p>
-                </section>
-
-                {selectedProject.gallery && selectedProject.gallery.length > 0 && (
-                  <section className={styles.drawerSection}>
-                    <h3>Project Gallery ({selectedProject.gallery.length} Images)</h3>
-                    <div className={styles.galleryGrid}>
-                      {selectedProject.gallery.map((img, idx) => (
-                        <div key={idx} className={styles.galleryCard}>
-                          <img
-                            src={img.url || img}
-                            alt={img.caption || `Gallery ${idx + 1}`}
-                            loading="lazy"
-                          />
-                          {img.caption && (
-                            <p className={styles.galleryCaption}>{img.caption}</p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                )}
-
-                <section className={styles.drawerSection}>
-                  <h3>Key Deliverables</h3>
-                  <ul className={styles.deliverablesList}>
-                    <li>
-                      <FaCheckCircle className={styles.checkIcon} />
-                      <span>Full architectural &amp; structural engineering compliance.</span>
-                    </li>
-                    <li>
-                      <FaCheckCircle className={styles.checkIcon} />
-                      <span>On-time execution with continuous site supervision.</span>
-                    </li>
-                    <li>
-                      <FaCheckCircle className={styles.checkIcon} />
-                      <span>High-durability structural material selection.</span>
-                    </li>
-                  </ul>
-                </section>
-              </div>
-            </aside>
-          </div>,
-          document.body
-        )}
+      {/* MODULAR PROJECT POPUP DRAWER */}
+      <ProjectDrawer 
+        isOpen={!!selectedProject}
+        project={selectedProject}
+        onClose={closeProjectModal}
+        onNext={handleNextProject}
+        onPrev={handlePrevProject}
+        currentIndex={currentModalIndex}
+        totalProjects={projects.length}
+      />
     </>
   );
 };

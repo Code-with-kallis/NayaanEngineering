@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { 
   FaHome, 
   FaMapMarkerAlt, 
   FaClock, 
   FaArrowRight, 
-  FaSquare,
-  FaTimes,
-  FaShareAlt,
-  FaCheck,
-  FaChevronLeft,
-  FaChevronRight,
-  FaCheckCircle
+  FaSquare
 } from "react-icons/fa";
-import { PROJECTS_DATA } from "../../data/projects";
+import { supabase } from "../../lib/supabaseClient";
+import { PROJECTS_DATA as fallbackProjects } from "../../data/projects";
+import ProjectDrawer from "../../components/projects/ProjectDrawer";
 import styles from "./Projects.module.css";
 
 const CATEGORIES = [
@@ -28,31 +23,74 @@ const CATEGORIES = [
   "Stadium"
 ];
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 12;
 
 export default function Projects() {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
   const [activePage, setActivePage] = useState(1);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [copied, setCopied] = useState(false);
-  const copyTimerRef = useRef(null);
+  
+  const projectsSectionRef = useRef(null);
 
-  // Filter projects by category
+  // Fetch Live Projects from Supabase
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const { data, error } = await supabase
+          .from("projects")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          const formatted = data.map((item) => ({
+            id: item.id,
+            title: item.title,
+            slug: item.slug,
+            category: item.category,
+            location: item.location,
+            duration: item.duration,
+            summary: item.summary,
+            deliverables: item.deliverables || [],
+            description: item.description,
+            coverImage: item.cover_image,
+            galleryImages: item.gallery_images || [],
+          }));
+          setProjects(formatted);
+        } else {
+          setProjects(fallbackProjects);
+        }
+      } catch (err) {
+        console.error("Error loading live projects:", err);
+        setProjects(fallbackProjects);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProjects();
+  }, []);
+
+  // Category filter
   const filteredProjects = activeCategory === "All"
-    ? PROJECTS_DATA
-    : PROJECTS_DATA.filter(p => p.category.toLowerCase() === activeCategory.toLowerCase());
+    ? projects
+    : projects.filter(p => p.category?.toLowerCase() === activeCategory.toLowerCase());
 
-  // Pagination Math
+  // Pagination calculation
   const totalPages = Math.max(1, Math.ceil(filteredProjects.length / ITEMS_PER_PAGE));
   const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
   const paginatedProjects = filteredProjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   // Sync state with URL Hash (#project-slug)
   useEffect(() => {
+    if (projects.length === 0) return;
     const handleHashChange = () => {
       const hash = window.location.hash.replace("#", "");
       if (hash) {
-        const found = PROJECTS_DATA.find(p => p.slug === hash || String(p.id) === hash);
+        const found = projects.find(p => p.slug === hash || String(p.id) === hash);
         if (found) setSelectedProject(found);
       } else {
         setSelectedProject(null);
@@ -62,19 +100,7 @@ export default function Projects() {
     handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
-
-  // Lock body scroll when modal is active
-  useEffect(() => {
-    if (selectedProject) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [selectedProject]);
+  }, [projects]);
 
   const openProjectModal = (project) => {
     setSelectedProject(project);
@@ -88,18 +114,28 @@ export default function Projects() {
     }
   };
 
+  const scrollToProjectsTop = () => {
+    if (projectsSectionRef.current) {
+      projectsSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   const handleFilter = (category) => {
     setActiveCategory(category);
     setActivePage(1);
+    scrollToProjectsTop();
   };
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setActivePage(page);
+      scrollToProjectsTop();
     }
   };
 
-  // Drawer Next/Prev Navigation
+  // Drawer Navigation
   const currentModalIndex = selectedProject 
     ? filteredProjects.findIndex(p => (p.slug || p.id) === (selectedProject.slug || selectedProject.id))
     : 0;
@@ -116,33 +152,9 @@ export default function Projects() {
     openProjectModal(filteredProjects[prevIdx]);
   }, [currentModalIndex, filteredProjects]);
 
-  // Keyboard navigation for Modal
-  useEffect(() => {
-    if (!selectedProject) return;
-
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") closeProjectModal();
-      if (e.key === "ArrowLeft") handlePrevProject();
-      if (e.key === "ArrowRight") handleNextProject();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedProject, handleNextProject, handlePrevProject]);
-
-  const handleCopyLink = () => {
-    if (!selectedProject) return;
-    const shareableUrl = `${window.location.origin}${window.location.pathname}#${selectedProject.slug}`;
-    navigator.clipboard.writeText(shareableUrl);
-    setCopied(true);
-
-    clearTimeout(copyTimerRef.current);
-    copyTimerRef.current = setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <div className={styles.pageWrapper}>
-      {/* ================= HERO SECTION ================= */}
+      {/* HERO SECTION */}
       <section className={styles.heroSection}>
         <div className={styles.heroLeftCard}>
           <div className={`${styles.breadcrumb} ${styles.animateSlideLeft} ${styles.delay1}`}>
@@ -164,8 +176,7 @@ export default function Projects() {
           <p className={`${styles.heroText} ${styles.animateSlideLeft} ${styles.delay3}`}>
             Every project we complete is a reflection of our commitment to quality,
             precision, and client satisfaction. At Nayaab Engineering Innovations, we
-            take pride in transforming ideas into built realities — from custom residential
-            builds to structural engineering solutions.
+            take pride in transforming ideas into built realities.
           </p>
 
           <Link to="/contact" className={`${styles.heroBtn} ${styles.animateSlideLeft} ${styles.delay4}`}>
@@ -173,33 +184,23 @@ export default function Projects() {
           </Link>
         </div>
 
-        {/* Right Chamfered Image Composition */}
         <div className={styles.heroRightGrid}>
           <div className={styles.heroImageMain}>
-            <img 
-              src="/assets/projects/proj-04.webp" 
-              alt="Engineers on site" 
-            />
+            <img src="/assets/projects/proj-04.webp" alt="Engineers on site" />
           </div>
           <div className={styles.heroSubGrid}>
             <div className={styles.heroImageSub1}>
-              <img 
-                src="/assets/projects/hero/hero-01.webp" 
-                alt="Skyscraper architecture" 
-              />
+              <img src="/assets/projects/hero/hero-01.webp" alt="Skyscraper architecture" />
             </div>
             <div className={styles.heroImageSub2}>
-              <img 
-                src="/assets/projects/hero/hero-02.webp" 
-                alt="Construction site detailing" 
-              />
+              <img src="/assets/projects/hero/hero-02.webp" alt="Construction site detailing" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ================= COMPLETED PROJECTS GRID SECTION ================= */}
-      <section className={styles.projectsSection}>
+      {/* PROJECTS GRID SECTION */}
+      <section className={styles.projectsSection} ref={projectsSectionRef}>
         <div className={styles.sectionTagRow}>
           <FaSquare className={styles.tagSquareIcon} />
           <span>See all Projects</span>
@@ -210,7 +211,7 @@ export default function Projects() {
             Discover Our Completed<br />Projects
           </h2>
           <p className={styles.sectionDescription}>
-            Our portfolio website is currently under active development. Complete project details and specifications will be published shortly.
+            Browse through our portfolio of engineering, structural design, and turnkey construction developments.
           </p>
         </div>
 
@@ -227,48 +228,59 @@ export default function Projects() {
           ))}
         </div>
 
-        {/* Project Cards Grid */}
-        <div className={styles.grid}>
-          {paginatedProjects.map((project) => (
-            <article 
-              key={project.id || project.slug} 
-              className={styles.projectCard}
-              onClick={() => openProjectModal(project)}
-            >
-              <div className={styles.cardImageWrapper}>
-                <img src={project.coverImage || project.image} alt={project.title} loading="lazy" />
-              </div>
-              <div className={styles.cardBody}>
-                <h3 className={styles.cardTitle}>{project.title}</h3>
-                <p className={styles.cardSummary}>{project.summary || project.description}</p>
-
-                <div className={styles.cardMeta}>
-                  <div className={styles.metaItem}>
-                    <FaMapMarkerAlt className={styles.metaIcon} />
-                    <span>{project.location}</span>
-                  </div>
-                  <div className={styles.metaItem}>
-                    <FaClock className={styles.metaIcon} />
-                    <span>{project.duration || project.year}</span>
-                  </div>
-                </div>
-
-                <button 
-                  className={styles.viewDetailBtn}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openProjectModal(project);
-                  }}
+        {/* Grid Cards */}
+        {loading ? (
+          <div style={{ textAlign: "center", padding: "3rem", color: "#64748B" }}>
+            Loading live portfolio...
+          </div>
+        ) : (
+          <div className={styles.grid}>
+            {paginatedProjects.map((project) => {
+              const cover = project.coverImage || project.cover_image || project.image;
+              return (
+                <article 
+                  key={project.id || project.slug} 
+                  className={styles.projectCard}
+                  onClick={() => openProjectModal(project)}
                 >
-                  <span>View More</span>
-                  <FaArrowRight className={styles.linkArrow} />
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
+                  <div className={styles.cardImageWrapper}>
+                    <img src={cover} alt={project.title} loading="lazy" />
+                  </div>
+                  <div className={styles.cardBody}>
+                    <h3 className={styles.cardTitle}>{project.title}</h3>
+                    <p className={styles.cardSummary}>{project.summary || project.description}</p>
 
-        {/* Dynamic Pagination Controls */}
+                    <div className={styles.cardMeta}>
+                      <div className={styles.metaItem}>
+                        <FaMapMarkerAlt className={styles.metaIcon} />
+                        <span>{project.location}</span>
+                      </div>
+                      {project.duration && (
+                        <div className={styles.metaItem}>
+                          <FaClock className={styles.metaIcon} />
+                          <span>{project.duration}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <button 
+                      className={styles.viewDetailBtn}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openProjectModal(project);
+                      }}
+                    >
+                      <span>View More</span>
+                      <FaArrowRight className={styles.linkArrow} />
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Pagination Controls */}
         <div className={styles.pagination}>
           <button 
             className={styles.pageBtn} 
@@ -296,134 +308,16 @@ export default function Projects() {
         </div>
       </section>
 
-      {/* ================= PROJECT POPUP MODAL DRAWER ================= */}
-      {selectedProject && createPortal(
-        <div className={styles.drawerOverlay} onClick={closeProjectModal}>
-          <aside 
-            className={styles.drawerPanel} 
-            onClick={(e) => e.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-          >
-            {/* Top Navigation Bar */}
-            <header className={styles.drawerHeader}>
-              <div className={styles.categoryBadge}>
-                <span>{selectedProject.category || "Engineering"}</span>
-              </div>
-
-              <div className={styles.drawerActions}>
-                <button 
-                  className={styles.iconBtn} 
-                  onClick={handleCopyLink}
-                  title="Copy direct project link"
-                >
-                  {copied ? <FaCheck className={styles.successIcon} /> : <FaShareAlt />}
-                </button>
-
-                <div className={styles.divider} />
-
-                <div className={styles.navGroup}>
-                  <button className={styles.iconBtn} onClick={handlePrevProject} title="Previous project">
-                    <FaChevronLeft />
-                  </button>
-                  <span className={styles.navCounter}>
-                    {String(currentModalIndex + 1).padStart(2, "0")} / {String(filteredProjects.length).padStart(2, "0")}
-                  </span>
-                  <button className={styles.iconBtn} onClick={handleNextProject} title="Next project">
-                    <FaChevronRight />
-                  </button>
-                </div>
-
-                <div className={styles.divider} />
-
-                <button className={styles.closeBtn} onClick={closeProjectModal} title="Close drawer">
-                  <FaTimes />
-                </button>
-              </div>
-            </header>
-
-            {/* Scrollable Content Body */}
-            <div className={styles.drawerContent}>
-              <h1 className={styles.drawerTitle}>{selectedProject.title}</h1>
-
-              <div className={styles.drawerMetaRow}>
-                <div className={styles.drawerMetaItem}>
-                  <FaMapMarkerAlt className={styles.accentIcon} />
-                  <span>{selectedProject.location}</span>
-                </div>
-                <div className={styles.drawerMetaItem}>
-                  <FaClock className={styles.accentIcon} />
-                  <span>{selectedProject.duration || selectedProject.year}</span>
-                </div>
-              </div>
-
-              {/* Cover Image */}
-              <div className={styles.drawerCoverWrapper}>
-                <img 
-                  src={selectedProject.coverImage || selectedProject.image} 
-                  alt={selectedProject.title} 
-                />
-              </div>
-
-              {/* Overview */}
-              <section className={styles.drawerSection}>
-                <h3>Project Overview</h3>
-                <p>{selectedProject.description || selectedProject.summary}</p>
-              </section>
-
-              {/* Specifications */}
-              {selectedProject.specifications && selectedProject.specifications.length > 0 && (
-                <section className={styles.drawerSection}>
-                  <h3>Technical Specifications</h3>
-                  <div className={styles.specGrid}>
-                    {selectedProject.specifications.map((spec, idx) => (
-                      <div key={idx} className={styles.specCard}>
-                        <span className={styles.specLabel}>{spec.label}</span>
-                        <span className={styles.specValue}>{spec.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* Multi-Image Gallery */}
-              {selectedProject.gallery && selectedProject.gallery.length > 0 && (
-                <section className={styles.drawerSection}>
-                  <h3>Project Gallery ({selectedProject.gallery.length} Images)</h3>
-                  <div className={styles.galleryGrid}>
-                    {selectedProject.gallery.map((img, idx) => (
-                      <div key={idx} className={styles.galleryCard}>
-                        <img src={img.url || img} alt={img.caption || `Gallery ${idx + 1}`} loading="lazy" />
-                        {img.caption && <p className={styles.galleryCaption}>{img.caption}</p>}
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* Deliverables */}
-              <section className={styles.drawerSection}>
-                <h3>Key Deliverables</h3>
-                <ul className={styles.deliverablesList}>
-                  <li>
-                    <FaCheckCircle className={styles.checkIcon} />
-                    <span>Full architectural &amp; structural engineering compliance.</span>
-                  </li>
-                  <li>
-                    <FaCheckCircle className={styles.checkIcon} />
-                    <span>On-time execution with continuous site supervision.</span>
-                  </li>
-                  <li>
-                    <FaCheckCircle className={styles.checkIcon} />
-                    <span>High-durability structural material selection.</span>
-                  </li>
-                </ul>
-              </section>
-            </div>
-          </aside>
-        </div>,
-        document.body
-      )}
+      {/* MODULAR POPUP DRAWER */}
+      <ProjectDrawer 
+        isOpen={!!selectedProject}
+        project={selectedProject}
+        onClose={closeProjectModal}
+        onNext={handleNextProject}
+        onPrev={handlePrevProject}
+        currentIndex={currentModalIndex}
+        totalProjects={filteredProjects.length}
+      />
     </div>
   );
 }

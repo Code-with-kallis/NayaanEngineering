@@ -1,51 +1,109 @@
-// src/components/projects/ProjectGallery.jsx
-import React, { useState } from 'react';
-import styles from './ProjectGallery.module.css';
+import React, { useState, useEffect } from "react";
+import styles from "./ProjectGallery.module.css";
 
-export default function ProjectGallery({ gallery, title }) {
+export default function ProjectGallery({ gallery = [], title = "" }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
+  // Close lightbox on Escape key
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setIsLightboxOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isLightboxOpen]);
+
   if (!gallery || gallery.length === 0) return null;
 
-  const currentImage = gallery[selectedIndex];
+  // Normalize string URLs, Cloudflare R2 links, or object formats
+  const normalizedGallery = gallery.map((item, idx) => {
+    if (typeof item === "string") {
+      return { 
+        url: item, 
+        alt: `${title || "Project Image"} - Photo ${idx + 1}`,
+        caption: ""
+      };
+    }
+    return { 
+      url: item.url || item.src || item, 
+      alt: item.alt || `${title || "Project Image"} - Photo ${idx + 1}`,
+      caption: item.caption || ""
+    };
+  });
+
+  const currentImage = normalizedGallery[selectedIndex] || normalizedGallery[0];
 
   return (
     <div className={styles.galleryWrapper}>
-      {/* Featured Main Display */}
-      <div className={styles.mainDisplay} onClick={() => setIsLightboxOpen(true)}>
+      {/* Main Display Box */}
+      <div 
+        className={styles.mainDisplay} 
+        onClick={() => setIsLightboxOpen(true)}
+        role="button"
+        tabIndex={0}
+        aria-label="Click to enlarge image"
+      >
         <img 
           src={currentImage.url} 
-          alt={currentImage.alt || title} 
+          alt={currentImage.alt} 
           loading="lazy" 
           className={styles.mainImage} 
         />
         <div className={styles.zoomOverlay}>
-          <span>Click to Enlarge ({selectedIndex + 1} / {gallery.length})</span>
+          <span>Click to Enlarge ({selectedIndex + 1} / {normalizedGallery.length})</span>
         </div>
       </div>
-      <p className={styles.caption}>{currentImage.caption}</p>
+
+      {currentImage.caption && (
+        <p className={styles.caption}>{currentImage.caption}</p>
+      )}
 
       {/* Thumbnail Bar */}
-      <div className={styles.thumbnailGrid}>
-        {gallery.map((img, idx) => (
-          <button
-            key={idx}
-            className={`${styles.thumbButton} ${idx === selectedIndex ? styles.activeThumb : ''}`}
-            onClick={() => setSelectedIndex(idx)}
-            aria-label={`View image ${idx + 1}`}
-          >
-            <img src={img.url} alt={img.alt || `Thumbnail ${idx + 1}`} loading="lazy" />
-          </button>
-        ))}
-      </div>
+      {normalizedGallery.length > 1 && (
+        <div className={styles.thumbnailGrid}>
+          {normalizedGallery.map((img, idx) => (
+            <button
+              key={idx}
+              type="button"
+              className={`${styles.thumbButton} ${idx === selectedIndex ? styles.activeThumb : ""}`}
+              onClick={() => setSelectedIndex(idx)}
+              aria-label={`View photo ${idx + 1}`}
+            >
+              <img src={img.url} alt={img.alt} loading="lazy" />
+            </button>
+          ))}
+        </div>
+      )}
 
-      {/* Lightbox Modal */}
+      {/* Fullscreen Lightbox Modal */}
       {isLightboxOpen && (
-        <div className={styles.lightbox} onClick={() => setIsLightboxOpen(false)}>
-          <button className={styles.closeBtn} onClick={() => setIsLightboxOpen(false)}>&times;</button>
-          <img src={currentImage.url} alt={currentImage.alt} className={styles.lightboxImage} />
-          <p className={styles.lightboxCaption}>{currentImage.caption}</p>
+        <div 
+          className={styles.lightbox} 
+          onClick={() => setIsLightboxOpen(false)} 
+          role="dialog" 
+          aria-modal="true"
+        >
+          <button 
+            type="button" 
+            className={styles.closeBtn} 
+            onClick={() => setIsLightboxOpen(false)}
+            aria-label="Close fullscreen view"
+          >
+            &times;
+          </button>
+          <img 
+            src={currentImage.url} 
+            alt={currentImage.alt} 
+            className={styles.lightboxImage} 
+            onClick={(e) => e.stopPropagation()}
+          />
+          {currentImage.caption && (
+            <p className={styles.lightboxCaption} onClick={(e) => e.stopPropagation()}>
+              {currentImage.caption}
+            </p>
+          )}
         </div>
       )}
     </div>
