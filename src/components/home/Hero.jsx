@@ -77,7 +77,15 @@ const ScrollIndicator = () => (
 
 const VideoBackground = ({ videoRef }) => (
   <div className={styles.videoContainer}>
-    <video ref={videoRef} muted playsInline aria-hidden="true">
+    <video
+      ref={videoRef}
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      aria-hidden="true"
+    >
       <source src={VIDEO_SRC} type="video/mp4" />
     </video>
     <div className={styles.videoOverlay} />
@@ -91,7 +99,9 @@ const Hero = () => {
     const video = videoRef.current;
     if (!video) return;
 
-    video.currentTime = 0;
+    // Explicitly set DOM properties to bypass Safari/iOS autoplay restrictions
+    video.muted = true;
+    video.defaultMuted = true;
 
     const playVideo = async () => {
       try {
@@ -102,16 +112,6 @@ const Hero = () => {
     };
 
     playVideo();
-
-    const handleEnded = () => {
-      console.log("Hero background video reached its last frame.");
-    };
-
-    video.addEventListener("ended", handleEnded);
-
-    return () => {
-      video.removeEventListener("ended", handleEnded);
-    };
   }, []);
 
   return (
