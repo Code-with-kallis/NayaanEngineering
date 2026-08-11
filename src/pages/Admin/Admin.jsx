@@ -347,7 +347,7 @@ export default function Admin() {
     });
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     if (!coverFile && !existingCoverUrl) {
       showAlert("Missing Cover Photo", "Please select a main cover photo for the project.");
@@ -367,11 +367,17 @@ export default function Admin() {
       const uniqueSuffix = Date.now().toString().slice(-4);
 
       let finalCoverUrl = existingCoverUrl;
+      
+      // 1. Delete old cover image from Cloudflare R2 if a new cover photo is uploaded
       if (coverFile) {
+        if (existingCoverUrl) {
+          await deleteFromCloudflareR2(existingCoverUrl);
+        }
         const coverFileName = `${titleSlug}-cover-${uniqueSuffix}`;
         finalCoverUrl = await uploadToCloudflareR2(coverFile, coverFileName);
       }
 
+      // 2. Upload new gallery files
       const newUploadedGalleryUrls = [];
       for (let i = 0; i < galleryFiles.length; i++) {
         const galleryFileName = `${titleSlug}-gallery-${i + 1}-${uniqueSuffix}`;
@@ -391,6 +397,17 @@ export default function Admin() {
       const slug = `${titleSlug}-${uniqueSuffix}`;
 
       if (editingId) {
+        // 3. Delete removed gallery images from Cloudflare R2
+        const originalProject = projectsList.find((p) => p.id === editingId);
+        if (originalProject && Array.isArray(originalProject.gallery_images)) {
+          const removedGalleryUrls = originalProject.gallery_images.filter(
+            (url) => !existingGalleryUrls.includes(url)
+          );
+          for (const url of removedGalleryUrls) {
+            await deleteFromCloudflareR2(url);
+          }
+        }
+
         const { error: updateError } = await supabase
           .from("projects")
           .update({
@@ -407,7 +424,7 @@ export default function Admin() {
           .eq("id", editingId);
 
         if (updateError) throw updateError;
-        setMessage("Project updated successfully!");
+        setMessage("Project updated successfully and old images deleted from R2!");
       } else {
         const { error: insertError } = await supabase
           .from("projects")
