@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Clean NEi Monogram Favicons -->
+    <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png" />
@@ -13,11 +13,11 @@
 
     <title>Nayaab Engineering Innovations Pvt. Ltd.</title>
 
-    <!-- Referrer & Security -->
+    <!-- Security Tags -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- Content Security Policy -->
+    <!-- Updated Content Security Policy (Allowing Google Maps iFrames) -->
     <meta
       http-equiv="Content-Security-Policy"
       content="
@@ -28,7 +28,7 @@
         img-src 'self' data: blob: https:;
         media-src 'self' blob: https://*.r2.dev https:;
         connect-src 'self' https://*.supabase.co https://*.r2.dev https:;
-        frame-src 'none';
+        frame-src 'self' https://www.google.com https://maps.google.com;
         object-src 'none';
       "
     />

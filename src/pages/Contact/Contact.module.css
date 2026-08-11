@@ -1,7 +1,7 @@
 /* src/pages/Contact/Contact.module.css
    ==========================================================================
    NAYAAB ENGINEERING INNOVATIONS — CONTACT PAGE STYLES
-   Rectangular Sharp Design, Rust Accent (#B7410E), & Barlow/Inter Typography
+   Rectangular Square Accent Bullet Eyebrow & Rust Theme (#B7410E)
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -74,23 +74,33 @@
   align-items: center;
 }
 
+/* EYEBROW WITH SOLID SQUARE BULLET */
 .contactHeroEyebrow,
 .contactSectionHeadingEyebrow {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 12px;
   font-size: 0.825rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   font-family: 'Inter', sans-serif;
+  color: var(--contact-accent);
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 
-.contactHeroEyebrow {
-  color: var(--contact-accent);
-  padding: 6px 14px;
-  background: var(--contact-accent-soft);
-  border: 1px solid rgba(183, 65, 14, 0.3);
-  border-radius: 0; /* Rectangular no curves */
+.contactHeroEyebrow::before,
+.contactSectionHeadingEyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--contact-accent);
+  border-radius: 0; /* Sharp architectural square */
+  flex-shrink: 0;
 }
 
 .contactHeroTitle {
@@ -124,7 +134,7 @@
 .contactTopMapCard {
   background: var(--contact-surface);
   border: 1px solid var(--contact-border);
-  border-radius: 0; /* Rectangular no curves */
+  border-radius: 0;
   box-shadow: var(--contact-shadow-lg);
   overflow: hidden;
   display: flex;
@@ -173,7 +183,7 @@
   display: inline-flex;
   align-items: center;
   padding: 8px 14px;
-  border-radius: 0; /* Rectangular no curves */
+  border-radius: 0;
   border: 1px solid rgba(17, 17, 17, 0.12);
   background: var(--contact-surface);
   color: var(--contact-navy);
@@ -200,7 +210,7 @@
   min-height: 48px;
   padding: 12px 24px;
   border: 1px solid transparent;
-  border-radius: 0; /* Sharp rectangular shape */
+  border-radius: 0;
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
@@ -279,7 +289,7 @@
 
 .contactFaqItem {
   border: 1px solid var(--contact-border);
-  border-radius: 0; /* Rectangular no curves */
+  border-radius: 0;
   background: var(--contact-surface);
 }
 
