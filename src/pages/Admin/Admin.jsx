@@ -602,52 +602,59 @@ export default function Admin() {
             </div>
           ) : (
             <div className={styles.projectsTable}>
-              {projectsList.map((project) => (
-                <div key={project.id} className={styles.projectRow}>
-                  <div className={styles.rowThumb}>
-                    <img src={project.cover_image} alt={project.title} loading="lazy" />
-                  </div>
+              {projectsList.map((project, index) => {
+                // Calculate chronological index (Oldest project = #01)
+                const projectNum = String(projectsList.length - index).padStart(2, "0");
 
-                  <div className={styles.rowInfo}>
-                    <h3>{project.title}</h3>
-                    <div className={styles.rowBadges}>
-                      <span className={styles.badgeCategory}>{project.category}</span>
-                      <span className={styles.badgeLoc}>{project.location}</span>
-                      {project.gallery_images?.length > 0 && (
-                        <span className={styles.badgeGallery}>
-                          <FaImages /> {project.gallery_images.length} Photos
-                        </span>
-                      )}
+                return (
+                  <div key={project.id} className={styles.projectRow}>
+                    <span className={styles.projectIndexBadge}>#{projectNum}</span>
+
+                    <div className={styles.rowThumb}>
+                      <img src={project.cover_image} alt={project.title} loading="lazy" />
+                    </div>
+
+                    <div className={styles.rowInfo}>
+                      <h3>{project.title}</h3>
+                      <div className={styles.rowBadges}>
+                        <span className={styles.badgeCategory}>{project.category}</span>
+                        <span className={styles.badgeLoc}>{project.location}</span>
+                        {project.gallery_images?.length > 0 && (
+                          <span className={styles.badgeGallery}>
+                            <FaImages /> {project.gallery_images.length} Photos
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className={styles.rowActions}>
+                      <a 
+                        href={`/projects#${project.slug}`} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className={styles.viewLiveBtn}
+                        title="View live card"
+                      >
+                        <FaExternalLinkAlt /> <span className={styles.btnText}>View</span>
+                      </a>
+                      <button 
+                        className={styles.editBtn} 
+                        onClick={() => startEditing(project)}
+                        title="Edit project"
+                      >
+                        <FaEdit /> <span className={styles.btnText}>Edit</span>
+                      </button>
+                      <button 
+                        className={styles.deleteBtn} 
+                        onClick={() => handleDelete(project.id, project.title)}
+                        title="Delete project"
+                      >
+                        <FaTrash /> <span className={styles.btnText}>Delete</span>
+                      </button>
                     </div>
                   </div>
-
-                  <div className={styles.rowActions}>
-                    <a 
-                      href={`/projects#${project.slug}`} 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className={styles.viewLiveBtn}
-                      title="View live card"
-                    >
-                      <FaExternalLinkAlt /> <span className={styles.btnText}>View</span>
-                    </a>
-                    <button 
-                      className={styles.editBtn} 
-                      onClick={() => startEditing(project)}
-                      title="Edit project"
-                    >
-                      <FaEdit /> <span className={styles.btnText}>Edit</span>
-                    </button>
-                    <button 
-                      className={styles.deleteBtn} 
-                      onClick={() => handleDelete(project.id, project.title)}
-                      title="Delete project"
-                    >
-                      <FaTrash /> <span className={styles.btnText}>Delete</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </section>
