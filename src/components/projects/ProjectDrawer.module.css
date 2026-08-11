@@ -1,3 +1,5 @@
+/* src/components/projects/ProjectDrawer.module.css */
+
 /* ================= PORTAL WRAPPER & BACKDROP ================= */
 .portalWrapper {
   position: fixed;
@@ -212,6 +214,25 @@
   line-height: 1.65;
   margin: 0;
   white-space: pre-line;
+}
+
+/* ================= CLEAN SIMPLE CASE STUDY TEXT ================= */
+.caseStudyContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem; /* Clean vertical spacing between paragraphs */
+}
+
+.caseStudyPara {
+  color: #334155;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.keyHighlight {
+  color: #0F172A;
+  font-weight: 700;
 }
 
 .deliverablesList {

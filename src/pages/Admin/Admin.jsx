@@ -782,10 +782,13 @@ export default function Admin() {
               </div>
 
               <div className={styles.inputGroup}>
-                <label>Detailed Description (Appears BELOW Gallery)</label>
+                <label>Architectural & Engineering Scope (Appears BELOW Gallery)</label>
+                <small style={{ color: "#B7410E", fontSize: "0.8rem", fontWeight: 600, display: "block", marginBottom: "6px" }}>
+                  💡 Formatting Tip: Text before a colon (:) will automatically appear BOLD! (e.g. Roof System: Details)
+                </small>
                 <textarea
-                  rows="5"
-                  placeholder="Comprehensive description of architectural specs, structural engineering, materials, and execution scope (Appears below gallery)..."
+                  rows="6"
+                  placeholder="Located in Dangiwacha, J&K, this project represents...&#10;&#10;Structural Engineering: Reinforced concrete frame with high load capacity&#10;Roof System: Custom gabled truss alignment for snow shedding&#10;Thermal Insulation: Integrated weather barrier protection"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />

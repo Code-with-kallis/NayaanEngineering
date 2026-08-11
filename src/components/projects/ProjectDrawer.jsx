@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -20,6 +20,36 @@ const DEFAULT_DELIVERABLES = [
   "High-durability structural material selection."
 ];
 
+// Clean Case Study Renderer (Simple text with bold keys and clean paragraph spacing)
+const renderSmartCaseStudy = (content) => {
+  if (!content) return null;
+
+  const lines = content.split("\n").map((l) => l.trim()).filter(Boolean);
+
+  return lines.map((line, idx) => {
+    const cleanLine = line.replace(/^[•\-\*\d+\.]\s*/, "").trim();
+    const colonIndex = cleanLine.indexOf(":");
+
+    // Handle Key: Value pairs cleanly without background cards
+    if (colonIndex !== -1 && colonIndex < 35 && !cleanLine.includes("http")) {
+      const label = cleanLine.slice(0, colonIndex).trim();
+      const value = cleanLine.slice(colonIndex + 1).trim();
+      return (
+        <p key={idx} className={styles.caseStudyPara}>
+          <strong className={styles.keyHighlight}>{label}:</strong> {value}
+        </p>
+      );
+    }
+
+    // Standard Paragraph
+    return (
+      <p key={idx} className={styles.caseStudyPara}>
+        {cleanLine}
+      </p>
+    );
+  });
+};
+
 export default function ProjectDrawer({
   isOpen,
   project,
@@ -30,9 +60,7 @@ export default function ProjectDrawer({
   totalProjects = 1,
 }) {
   const [copied, setCopied] = useState(false);
-  const copyTimerRef = useRef(null);
 
-  // Lock Body Scroll when Drawer is Open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -44,7 +72,6 @@ export default function ProjectDrawer({
     };
   }, [isOpen]);
 
-  // Keyboard Shortcuts (Esc, Left/Right)
   useEffect(() => {
     if (!isOpen) return;
 
@@ -58,15 +85,12 @@ export default function ProjectDrawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose, onNext, onPrev]);
 
-  // Copy Direct Link
   const handleCopyLink = useCallback(() => {
     if (!project) return;
     const shareableUrl = `${window.location.origin}${window.location.pathname}#${project.slug}`;
     navigator.clipboard.writeText(shareableUrl);
     setCopied(true);
-
-    clearTimeout(copyTimerRef.current);
-    copyTimerRef.current = setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), 2000);
   }, [project]);
 
   if (!isOpen || !project) return null;
@@ -74,7 +98,6 @@ export default function ProjectDrawer({
   const coverImageUrl = project.coverImage || project.cover_image || project.image;
   const rawGallery = project.galleryImages || project.gallery_images || project.gallery || [];
   
-  // Ensure Cover Image is included in the Gallery list
   const galleryList = (coverImageUrl && !rawGallery.includes(coverImageUrl))
     ? [coverImageUrl, ...rawGallery]
     : rawGallery;
@@ -91,7 +114,6 @@ export default function ProjectDrawer({
   return createPortal(
     <AnimatePresence>
       <div className={styles.portalWrapper} role="dialog" aria-modal="true">
-        {/* Backdrop Fade */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -101,7 +123,6 @@ export default function ProjectDrawer({
           onClick={onClose}
         />
 
-        {/* Smooth Slide-over Panel */}
         <motion.aside
           initial={{ x: "100%" }}
           animate={{ x: 0 }}
@@ -109,7 +130,6 @@ export default function ProjectDrawer({
           transition={{ type: "spring", damping: 32, stiffness: 300, mass: 0.8 }}
           className={styles.drawerPanel}
         >
-          {/* Sticky Header Bar */}
           <header className={styles.topBar}>
             <div className={styles.badge}>
               <span>{project.category || "Engineering"}</span>
@@ -162,7 +182,6 @@ export default function ProjectDrawer({
             </div>
           </header>
 
-          {/* Scrollable Content Container */}
           <div className={styles.scrollContent}>
             <header className={styles.contentHeader}>
               <h1 className={styles.title}>{project.title}</h1>
@@ -183,13 +202,13 @@ export default function ProjectDrawer({
               </div>
             </header>
 
-            {/* 1. PROJECT OVERVIEW (ABOVE GALLERY) */}
+            {/* 1. PROJECT OVERVIEW */}
             <section className={styles.section}>
               <h3 className={styles.sectionTitle}>Project Overview</h3>
               <p className={styles.description}>{shortOverview}</p>
             </section>
 
-            {/* 2. PROJECT GALLERY (IN MIDDLE) */}
+            {/* 2. GALLERY */}
             {galleryList.length > 0 && (
               <section className={styles.section}>
                 <h3 className={styles.sectionTitle}>
@@ -199,11 +218,13 @@ export default function ProjectDrawer({
               </section>
             )}
 
-            {/* 3. DETAILED DESCRIPTION (BELOW GALLERY) */}
+            {/* 3. CLEAN CASE STUDY */}
             {detailedDescription && (
               <section className={styles.section}>
-                <h3 className={styles.sectionTitle}>Detailed Description</h3>
-                <p className={styles.description}>{detailedDescription}</p>
+                <h3 className={styles.sectionTitle}>Architectural & Engineering Scope</h3>
+                <div className={styles.caseStudyContainer}>
+                  {renderSmartCaseStudy(detailedDescription)}
+                </div>
               </section>
             )}
 
