@@ -25,7 +25,6 @@ function TeamProfile() {
       document.title = `${employee.name} | Official ID Verification | NEIPL`;
       window.scrollTo(0, 0);
 
-      // Simulate official security database check on QR scan
       const timer = setTimeout(() => {
         setIsVerifying(false);
       }, 1000);
@@ -50,13 +49,16 @@ function TeamProfile() {
     skills = [],
   } = employee;
 
-  // 1. INITIAL SECURITY VERIFICATION LOADER SCREEN
+  /* 1. MATCHED BACKGROUND LOADING SCREEN */
   if (isVerifying) {
     return (
       <main className={styles.loadingPage}>
         <div className={styles.loadingCard}>
           <div className={styles.loadingBrand}>
-            <img src={logo} alt="NEIPL Logo" className={styles.loadingLogo} />
+            {/* Pure White Solid Circle for Clear Logo Visibility */}
+            <div className={styles.logoCircleLoading}>
+              <img src={logo} alt="NEIPL Logo" className={styles.loadingLogo} />
+            </div>
             <span className={styles.loadingBrandTitle}>NEIPL SECURITY PORTAL</span>
           </div>
 
@@ -74,7 +76,7 @@ function TeamProfile() {
     );
   }
 
-  // 2. VERIFIED IDENTITY PROFILE VIEW
+  /* 2. VERIFIED PROFILE VIEW */
   return (
     <main id="main" className={styles.profilePage}>
       <div className={styles.container}>
@@ -86,12 +88,14 @@ function TeamProfile() {
           </div>
         </div>
 
-        {/* ID Card Wrapper (Card style on Desktop, Direct Content on Mobile) */}
+        {/* ID Card Wrapper */}
         <div className={styles.idCardContainer}>
           {/* Header Banner */}
           <div className={styles.cardHeader}>
             <div className={styles.brandInfo}>
-              <img src={logo} alt="NEIPL Logo" className={styles.cardLogo} />
+              <div className={styles.logoCircle}>
+                <img src={logo} alt="NEIPL Logo" className={styles.cardLogo} />
+              </div>
               <div>
                 <span className={styles.companyTitle}>NAYAAB ENGINEERING INNOVATIONS PVT LTD</span>
                 <span className={styles.cardSubtitle}>Corporate Identity &amp; Verification Portal</span>
@@ -106,7 +110,7 @@ function TeamProfile() {
 
           {/* Main Credentials Body */}
           <div className={styles.cardBody}>
-            {/* Left/Top Column — Photo & Verification Badges */}
+            {/* Photo & Badges */}
             <div className={styles.photoColumn}>
               <div className={styles.photoWrapper}>
                 <div className={styles.avatarFrame}>
@@ -117,7 +121,6 @@ function TeamProfile() {
                   />
                 </div>
 
-                {/* Status Indicator (Placed Outside Image Frame) */}
                 <div className={styles.statusIndicator}>
                   <span className={styles.statusDot} />
                   <span>STATUS: ACTIVE</span>
@@ -129,7 +132,6 @@ function TeamProfile() {
                 <span className={styles.idMetaValue}>{id?.toUpperCase()}</span>
               </div>
 
-              {/* Essential Verification Data Grid */}
               <div className={styles.verificationDataGrid}>
                 <div className={styles.verMetaItem}>
                   <span className={styles.verMetaLabel}>Gender</span>
@@ -141,7 +143,6 @@ function TeamProfile() {
                 </div>
               </div>
 
-              {/* QR Verification Badge */}
               <div className={styles.qrVerificationBox}>
                 <FaQrcode className={styles.qrIcon} />
                 <div className={styles.qrTextGroup}>
@@ -151,7 +152,7 @@ function TeamProfile() {
               </div>
             </div>
 
-            {/* Right/Bottom Column — Employee Details */}
+            {/* Employee Details */}
             <div className={styles.infoColumn}>
               <div className={styles.personHeader}>
                 <span className={styles.deptBadge}>
@@ -162,7 +163,6 @@ function TeamProfile() {
                 <p className={styles.personDesignation}>{designation}</p>
               </div>
 
-              {/* Official Credentials Detail Table */}
               <div className={styles.credentialsTable}>
                 <div className={styles.credRow}>
                   <span className={styles.credLabel}>
@@ -184,7 +184,6 @@ function TeamProfile() {
                 </div>
               </div>
 
-              {/* Overview Section */}
               <div className={styles.sectionBlock}>
                 <h2 className={styles.sectionHeading}>Professional Overview</h2>
                 <p className={styles.overviewText}>
@@ -193,7 +192,6 @@ function TeamProfile() {
                 </p>
               </div>
 
-              {/* Core Competencies */}
               {skills.length > 0 && (
                 <div className={styles.sectionBlock}>
                   <h2 className={styles.sectionHeading}>Core Competencies &amp; Skills</h2>
@@ -208,7 +206,6 @@ function TeamProfile() {
                 </div>
               )}
 
-              {/* Contact Action & Record Metadata */}
               <div className={styles.actionFooter}>
                 {contact?.email && (
                   <a
@@ -227,7 +224,6 @@ function TeamProfile() {
             </div>
           </div>
 
-          {/* Minimal Text Link Footer */}
           <div className={styles.cardFooter}>
             <a 
               href="https://www.nayaabengineering.com" 
