@@ -1,23 +1,39 @@
-import { useEffect } from "react";
-import { useParams, Navigate, Link } from "react-router-dom";
-import TeamProfileHero from "../../components/team/TeamProfileHero";
-import { getEmployeeById, getAdjacentEmployees } from "../../data/team";
+import { useEffect, useState } from "react";
+import { useParams, Navigate } from "react-router-dom";
+import { 
+  FaShieldAlt, 
+  FaCheckCircle, 
+  FaEnvelope, 
+  FaQrcode,
+  FaBuilding,
+  FaAward,
+  FaLock
+} from "react-icons/fa";
+import { getEmployeeById } from "../../data/team";
+import logo from "/logo-original.png";
 import styles from "./TeamProfile.module.css";
 
 function TeamProfile() {
   const { employeeId } = useParams();
   const employee = getEmployeeById(employeeId);
-  const { previous, next } = getAdjacentEmployees(employeeId);
+  const [isVerifying, setIsVerifying] = useState(true);
 
   useEffect(() => {
     if (employee) {
-      document.title = `${employee.name} | Executive Profile | Nayaab Engineering Innovations`;
+      document.title = `${employee.name} | Official ID Verification | NEIPL`;
       window.scrollTo(0, 0);
+
+      // Simulate official security database check on QR scan
+      const timer = setTimeout(() => {
+        setIsVerifying(false);
+      }, 1200);
+
+      return () => clearTimeout(timer);
     }
   }, [employee]);
 
   if (!employee) {
-    return <Navigate to="/team" replace />;
+    return <Navigate to="/about" replace />;
   }
 
   const {
@@ -27,114 +43,162 @@ function TeamProfile() {
     department,
     contact,
     bio,
+    quote,
+    image,
     skills = [],
   } = employee;
 
+  // 1. INITIAL SECURITY VERIFICATION LOADER SCREEN
+  if (isVerifying) {
+    return (
+      <main className={styles.loadingPage}>
+        <div className={styles.loadingCard}>
+          <div className={styles.loadingBrand}>
+            <img src={logo} alt="NEIPL Logo" className={styles.loadingLogo} />
+            <span className={styles.loadingBrandTitle}>NEIPL SECURITY PORTAL</span>
+          </div>
+
+          <div className={styles.spinnerContainer}>
+            <div className={styles.pulseRing} />
+            <FaLock className={styles.lockIcon} />
+          </div>
+
+          <div className={styles.loadingTextGroup}>
+            <h2 className={styles.loadingTitle}>Verifying Employee Credentials...</h2>
+            <p className={styles.loadingSub}>Authenticating Record ID #{id?.toUpperCase()}</p>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // 2. VERIFIED IDENTITY PROFILE VIEW
   return (
     <main id="main" className={styles.profilePage}>
-      {/* Executive Profile Hero Section */}
-      <TeamProfileHero employee={employee} />
-
-      {/* Main Editorial Layout (2-Column Grid) */}
-      <div className={styles.profileLayout}>
-        {/* Left Primary Content Section */}
-        <div className={styles.profileContent}>
-          {/* Professional Biography */}
-          <section
-            className={styles.profileSection}
-            aria-labelledby="overview-heading"
-          >
-            <h2 id="overview-heading" className={styles.profileSectionTitle}>
-              Professional Overview
-            </h2>
-
-            <p className={styles.profileSectionBody}>
-              {bio ||
-                `${name} serves as ${designation} within ${department} at Nayaab Engineering Innovations, orchestrating operational strategy, structural integrity, and precision site execution.`}
-            </p>
-          </section>
-
-          {/* Technical Skills & Competencies */}
-          {skills.length > 0 && (
-            <section
-              className={styles.profileSection}
-              aria-labelledby="skills-heading"
-            >
-              <h2 id="skills-heading" className={styles.profileSectionTitle}>
-                Core Competencies & Expertise
-              </h2>
-
-              <ul className={styles.profileSkills} role="list">
-                {skills.map((skill) => (
-                  <li key={skill} className={styles.profileSkillsItem}>
-                    {skill}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+      <div className={styles.container}>
+        {/* Top Status Header */}
+        <div className={styles.topNav}>
+          <div className={styles.verificationStatusHeader}>
+            <FaCheckCircle className={styles.statusHeaderIcon} />
+            <span>Official Record Verified</span>
+          </div>
         </div>
 
-        {/* Right Sticky Sidebar Metadata & Navigation Panels */}
-        <aside className={styles.profileSidebar} aria-label="Executive Metadata">
-          {/* Executive Information Panel */}
-          <div className={styles.profilePanel}>
-            <h3 className={styles.profilePanelTitle}>Executive Information</h3>
-            <div className={styles.profileMeta}>
-              <div className={styles.profileMetaRow}>
-                <span className={styles.profileMetaLabel}>Employee ID</span>
-                <span className={styles.profileMetaValue}>{id?.toUpperCase()}</span>
+        {/* ID Card Wrapper (Card style on Desktop, Direct Content on Mobile) */}
+        <div className={styles.idCardContainer}>
+          {/* Header Banner */}
+          <div className={styles.cardHeader}>
+            <div className={styles.brandInfo}>
+              <img src={logo} alt="NEIPL Logo" className={styles.cardLogo} />
+              <div>
+                <span className={styles.companyTitle}>NAYAAB ENGINEERING INNOVATIONS PVT LTD</span>
+                <span className={styles.cardSubtitle}>Corporate Identity &amp; Verification Portal</span>
               </div>
-              <div className={styles.profileMetaRow}>
-                <span className={styles.profileMetaLabel}>Designation</span>
-                <span className={styles.profileMetaValue}>{designation}</span>
-              </div>
-              <div className={styles.profileMetaRow}>
-                <span className={styles.profileMetaLabel}>Department</span>
-                <span className={styles.profileMetaValue}>{department}</span>
-              </div>
-              {contact?.email && (
-                <div className={styles.profileMetaRow}>
-                  <span className={styles.profileMetaLabel}>Official Email</span>
-                  <span className={styles.profileMetaValue}>{contact.email}</span>
-                </div>
-              )}
+            </div>
+
+            <div className={styles.verifiedBadge}>
+              <FaShieldAlt className={styles.badgeIcon} />
+              <span>VERIFIED RECORD</span>
             </div>
           </div>
 
-          {/* Roster Navigation Cycling Panel */}
-          {(previous || next) && (
-            <div className={styles.profilePanel}>
-              <h3 className={styles.profilePanelTitle}>Roster Navigation</h3>
-              <div className={styles.profilePanelList}>
-                {previous && (
-                  <Link
-                    to={`/team/${previous.employeeId}`}
-                    className={styles.profileInfoCard}
-                    style={{ textDecoration: "none", display: "block" }}
-                  >
-                    <span className={styles.profileInfoCardLabel}>
-                      ← Previous Profile
-                    </span>
-                    <p className={styles.profileInfoCardValue}>{previous.name}</p>
-                  </Link>
-                )}
-                {next && (
-                  <Link
-                    to={`/team/${next.employeeId}`}
-                    className={styles.profileInfoCard}
-                    style={{ textDecoration: "none", display: "block" }}
-                  >
-                    <span className={styles.profileInfoCardLabel}>
-                      Next Profile →
-                    </span>
-                    <p className={styles.profileInfoCardValue}>{next.name}</p>
-                  </Link>
-                )}
+          {/* Main Credentials Body */}
+          <div className={styles.cardBody}>
+            {/* Left/Top Column — Avatar & ID Badge Details */}
+            <div className={styles.photoColumn}>
+              <div className={styles.avatarFrame}>
+                <img
+                  src={image || "/images/team/placeholder.jpg"}
+                  alt={name}
+                  className={styles.avatarImage}
+                />
+                <div className={styles.statusIndicator}>
+                  <span className={styles.statusDot} />
+                  <span>ACTIVE</span>
+                </div>
+              </div>
+
+              <div className={styles.idMetaBlock}>
+                <span className={styles.idMetaLabel}>EMPLOYEE ID</span>
+                <span className={styles.idMetaValue}>{id?.toUpperCase()}</span>
+              </div>
+
+              {/* QR Verification Badge */}
+              <div className={styles.qrVerificationBox}>
+                <FaQrcode className={styles.qrIcon} />
+                <div className={styles.qrTextGroup}>
+                  <span className={styles.qrTitle}>Authentic Record</span>
+                  <span className={styles.qrSub}>Verified via Security Portal</span>
+                </div>
               </div>
             </div>
-          )}
-        </aside>
+
+            {/* Right/Bottom Column — Details */}
+            <div className={styles.infoColumn}>
+              <div className={styles.personHeader}>
+                <span className={styles.deptBadge}>
+                  <FaBuilding className={styles.deptIcon} />
+                  {department}
+                </span>
+                <h1 className={styles.personName}>{name}</h1>
+                <p className={styles.personDesignation}>{designation}</p>
+              </div>
+
+              {/* Quote Banner */}
+              {quote && (
+                <div className={styles.quoteBox}>
+                  <p className={styles.quoteText}>“{quote}”</p>
+                </div>
+              )}
+
+              {/* Overview Section */}
+              <div className={styles.sectionBlock}>
+                <h2 className={styles.sectionHeading}>Professional Overview</h2>
+                <p className={styles.overviewText}>
+                  {bio ||
+                    `${name} serves as ${designation} within ${department} at Nayaab Engineering Innovations Pvt. Ltd., leading key technical operations and field execution.`}
+                </p>
+              </div>
+
+              {/* Core Competencies */}
+              {skills.length > 0 && (
+                <div className={styles.sectionBlock}>
+                  <h2 className={styles.sectionHeading}>Core Competencies &amp; Skills</h2>
+                  <div className={styles.skillsList}>
+                    {skills.map((skill) => (
+                      <span key={skill} className={styles.skillChip}>
+                        <FaAward className={styles.skillIcon} />
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Contact Actions */}
+              <div className={styles.actionFooter}>
+                {contact?.email && (
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className={styles.emailBtn}
+                  >
+                    <FaEnvelope />
+                    <span>Send Official Email</span>
+                  </a>
+                )}
+                <div className={styles.recordMeta}>
+                  <span>System Entry: <strong>VERIFIED</strong></span>
+                  <span>RoC: <strong>Jammu &amp; Kashmir</strong></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Security Footer */}
+          <div className={styles.cardFooter}>
+            <span>Official Identity Verification • Nayaab Engineering Innovations Pvt. Ltd.</span>
+          </div>
+        </div>
       </div>
     </main>
   );

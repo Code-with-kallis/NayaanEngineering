@@ -31,11 +31,12 @@ const Navbar = () => {
   const lastScrollY = useRef(0);
   const dropdownRef = useRef(null);
 
-  // Pages with Dark Video/Image Hero backgrounds
-  const isDarkHero = pathname === "/" || pathname === "/team";
+  // Dark Video Hero pages (White Text Navbar)
+  const isDarkHero = pathname === "/";
   
-  // Pages with Light/White Hero backgrounds (includes /services & /services/:slug)
+  // Light Hero pages (Dark Text Navbar for visibility)
   const isLightHero =
+    pathname === "/about" ||
     pathname === "/projects" ||
     pathname === "/contact" ||
     pathname.startsWith("/services");
@@ -204,14 +205,14 @@ const Navbar = () => {
             </NavLink>
 
             <NavLink
-              to="/team"
+              to="/about"
               className={({ isActive }) =>
                 `${styles.navItem} ${isActive ? styles.activeLink : ""}`.trim()
               }
               onClick={closeMenu}
             >
               <FaUsers className={styles.navIcon} aria-hidden="true" />
-              <span>Team</span>
+              <span>About</span>
             </NavLink>
           </nav>
 
@@ -327,14 +328,14 @@ const Navbar = () => {
           </NavLink>
 
           <NavLink
-            to="/team"
+            to="/about"
             className={({ isActive }) =>
               `${styles.navItem} ${isActive ? styles.activeLink : ""}`.trim()
             }
             onClick={closeMenu}
           >
             <FaUsers className={styles.navIcon} aria-hidden="true" />
-            <span>Team</span>
+            <span>About</span>
           </NavLink>
         </div>
 
