@@ -7,7 +7,9 @@ import {
   FaQrcode,
   FaBuilding,
   FaAward,
-  FaLock
+  FaLock,
+  FaUserCheck,
+  FaIdBadge
 } from "react-icons/fa";
 import { getEmployeeById } from "../../data/team";
 import logo from "/logo-original.png";
@@ -26,7 +28,7 @@ function TeamProfile() {
       // Simulate official security database check on QR scan
       const timer = setTimeout(() => {
         setIsVerifying(false);
-      }, 1200);
+      }, 1000);
 
       return () => clearTimeout(timer);
     }
@@ -43,8 +45,8 @@ function TeamProfile() {
     department,
     contact,
     bio,
-    quote,
     image,
+    gender,
     skills = [],
   } = employee;
 
@@ -80,7 +82,7 @@ function TeamProfile() {
         <div className={styles.topNav}>
           <div className={styles.verificationStatusHeader}>
             <FaCheckCircle className={styles.statusHeaderIcon} />
-            <span>Official Record Verified</span>
+            <span>Official Identity Record Verified</span>
           </div>
         </div>
 
@@ -104,17 +106,21 @@ function TeamProfile() {
 
           {/* Main Credentials Body */}
           <div className={styles.cardBody}>
-            {/* Left/Top Column — Avatar & ID Badge Details */}
+            {/* Left/Top Column — Photo & Verification Badges */}
             <div className={styles.photoColumn}>
-              <div className={styles.avatarFrame}>
-                <img
-                  src={image || "/images/team/placeholder.jpg"}
-                  alt={name}
-                  className={styles.avatarImage}
-                />
+              <div className={styles.photoWrapper}>
+                <div className={styles.avatarFrame}>
+                  <img
+                    src={image || "/images/team/placeholder.jpg"}
+                    alt={name}
+                    className={styles.avatarImage}
+                  />
+                </div>
+
+                {/* Status Indicator (Placed Outside Image Frame) */}
                 <div className={styles.statusIndicator}>
                   <span className={styles.statusDot} />
-                  <span>ACTIVE</span>
+                  <span>STATUS: ACTIVE</span>
                 </div>
               </div>
 
@@ -123,17 +129,29 @@ function TeamProfile() {
                 <span className={styles.idMetaValue}>{id?.toUpperCase()}</span>
               </div>
 
+              {/* Essential Verification Data Grid */}
+              <div className={styles.verificationDataGrid}>
+                <div className={styles.verMetaItem}>
+                  <span className={styles.verMetaLabel}>Gender</span>
+                  <span className={styles.verMetaValue}>{gender || "Male"}</span>
+                </div>
+                <div className={styles.verMetaItem}>
+                  <span className={styles.verMetaLabel}>Authority</span>
+                  <span className={styles.verMetaValue}>NEIPL HR / RoC</span>
+                </div>
+              </div>
+
               {/* QR Verification Badge */}
               <div className={styles.qrVerificationBox}>
                 <FaQrcode className={styles.qrIcon} />
                 <div className={styles.qrTextGroup}>
                   <span className={styles.qrTitle}>Authentic Record</span>
-                  <span className={styles.qrSub}>Verified via Security Portal</span>
+                  <span className={styles.qrSub}>Encrypted Security Key Matched</span>
                 </div>
               </div>
             </div>
 
-            {/* Right/Bottom Column — Details */}
+            {/* Right/Bottom Column — Employee Details */}
             <div className={styles.infoColumn}>
               <div className={styles.personHeader}>
                 <span className={styles.deptBadge}>
@@ -144,12 +162,27 @@ function TeamProfile() {
                 <p className={styles.personDesignation}>{designation}</p>
               </div>
 
-              {/* Quote Banner */}
-              {quote && (
-                <div className={styles.quoteBox}>
-                  <p className={styles.quoteText}>“{quote}”</p>
+              {/* Official Credentials Detail Table */}
+              <div className={styles.credentialsTable}>
+                <div className={styles.credRow}>
+                  <span className={styles.credLabel}>
+                    <FaIdBadge className={styles.credIcon} /> System ID
+                  </span>
+                  <span className={styles.credValue}>{id?.toUpperCase()}</span>
                 </div>
-              )}
+                <div className={styles.credRow}>
+                  <span className={styles.credLabel}>
+                    <FaUserCheck className={styles.credIcon} /> Record Type
+                  </span>
+                  <span className={styles.credValue}>Permanent Executive</span>
+                </div>
+                <div className={styles.credRow}>
+                  <span className={styles.credLabel}>
+                    <FaBuilding className={styles.credIcon} /> Registration
+                  </span>
+                  <span className={styles.credValue}>RoC Jammu &amp; Kashmir</span>
+                </div>
+              </div>
 
               {/* Overview Section */}
               <div className={styles.sectionBlock}>
@@ -175,7 +208,7 @@ function TeamProfile() {
                 </div>
               )}
 
-              {/* Contact Actions */}
+              {/* Contact Action & Record Metadata */}
               <div className={styles.actionFooter}>
                 {contact?.email && (
                   <a
@@ -188,15 +221,22 @@ function TeamProfile() {
                 )}
                 <div className={styles.recordMeta}>
                   <span>System Entry: <strong>VERIFIED</strong></span>
-                  <span>RoC: <strong>Jammu &amp; Kashmir</strong></span>
+                  <span>Security Protocol: <strong>NEIPL-SEC-v2</strong></span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Security Footer */}
+          {/* Minimal Text Link Footer */}
           <div className={styles.cardFooter}>
-            <span>Official Identity Verification • Nayaab Engineering Innovations Pvt. Ltd.</span>
+            <a 
+              href="https://www.nayaabengineering.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className={styles.websiteLink}
+            >
+              www.nayaabengineering.com
+            </a>
           </div>
         </div>
       </div>
