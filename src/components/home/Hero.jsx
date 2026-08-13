@@ -7,9 +7,9 @@ const SOCIAL_LINKS = [
   { label: "Instagram", href: "https://www.instagram.com/nayaabengineering/", icon: <FaInstagram /> },
 ];
 
-const VIDEO_SRC = "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/HOME/hero.mp4";
+const DESKTOP_VIDEO_SRC = "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/HOME/hero.mp4";
+const MOBILE_VIDEO_SRC = "/assets/home/hero-mobile.mp4";
 
-// Refined Agency-Grade Text Reveal (Matching site typography)
 const EyebrowTagline = () => {
   const [text, setText] = useState("");
   const fullText = "NAYAAB ENGINEERING";
@@ -95,51 +95,155 @@ const ScrollIndicator = () => (
   </div>
 );
 
-const VideoBackground = ({ videoRef }) => (
+const VideoBackground = ({ videoRef, videoSrc, isMobile }) => (
   <div className={styles.videoContainer}>
     <video
       ref={videoRef}
-      autoPlay
-      loop
+      src={videoSrc}
       muted
       playsInline
+      autoPlay={!isMobile}
+      loop={!isMobile}
       preload="auto"
       aria-hidden="true"
-    >
-      <source src={VIDEO_SRC} type="video/mp4" />
-    </video>
+    />
+    {/* Dark Overlay for Desktop Text Contrast */}
     <div className={styles.videoOverlay} />
   </div>
 );
 
 const Hero = () => {
+  const trackRef = useRef(null);
   const videoRef = useRef(null);
+  const rafIdRef = useRef(null);
+  const targetTimeRef = useRef(0);
+  const isSeekingRef = useRef(false);
+
+  // Responsive video detection (Mobile <= 768px)
+  const [isMobile, setIsMobile] = useState(() => 
+    typeof window !== "undefined" ? window.innerWidth <= 768 : false
+  );
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const handleMediaChange = (e) => setIsMobile(e.matches);
+
+    setIsMobile(mediaQuery.matches);
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleMediaChange);
+    } else {
+      mediaQuery.addListener(handleMediaChange);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", handleMediaChange);
+      } else {
+        mediaQuery.removeListener(handleMediaChange);
+      }
+    };
+  }, []);
+
+  const activeVideoSrc = isMobile ? MOBILE_VIDEO_SRC : DESKTOP_VIDEO_SRC;
+
+  // DESKTOP EFFECT: Autoplay standard looping video
+  useEffect(() => {
+    if (isMobile) return;
+
     const video = videoRef.current;
     if (!video) return;
 
     video.muted = true;
-    video.defaultMuted = true;
+    video.loop = true;
+    
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => console.warn("Desktop video autoplay:", err));
+    }
+  }, [isMobile, activeVideoSrc]);
 
-    const playVideo = async () => {
-      try {
-        await video.play();
-      } catch (error) {
-        console.warn("Autoplay was prevented:", error);
+  // MOBILE EFFECT: Scroll-controlled timeline scrubbing
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const video = videoRef.current;
+    const track = trackRef.current;
+    if (!video || !track) return;
+
+    video.pause();
+    video.muted = true;
+    video.loop = false;
+
+    const renderFrame = () => {
+      if (!video.duration || isNaN(video.duration)) return;
+
+      if (!isSeekingRef.current) {
+        const targetTime = targetTimeRef.current;
+        if (Math.abs(video.currentTime - targetTime) > 0.02) {
+          isSeekingRef.current = true;
+          video.currentTime = targetTime;
+        }
       }
     };
 
-    playVideo();
-  }, []);
+    const handleSeeked = () => {
+      isSeekingRef.current = false;
+      if (Math.abs(video.currentTime - targetTimeRef.current) > 0.02) {
+        renderFrame();
+      }
+    };
+
+    const handleScroll = () => {
+      const rect = track.getBoundingClientRect();
+      const trackHeight = rect.height;
+      const viewportHeight = window.innerHeight;
+      const totalDistance = trackHeight - viewportHeight;
+
+      if (totalDistance <= 0) return;
+
+      const scrollOffset = -rect.top;
+      const progress = Math.max(0, Math.min(1, scrollOffset / totalDistance));
+
+      if (video.duration && !isNaN(video.duration)) {
+        targetTimeRef.current = progress * video.duration;
+        if (!rafIdRef.current) {
+          rafIdRef.current = requestAnimationFrame(() => {
+            renderFrame();
+            rafIdRef.current = null;
+          });
+        }
+      }
+    };
+
+    video.addEventListener("seeked", handleSeeked);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+
+    if (video.readyState >= 1) {
+      handleScroll();
+    } else {
+      video.addEventListener("loadedmetadata", handleScroll, { once: true });
+    }
+
+    return () => {
+      video.removeEventListener("seeked", handleSeeked);
+      video.removeEventListener("loadedmetadata", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
+    };
+  }, [isMobile, activeVideoSrc]);
 
   return (
-    <section className={styles.heroSection} aria-label="Hero">
-      <VideoBackground videoRef={videoRef} />
-      <HeroContent />
-      <HeroFooter />
-      <ScrollIndicator />
-    </section>
+    <div className={styles.heroTrack} ref={trackRef}>
+      <section className={styles.heroSection} aria-label="Hero">
+        <VideoBackground videoRef={videoRef} videoSrc={activeVideoSrc} isMobile={isMobile} />
+        <HeroContent />
+        <HeroFooter />
+        <ScrollIndicator />
+      </section>
+    </div>
   );
 };
 
