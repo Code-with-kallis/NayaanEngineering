@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/layout/Layout/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import Admin from "./pages/Admin/Admin";
@@ -40,6 +41,8 @@ function App() {
         {/* Standalone Admin Route */}
         <Route path="/admin" element={<Admin />} />
       </Routes>
+
+      <Analytics />
     </>
   );
 }
