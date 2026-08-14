@@ -17,9 +17,11 @@ const SOCIAL_LINKS = [
 ];
 
 const DEFAULT_GALLERY_IMAGES = [
-  "assets/team/junaid.jpg",
+      "assets/about/office.webp",
   "assets/team/sajid.jpeg",
-  
+    "assets/team/junaid.jpg",
+
+
 ];
 
 const EyebrowTagline = ({ textToType = "ABOUT NAYAAB ENGINEERING" }) => {

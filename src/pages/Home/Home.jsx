@@ -519,7 +519,7 @@ const Home = () => {
 
         <div className={styles.splitContentGrid}>
           <div className={styles.splitImageCard}>
-            <img src="/assets/team/junaid.jpg" alt="Site Supervision" />
+            <img src="/assets/team/sajid.jpeg" alt="Site Supervision" />
           </div>
 
           <div className={styles.featuresList}>

@@ -1,6 +1,6 @@
 /* src/components/layout/Footer/Footer.module.css
    ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — DARK BRICK EXECUTIVE FOOTER
+   NAYAAB ENGINEERING INNOVATIONS — DARK EXECUTIVE FOOTER
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -8,7 +8,7 @@
 .footer {
   position: relative;
   background-color: #0d0e12;
-  background-image: url("/assets/footer/footer.webp");
+  background-image: url("https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/FOOTER/footer.webp");
   background-size: cover;
   background-position: right bottom;
   background-repeat: no-repeat;
@@ -23,7 +23,25 @@
 }
 
 /* ==========================================================================
-   FOOTER 3-COLUMN GRID (RIGHT SIDE OPEN FOR 3D HOUSE ARTWORK)
+   DESKTOP OVERLAY: Subtle dark gradient behind text, 100% clear over 3D model
+   ========================================================================== */
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(10, 14, 22, 0.72) 0%,
+    rgba(10, 14, 22, 0.55) 40%,
+    rgba(10, 14, 22, 0.20) 70%,
+    transparent 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   FOOTER 3-COLUMN GRID
    ========================================================================== */
 .footerContainer {
   position: relative;
@@ -54,7 +72,7 @@
   align-items: flex-start;
 }
 
-/* SINGLE UNIFIED LOGO BADGE CONTAINER */
+/* LOGO CONTAINER */
 .logoWrapper {
   display: inline-flex;
   align-items: center;
@@ -63,7 +81,7 @@
 }
 
 .footerLogo {
-  height: 95px; /* Clean, natural size for the unified logo image */
+  height: 95px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -216,7 +234,7 @@
 }
 
 /* ==========================================================================
-   SOLID BLACK BOTTOM BAR
+   SOLID BLACK BOTTOM BAR (DESKTOP)
    ========================================================================== */
 .footerBottomBar {
   position: relative;
@@ -245,12 +263,14 @@
   margin: 0;
   font-size: 0.82rem;
   color: #94A3B8;
+  line-height: 1.4;
 }
 
 .devCredit {
   margin: 0;
   font-size: 0.82rem;
   color: #94A3B8;
+  line-height: 1.4;
 }
 
 .devCredit a {
@@ -268,13 +288,14 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 9999px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.16);
   font-size: 0.75rem;
   color: #CBD5E1;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .badgeIcon {
@@ -282,7 +303,7 @@
   font-size: 0.75rem;
 }
 
-/* SCROLL TO TOP BUTTON */
+/* SCROLL TO TOP BUTTON (DESKTOP) */
 .scrollTop {
   position: absolute;
   z-index: 5;
@@ -332,33 +353,71 @@
 
 @media (max-width: 640px) {
   .footer {
-    background-image: url("/assets/footer/footer-mobile.webp");
+    background-image: url("https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/FOOTER/footer-mob.webp");
     background-size: cover;
     background-position: center top;
-    padding-top: 3.5rem;
+    padding-top: 3rem;
+  }
+
+  /* Vertical light gradient on mobile */
+  .footer::before {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 14, 22, 0.72) 0%,
+      rgba(10, 14, 22, 0.55) 50%,
+      rgba(10, 14, 22, 0.82) 100%
+    );
   }
 
   .footerLogo {
-    height: 80px;
+    height: 75px;
   }
 
   .footerContainer {
     grid-template-columns: 1fr;
-    padding-right: clamp(1.25rem, 5vw, 2rem);
-    gap: 2.25rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    gap: 2rem;
   }
 
+  .footerBottomBar {
+    margin-top: 2.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  /* Centered, balanced vertical layout on mobile */
   .bottomContent {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 0.85rem;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    padding-inline: 1.5rem;
   }
 
+  .copyrightText {
+    font-size: 0.78rem;
+  }
+
+  .devBadge {
+    margin: 0.15rem 0;
+  }
+
+  .devCredit {
+    font-size: 0.78rem;
+  }
+
+  /* Mobile floating scroll button */
   .scrollTop {
+    position: fixed;
     right: 1.25rem;
-    bottom: 5.5rem;
-    width: 38px;
-    height: 38px;
+    bottom: 1.5rem;
+    width: 40px;
+    height: 40px;
     font-size: 0.9rem;
+    z-index: 99;
+    border-radius: 50%;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
   }
 }

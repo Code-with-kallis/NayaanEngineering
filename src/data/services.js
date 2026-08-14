@@ -8,7 +8,7 @@ export const SERVICES_DATA = [
     shortDesc: "Custom 3D modeling, modern and traditional building layouts, and specialized Islamic architectural planning.",
     fullDesc: "Our architectural practice bridges classical regional heritage with modern technical design. We deliver complete 2D floor planning, 3D exterior visualization, elevation modeling, and custom layout drafting tailored to high-altitude terrain, sunlight orientation, and valley climate demands.",
     icon: "FaDraftingCompass",
-    coverImage: "/assets/services/architectural-design.webp",
+    coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/architectural-design.webp",
     features: [
       "2D Master Floor Plans & Spatial Allocation",
       "Photorealistic 3D Exterior & Interior Renders",
@@ -43,7 +43,7 @@ export const SERVICES_DATA = [
     shortDesc: "Safe load calculations, structural integrity planning, and complete technical soundness verification.",
     fullDesc: "Engineering safety is the core foundation of every build. We perform comprehensive structural load analysis, design reinforced concrete (RCC) frames, steel trusses, and foundation systems specifically engineered to withstand seismic risk, heavy snow loads, and varied soil bearing capacities.",
     icon: "FaBuilding",
-    coverImage: "/assets/services/structural-engineering.webp",
+    coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/structural-engineering.webp",
     features: [
       "Seismic Zone IV/V Resistance Load Calculations",
       "Reinforced Concrete (RCC) & Foundation Design",
@@ -78,7 +78,7 @@ export const SERVICES_DATA = [
     shortDesc: "End-to-end site execution and management for commercial spaces, residential villas, and guesthouses.",
     fullDesc: "From ground excavation to final key handover, our turnkey construction service manages site procurement, labor supervision, timeline scheduling, and quality assurance. We eliminate client coordination stress by handling all construction phases with disciplined site engineering.",
     icon: "FaHardHat",
-    coverImage: "/assets/services/turnkey-construction.webp",
+    coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/turnkey-construction.webp",
     features: [
       "Complete Site Management & Excavation",
       "RCC Frame Construction & Masonry Build",
@@ -113,7 +113,7 @@ export const SERVICES_DATA = [
     shortDesc: "Custom-made luxury interior layouts and intelligent modular kitchen and wardrobe solutions.",
     fullDesc: "Transforming indoor environments through functional elegance and fine craftsmanship. We design bespoke residential and commercial interiors, including space-saving modular kitchens, custom wardrobes, wall paneling, false ceilings, and ambient lighting concepts.",
     icon: "FaPalette",
-    coverImage: "/assets/services/interior-modular-design.webp",
+    coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/interior-modular-design.webp",
     features: [
       "Bespoke Modular Kitchens & Wardrobes",
       "FALSE Ceiling & Architectural Lighting",
@@ -148,7 +148,7 @@ export const SERVICES_DATA = [
     shortDesc: "Professional advisory and technical assistance with official municipal building permission documentation.",
     fullDesc: "Navigating local municipal compliance and building permits can be time-consuming. We assist clients by preparing municipal sanction drawings, setback clearance reports, floor area ratio (FAR) calculations, and certified engineering documentation needed for municipal approval.",
     icon: "FaClipboardCheck",
-    coverImage: "/assets/services/regulatory-approvals.webp",
+    coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/regulatory-approvals.webp",
     features: [
       "Municipal Sanction & Site Plan Drawings",
       "Setback, Height & FAR Bylaw Compliance",
