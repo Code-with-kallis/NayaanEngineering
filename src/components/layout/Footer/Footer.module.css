@@ -1,52 +1,50 @@
 /* src/components/layout/Footer/Footer.module.css
    ==========================================================================
-   NAYAAB ENGINEERING INNOVATIONS — EXECUTIVE FOOTER STYLES
+   NAYAAB ENGINEERING INNOVATIONS — DARK BRICK EXECUTIVE FOOTER
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 .footer {
   position: relative;
+  background-color: #0d0e12;
   background-image: url("/assets/footer/footer.webp");
   background-size: cover;
-  background-position: center;
+  background-position: right bottom;
   background-repeat: no-repeat;
   color: #FFFFFF;
-  padding-top: 5rem;
-  padding-bottom: 2rem;
+  padding-top: 3.5rem;
+  padding-bottom: 0;
   font-family: 'Inter', sans-serif;
   overflow: hidden;
   width: 100%;
   box-sizing: border-box;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Semi-Transparent Dark Overlay */
-.footerOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(11, 15, 25, 0.96) 0%,
-    rgba(15, 23, 42, 0.94) 60%,
-    rgba(5, 7, 10, 0.98) 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Footer 4-Column Grid */
+/* ==========================================================================
+   FOOTER 3-COLUMN GRID (RIGHT SIDE OPEN FOR 3D HOUSE ARTWORK)
+   ========================================================================== */
 .footerContainer {
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: none;
   margin: 0 auto;
-  padding-inline: clamp(1.25rem, 5vw, 4rem);
+  padding-left: clamp(1.25rem, 4vw, 4rem);
+  padding-right: clamp(18rem, 26vw, 32rem);
   display: grid;
-  grid-template-columns: 1.2fr 1fr 0.8fr 1.1fr;
+  grid-template-columns: 1.4fr 0.9fr 1.3fr;
   gap: 2.5rem;
   box-sizing: border-box;
+}
+
+.footerColumn {
+  width: 100%;
+  box-sizing: border-box;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 /* COMPANY COLUMN */
@@ -54,35 +52,31 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
 }
 
-/* LOGO CONTAINER */
+/* SINGLE UNIFIED LOGO BADGE CONTAINER */
 .logoWrapper {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  background: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  justify-content: flex-start;
   margin-bottom: 1.25rem;
 }
 
 .footerLogo {
-  height: 36px;
+  height: 95px; /* Clean, natural size for the unified logo image */
   width: auto;
   object-fit: contain;
   display: block;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.8));
 }
 
 .companyDescription {
   font-size: 0.875rem;
   line-height: 1.65;
-  color: #94A3B8;
-  max-width: 480px;
+  color: #E2E8F0;
+  max-width: 440px;
   margin: 0 0 1.5rem 0;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95);
 }
 
 /* SOCIAL ICONS */
@@ -99,11 +93,13 @@
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: #FFFFFF;
   text-decoration: none;
   font-size: 0.9rem;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
   transition: all 0.25s ease;
 }
 
@@ -112,36 +108,33 @@
   color: #FFFFFF;
   border-color: #B7410E;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(183, 65, 14, 0.35);
+  box-shadow: 0 6px 18px rgba(183, 65, 14, 0.45);
 }
 
-/* FOOTER COLUMNS & TITLES */
-.footerColumn {
-  width: 100%;
-  box-sizing: border-box;
-}
-
+/* COLUMN TITLES */
 .columnTitle {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #FFFFFF;
   margin: 0 0 1.25rem 0;
   position: relative;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
 }
 
 .columnTitle::after {
   content: "";
   display: block;
-  width: 28px;
-  height: 2px;
+  width: 30px;
+  height: 2.5px;
   background: #B7410E;
   margin-top: 0.4rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* PAGE NAVIGATION & SERVICE LINKS */
+/* PAGE NAVIGATION & LINKS */
 .navLinksList {
   list-style: none;
   padding: 0;
@@ -157,20 +150,23 @@
   gap: 0.5rem;
   color: #CBD5E1;
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 500;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
   transition: all 0.2s ease;
 }
 
 .linkChevron {
   font-size: 0.65rem;
   color: #B7410E;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
   transition: transform 0.2s ease;
 }
 
 .navLinksList a:hover {
   color: #FFFFFF;
   transform: translateX(4px);
+  text-shadow: 0 2px 8px rgba(183, 65, 14, 0.8);
 }
 
 .navLinksList a:hover .linkChevron {
@@ -192,9 +188,10 @@
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   color: #CBD5E1;
   line-height: 1.5;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
   overflow-wrap: anywhere;
   word-break: break-word;
 }
@@ -204,6 +201,7 @@
   color: #B7410E;
   flex-shrink: 0;
   margin-top: 0.15rem;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.9));
 }
 
 .contactList a {
@@ -213,37 +211,56 @@
 }
 
 .contactList a:hover {
-  color: #B7410E;
+  color: #FFFFFF;
+  text-shadow: 0 2px 8px rgba(183, 65, 14, 0.8);
 }
 
-/* FOOTER BOTTOM BAR */
-.footerBottom {
+/* ==========================================================================
+   SOLID BLACK BOTTOM BAR
+   ========================================================================== */
+.footerBottomBar {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: none;
-  margin: 3.5rem auto 0;
+  margin-top: 3.5rem;
+  background: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  box-sizing: border-box;
+}
+
+.bottomContent {
+  width: 100%;
+  margin: 0 auto;
   padding-inline: clamp(1.25rem, 5vw, 4rem);
-  padding-top: 1.5rem;
-  padding-bottom: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  font-size: 0.8rem;
-  color: #64748B;
   box-sizing: border-box;
 }
 
-.footerBottom a {
+.copyrightText {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #94A3B8;
+}
+
+.devCredit {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #94A3B8;
+}
+
+.devCredit a {
   color: #CBD5E1;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.footerBottom a:hover {
+.devCredit a:hover {
   color: #B7410E;
 }
 
@@ -253,10 +270,10 @@
   gap: 0.4rem;
   padding: 4px 12px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   font-size: 0.75rem;
-  color: #94A3B8;
+  color: #CBD5E1;
   font-weight: 500;
 }
 
@@ -268,14 +285,14 @@
 /* SCROLL TO TOP BUTTON */
 .scrollTop {
   position: absolute;
-  z-index: 3;
+  z-index: 5;
   right: 2.5rem;
   bottom: 4.5rem;
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -284,6 +301,7 @@
   font-size: 1rem;
   transition: all 0.25s ease;
   backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
 }
 
 .scrollTop:hover {
@@ -291,34 +309,46 @@
   color: #FFFFFF;
   border-color: #B7410E;
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(183, 65, 14, 0.4);
+  box-shadow: 0 6px 20px rgba(183, 65, 14, 0.6);
 }
 
 /* ==========================================================================
    RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
    ========================================================================== */
+@media (max-width: 1200px) {
+  .footerContainer {
+    padding-right: clamp(14rem, 22vw, 20rem);
+    gap: 1.75rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .footerContainer {
     grid-template-columns: 1fr 1fr;
+    padding-right: clamp(1.25rem, 4vw, 3rem);
     gap: 2.5rem 2rem;
   }
 }
 
 @media (max-width: 640px) {
   .footer {
+    background-image: url("/assets/footer/footer-mobile.webp");
+    background-size: cover;
+    background-position: center top;
     padding-top: 3.5rem;
+  }
+
+  .footerLogo {
+    height: 80px;
   }
 
   .footerContainer {
     grid-template-columns: 1fr;
+    padding-right: clamp(1.25rem, 5vw, 2rem);
     gap: 2.25rem;
   }
 
-  .companyDescription {
-    max-width: 100%;
-  }
-
-  .footerBottom {
+  .bottomContent {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.85rem;
@@ -326,7 +356,7 @@
 
   .scrollTop {
     right: 1.25rem;
-    bottom: 6rem;
+    bottom: 5.5rem;
     width: 38px;
     height: 38px;
     font-size: 0.9rem;
