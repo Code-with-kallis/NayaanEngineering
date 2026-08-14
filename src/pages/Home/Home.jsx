@@ -24,7 +24,9 @@ import { supabase } from "../../lib/supabaseClient";
 import { PROJECTS_DATA as fallbackProjects } from "../../data/projects";
 import styles from "./Home.module.css";
 
+
 const HOUSE_3D_IMAGE = "assets/home/3d-house.png";
+
 
 const highlightItems = [
   {
@@ -48,6 +50,7 @@ const highlightItems = [
     subtitle: "Concept to Turnkey Execution",
   },
 ];
+
 
 const PROCESS_STEPS = [
   {
@@ -76,11 +79,12 @@ const PROCESS_STEPS = [
   },
 ];
 
+
 const Home = () => {
   const [projects, setProjects] = useState([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [selectedProject, setSelectedProject] = useState(null);
-  
+
   const splitSectionRef = useRef(null);
   const isLockedRef = useRef(false);
 
@@ -106,69 +110,58 @@ const Home = () => {
     );
     animatedElements.forEach((el) => observer.observe(el));
 
-    // 2. Single-Scroll Lock from Hero to 3D Showcase
-    const scrollToTarget = (targetTop) => {
-      isLockedRef.current = true;
-      window.scrollTo({
-        top: targetTop,
-        behavior: "smooth",
-      });
+    // 2. Single-Scroll Lock from Hero to 3D Showcase — DESKTOP ONLY.
+    // Touch/coarse-pointer devices (phones, tablets) skip this entirely so
+    // native momentum scrolling is never interrupted by a non-passive
+    // touchmove handler or a forced window.scrollTo(). This was the cause
+    // of the mobile scroll lag from the hero into the page below.
+    const isTouchDevice =
+      (typeof window.matchMedia === "function" &&
+        window.matchMedia("(pointer: coarse)").matches) ||
+      "ontouchstart" in window;
 
-      setTimeout(() => {
-        isLockedRef.current = false;
-      }, 950);
-    };
+    let cleanupScrollLock = () => {};
 
-    const handleWheel = (e) => {
-      if (!splitSectionRef.current) return;
-      const currentScroll = window.scrollY || window.pageYOffset;
-      const splitTop = splitSectionRef.current.offsetTop;
+    if (!isTouchDevice) {
+      const scrollToTarget = (targetTop) => {
+        isLockedRef.current = true;
+        window.scrollTo({
+          top: targetTop,
+          behavior: "smooth",
+        });
 
-      if (currentScroll < splitTop - 30) {
-        if (e.deltaY > 0) {
+        setTimeout(() => {
+          isLockedRef.current = false;
+        }, 950);
+      };
+
+      const handleWheel = (e) => {
+        if (!splitSectionRef.current) return;
+        const currentScroll = window.scrollY || window.pageYOffset;
+        const splitTop = splitSectionRef.current.offsetTop;
+
+        if (currentScroll < splitTop - 30) {
+          if (e.deltaY > 0) {
+            e.preventDefault();
+            if (!isLockedRef.current) {
+              scrollToTarget(splitTop);
+            }
+          }
+        } else if (isLockedRef.current) {
           e.preventDefault();
-          if (!isLockedRef.current) {
-            scrollToTarget(splitTop);
-          }
         }
-      } else if (isLockedRef.current) {
-        e.preventDefault();
-      }
-    };
+      };
 
-    let touchStartY = 0;
-    const handleTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY;
-    };
+      window.addEventListener("wheel", handleWheel, { passive: false });
 
-    const handleTouchMove = (e) => {
-      if (!splitSectionRef.current) return;
-      const currentScroll = window.scrollY || window.pageYOffset;
-      const splitTop = splitSectionRef.current.offsetTop;
-      const touchCurrentY = e.touches[0].clientY;
-      const diffY = touchStartY - touchCurrentY;
-
-      if (currentScroll < splitTop - 30) {
-        if (diffY > 15) {
-          if (e.cancelable) e.preventDefault();
-          if (!isLockedRef.current) {
-            scrollToTarget(splitTop);
-          }
-        }
-      } else if (isLockedRef.current) {
-        if (e.cancelable) e.preventDefault();
-      }
-    };
-
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+      cleanupScrollLock = () => {
+        window.removeEventListener("wheel", handleWheel);
+      };
+    }
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
+      cleanupScrollLock();
     };
   }, []);
 
@@ -268,15 +261,15 @@ const Home = () => {
       </section>
 
       {/* 2. FULL-SCREEN 50/50 SPLIT SHOWCASE (3 CORE SERVICES IN TYPOGRAPHY) */}
-      <section 
+      <section
         ref={splitSectionRef}
-        className={styles.fullBleedSplitSection} 
+        className={styles.fullBleedSplitSection}
         aria-label="Core Engineering Services and Architectural Visualization"
       >
         {/* Left Side: Pure 3D House Visual */}
         <div className={styles.splitHalfLeft}>
-          <div 
-            className={styles.splitBackground} 
+          <div
+            className={styles.splitBackground}
             style={{ backgroundImage: `url(${HOUSE_3D_IMAGE})` }}
           />
           <div className={styles.ambientGlowLeft} />
@@ -368,11 +361,11 @@ const Home = () => {
         {/* BENTO GRID */}
         <div className={styles.bentoGrid}>
           <div className={`${styles.bentoCard} ${styles.cardLarge}`}>
-            <img 
-              src="/logo.png" 
-              alt="" 
-              className={styles.cardWatermarkCenter} 
-              aria-hidden="true" 
+            <img
+              src="/logo.png"
+              alt=""
+              className={styles.cardWatermarkCenter}
+              aria-hidden="true"
             />
 
             <div className={styles.cardContentRelative}>
@@ -649,7 +642,7 @@ const Home = () => {
       />
 
       {/* MODULAR PROJECT POPUP DRAWER */}
-      <ProjectDrawer 
+      <ProjectDrawer
         isOpen={!!selectedProject}
         project={selectedProject}
         onClose={closeProjectModal}

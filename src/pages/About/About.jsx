@@ -76,6 +76,28 @@ function About() {
     animatedElements.forEach((el) => observer.observe(el));
 
     // 2. Single-Scroll Lock Handler (Hero -> Showcase)
+    // `offsetTop` forces the browser to synchronously recompute layout the
+    // instant it's read. The old handlers read it on every single touchmove
+    // event, so every frame of a mobile scroll gesture paid for a layout
+    // recalculation before the browser could paint — that's the lag. We
+    // measure it once instead, and only re-measure when the layout could
+    // actually have changed.
+    let splitTop = 0;
+    const measureSplitTop = () => {
+      if (splitSectionRef.current) {
+        splitTop = splitSectionRef.current.offsetTop;
+      }
+    };
+    measureSplitTop();
+
+    let resizeTimeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(measureSplitTop, 150);
+    };
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("load", measureSplitTop);
+
     const scrollToTarget = (targetTop) => {
       isLockedRef.current = true;
       window.scrollTo({
@@ -90,9 +112,7 @@ function About() {
 
     // Desktop Wheel Event Handler
     const handleWheel = (e) => {
-      if (!splitSectionRef.current) return;
       const currentScroll = window.scrollY || window.pageYOffset;
-      const splitTop = splitSectionRef.current.offsetTop;
 
       if (currentScroll < splitTop - 30) {
         if (e.deltaY > 0) {
@@ -113,21 +133,25 @@ function About() {
     };
 
     const handleTouchMove = (e) => {
-      if (!splitSectionRef.current) return;
       const currentScroll = window.scrollY || window.pageYOffset;
-      const splitTop = splitSectionRef.current.offsetTop;
+
+      // Past the hero and not mid-lock: bail out before doing ANY work so the
+      // browser's native, GPU-driven touch scrolling takes over completely —
+      // this is what fixes scrolling from the hero down through the rest of
+      // the page.
+      if (currentScroll >= splitTop - 30 && !isLockedRef.current) return;
+
+      if (isLockedRef.current) {
+        if (e.cancelable) e.preventDefault();
+        return;
+      }
+
       const touchCurrentY = e.touches[0].clientY;
       const diffY = touchStartY - touchCurrentY;
 
-      if (currentScroll < splitTop - 30) {
-        if (diffY > 15) {
-          if (e.cancelable) e.preventDefault();
-          if (!isLockedRef.current) {
-            scrollToTarget(splitTop);
-          }
-        }
-      } else if (isLockedRef.current) {
+      if (diffY > 15) {
         if (e.cancelable) e.preventDefault();
+        scrollToTarget(splitTop);
       }
     };
 
@@ -140,6 +164,9 @@ function About() {
       window.removeEventListener("wheel", handleWheel);
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("load", measureSplitTop);
+      clearTimeout(resizeTimeout);
     };
   }, []);
 
