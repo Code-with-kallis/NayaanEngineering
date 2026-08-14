@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { 
   FaFacebookF, 
   FaInstagram, 
@@ -17,9 +17,9 @@ const SOCIAL_LINKS = [
 ];
 
 const DEFAULT_GALLERY_IMAGES = [
-  "/assets/team/sajid.jpeg",
-  "/assets/team/junaid.jpg",
-
+  "assets/team/junaid.jpg",
+  "assets/team/sajid.jpeg",
+  
 ];
 
 const EyebrowTagline = ({ textToType = "ABOUT NAYAAB ENGINEERING" }) => {
@@ -34,7 +34,7 @@ const EyebrowTagline = ({ textToType = "ABOUT NAYAAB ENGINEERING" }) => {
       } else {
         clearInterval(timer);
       }
-    }, 70);
+    }, 60);
 
     return () => clearInterval(timer);
   }, [textToType]);
@@ -62,17 +62,23 @@ const AboutHero = ({
   stats = [
     { value: "2024", label: "Founded in Baramulla" },
     { value: "DPIIT", label: "Recognized Startup" },
-    { value: "11+", label: "In-House Experts" },
+    { value: "11+", label: "In-House Specialists" },
   ],
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Touch Swipe Tracking
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const minSwipeDistance = 45; // Minimum px distance to trigger swipe
+
+  // Autoplay
   useEffect(() => {
     if (!galleryImages || galleryImages.length <= 1) return;
 
     const slideTimer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % galleryImages.length);
-    }, 4000);
+    }, 4500);
 
     return () => clearInterval(slideTimer);
   }, [galleryImages]);
@@ -85,9 +91,74 @@ const AboutHero = ({
     setCurrentSlide((prev) => (prev + 1) % galleryImages.length);
   };
 
+  // Touch Handlers for Mobile Swipe
+  const onTouchStart = (e) => {
+    touchEndX.current = 0;
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    
+    if (distance > minSwipeDistance) {
+      // Swiped Left -> Next Image
+      handleNextSlide();
+    } else if (distance < -minSwipeDistance) {
+      // Swiped Right -> Previous Image
+      handlePrevSlide();
+    }
+  };
+
   return (
     <section className={styles.heroSection} aria-label="About Hero">
-      {/* 1. LEFT COLUMN — Text Content & Desktop Stats */}
+      {/* ========================================================================= */}
+      {/* 1. MOBILE TOP HERO MEDIA: Clean image with touch swipe (NO TEXT)          */}
+      {/* ========================================================================= */}
+      <div 
+        className={styles.mobileHeroMedia}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        {galleryImages.map((imgObj, idx) => {
+          const imgSrc = typeof imgObj === "string" ? imgObj : imgObj.url;
+          return (
+            <div
+              key={imgSrc + idx}
+              className={`${styles.mobileSlide} ${
+                idx === currentSlide ? styles.mobileSlideActive : ""
+              }`}
+              style={{ backgroundImage: `url(${imgSrc})` }}
+            />
+          );
+        })}
+
+        {/* Minimal slide pagination indicator dots */}
+        {galleryImages.length > 1 && (
+          <div className={styles.mobileDotsContainer}>
+            {galleryImages.map((_, dotIdx) => (
+              <button
+                type="button"
+                key={dotIdx}
+                aria-label={`Go to slide ${dotIdx + 1}`}
+                className={`${styles.mobileDot} ${
+                  dotIdx === currentSlide ? styles.mobileDotActive : ""
+                }`}
+                onClick={() => setCurrentSlide(dotIdx)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 2. TEXT CONTENT & BUTTONS                                                 */}
+      {/* ========================================================================= */}
       <div className={styles.leftColumn}>
         <div className={styles.textWrapper}>
           <EyebrowTagline textToType={eyebrow} />
@@ -114,7 +185,7 @@ const AboutHero = ({
           </div>
         </div>
 
-        {/* Stats on Left Column for Desktop */}
+        {/* Desktop Left Footer Stats */}
         <div className={styles.desktopLeftFooter}>
           {stats && stats.length > 0 ? (
             <div className={styles.statsGroup}>
@@ -146,9 +217,10 @@ const AboutHero = ({
         </div>
       </div>
 
-      {/* 2. RIGHT COLUMN — Clean Corporate Header + Custom Cut Gallery */}
+      {/* ========================================================================= */}
+      {/* 3. DESKTOP ONLY: Right Column Cut-Shape Gallery                           */}
+      {/* ========================================================================= */}
       <div className={styles.rightColumn}>
-        {/* CLEAN TYPOGRAPHY HEADER (OUTSIDE & ABOVE IMAGE) */}
         <div className={styles.topTypographyHeader}>
           <div className={styles.headerRowMain}>
             <div className={styles.brandGroup}>
@@ -171,7 +243,6 @@ const AboutHero = ({
           </div>
         </div>
 
-        {/* GALLERY CARD WITH HYBRID CUT SHAPE (2 SLOPES + 2 CURVES) */}
         <div className={styles.galleryCard}>
           <div className={styles.gallerySlider}>
             {galleryImages.map((imgObj, idx) => {
@@ -187,10 +258,8 @@ const AboutHero = ({
               );
             })}
 
-            {/* Bottom Gradient Overlay for Clear Line Visibility */}
             <div className={styles.slideBottomShadow} />
 
-            {/* Slide Navigation Arrows */}
             {galleryImages.length > 1 && (
               <>
                 <button
@@ -211,7 +280,6 @@ const AboutHero = ({
                   <FaChevronRight />
                 </button>
 
-                {/* WIDE TRANSPARENT SLIDER COUNTER BAR */}
                 <div className={styles.counterBar}>
                   <div className={styles.progressTrack}>
                     <div
@@ -231,7 +299,9 @@ const AboutHero = ({
         </div>
       </div>
 
-      {/* 3. MOBILE EXCLUSIVE FOOTER */}
+      {/* ========================================================================= */}
+      {/* 4. MOBILE STATS BAR                                                       */}
+      {/* ========================================================================= */}
       <div className={styles.mobileHeroFooter}>
         {stats && stats.length > 0 && (
           <div className={styles.mobileStatsGroup}>

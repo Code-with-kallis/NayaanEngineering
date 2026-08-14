@@ -8,34 +8,23 @@ import {
   FaCheckCircle,
   FaShieldAlt,
   FaDraftingCompass,
-  FaBuilding,
   FaHardHat,
-  FaPalette,
-  FaClipboardCheck,
   FaProjectDiagram,
   FaMapMarkerAlt,
   FaClock,
   FaArrowRight,
-  FaChevronLeft,
-  FaChevronRight,
   FaRegCalendarCheck,
   FaLayerGroup,
+  FaCube,
 } from "react-icons/fa";
 import Hero from "../../components/home/Hero";
 import ContactForm from "../../components/common/ContactForm/ContactForm";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
 import { supabase } from "../../lib/supabaseClient";
 import { PROJECTS_DATA as fallbackProjects } from "../../data/projects";
-import { SERVICES_DATA } from "../../data/services";
 import styles from "./Home.module.css";
 
-const SERVICE_ICONS = {
-  FaDraftingCompass: <FaDraftingCompass />,
-  FaBuilding: <FaBuilding />,
-  FaHardHat: <FaHardHat />,
-  FaPalette: <FaPalette />,
-  FaClipboardCheck: <FaClipboardCheck />,
-};
+const HOUSE_3D_IMAGE = "assets/home/3d-house.png";
 
 const highlightItems = [
   {
@@ -92,7 +81,96 @@ const Home = () => {
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [selectedProject, setSelectedProject] = useState(null);
   
-  const servicesScrollRef = useRef(null);
+  const splitSectionRef = useRef(null);
+  const isLockedRef = useRef(false);
+
+  // Intersection Observer & Single-Scroll Lock Logic
+  useEffect(() => {
+    // 1. Entrance Observer for Smooth Slide-in
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(styles.isVisible);
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -40px 0px",
+      }
+    );
+
+    const animatedElements = document.querySelectorAll(
+      `.${styles.revealOnScroll}, .${styles.fullBleedSplitSection}`
+    );
+    animatedElements.forEach((el) => observer.observe(el));
+
+    // 2. Single-Scroll Lock from Hero to 3D Showcase
+    const scrollToTarget = (targetTop) => {
+      isLockedRef.current = true;
+      window.scrollTo({
+        top: targetTop,
+        behavior: "smooth",
+      });
+
+      setTimeout(() => {
+        isLockedRef.current = false;
+      }, 950);
+    };
+
+    const handleWheel = (e) => {
+      if (!splitSectionRef.current) return;
+      const currentScroll = window.scrollY || window.pageYOffset;
+      const splitTop = splitSectionRef.current.offsetTop;
+
+      if (currentScroll < splitTop - 30) {
+        if (e.deltaY > 0) {
+          e.preventDefault();
+          if (!isLockedRef.current) {
+            scrollToTarget(splitTop);
+          }
+        }
+      } else if (isLockedRef.current) {
+        e.preventDefault();
+      }
+    };
+
+    let touchStartY = 0;
+    const handleTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e) => {
+      if (!splitSectionRef.current) return;
+      const currentScroll = window.scrollY || window.pageYOffset;
+      const splitTop = splitSectionRef.current.offsetTop;
+      const touchCurrentY = e.touches[0].clientY;
+      const diffY = touchStartY - touchCurrentY;
+
+      if (currentScroll < splitTop - 30) {
+        if (diffY > 15) {
+          if (e.cancelable) e.preventDefault();
+          if (!isLockedRef.current) {
+            scrollToTarget(splitTop);
+          }
+        }
+      } else if (isLockedRef.current) {
+        if (e.cancelable) e.preventDefault();
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, []);
 
   // Fetch Live Featured Projects from Supabase
   useEffect(() => {
@@ -135,17 +213,6 @@ const Home = () => {
   }, []);
 
   const featuredProjects = projects.slice(0, 3);
-
-  // Smooth Scroll Services Track
-  const scrollServices = (direction) => {
-    if (servicesScrollRef.current) {
-      const scrollAmount = direction === "left" ? -360 : 360;
-      servicesScrollRef.current.scrollBy({
-        left: scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
 
   // Sync state with URL Hash (#project-slug)
   useEffect(() => {
@@ -196,9 +263,90 @@ const Home = () => {
   return (
     <>
       {/* 1. HERO SECTION */}
-      <Hero />
+      <section className={styles.heroWrapper}>
+        <Hero />
+      </section>
 
-      {/* 2. ABOUT OUR COMPANY */}
+      {/* 2. FULL-SCREEN 50/50 SPLIT SHOWCASE (3 CORE SERVICES IN TYPOGRAPHY) */}
+      <section 
+        ref={splitSectionRef}
+        className={styles.fullBleedSplitSection} 
+        aria-label="Core Engineering Services and Architectural Visualization"
+      >
+        {/* Left Side: Pure 3D House Visual */}
+        <div className={styles.splitHalfLeft}>
+          <div 
+            className={styles.splitBackground} 
+            style={{ backgroundImage: `url(${HOUSE_3D_IMAGE})` }}
+          />
+          <div className={styles.ambientGlowLeft} />
+        </div>
+
+        {/* Right Side: 3 Services Typography Showcase */}
+        <div className={styles.splitHalfRight}>
+          <div className={styles.typographyContentWrapper}>
+            <div className={styles.typoEyebrowBadge}>
+              <FaCube className={styles.badgeIcon} />
+              <span>CORE ENGINEERING &amp; DESIGN SERVICES</span>
+            </div>
+
+            <h2 className={styles.typoMainHeading}>
+              End-To-End Engineering <br />
+              <span>&amp; Modern Architecture</span>
+            </h2>
+
+            <p className={styles.typoDescription}>
+              Delivering integrated civil engineering solutions with structural precision and high-fidelity 3D modeling tailored for regional terrain demands.
+            </p>
+
+            {/* 3 Core Services Highlight */}
+            <div className={styles.typoFeatureList}>
+              <div className={styles.typoFeatureItem}>
+                <div className={styles.featureBullet}>
+                  <FaLayerGroup />
+                </div>
+                <div className={styles.featureText}>
+                  <h4>1. Architectural &amp; 3D BIM Design</h4>
+                  <p>Comprehensive 2D blueprints, realistic 3D exterior renders, and complete spatial planning.</p>
+                </div>
+              </div>
+
+              <div className={styles.typoFeatureItem}>
+                <div className={styles.featureBullet}>
+                  <FaDraftingCompass />
+                </div>
+                <div className={styles.featureText}>
+                  <h4>2. Structural Engineering &amp; Seismic Safety</h4>
+                  <p>Load calculation, foundation design, and compliance with Zone-V seismic safety standards.</p>
+                </div>
+              </div>
+
+              <div className={styles.typoFeatureItem}>
+                <div className={styles.featureBullet}>
+                  <FaHardHat />
+                </div>
+                <div className={styles.featureText}>
+                  <h4>3. Turnkey Execution &amp; Site Supervision</h4>
+                  <p>On-site quality monitoring, material standard testing, and full project lifecycle execution.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Meta & Explore Action */}
+            <div className={styles.typoBottomBar}>
+              <span className={styles.typoLocationTag}>
+                <FaShieldAlt /> DPIIT Recognized • IS Code Compliant
+              </span>
+              <Link to="/services" className={styles.typoActionLink}>
+                <span>Explore All Services</span>
+                <FaArrowRight />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. ABOUT OUR COMPANY */}
       <section className={styles.statsSection}>
         <div className={styles.splitHeaderContainer}>
           <div className={styles.splitHeaderLeft}>
@@ -219,7 +367,6 @@ const Home = () => {
 
         {/* BENTO GRID */}
         <div className={styles.bentoGrid}>
-          {/* Card 1: Main Profile with Center Watermark */}
           <div className={`${styles.bentoCard} ${styles.cardLarge}`}>
             <img 
               src="/logo.png" 
@@ -245,7 +392,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Card 2 & 3 Stack */}
           <div className={styles.bentoStack}>
             <div className={styles.bentoCard}>
               <div className={styles.cardIconBox}>
@@ -266,7 +412,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Card 4 & 5 Stack */}
           <div className={styles.bentoStack}>
             <div className={styles.bentoCard}>
               <div className={styles.cardIconBox}>
@@ -289,7 +434,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 3. FEATURED WORK */}
+      {/* 4. FEATURED WORK */}
       <section className={styles.projectsPreview}>
         <div className={styles.splitHeaderContainer}>
           <div className={styles.splitHeaderLeft}>
@@ -365,70 +510,6 @@ const Home = () => {
         <div className={styles.viewAllWrapper}>
           <Link to="/projects" className={styles.viewAllBtn}>
             <span>View All Projects</span>
-            <FaArrowRight />
-          </Link>
-        </div>
-      </section>
-
-      {/* 4. DYNAMIC CORE SERVICES SECTION (HORIZONTAL SWIPE) */}
-      <section className={styles.servicesPreview}>
-        <div className={styles.splitHeaderContainer}>
-          <div className={styles.splitHeaderLeft}>
-            <div className={styles.sectionTagRow}>
-              <FaSquare className={styles.tagSquareIcon} />
-              <span>What We Do</span>
-            </div>
-            <h2 className={styles.splitTitle}>Our Core Services</h2>
-          </div>
-
-          <div className={styles.splitHeaderRightControls}>
-            <p className={styles.splitDesc}>
-              End-to-end civil engineering and construction solutions across Jammu &amp; Kashmir.
-            </p>
-            {/* Scroll Control Arrows */}
-            <div className={styles.sliderControls}>
-              <button
-                className={styles.sliderArrowBtn}
-                onClick={() => scrollServices("left")}
-                aria-label="Scroll services left"
-              >
-                <FaChevronLeft />
-              </button>
-              <button
-                className={styles.sliderArrowBtn}
-                onClick={() => scrollServices("right")}
-                aria-label="Scroll services right"
-              >
-                <FaChevronRight />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* SWIPABLE HORIZONTAL TRACK */}
-        <div className={styles.serviceGridSlider} ref={servicesScrollRef}>
-          {SERVICES_DATA.map((service) => (
-            <Link
-              key={service.id || service.slug}
-              to={`/services/${service.slug}`}
-              className={styles.serviceCard}
-            >
-              <div className={styles.serviceIconBox}>
-                {SERVICE_ICONS[service.icon] || <FaBuilding />}
-              </div>
-              <h3>{service.title}</h3>
-              <p>{service.shortDesc}</p>
-              <div className={styles.serviceLinkBtn}>
-                <span>Explore Details</span>
-                <FaArrowRight className={styles.serviceArrow} />
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className={styles.viewAllWrapper}>
-          <Link to="/services" className={styles.viewAllBtn}>
-            <span>View All Services</span>
             <FaArrowRight />
           </Link>
         </div>

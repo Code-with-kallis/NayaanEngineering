@@ -2,6 +2,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
 
+html {
+  scroll-behavior: smooth;
+}
+
 .aboutPage {
   --about-navy: #0F172A;
   --about-text: #1E293B;
@@ -20,7 +24,261 @@
   overflow-x: hidden;
 }
 
-/* CONTAINER ALIGNED EXACTLY WITH HEADER LOGO & TEAM CARDS */
+.heroWrapper {
+  width: 100%;
+  position: relative;
+}
+
+/* =========================================================================
+   FULL-BLEED 50/50 SPLIT SECTION — 3D MODEL (LEFT) + TYPOGRAPHY (RIGHT)
+   ========================================================================= */
+.fullBleedSplitSection {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 560px;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #0B192C; /* Studio Navy */
+  z-index: 5;
+}
+
+/* LEFT HALF: 50% Desktop — 3D House Scene */
+.splitHalfLeft {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+  will-change: transform, opacity;
+  border-right: none; /* Separator border hata diya */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splitBackground {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover; /* 'contain' se badal kar 'cover' kiya taaki poora half screen fill ho */
+  background-position: center center;
+  background-repeat: no-repeat;
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(1); /* 0.96 scale hata diya taaki box border na bane */
+}
+
+.splitHalfLeft:hover .splitBackground {
+  transform: scale(1.04); /* Subtle zoom effect */
+}
+
+.ambientGlowLeft {
+  position: absolute;
+  width: clamp(300px, 35vw, 500px);
+  height: clamp(300px, 35vw, 500px);
+  background: radial-gradient(circle, rgba(29, 78, 137, 0.35) 0%, rgba(11, 25, 44, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(40px);
+  z-index: 1;
+}
+
+/* RIGHT HALF: 50% Desktop — Typography & Scope Showcase */
+.splitHalfRight {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(2.5rem, 5vw, 4.5rem);
+  box-sizing: border-box;
+  background: radial-gradient(circle at 75% 50%, #132742 0%, #0B192C 85%);
+  opacity: 0;
+  transform: translateX(100%);
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+  will-change: transform, opacity;
+}
+
+/* GLIDE IN ON SCROLL */
+.fullBleedSplitSection.isVisible .splitHalfLeft,
+.fullBleedSplitSection.isVisible .splitHalfRight {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* =========================================================================
+   TYPOGRAPHY CONTENT STYLES
+   ========================================================================= */
+.typographyContentWrapper {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 560px;
+}
+
+.typoEyebrowBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(183, 65, 14, 0.15);
+  border: 1px solid rgba(183, 65, 14, 0.4);
+  color: #FF7A45;
+  font-size: 0.725rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 6px 14px;
+  border-radius: 4px;
+  width: fit-content;
+  text-transform: uppercase;
+}
+
+.badgeIcon {
+  font-size: 0.85rem;
+}
+
+.typoMainHeading {
+  margin: 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.2rem, 3.4vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+}
+
+.typoMainHeading span {
+  color: #FF7A45;
+}
+
+.typoDescription {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #94A3B8;
+}
+
+/* FEATURE LIST ROWS */
+.typoFeatureList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.typoFeatureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.featureBullet {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #FF7A45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  border-radius: 4px;
+  margin-top: 2px;
+}
+
+.featureText h4 {
+  margin: 0 0 2px 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #F1F5F9;
+  letter-spacing: 0.02em;
+}
+
+.featureText p {
+  margin: 0;
+  font-size: 0.825rem;
+  color: #94A3B8;
+  line-height: 1.45;
+}
+
+/* BOTTOM META & ACTION */
+.typoBottomBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+}
+
+.typoLocationTag {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.typoLocationTag svg {
+  color: var(--about-accent);
+}
+
+.typoActionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: all 200ms ease;
+}
+
+.typoActionLink:hover {
+  color: #FF7A45;
+  transform: translateX(3px);
+}
+
+/* =========================================================================
+   SCROLL REVEAL BASE ANIMATIONS
+   ========================================================================= */
+.revealOnScroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.revealOnScroll.isVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.revealDelay1 { transition-delay: 100ms; }
+.revealDelay2 { transition-delay: 200ms; }
+.revealDelay3 { transition-delay: 300ms; }
+.revealDelay4 { transition-delay: 400ms; }
+
+/* CONTAINER */
 .container {
   width: 100%;
   max-width: 100%;
@@ -109,7 +367,7 @@
   color: var(--about-navy);
 }
 
-/* DPIIT BADGE CARD */
+/* DPIIT CARD */
 .dpiitCard {
   background: var(--about-surface-alt);
   border: 1px solid var(--about-border);
@@ -117,6 +375,12 @@
   padding: 32px 28px;
   border-radius: 0;
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.dpiitCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
 }
 
 .dpiitHeader {
@@ -316,7 +580,7 @@
 
 /* ===== 4. TEAM ROSTER INTEGRATION ===== */
 .teamRosterSection {
-  padding-block: clamp(3rem, 5vw, 5rem);
+  padding-block: clamp(3.5rem, 5vw, 5.5rem);
   background: var(--about-surface);
 }
 
@@ -364,7 +628,6 @@
   flex-wrap: wrap;
 }
 
-/* COMMON CTA BUTTON BASE */
 .ctaPrimaryBtn,
 .ctaSecondaryBtn {
   display: inline-flex;
@@ -404,14 +667,85 @@
   transform: translateY(-2px);
 }
 
-/* ===== RESPONSIVE BREAKPOINTS ===== */
-@media (max-width: 1100px) {
-  .bentoGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
+/* =========================================================================
+   RESPONSIVE BREAKPOINTS (MOBILE & TABLET)
+   ========================================================================= */
 @media (max-width: 1024px) {
+  .fullBleedSplitSection {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  /* TOP HALF: 3D MODEL */
+  .splitHalfLeft {
+    width: 100%;
+    height: 44vh;
+    height: 44dvh;
+    min-height: 280px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transform: translateX(-100%);
+  }
+
+  .splitBackground {
+    transform: scale(0.92);
+  }
+
+  /* BOTTOM HALF: TYPOGRAPHY PANEL (NO OVERLAY, FULL READABILITY) */
+  .splitHalfRight {
+    width: 100%;
+    height: auto;
+    padding: 2rem 1.25rem 2.5rem;
+    transform: translateX(100%);
+    align-items: flex-start;
+  }
+
+  .typographyContentWrapper {
+    gap: 1rem;
+    max-width: 100%;
+  }
+
+  .typoEyebrowBadge {
+    font-size: 0.65rem;
+    padding: 5px 10px;
+  }
+
+  .typoMainHeading {
+    font-size: clamp(1.85rem, 6.5vw, 2.35rem);
+    line-height: 1.1;
+  }
+
+  .typoDescription {
+    font-size: 0.875rem;
+    line-height: 1.55;
+  }
+
+  .typoFeatureList {
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+  }
+
+  .featureText h4 {
+    font-size: 1rem;
+  }
+
+  .featureText p {
+    font-size: 0.775rem;
+  }
+
+  .typoBottomBar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-top: 0.75rem;
+  }
+
+  .typoActionLink {
+    font-size: 0.75rem;
+  }
+
   .overviewGrid {
     grid-template-columns: 1fr;
     gap: 36px;
