@@ -56,7 +56,7 @@ html {
   transform: translateX(-100%);
   transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
   will-change: transform, opacity;
-  border-right: none; /* Separator border hata diya */
+  border-right: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,15 +67,26 @@ html {
   inset: 0;
   width: 100%;
   height: 100%;
-  background-size: cover; /* 'contain' se badal kar 'cover' kiya taaki poora half screen fill ho */
+  background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  object-fit: cover;
+  object-position: center;
+  display: block;
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: scale(1); /* 0.96 scale hata diya taaki box border na bane */
+  transform: scale(1);
+}
+
+.splitBackground img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .splitHalfLeft:hover .splitBackground {
-  transform: scale(1.04); /* Subtle zoom effect */
+  transform: scale(1.04); /* Subtle zoom effect preserved */
 }
 
 .ambientGlowLeft {
@@ -690,7 +701,7 @@ html {
   }
 
   .splitBackground {
-    transform: scale(0.92);
+    transform: scale(1);
   }
 
   /* BOTTOM HALF: TYPOGRAPHY PANEL (NO OVERLAY, FULL READABILITY) */
