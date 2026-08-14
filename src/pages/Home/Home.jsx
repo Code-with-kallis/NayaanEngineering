@@ -1,3 +1,4 @@
+// src/pages/Home/Home.jsx
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -24,9 +25,7 @@ import { supabase } from "../../lib/supabaseClient";
 import { PROJECTS_DATA as fallbackProjects } from "../../data/projects";
 import styles from "./Home.module.css";
 
-
 const HOUSE_3D_IMAGE = "assets/home/3d-house.png";
-
 
 const highlightItems = [
   {
@@ -50,7 +49,6 @@ const highlightItems = [
     subtitle: "Concept to Turnkey Execution",
   },
 ];
-
 
 const PROCESS_STEPS = [
   {
@@ -79,7 +77,6 @@ const PROCESS_STEPS = [
   },
 ];
 
-
 const Home = () => {
   const [projects, setProjects] = useState([]);
   const [loadingProjects, setLoadingProjects] = useState(true);
@@ -88,20 +85,20 @@ const Home = () => {
   const splitSectionRef = useRef(null);
   const isLockedRef = useRef(false);
 
-  // Intersection Observer & Single-Scroll Lock Logic
   useEffect(() => {
-    // 1. Entrance Observer for Smooth Slide-in
+    // 1. Entrance Observer: Unobserve immediately once visible to free up mobile GPU/CPU
     const observer = new IntersectionObserver(
-      (entries) => {
+      (entries, obs) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add(styles.isVisible);
+            obs.unobserve(entry.target); // <-- Crucial mobile optimization
           }
         });
       },
       {
-        threshold: 0.12,
-        rootMargin: "0px 0px -40px 0px",
+        threshold: 0.08,
+        rootMargin: "0px 0px -20px 0px",
       }
     );
 
@@ -110,19 +107,15 @@ const Home = () => {
     );
     animatedElements.forEach((el) => observer.observe(el));
 
-    // 2. Single-Scroll Lock from Hero to 3D Showcase — DESKTOP ONLY.
-    // Touch/coarse-pointer devices (phones, tablets) skip this entirely so
-    // native momentum scrolling is never interrupted by a non-passive
-    // touchmove handler or a forced window.scrollTo(). This was the cause
-    // of the mobile scroll lag from the hero into the page below.
-    const isTouchDevice =
-      (typeof window.matchMedia === "function" &&
-        window.matchMedia("(pointer: coarse)").matches) ||
-      "ontouchstart" in window;
+    // 2. Scroll lock logic ONLY for Desktop with precise pointer
+    const isCoarsePointer =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(pointer: coarse)").matches;
 
     let cleanupScrollLock = () => {};
 
-    if (!isTouchDevice) {
+    if (!isCoarsePointer && window.innerWidth > 1024) {
       const scrollToTarget = (targetTop) => {
         isLockedRef.current = true;
         window.scrollTo({
@@ -260,13 +253,12 @@ const Home = () => {
         <Hero />
       </section>
 
-      {/* 2. FULL-SCREEN 50/50 SPLIT SHOWCASE (3 CORE SERVICES IN TYPOGRAPHY) */}
+      {/* 2. FULL-SCREEN 50/50 SPLIT SHOWCASE */}
       <section
         ref={splitSectionRef}
         className={styles.fullBleedSplitSection}
         aria-label="Core Engineering Services and Architectural Visualization"
       >
-        {/* Left Side: Pure 3D House Visual */}
         <div className={styles.splitHalfLeft}>
           <div
             className={styles.splitBackground}
@@ -275,7 +267,6 @@ const Home = () => {
           <div className={styles.ambientGlowLeft} />
         </div>
 
-        {/* Right Side: 3 Services Typography Showcase */}
         <div className={styles.splitHalfRight}>
           <div className={styles.typographyContentWrapper}>
             <div className={styles.typoEyebrowBadge}>
@@ -292,7 +283,6 @@ const Home = () => {
               Delivering integrated civil engineering solutions with structural precision and high-fidelity 3D modeling tailored for regional terrain demands.
             </p>
 
-            {/* 3 Core Services Highlight */}
             <div className={styles.typoFeatureList}>
               <div className={styles.typoFeatureItem}>
                 <div className={styles.featureBullet}>
@@ -325,7 +315,6 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Bottom Meta & Explore Action */}
             <div className={styles.typoBottomBar}>
               <span className={styles.typoLocationTag}>
                 <FaShieldAlt /> DPIIT Recognized • IS Code Compliant
@@ -358,7 +347,6 @@ const Home = () => {
           </div>
         </div>
 
-        {/* BENTO GRID */}
         <div className={styles.bentoGrid}>
           <div className={`${styles.bentoCard} ${styles.cardLarge}`}>
             <img
@@ -605,7 +593,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 7. INFINITE AUTO-MOVING TICKER SECTION */}
+      {/* 7. TICKER SECTION */}
       <section className={styles.tickerSection}>
         <div className={styles.tickerContainer}>
           <div className={styles.tickerTrack}>
@@ -641,7 +629,6 @@ const Home = () => {
         subtitle="To request a quote or meet for coffee at our Baramulla office, contact us directly or fill out the form below."
       />
 
-      {/* MODULAR PROJECT POPUP DRAWER */}
       <ProjectDrawer
         isOpen={!!selectedProject}
         project={selectedProject}

@@ -9,6 +9,7 @@ import {
   FaArrowRight,
   FaChevronDown,
 } from "react-icons/fa";
+import useScrollLock from "../../../hooks/useScrollLock";
 import styles from "./Navbar.module.css";
 import logo from "/logo-original.png";
 
@@ -30,6 +31,9 @@ const Navbar = () => {
   
   const lastScrollY = useRef(0);
   const dropdownRef = useRef(null);
+
+  // Unified scroll locking hook for mobile menu drawer
+  useScrollLock(isOpen);
 
   // Dark Video Hero pages (White Text Navbar)
   const isDarkHero = pathname === "/";
@@ -61,16 +65,6 @@ const Navbar = () => {
     setServicesDropdownOpen(false);
     setMobileServicesOpen(true);
   }, [pathname]);
-
-  useEffect(() => {
-    document.body.classList.toggle("nav-menu-open", isOpen);
-    document.documentElement.classList.toggle("nav-menu-open", isOpen);
-
-    return () => {
-      document.body.classList.remove("nav-menu-open");
-      document.documentElement.classList.remove("nav-menu-open");
-    };
-  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return undefined;

@@ -1,14 +1,19 @@
+// src/hooks/useScrollLock.js — Unified Scroll Locking Hook
 import { useEffect } from "react";
 
 export default function useScrollLock(isLocked) {
   useEffect(() => {
     if (!isLocked) return;
 
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const html = document.documentElement;
+    const body = document.body;
+
+    html.classList.add("nav-menu-open");
+    body.classList.add("nav-menu-open");
 
     return () => {
-      document.body.style.overflow = originalOverflow;
+      html.classList.remove("nav-menu-open");
+      body.classList.remove("nav-menu-open");
     };
   }, [isLocked]);
 }

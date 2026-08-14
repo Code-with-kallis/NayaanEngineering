@@ -1,66 +1,11 @@
-/* src/styles/global.css — Matched to Projects Palette (#EA8A35 & #BEB1A2) */
+/* src/styles/global.css — Core CSS Reset & Shared Foundations */
 
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
-:root {
-  /* ===== Typography ===== */
-  --font-primary: "Barlow Condensed", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-secondary: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-
-  /* ===== Canvas & Surfaces ===== */
-  --bg: #FFFFFF;
-  --bg-surface: #FFFFFF;
-  --bg-muted: #F2F2F2;
-  --bg-card: #FFFFFF;
-  --bg-placeholder: #E5E5E5;
-
-  /* ===== Text Colors ===== */
-  --text-primary: #111111;
-  --text-secondary: #555555;
-  --text-muted: #777777;
-  --text-subtle: #888888;
-  --color-text-title: #111111;
-
-  /* ===== Projects Brand Accent Palette ===== */
-  --brand-orange: #EA8A35;
-  --brand-orange-hover: #D77A28;
-  --brand-beige-muted: #BEB1A2;
-  --brand-orange-soft: rgba(234, 138, 53, 0.1);
-
-  /* Theme Variable Mappings */
-  --accent: var(--brand-orange);
-  --accent-hover: var(--brand-orange-hover);
-  --accent-secondary: var(--brand-beige-muted);
-
-  /* ===== Borders & Glass ===== */
-  --border-subtle: #E2E8F0;
-  --border-hover: rgba(234, 138, 53, 0.3);
-  --glass-border: rgba(17, 17, 17, 0.08);
-
-  /* ===== Shadows ===== */
-  --shadow-sm: 0 2px 8px rgba(17, 17, 17, 0.04);
-  --shadow-md: 0 4px 12px rgba(234, 138, 53, 0.25);
-  --shadow-lg: 0 6px 16px rgba(234, 138, 53, 0.35);
-
-  /* ===== Radii & Transitions ===== */
-  --nei-radius-sm: 8px;
-  --nei-radius-md: 16px;
-  --nei-radius-lg: 20px;
-  --nei-radius-full: 9999px;
-
-  --nei-transition-fast: 150ms ease;
-  --nei-transition-base: 250ms ease;
-  --nei-leading-normal: 1.65;
-}
-
-/* ===== BASE CSS RESET ===== */
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 html {
@@ -70,53 +15,46 @@ html {
 }
 
 body {
-  background-color: var(--bg-surface);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: var(--nei-leading-normal);
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--nei-bg-page);
+  color: var(--nei-text-body);
+  font-family: var(--nei-font-secondary);
+  font-size: var(--nei-font-body);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
-/* ===== HEADINGS & TYPOGRAPHY ===== */
+/* Base Headings */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-primary);
-  color: var(--color-text-title);
+  font-family: var(--nei-font-primary);
+  color: var(--nei-text-title);
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.08;
   letter-spacing: -0.01em;
 }
 
-h1 {
-  font-size: clamp(2.8rem, 4.8vw, 4.6rem);
-}
-
-h2 {
-  font-size: clamp(2.4rem, 3.5vw, 3.4rem);
-}
-
-h3 {
-  font-size: clamp(1.35rem, 2vw, 1.8rem);
-}
+h1 { font-size: var(--nei-font-display); }
+h2 { font-size: var(--nei-font-h1); }
+h3 { font-size: var(--nei-font-h2); }
 
 p {
-  color: var(--text-secondary);
-  font-family: var(--font-secondary);
+  color: var(--nei-text-body);
+  font-family: var(--nei-font-secondary);
 }
 
 a {
-  color: var(--accent);
+  color: var(--nei-brand-primary);
   text-decoration: none;
   transition: color var(--nei-transition-fast);
 }
 
 a:hover {
-  color: var(--accent-hover);
+  color: var(--nei-brand-hover);
 }
 
-/* ===== MEDIA & BUTTONS ===== */
 img, svg, video {
   max-width: 100%;
   height: auto;
@@ -127,6 +65,7 @@ button, input, textarea, select {
   font-family: inherit;
   font-size: inherit;
   outline: none;
+  color: inherit;
 }
 
 button {
@@ -135,20 +74,29 @@ button {
   background: none;
 }
 
-/* ===== SCROLLBAR STYLING ===== */
+/* Shared Responsive Utility Container */
+.container {
+  width: 100%;
+  max-width: var(--nei-container-max);
+  margin: 0 auto;
+  padding-inline: var(--nei-container-pad);
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: var(--nei-bg-page);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
+  background: var(--nei-text-muted);
   border-radius: var(--nei-radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  background: var(--nei-brand-primary);
 }

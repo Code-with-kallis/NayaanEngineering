@@ -1,45 +1,43 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Layout from "./components/layout/Layout/Layout";
-import ScrollToTop from "./components/ScrollToTop";
-import Admin from "./pages/Admin/Admin";
-import Home from "./pages/Home/Home";
-import Contact from "./pages/Contact/Contact";
-import About from "./pages/About/About";
-import TeamProfile from "./pages/Team/TeamProfile"; // Standalone QR Verification Card
-import Projects from "./pages/Projects/Projects";
-import ProjectDetail from "./pages/Projects/ProjectDetail";
-import Services from "./pages/Services/Services";
-import ServiceDetail from "./pages/Services/ServiceDetail";
+import Layout from "./components/layout/Layout/Layout"; //[cite: 1]
+import ScrollToTop from "./components/ScrollToTop"; //[cite: 1]
+import PageLoader from "./components/common/PageLoader";
+
+// Lazy-loaded pages
+const Home = lazy(() => import("./pages/Home/Home"));
+const Contact = lazy(() => import("./pages/Contact/Contact"));
+const About = lazy(() => import("./pages/About/About"));
+const Projects = lazy(() => import("./pages/Projects/Projects"));
+const ProjectDetail = lazy(() => import("./pages/Projects/ProjectDetail"));
+const Services = lazy(() => import("./pages/Services/Services"));
+const ServiceDetail = lazy(() => import("./pages/Services/ServiceDetail"));
+const TeamProfile = lazy(() => import("./pages/Team/TeamProfile"));
+const Admin = lazy(() => import("./pages/Admin/Admin"));
 
 function App() {
   return (
     <>
-      <ScrollToTop />
+      <ScrollToTop /> {/*[cite: 1] */}
 
-      <Routes>
-        {/* Main Website Routes (Wrapped with Navbar & Footer) */}
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="about" element={<About />} />
+      {/* Styled Loader displays cleanly during route transitions */}
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<Layout />}> {/*[cite: 1] */}
+            <Route index element={<Home />} /> {/*[cite: 1] */}
+            <Route path="contact" element={<Contact />} /> {/*[cite: 1] */}
+            <Route path="about" element={<About />} /> {/*[cite: 1] */}
+            <Route path="team" element={<Navigate to="/about" replace />} /> {/*[cite: 1] */}
+            <Route path="projects" element={<Projects />} /> {/*[cite: 1] */}
+            <Route path="projects/:slug" element={<ProjectDetail />} /> {/*[cite: 1] */}
+            <Route path="services" element={<Services />} /> {/*[cite: 1] */}
+            <Route path="services/:slug" element={<ServiceDetail />} /> {/*[cite: 1] */}
+          </Route>
 
-          {/* Redirect main /team to /about */}
-          <Route path="team" element={<Navigate to="/about" replace />} />
-
-          <Route path="projects" element={<Projects />} />
-          <Route path="projects/:slug" element={<ProjectDetail />} />
-          
-          {/* Services Routes */}
-          <Route path="services" element={<Services />} />
-          <Route path="services/:slug" element={<ServiceDetail />} />
-        </Route>
-
-        {/* Standalone Employee ID Verification Route (For Physical Card QR Code Scans) */}
-        <Route path="/team/:employeeId" element={<TeamProfile />} />
-
-        {/* Standalone Admin Route */}
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
+          <Route path="/team/:employeeId" element={<TeamProfile />} /> {/*[cite: 1] */}
+          <Route path="/admin" element={<Admin />} /> {/*[cite: 1] */}
+        </Routes>
+      </Suspense>
     </>
   );
 }

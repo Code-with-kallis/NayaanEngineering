@@ -1,17 +1,11 @@
-/* App.css — Application Layout Utilities & Root Container Styles */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* App.css — Root Application Layout */
 
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
-  color: #111111;
+  background-color: var(--nei-bg-page);
+  color: var(--nei-text-title);
 }
 
 main#main {
@@ -19,12 +13,4 @@ main#main {
   width: 100%;
   display: flex;
   flex-direction: column;
-}
-
-/* Base Responsive Utilities */
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding-inline: clamp(1.25rem, 5vw, 4rem);
 }
