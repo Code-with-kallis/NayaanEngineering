@@ -1,0 +1,159 @@
+/* src/components/home/WhyTrustUs.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+.whyTrustSection {
+  width: 100%;
+  margin: 0;
+  padding-block: 5.5rem 4.5rem;
+  padding-inline: clamp(1.5rem, 5vw, 4rem);
+  box-sizing: border-box;
+  background: #FFFFFF;
+  border-top: 1px solid #E2E8F0;
+}
+
+.sectionTagRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #B7410E;
+  font-size: 0.825rem;
+  font-weight: 700;
+  margin-bottom: 0.65rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.tagSquareIcon {
+  font-size: 0.5rem;
+  color: #B7410E;
+  flex-shrink: 0;
+}
+
+.splitHeaderContainer {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2.5rem;
+  align-items: flex-end;
+  margin-bottom: 3.5rem;
+}
+
+.splitHeaderLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.splitTitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.2rem, 3.2vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: #111111;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.splitHeaderRight {
+  display: flex;
+  align-items: flex-end;
+}
+
+.splitDesc {
+  color: #555555;
+  font-size: 0.925rem;
+  line-height: 1.65;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.splitContentGrid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+.splitImageCard {
+  width: 100%;
+  height: 380px;
+  overflow: hidden;
+  border-radius: 20px;
+  clip-path: polygon(40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+  background: #E5E5E5;
+}
+
+.splitImageCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.featuresList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.featureItem {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: #F8F9FA;
+  border: 1px solid #E2E8F0;
+}
+
+.featureIconBox {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #B7410E;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.featureItem h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 0.35rem 0;
+}
+
+.featureItem p {
+  color: #666666;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .splitHeaderContainer {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .splitContentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .whyTrustSection {
+    padding-block: 3.5rem 2.5rem;
+    padding-inline: 1.25rem;
+  }
+
+  .splitTitle {
+    font-size: 1.85rem;
+  }
+
+  .splitImageCard {
+    height: 220px;
+    clip-path: none;
+    border-radius: 16px;
+  }
+}

@@ -24,31 +24,23 @@ NayaabEngineering/
 │  └─ logo2.png
 ├─ public/
 │  ├─ assets/
+│  │  ├─ about/
+│  │  │  ├─ 3d-house.png
+│  │  │  └─ office.webp
 │  │  ├─ contact/
 │  │  │  └─ form.png
 │  │  ├─ footer/
-│  │  │  ├─ footer.jpg
-│  │  │  └─ footer.webp
+│  │  │  └─ logo-bg.png
+│  │  ├─ home/
+│  │  │  ├─ 3d-house.png
+│  │  │  └─ hero-mobile.mp4
 │  │  ├─ projects/
-│  │  │  ├─ hero/
-│  │  │  │  ├─ hero-01.webp
-│  │  │  │  └─ hero-02.webp
-│  │  │  ├─ proj-01.webp
-│  │  │  ├─ proj-02.webp
-│  │  │  ├─ proj-03.webp
-│  │  │  ├─ proj-04.webp
-│  │  │  ├─ proj-05.webp
-│  │  │  ├─ proj-06.webp
-│  │  │  └─ proj-07.webp
-│  │  ├─ services/
-│  │  │  ├─ architectural-design.webp
-│  │  │  ├─ interior-modular-design.webp
-│  │  │  ├─ regulatory-approvals.webp
-│  │  │  ├─ structural-engineering.webp
-│  │  │  └─ turnkey-construction.webp
+│  │  │  └─ hero/
+│  │  │     ├─ projects-hero-01.webp
+│  │  │     ├─ projects-hero-02.webp
+│  │  │     └─ projects-hero-03.webp
 │  │  └─ team/
 │  │     ├─ junaid.jpg
-│  │     ├─ neipl-0101.png
 │  │     ├─ neipl-0102.png
 │  │     ├─ neipl-0103.png
 │  │     ├─ neipl-0104.png
@@ -59,9 +51,11 @@ NayaabEngineering/
 │  │     ├─ neipl-0121.png
 │  │     ├─ neipl-0122.png
 │  │     ├─ neipl-0123.png
-│  │     └─ team-hero.webp
+│  │     ├─ sajid.jpeg
+│  │     └─ waseemmanzoor.jpg
+│  ├─ favicon-48x48.png
+│  ├─ favicon-512x512.png
 │  ├─ favicon.svg
-│  ├─ icons.svg
 │  ├─ logo-black.png
 │  ├─ logo-full-white.png
 │  ├─ logo-full.png
@@ -72,16 +66,15 @@ NayaabEngineering/
 │  └─ logo2.png
 ├─ src/
 │  ├─ assets/
-│  │  ├─ hero.png
-│  │  ├─ home.webp
-│  │  ├─ logo.png
-│  │  ├─ react.svg
-│  │  └─ vite.svg
 │  ├─ components/
+│  │  ├─ about/
+│  │  │  ├─ AboutHero.jsx
+│  │  │  └─ AboutHero.module.css
 │  │  ├─ common/
-│  │  │  └─ ContactForm/
-│  │  │     ├─ ContactForm.jsx
-│  │  │     └─ ContactForm.module.css
+│  │  │  ├─ ContactForm/
+│  │  │  │  ├─ ContactForm.jsx
+│  │  │  │  └─ ContactForm.module.css
+│  │  │  └─ PageLoader.jsx
 │  │  ├─ home/
 │  │  │  ├─ Hero.jsx
 │  │  │  └─ Hero.module.css
@@ -100,19 +93,12 @@ NayaabEngineering/
 │  │  │  ├─ ProjectGallery.jsx
 │  │  │  └─ ProjectGallery.module.css
 │  │  ├─ team/
-│  │  │  ├─ TeamCard.jsx
-│  │  │  ├─ TeamCard.module.css
-│  │  │  ├─ TeamGrid.css
-│  │  │  ├─ TeamGrid.jsx
-│  │  │  ├─ TeamHero.jsx
-│  │  │  ├─ TeamHero.module.css
-│  │  │  ├─ TeamProfileHero.jsx
-│  │  │  ├─ TeamProfileHero.module.css
-│  │  │  ├─ TeamSection.css
-│  │  │  └─ TeamSection.jsx
+│  │  │  ├─ EmployeeModal.jsx
+│  │  │  ├─ EmployeeModal.module.css
+│  │  │  ├─ TeamSection.jsx
+│  │  │  └─ TeamSection.module.css
 │  │  └─ ScrollToTop.jsx
 │  ├─ data/
-│  │  ├─ projects.js
 │  │  ├─ services.js
 │  │  └─ team.js
 │  ├─ hooks/
@@ -144,8 +130,6 @@ NayaabEngineering/
 │  │  │  ├─ Services.jsx
 │  │  │  └─ Services.module.css
 │  │  └─ Team/
-│  │     ├─ Team.css
-│  │     ├─ Team.jsx
 │  │     ├─ TeamProfile.jsx
 │  │     └─ TeamProfile.module.css
 │  ├─ styles/
