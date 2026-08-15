@@ -114,7 +114,7 @@ function About() {
           title="Engineering What Comes Next in J&K"
           subtitle="Nayaab Engineering Innovations Pvt. Ltd. combines formal corporate standards with startup agility to deliver civil construction, structural engineering, and technical design across Jammu & Kashmir."
           stats={[
-            { value: "2024", label: "Founded in Baramulla" },
+            { value: "2022", label: "Founded in Baramulla" },
             { value: "DPIIT", label: "Recognized Startup" },
             { 
               value: totalMembersCount ? `${totalMembersCount}` : "10+", 
@@ -294,7 +294,7 @@ function About() {
               </div>
               <span className={styles.bentoLabel}>Headquarters</span>
               <h3 className={styles.bentoValue}>Baramulla, J&K</h3>
-              <p className={styles.bentoSubtext}>Sangri Colony, Baramulla, J&K - 193101</p>
+              <p className={styles.bentoSubtext}>Qutub Complex, Opposite J&K Bank (TP), Bramulla Jammu and Kashmir, 193101. </p>
             </div>
 
             <div className={`${styles.bentoCard} ${styles.revealOnScroll} ${styles.revealDelay4}`}>
