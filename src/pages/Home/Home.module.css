@@ -5,6 +5,15 @@
   }
 }
 
+/* Disable synthetic smooth scroll on mobile to keep momentum fast & unthrottled */
+@media (max-width: 1024px) {
+  html, body {
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: clip;
+  }
+}
+
 .heroWrapper {
   width: 100%;
   position: relative;

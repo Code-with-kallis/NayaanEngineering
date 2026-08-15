@@ -1,16 +1,17 @@
 /* src/components/home/AboutBento.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/* ===== SOLID DARK SECTION (CHANGE HEX COLOR HERE) ===== */
+/* ===== SOLID DARK SECTION ===== */
 .aboutSection {
   width: 100%;
   margin: 0;
   padding-block: 5.5rem 4.5rem;
-  padding-inline: clamp(1.5rem, 5vw, 4rem); /* Exact horizontal padding preserved */
+  padding-inline: clamp(1.5rem, 5vw, 4rem);
   box-sizing: border-box;
-  background-color: #344C64; /* <-- CHANGE BACKGROUND COLOR HERE (HEX) */
+  background-color: #344C64;
   position: relative;
   overflow: hidden;
+  contain: paint;
 }
 
 .container {
@@ -27,9 +28,10 @@
   display: flex;
   flex-direction: column;
   opacity: 0;
-  transform: translate3d(-140px, 0, 0);
-  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.85s ease;
+  transform: translate3d(-100px, 0, 0);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
   will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .aboutSection.isVisible .textContent {
@@ -80,7 +82,7 @@
   margin-bottom: 0;
 }
 
-/* ===== RIGHT COLUMN: LOGO SCROLL ZOOM EFFECT (CLEAN WITHOUT SHADOW) ===== */
+/* ===== RIGHT COLUMN: LOGO SCROLL ZOOM EFFECT ===== */
 .logoWrapper {
   position: relative;
   display: flex;
@@ -88,9 +90,10 @@
   justify-content: center;
   width: 100%;
   opacity: 0;
-  transform: scale(0.55);
-  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease;
+  transform: scale(0.7);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
   will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .aboutSection.isVisible .logoWrapper {
@@ -105,12 +108,12 @@
   object-fit: contain;
   display: block;
   user-select: none;
-  filter: none; /* No shadow behind logo */
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: none;
+  transition: transform 0.5s ease;
 }
 
 .logoWrapper:hover .brandLogo {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
 /* ===== RESPONSIVE BREAKPOINTS ===== */
@@ -128,11 +131,17 @@
 @media (max-width: 768px) {
   .aboutSection {
     padding-block: 3.5rem 2.5rem;
-    padding-inline: 1.25rem; /* Exact mobile horizontal padding preserved */
+    padding-inline: 1.25rem;
   }
 
   .textContent {
-    transform: translate3d(-60px, 0, 0);
+    transform: translate3d(-45px, 0, 0);
+    transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s ease;
+  }
+
+  .logoWrapper {
+    transform: scale(0.85);
+    transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s, opacity 0.6s ease 0.1s;
   }
 
   .heading {

@@ -18,7 +18,7 @@ export default function SplitShowcase() {
   const isLockedRef = useRef(false);
 
   useEffect(() => {
-    // Dynamic bidirectional observer configured for both desktop & mobile viewport ratios
+    // Calibrated observer: only triggers when the user has genuinely scrolled to the section
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -28,8 +28,8 @@ export default function SplitShowcase() {
         }
       },
       {
-        threshold: 0.08,
-        rootMargin: "0px 0px -30px 0px",
+        threshold: 0.18,
+        rootMargin: "0px 0px -80px 0px",
       }
     );
 
@@ -37,6 +37,7 @@ export default function SplitShowcase() {
       observer.observe(splitSectionRef.current);
     }
 
+    // Scroll snapping ONLY for desktop devices with a mouse pointer
     const isCoarsePointer =
       typeof window !== "undefined" &&
       window.matchMedia &&
@@ -44,7 +45,7 @@ export default function SplitShowcase() {
 
     let cleanupScrollLock = () => {};
 
-    if (!isCoarsePointer && window.innerWidth > 1024) {
+    if (!isCoarsePointer && typeof window !== "undefined" && window.innerWidth > 1024) {
       const scrollToTarget = (targetTop) => {
         isLockedRef.current = true;
         window.scrollTo({

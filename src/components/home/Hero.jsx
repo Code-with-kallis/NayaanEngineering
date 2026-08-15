@@ -1,3 +1,4 @@
+// src/components/home/Hero.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import styles from "./Hero.module.css";
@@ -104,18 +105,17 @@ const VideoBackground = ({ videoRef, videoSrc }) => (
       autoPlay
       loop
       playsInline
-      preload="auto"
+      preload="metadata"
       aria-hidden="true"
     />
-    {/* Dark Overlay active on both Mobile & Desktop */}
     <div className={styles.videoOverlay} />
   </div>
 );
 
 const Hero = () => {
+  const heroRef = useRef(null);
   const videoRef = useRef(null);
 
-  // Responsive video detection (Mobile <= 768px)
   const [isMobile, setIsMobile] = useState(() => 
     typeof window !== "undefined" ? window.innerWidth <= 768 : false
   );
@@ -143,7 +143,7 @@ const Hero = () => {
 
   const activeVideoSrc = isMobile ? MOBILE_VIDEO_SRC : DESKTOP_VIDEO_SRC;
 
-  // Autoplay video normally across all screens
+  // Auto-pause video when scrolled out of view to release 100% GPU resources for smooth page scrolling
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -151,15 +151,30 @@ const Hero = () => {
     video.muted = true;
     video.defaultMuted = true;
     video.loop = true;
-    
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch((err) => console.warn("Video autoplay prevented:", err));
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {});
+          }
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    if (heroRef.current) {
+      observer.observe(heroRef.current);
     }
+
+    return () => observer.disconnect();
   }, [activeVideoSrc]);
 
   return (
-    <div className={styles.heroTrack}>
+    <div ref={heroRef} className={styles.heroTrack}>
       <section className={styles.heroSection} aria-label="Hero">
         <VideoBackground videoRef={videoRef} videoSrc={activeVideoSrc} />
         <HeroContent />

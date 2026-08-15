@@ -11,12 +11,13 @@ export default function AboutBento() {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(entry.target);
+        } else {
+          setIsVisible(false);
         }
       },
       {
-        threshold: 0.15,
-        rootMargin: "0px 0px -40px 0px",
+        threshold: 0.18,
+        rootMargin: "0px 0px -70px 0px",
       }
     );
 
@@ -52,7 +53,7 @@ export default function AboutBento() {
           </p>
         </div>
 
-        {/* RIGHT COLUMN: LOGO WITH SCROLL ZOOM EFFECT (NO SHADOW / NO GLOW) */}
+        {/* RIGHT COLUMN: LOGO WITH SCROLL ZOOM EFFECT */}
         <div className={styles.logoWrapper}>
           <img
             src="/logo-full-white.png"

@@ -8,8 +8,14 @@
   box-sizing: border-box;
 }
 
+/* Smooth scrolling enabled ONLY on Desktop to keep mobile touch scroll 60FPS fluid */
+@media (min-width: 1025px) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 html {
-  scroll-behavior: smooth;
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
 }
@@ -17,7 +23,7 @@ html {
 body {
   min-width: 320px;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip; /* Modern clean horizontal clip without breaking mobile touch momentum */
   background-color: var(--nei-bg-page);
   color: var(--nei-text-body);
   font-family: var(--nei-font-secondary);
@@ -25,6 +31,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Base Headings */
