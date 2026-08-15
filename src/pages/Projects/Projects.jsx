@@ -8,7 +8,6 @@ import {
   FaSquare
 } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
-import { PROJECTS_DATA as fallbackProjects } from "../../data/projects";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
 import styles from "./Projects.module.css";
 
@@ -34,7 +33,7 @@ export default function Projects() {
   
   const projectsSectionRef = useRef(null);
 
-  // Fetch Live Projects from Supabase
+  // Fetch Live Projects directly from Supabase
   useEffect(() => {
     async function loadProjects() {
       try {
@@ -61,11 +60,11 @@ export default function Projects() {
           }));
           setProjects(formatted);
         } else {
-          setProjects(fallbackProjects);
+          setProjects([]);
         }
       } catch (err) {
-        console.error("Error loading live projects:", err);
-        setProjects(fallbackProjects);
+        console.error("Error loading live projects from Supabase:", err);
+        setProjects([]);
       } finally {
         setLoading(false);
       }
@@ -186,14 +185,14 @@ export default function Projects() {
 
         <div className={styles.heroRightGrid}>
           <div className={styles.heroImageMain}>
-            <img src="/assets/projects/proj-04.webp" alt="Engineers on site" />
+            <img src="/assets/projects/hero/projects-hero-01.webp" alt="Comprehensive multi-story residential project" />
           </div>
           <div className={styles.heroSubGrid}>
             <div className={styles.heroImageSub1}>
-              <img src="/assets/projects/hero/hero-01.webp" alt="Skyscraper architecture" />
+              <img src="/assets/projects/hero/projects-hero-02.webp" alt="Residential House" />
             </div>
             <div className={styles.heroImageSub2}>
-              <img src="/assets/projects/hero/hero-02.webp" alt="Construction site detailing" />
+              <img src="/assets/projects/hero/projects-hero-03.webp" alt="Modern Kitchen Interior" />
             </div>
           </div>
         </div>
@@ -232,6 +231,10 @@ export default function Projects() {
         {loading ? (
           <div style={{ textAlign: "center", padding: "3rem", color: "#64748B" }}>
             Loading live portfolio...
+          </div>
+        ) : filteredProjects.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "3rem", color: "#64748B" }}>
+            No projects found in this category.
           </div>
         ) : (
           <div className={styles.grid}>
@@ -281,31 +284,33 @@ export default function Projects() {
         )}
 
         {/* Pagination Controls */}
-        <div className={styles.pagination}>
-          <button 
-            className={styles.pageBtn} 
-            disabled={activePage === 1}
-            onClick={() => handlePageChange(activePage - 1)}
-          >
-            Previous
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-            <button
-              key={num}
-              className={`${styles.pageNumber} ${activePage === num ? styles.activePage : ""}`}
-              onClick={() => handlePageChange(num)}
+        {filteredProjects.length > ITEMS_PER_PAGE && (
+          <div className={styles.pagination}>
+            <button 
+              className={styles.pageBtn} 
+              disabled={activePage === 1}
+              onClick={() => handlePageChange(activePage - 1)}
             >
-              {num}
+              Previous
             </button>
-          ))}
-          <button 
-            className={styles.pageBtn} 
-            disabled={activePage === totalPages}
-            onClick={() => handlePageChange(activePage + 1)}
-          >
-            Next
-          </button>
-        </div>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+              <button
+                key={num}
+                className={`${styles.pageNumber} ${activePage === num ? styles.activePage : ""}`}
+                onClick={() => handlePageChange(num)}
+              >
+                {num}
+              </button>
+            ))}
+            <button 
+              className={styles.pageBtn} 
+              disabled={activePage === totalPages}
+              onClick={() => handlePageChange(activePage + 1)}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </section>
 
       {/* MODULAR POPUP DRAWER */}

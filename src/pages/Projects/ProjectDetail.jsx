@@ -9,7 +9,6 @@ import {
   FaImages
 } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
-import { PROJECTS_DATA as fallbackProjects } from "../../data/projects";
 import styles from "./ProjectDetail.module.css";
 
 const DEFAULT_DELIVERABLES = [
@@ -46,11 +45,8 @@ export default function ProjectDetail() {
         const { data, error } = await query.maybeSingle();
 
         if (error) {
-          console.warn("Supabase fetch error, using fallback data:", error);
-          const fallback = fallbackProjects.find(
-            (p) => p.slug === slug || String(p.id) === slug
-          );
-          setProject(fallback || null);
+          console.error("Supabase fetch error:", error);
+          setProject(null);
         } else if (data) {
           setProject({
             id: data.id,
@@ -66,17 +62,11 @@ export default function ProjectDetail() {
             galleryImages: data.gallery_images || []
           });
         } else {
-          const fallback = fallbackProjects.find(
-            (p) => p.slug === slug || String(p.id) === slug
-          );
-          setProject(fallback || null);
+          setProject(null);
         }
       } catch (err) {
         console.error("Error fetching project detail:", err);
-        const fallback = fallbackProjects.find(
-          (p) => p.slug === slug || String(p.id) === slug
-        );
-        setProject(fallback || null);
+        setProject(null);
       } finally {
         setLoading(false);
       }

@@ -17,50 +17,41 @@
   width: 100%;
   max-width: none;
   margin: 0;
-  padding-block: 3rem 4rem;
   padding-inline: clamp(1.25rem, 5vw, 4rem);
   box-sizing: border-box;
 }
 
-/* ===== HERO SECTION ===== */
+/* ===== HERO SECTION (FULL SCREEN FIT LOCK) ===== */
 .heroSection {
+  min-height: 100vh;
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: 3rem;
+  grid-template-columns: 0.95fr 1.2fr;
+  gap: clamp(2rem, 3vw, 3.5rem);
   align-items: center;
-  padding-top: 8rem;
+  padding-top: clamp(4.8rem, 6.5vw, 6rem);
+  padding-bottom: clamp(1.25rem, 2vw, 2rem);
+  box-sizing: border-box;
 }
 
 .heroLeftCard {
   background: transparent;
-  padding: 0 2rem 0 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-/* OPENING SLIDE-IN FROM LEFT ANIMATIONS */
+/* OPENING SLIDE-IN ANIMATIONS */
 .animateSlideLeft {
   opacity: 0;
   transform: translateX(-120px);
   animation: slideInFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.delay1 {
-  animation-delay: 0.15s;
-}
-
-.delay2 {
-  animation-delay: 0.35s;
-}
-
-.delay3 {
-  animation-delay: 0.55s;
-}
-
-.delay4 {
-  animation-delay: 0.75s;
-}
+.delay1 { animation-delay: 0.15s; }
+.delay2 { animation-delay: 0.35s; }
+.delay3 { animation-delay: 0.55s; }
+.delay4 { animation-delay: 0.75s; }
 
 @keyframes slideInFromLeft {
   0% {
@@ -79,7 +70,7 @@
   gap: 0.4rem;
   font-size: 0.85rem;
   color: #777777;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
 }
 
 .homeIcon {
@@ -98,11 +89,11 @@
 
 .heroTitle {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(2.4rem, 3.4vw, 3.5rem);
+  font-size: clamp(2.3rem, 3.3vw, 3.4rem);
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.01em;
-  margin: 0 0 1.25rem 0;
+  margin: 0 0 0.85rem 0;
 }
 
 .titleDark {
@@ -118,8 +109,8 @@
   color: #555555;
   font-size: 0.875rem;
   line-height: 1.6;
-  margin: 0 0 1.75rem 0;
-  max-width: 440px;
+  margin: 0 0 1.35rem 0;
+  max-width: 430px;
 }
 
 .heroBtn {
@@ -132,8 +123,8 @@
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
-  padding: 0.85rem 2.2rem;
-  border-radius: 16px;
+  padding: 0.8rem 2.1rem;
+  border-radius: 14px;
   text-decoration: none;
   border: none;
   cursor: pointer;
@@ -147,18 +138,22 @@
   box-shadow: 0 6px 16px rgba(183, 65, 14, 0.32);
 }
 
-/* Right Chamfered Hero Image Composition */
+/* RIGHT HERO: DESKTOP RATIOS */
 .heroRightGrid {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 680px;
+  justify-self: end;
 }
 
 .heroImageMain {
   width: 100%;
-  height: 270px;
+  aspect-ratio: 1200 / 660;
+  max-height: 340px;
   overflow: hidden;
-  clip-path: polygon(50px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px);
+  clip-path: polygon(36px 0, 100% 0, 100% calc(100% - 36px), calc(100% - 36px) 100%, 0 100%, 0 36px);
   border-radius: 20px;
   background: #E5E5E5;
 }
@@ -169,28 +164,31 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center center;
   display: block;
 }
 
 .heroSubGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
+  gap: 0.85rem;
+  width: 100%;
 }
 
 .heroImageSub1,
 .heroImageSub2 {
   width: 100%;
-  height: 170px;
+  aspect-ratio: 800 / 500;
+  max-height: 175px;
   overflow: hidden;
-  clip-path: polygon(40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
-  border-radius: 20px;
+  clip-path: polygon(24px 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%, 0 24px);
+  border-radius: 16px;
   background: #E5E5E5;
 }
 
 /* ===== PROJECTS SECTION ===== */
 .projectsSection {
-  padding-top: 3.5rem;
+  padding-block: 4rem 4rem;
 }
 
 .sectionTagRow {
@@ -290,10 +288,11 @@
 
 .cardImageWrapper {
   width: 100%;
-  height: 220px;
+  aspect-ratio: 16 / 10;
+  height: auto;
   overflow: hidden;
   background: #E5E5E5;
-  clip-path: polygon(36px 0, 100% 0, 100% calc(100% - 36px), calc(100% - 36px) 100%, 0 100%, 0 36px);
+  clip-path: polygon(32px 0, 100% 0, 100% calc(100% - 32px), calc(100% - 32px) 100%, 0 100%, 0 32px);
   margin-bottom: 1.25rem;
   border-radius: 16px;
 }
@@ -411,9 +410,16 @@
 /* ===== RESPONSIVE BREAKPOINTS ===== */
 @media (max-width: 1024px) {
   .heroSection {
+    min-height: auto;
     grid-template-columns: 1fr;
     gap: 2.5rem;
-    padding-top: 6rem;
+    padding-top: 6.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .heroRightGrid {
+    max-width: 100%;
+    justify-self: stretch;
   }
 
   .grid {
@@ -448,6 +454,22 @@
       opacity: 1;
       transform: translateX(0);
     }
+  }
+
+  /* MOBILE ASPECT RATIO & SOFT CLIP-PATH FIX */
+  .heroImageMain {
+    aspect-ratio: 1200 / 660;
+    max-height: none; /* Height restriction removed so full proportion shows */
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    border-radius: 12px;
+  }
+
+  .heroImageSub1,
+  .heroImageSub2 {
+    aspect-ratio: 800 / 500;
+    max-height: none;
+    clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+    border-radius: 10px;
   }
 
   .cardMeta {

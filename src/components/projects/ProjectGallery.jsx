@@ -5,6 +5,11 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
+  // Reset index to first photo when navigating to another project
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [gallery]);
+
   // Close lightbox on Escape key
   useEffect(() => {
     if (!isLightboxOpen) return;
