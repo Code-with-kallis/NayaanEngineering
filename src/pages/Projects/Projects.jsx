@@ -164,18 +164,17 @@ export default function Projects() {
           </div>
 
           <h1 className={`${styles.heroTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
-            <span className={styles.titleDark}>Our Work. </span>
+            <span className={styles.titleDark}>From Vision to  </span>
             <span className={styles.titleMuted}>
-              Your
+              Exceptional
               <br />
-              Vision Realized.
+              Built Realities:
             </span>
           </h1>
 
           <p className={`${styles.heroText} ${styles.animateSlideLeft} ${styles.delay3}`}>
-            Every project we complete is a reflection of our commitment to quality,
-            precision, and client satisfaction. At Nayaab Engineering Innovations, we
-            take pride in transforming ideas into built realities.
+           Every project at Nayaab Engineering Innovations is thoughtfully planned, precisely executed, and built around the unique needs of our clients. From the initial concept to the final execution, we combine engineering expertise, attention to detail, and uncompromising quality to turn ambitious ideas into spaces that are functional, refined, and built to stand the test of time.
+
           </p>
 
           <Link to="/contact" className={`${styles.heroBtn} ${styles.animateSlideLeft} ${styles.delay4}`}>

@@ -22,7 +22,6 @@ import Hero from "../../components/home/Hero";
 import ContactForm from "../../components/common/ContactForm/ContactForm";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
 import { supabase } from "../../lib/supabaseClient";
-import { PROJECTS_DATA as fallbackProjects } from "../../data/projects";
 import styles from "./Home.module.css";
 
 const HOUSE_3D_IMAGE = "assets/home/3d-house.png";
@@ -92,7 +91,7 @@ const Home = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add(styles.isVisible);
-            obs.unobserve(entry.target); // <-- Crucial mobile optimization
+            obs.unobserve(entry.target);
           }
         });
       },
@@ -158,7 +157,7 @@ const Home = () => {
     };
   }, []);
 
-  // Fetch Live Featured Projects from Supabase
+  // Fetch Live Featured Projects directly from Supabase
   useEffect(() => {
     async function loadProjects() {
       try {
@@ -185,11 +184,11 @@ const Home = () => {
           }));
           setProjects(formatted);
         } else {
-          setProjects(fallbackProjects);
+          setProjects([]);
         }
       } catch (err) {
         console.error("Error loading live projects on Home:", err);
-        setProjects(fallbackProjects);
+        setProjects([]);
       } finally {
         setLoadingProjects(false);
       }
@@ -436,6 +435,10 @@ const Home = () => {
         {loadingProjects ? (
           <div style={{ textAlign: "center", padding: "3rem", color: "#64748B" }}>
             Loading featured work...
+          </div>
+        ) : featuredProjects.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "3rem", color: "#64748B" }}>
+            No featured projects available.
           </div>
         ) : (
           <div className={styles.projectGrid}>
