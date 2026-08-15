@@ -7,17 +7,17 @@ export default function AboutBento() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // Smooth one-time trigger on mobile
     const observer = new IntersectionObserver(
-      ([entry]) => {
+      ([entry], obs) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-        } else {
-          setIsVisible(false);
+          obs.unobserve(entry.target); // Unobserve immediately to prevent scroll lag
         }
       },
       {
-        threshold: 0.18,
-        rootMargin: "0px 0px -70px 0px",
+        threshold: 0.1,
+        rootMargin: "0px 0px -40px 0px",
       }
     );
 
@@ -35,7 +35,7 @@ export default function AboutBento() {
       aria-label="About Nayaab Engineering"
     >
       <div className={styles.container}>
-        {/* LEFT COLUMN: TEXT SLIDING IN FROM OUTSIDE LEFT */}
+        {/* LEFT COLUMN: TEXT CONTENT */}
         <div className={styles.textContent}>
           <h2 className={styles.heading}>About Nayaab Engineering</h2>
           <div className={styles.accentLine} />
@@ -53,7 +53,7 @@ export default function AboutBento() {
           </p>
         </div>
 
-        {/* RIGHT COLUMN: LOGO WITH SCROLL ZOOM EFFECT */}
+        {/* RIGHT COLUMN: BRAND LOGO */}
         <div className={styles.logoWrapper}>
           <img
             src="/logo-full-white.png"

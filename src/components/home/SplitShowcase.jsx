@@ -18,18 +18,17 @@ export default function SplitShowcase() {
   const isLockedRef = useRef(false);
 
   useEffect(() => {
-    // Calibrated observer: only triggers when the user has genuinely scrolled to the section
+    // Smooth one-time trigger on mobile to ensure zero frame drops during scrolling
     const observer = new IntersectionObserver(
-      ([entry]) => {
+      ([entry], obs) => {
         if (entry.isIntersecting) {
           entry.target.classList.add(styles.isVisible);
-        } else {
-          entry.target.classList.remove(styles.isVisible);
+          obs.unobserve(entry.target); // Unobserve immediately to prevent scroll stutter
         }
       },
       {
-        threshold: 0.18,
-        rootMargin: "0px 0px -80px 0px",
+        threshold: 0.1,
+        rootMargin: "0px 0px -40px 0px",
       }
     );
 
@@ -37,15 +36,16 @@ export default function SplitShowcase() {
       observer.observe(splitSectionRef.current);
     }
 
-    // Scroll snapping ONLY for desktop devices with a mouse pointer
-    const isCoarsePointer =
+    // Scroll snapping restricted strictly to Desktop mouse users
+    const isTouch =
       typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(pointer: coarse)").matches;
+      ("ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia("(pointer: coarse)").matches);
 
     let cleanupScrollLock = () => {};
 
-    if (!isCoarsePointer && typeof window !== "undefined" && window.innerWidth > 1024) {
+    if (!isTouch && typeof window !== "undefined" && window.innerWidth > 1024) {
       const scrollToTarget = (targetTop) => {
         isLockedRef.current = true;
         window.scrollTo({
@@ -55,7 +55,7 @@ export default function SplitShowcase() {
 
         setTimeout(() => {
           isLockedRef.current = false;
-        }, 950);
+        }, 900);
       };
 
       const handleWheel = (e) => {

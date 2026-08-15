@@ -1,7 +1,7 @@
 /* src/components/home/AboutBento.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/* ===== SOLID DARK SECTION ===== */
+/* ===== SOLID SECTION ===== */
 .aboutSection {
   width: 100%;
   margin: 0;
@@ -11,7 +11,6 @@
   background-color: #344C64;
   position: relative;
   overflow: hidden;
-  contain: paint;
 }
 
 .container {
@@ -23,15 +22,13 @@
   align-items: center;
 }
 
-/* ===== LEFT COLUMN: SLIDE IN FROM OUTSIDE LEFT ===== */
+/* ===== LEFT COLUMN (DESKTOP) ===== */
 .textContent {
   display: flex;
   flex-direction: column;
   opacity: 0;
-  transform: translate3d(-100px, 0, 0);
+  transform: translate3d(-80px, 0, 0);
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
 }
 
 .aboutSection.isVisible .textContent {
@@ -82,7 +79,7 @@
   margin-bottom: 0;
 }
 
-/* ===== RIGHT COLUMN: LOGO SCROLL ZOOM EFFECT ===== */
+/* ===== RIGHT COLUMN (DESKTOP) ===== */
 .logoWrapper {
   position: relative;
   display: flex;
@@ -90,10 +87,8 @@
   justify-content: center;
   width: 100%;
   opacity: 0;
-  transform: scale(0.7);
+  transform: scale(0.75);
   transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
 }
 
 .aboutSection.isVisible .logoWrapper {
@@ -116,7 +111,9 @@
   transform: scale(1.04);
 }
 
-/* ===== RESPONSIVE BREAKPOINTS ===== */
+/* =========================================================================
+   100% NATIVE SMOOTH MOBILE PERFORMANCE (< 1024px)
+   ========================================================================= */
 @media (max-width: 1024px) {
   .container {
     grid-template-columns: 1fr;
@@ -135,13 +132,13 @@
   }
 
   .textContent {
-    transform: translate3d(-45px, 0, 0);
-    transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s ease;
+    transform: translate3d(0, 18px, 0);
+    transition: opacity 0.45s ease-out, transform 0.45s ease-out;
   }
 
   .logoWrapper {
-    transform: scale(0.85);
-    transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s, opacity 0.6s ease 0.1s;
+    transform: scale(0.95);
+    transition: opacity 0.45s ease-out 0.08s, transform 0.45s ease-out 0.08s;
   }
 
   .heading {
