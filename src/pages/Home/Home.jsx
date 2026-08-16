@@ -7,6 +7,7 @@ import SplitShowcase from "../../components/home/SplitShowcase";
 import FeaturedProjects from "../../components/home/FeaturedProjects";
 import ProcessSection from "../../components/home/ProcessSection";
 import WhyTrustUs from "../../components/home/WhyTrustUs";
+import GoogleReviews from "../../components/home/GoogleReviews";
 import TickerBanner from "../../components/home/TickerBanner";
 import ContactForm from "../../components/common/ContactForm/ContactForm";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
@@ -133,17 +134,20 @@ export default function Home() {
       {/* 7. WHY TRUST US - Value Props & Risk Reversal */}
       <WhyTrustUs />
 
-      {/* 8. TICKER - High Energy Transition into CTA */}
+      {/* 8. GOOGLE REVIEWS - Live Social Proof */}
+      <GoogleReviews />
+
+      {/* 9. TICKER - High Energy Transition into CTA */}
       <TickerBanner />
 
-      {/* 9. CONTACT FORM - Final Conversion Point */}
+      {/* 10. CONTACT FORM - Final Conversion Point */}
       <ContactForm
         eyebrow="GET IN TOUCH"
         title="Let's talk"
         subtitle="To request a quote or meet for coffee at our Baramulla office, contact us directly or fill out the form below."
       />
 
-      {/* 10. MODAL DRAWER - Overlay */}
+      {/* 11. MODAL DRAWER - Overlay */}
       <ProjectDrawer
         isOpen={!!selectedProject}
         project={selectedProject}

@@ -76,8 +76,22 @@ NayaabEngineering/
 │  │  │  │  └─ ContactForm.module.css
 │  │  │  └─ PageLoader.jsx
 │  │  ├─ home/
+│  │  │  ├─ AboutBento.jsx
+│  │  │  ├─ AboutBento.module.css
+│  │  │  ├─ BrandMarquee.jsx
+│  │  │  ├─ BrandMarquee.module.css
+│  │  │  ├─ FeaturedProjects.jsx
+│  │  │  ├─ FeaturedProjects.module.css
 │  │  │  ├─ Hero.jsx
-│  │  │  └─ Hero.module.css
+│  │  │  ├─ Hero.module.css
+│  │  │  ├─ ProcessSection.jsx
+│  │  │  ├─ ProcessSection.module.css
+│  │  │  ├─ SplitShowcase.jsx
+│  │  │  ├─ SplitShowcase.module.css
+│  │  │  ├─ TickerBanner.jsx
+│  │  │  ├─ TickerBanner.module.css
+│  │  │  ├─ WhyTrustUs.jsx
+│  │  │  └─ WhyTrustUs.module.css
 │  │  ├─ layout/
 │  │  │  ├─ Footer/
 │  │  │  │  ├─ Footer.jsx
@@ -119,6 +133,10 @@ NayaabEngineering/
 │  │  ├─ Home/
 │  │  │  ├─ Home.jsx
 │  │  │  └─ Home.module.css
+│  │  ├─ legal/
+│  │  │  ├─ Legal.module.css
+│  │  │  ├─ Privacy.jsx
+│  │  │  └─ Terms.jsx
 │  │  ├─ Projects/
 │  │  │  ├─ ProjectDetail.jsx
 │  │  │  ├─ ProjectDetail.module.css
