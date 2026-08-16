@@ -9,7 +9,6 @@
 
 .container {
   width: 100%;
-  /* Exact max-width matching your Navbar & page grid */
   max-width: 1240px;
   margin: 0 auto;
   padding: 0 1.5rem;
@@ -18,27 +17,25 @@
 
 .header {
   text-align: center;
-  max-width: 620px;
+  max-width: 680px;
   margin: 0 auto 3rem auto;
 }
 
-.eyebrow {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #3590CE;
-  margin-bottom: 0.5rem;
+.googleBrandTitle {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.title {
-  font-size: clamp(1.75rem, 3.5vw, 2.35rem);
-  font-weight: 700;
-  letter-spacing: -0.025em;
+.reviewsWord {
   color: #0f172a;
-  line-height: 1.25;
-  margin: 0 0 0.5rem 0;
+  margin-left: 10px;
 }
 
 .subtitle {
@@ -63,6 +60,14 @@
   }
 
   .header {
-    margin-bottom: 1.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .googleBrandTitle {
+    font-size: 1.85rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
   }
 }
