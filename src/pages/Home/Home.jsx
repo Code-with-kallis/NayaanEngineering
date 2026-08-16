@@ -1,12 +1,12 @@
 // src/pages/Home/Home.jsx
 import React, { useState, useEffect, useCallback } from "react";
 import Hero from "../../components/home/Hero";
-import SplitShowcase from "../../components/home/SplitShowcase";
 import BrandMarquee from "../../components/home/BrandMarquee";
 import AboutBento from "../../components/home/AboutBento";
+import SplitShowcase from "../../components/home/SplitShowcase";
 import FeaturedProjects from "../../components/home/FeaturedProjects";
-import WhyTrustUs from "../../components/home/WhyTrustUs";
 import ProcessSection from "../../components/home/ProcessSection";
+import WhyTrustUs from "../../components/home/WhyTrustUs";
 import TickerBanner from "../../components/home/TickerBanner";
 import ContactForm from "../../components/common/ContactForm/ContactForm";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
@@ -106,44 +106,44 @@ export default function Home() {
 
   return (
     <>
-      {/* 1. HERO SECTION */}
+      {/* 1. HERO - Hook & Main Headline */}
       <section className={styles.heroWrapper}>
         <Hero />
       </section>
 
-      {/* 2. FULL-SCREEN 50/50 SPLIT SHOWCASE */}
-      <SplitShowcase />
-
-      {/* 3. CONTINUOUS SLIDING BRAND MARQUEE (FULL COLOR BY DEFAULT) */}
+      {/* 2. LOGO MARQUEE - Instant Social Proof */}
       <BrandMarquee />
 
-      {/* 4. ABOUT OUR COMPANY */}
+      {/* 3. ABOUT BENTO - Identity & Core Values */}
       <AboutBento />
 
-      {/* 5. FEATURED WORK */}
+      {/* 4. SPLIT SHOWCASE - Visual Highlights / Core Service Focus */}
+      <SplitShowcase />
+
+      {/* 5. FEATURED WORK - Proof of Execution & Portfolio */}
       <FeaturedProjects
         projects={projects}
         loading={loadingProjects}
         onOpenModal={openProjectModal}
       />
 
-      {/* 6. WHY BUILDERS & CLIENTS TRUST US */}
-      <WhyTrustUs />
-
-      {/* 7. OUR 4-STEP PROCESS */}
+      {/* 6. OUR PROCESS - How We Work (Removes Ambiguity) */}
       <ProcessSection />
 
-      {/* 8. TICKER SECTION */}
+      {/* 7. WHY TRUST US - Value Props & Risk Reversal */}
+      <WhyTrustUs />
+
+      {/* 8. TICKER - High Energy Transition into CTA */}
       <TickerBanner />
 
-      {/* 9. CONTACT FORM */}
+      {/* 9. CONTACT FORM - Final Conversion Point */}
       <ContactForm
         eyebrow="GET IN TOUCH"
         title="Let's talk"
         subtitle="To request a quote or meet for coffee at our Baramulla office, contact us directly or fill out the form below."
       />
 
-      {/* 10. MODULAR DRAWER MODAL */}
+      {/* 10. MODAL DRAWER - Overlay */}
       <ProjectDrawer
         isOpen={!!selectedProject}
         project={selectedProject}

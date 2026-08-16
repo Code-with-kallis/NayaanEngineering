@@ -8,10 +8,6 @@
 .footer {
   position: relative;
   background-color: #0d0e12;
-  background-image: url("https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/FOOTER/footer.webp");
-  background-size: cover;
-  background-position: right bottom;
-  background-repeat: no-repeat;
   color: #FFFFFF;
   padding-top: 3.5rem;
   padding-bottom: 0;
@@ -23,36 +19,18 @@
 }
 
 /* ==========================================================================
-   DESKTOP OVERLAY: Subtle dark gradient behind text, 100% clear over 3D model
-   ========================================================================== */
-.footer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(10, 14, 22, 0.72) 0%,
-    rgba(10, 14, 22, 0.55) 40%,
-    rgba(10, 14, 22, 0.20) 70%,
-    transparent 100%
-  );
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* ==========================================================================
-   FOOTER 3-COLUMN GRID
+   4-COLUMN GRID — FULL WIDTH (MATCHES NAVBAR HORIZONTAL EDGES EXACTLY)
    ========================================================================== */
 .footerContainer {
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: none;
-  margin: 0 auto;
+  margin: 0;
   padding-left: clamp(1.25rem, 4vw, 4rem);
-  padding-right: clamp(18rem, 26vw, 32rem);
+  padding-right: clamp(1.25rem, 4vw, 4rem);
   display: grid;
-  grid-template-columns: 1.4fr 0.9fr 1.3fr;
+  grid-template-columns: 1.35fr 0.85fr 1.2fr 1.2fr;
   gap: 2.5rem;
   box-sizing: border-box;
 }
@@ -65,14 +43,13 @@
   padding: 0;
 }
 
-/* COMPANY COLUMN */
+/* COLUMN 1: COMPANY PROFILE */
 .companyColumn {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-/* LOGO CONTAINER */
 .logoWrapper {
   display: inline-flex;
   align-items: center;
@@ -97,7 +74,6 @@
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.95);
 }
 
-/* SOCIAL ICONS */
 .socialIcons {
   display: flex;
   gap: 0.65rem;
@@ -129,7 +105,7 @@
   box-shadow: 0 6px 18px rgba(183, 65, 14, 0.45);
 }
 
-/* COLUMN TITLES */
+/* TITLES */
 .columnTitle {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.3rem;
@@ -152,7 +128,7 @@
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
-/* PAGE NAVIGATION & LINKS */
+/* COLUMN 2: QUICK LINKS */
 .navLinksList {
   list-style: none;
   padding: 0;
@@ -191,7 +167,7 @@
   transform: translateX(2px);
 }
 
-/* CONTACT LIST */
+/* COLUMN 3: GET IN TOUCH */
 .contactList {
   list-style: none;
   padding: 0;
@@ -233,8 +209,142 @@
   text-shadow: 0 2px 8px rgba(183, 65, 14, 0.8);
 }
 
+/* COLUMN 4: SUBSCRIBE FOR UPDATES */
+.newsletterColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.newsletterText {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #CBD5E1;
+  margin: 0 0 1.25rem 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.subscribeForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  padding: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.inputWrapper:focus-within {
+  border-color: #B7410E;
+  box-shadow: 0 0 0 2px rgba(183, 65, 14, 0.25);
+}
+
+.subscribeInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.65rem 0.85rem;
+  color: #FFFFFF;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.subscribeInput::placeholder {
+  color: #94A3B8;
+}
+
+.subscribeButton {
+  background: #B7410E;
+  border: none;
+  outline: none;
+  color: #FFFFFF;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.subscribeButton:hover:not(:disabled) {
+  background: #C84B15;
+  transform: scale(1.04);
+}
+
+.subscribeButton:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.spinnerIcon {
+  animation: spin 0.8s linear infinite;
+  font-size: 0.9rem;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.subscribedBadgeBox {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: #4ADE80;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-sizing: border-box;
+  width: 100%;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.subscribedCheckIcon {
+  font-size: 1.15rem;
+  color: #4ADE80;
+  flex-shrink: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.errorMessage {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #F87171;
+  font-size: 0.775rem;
+}
+
+.newsletterBadge {
+  font-size: 0.75rem;
+  color: #94A3B8;
+  margin-top: 0.75rem;
+  line-height: 1.4;
+}
+
 /* ==========================================================================
-   SOLID BLACK BOTTOM BAR (DESKTOP)
+   SOLID BLACK BOTTOM BAR
    ========================================================================== */
 .footerBottomBar {
   position: relative;
@@ -248,14 +358,15 @@
 
 .bottomContent {
   width: 100%;
-  margin: 0 auto;
-  padding-inline: clamp(1.25rem, 5vw, 4rem);
+  margin: 0;
+  padding-left: clamp(1.25rem, 4vw, 4rem);
+  padding-right: clamp(1.25rem, 4vw, 4rem);
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.25rem;
   box-sizing: border-box;
 }
 
@@ -264,6 +375,35 @@
   font-size: 0.82rem;
   color: #94A3B8;
   line-height: 1.4;
+}
+
+/* ==========================================================================
+   LEGAL LINKS BUTTONS (PRIVACY & TERMS)
+   ========================================================================== */
+.legalLinks {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.legalLink {
+  color: #94A3B8;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 2px 4px;
+}
+
+.legalLink:hover {
+  color: #FFFFFF;
+  text-shadow: 0 1px 6px rgba(183, 65, 14, 0.6);
+}
+
+.legalDivider {
+  color: rgba(255, 255, 255, 0.25);
+  font-size: 0.65rem;
+  user-select: none;
 }
 
 .devCredit {
@@ -303,42 +443,11 @@
   font-size: 0.75rem;
 }
 
-/* SCROLL TO TOP BUTTON (DESKTOP) */
-.scrollTop {
-  position: absolute;
-  z-index: 5;
-  right: 2.5rem;
-  bottom: 4.5rem;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: rgba(15, 23, 42, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  color: #FFFFFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-}
-
-.scrollTop:hover {
-  background: #B7410E;
-  color: #FFFFFF;
-  border-color: #B7410E;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(183, 65, 14, 0.6);
-}
-
 /* ==========================================================================
    RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
    ========================================================================== */
 @media (max-width: 1200px) {
   .footerContainer {
-    padding-right: clamp(14rem, 22vw, 20rem);
     gap: 1.75rem;
   }
 }
@@ -346,27 +455,20 @@
 @media (max-width: 1024px) {
   .footerContainer {
     grid-template-columns: 1fr 1fr;
-    padding-right: clamp(1.25rem, 4vw, 3rem);
     gap: 2.5rem 2rem;
+  }
+
+  .bottomContent {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
   }
 }
 
 @media (max-width: 640px) {
   .footer {
-    background-image: url("https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/FOOTER/footer-mob.webp");
-    background-size: cover;
-    background-position: center top;
     padding-top: 3rem;
-  }
-
-  /* Vertical light gradient on mobile */
-  .footer::before {
-    background: linear-gradient(
-      180deg,
-      rgba(10, 14, 22, 0.72) 0%,
-      rgba(10, 14, 22, 0.55) 50%,
-      rgba(10, 14, 22, 0.82) 100%
-    );
   }
 
   .footerLogo {
@@ -385,7 +487,6 @@
     padding-bottom: 0.5rem;
   }
 
-  /* Centered, balanced vertical layout on mobile */
   .bottomContent {
     flex-direction: column;
     align-items: center;
@@ -394,6 +495,10 @@
     padding-top: 1.25rem;
     padding-bottom: 1.25rem;
     padding-inline: 1.5rem;
+  }
+
+  .legalLinks {
+    margin: 0.15rem 0;
   }
 
   .copyrightText {
@@ -406,18 +511,5 @@
 
   .devCredit {
     font-size: 0.78rem;
-  }
-
-  /* Mobile floating scroll button */
-  .scrollTop {
-    position: fixed;
-    right: 1.25rem;
-    bottom: 1.5rem;
-    width: 40px;
-    height: 40px;
-    font-size: 0.9rem;
-    z-index: 99;
-    border-radius: 50%;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
   }
 }

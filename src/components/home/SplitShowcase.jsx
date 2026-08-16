@@ -18,17 +18,16 @@ export default function SplitShowcase() {
   const isLockedRef = useRef(false);
 
   useEffect(() => {
-    // Smooth one-time trigger on mobile to ensure zero frame drops during scrolling
+    // Entrance reveal animation
     const observer = new IntersectionObserver(
       ([entry], obs) => {
         if (entry.isIntersecting) {
           entry.target.classList.add(styles.isVisible);
-          obs.unobserve(entry.target); // Unobserve immediately to prevent scroll stutter
+          obs.unobserve(entry.target);
         }
       },
       {
-        threshold: 0.1,
-        rootMargin: "0px 0px -40px 0px",
+        threshold: 0.15,
       }
     );
 
@@ -36,7 +35,7 @@ export default function SplitShowcase() {
       observer.observe(splitSectionRef.current);
     }
 
-    // Scroll snapping restricted strictly to Desktop mouse users
+    // 1-Scroll Precision Snap to Fit Display (Desktop Only)
     const isTouch =
       typeof window !== "undefined" &&
       ("ontouchstart" in window ||
@@ -46,13 +45,20 @@ export default function SplitShowcase() {
     let cleanupScrollLock = () => {};
 
     if (!isTouch && typeof window !== "undefined" && window.innerWidth > 1024) {
-      const scrollToTarget = (targetTop) => {
+      const snapToExactDisplay = () => {
+        if (!splitSectionRef.current) return;
         isLockedRef.current = true;
+
+        // Exact pixel top calculation relative to entire page
+        const targetTop =
+          splitSectionRef.current.getBoundingClientRect().top + window.pageYOffset;
+
         window.scrollTo({
-          top: targetTop,
+          top: Math.round(targetTop),
           behavior: "smooth",
         });
 
+        // Absorb all wheel inertia until smooth scroll animation settles
         setTimeout(() => {
           isLockedRef.current = false;
         }, 900);
@@ -60,18 +66,24 @@ export default function SplitShowcase() {
 
       const handleWheel = (e) => {
         if (!splitSectionRef.current) return;
-        const currentScroll = window.scrollY || window.pageYOffset;
-        const splitTop = splitSectionRef.current.offsetTop;
 
-        if (currentScroll < splitTop - 30) {
-          if (e.deltaY > 0) {
-            e.preventDefault();
-            if (!isLockedRef.current) {
-              scrollToTarget(splitTop);
-            }
-          }
-        } else if (isLockedRef.current) {
+        // Prevent wheel jitter while snapping
+        if (isLockedRef.current) {
           e.preventDefault();
+          return;
+        }
+
+        const rect = splitSectionRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+
+        // Triggers as soon as user scrolls down on About and SplitShowcase enters view
+        if (
+          e.deltaY > 0 &&
+          rect.top > 8 &&
+          rect.top <= windowHeight * 0.95
+        ) {
+          e.preventDefault();
+          snapToExactDisplay();
         }
       };
 

@@ -1,66 +1,98 @@
 // src/components/home/AboutBento.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import {
+  FaSquare,
+  FaMicrochip,
+  FaAward,
+  FaCheckCircle,
+  FaUsers,
+} from "react-icons/fa";
 import styles from "./AboutBento.module.css";
 
 export default function AboutBento() {
-  const sectionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    // Smooth one-time trigger on mobile
-    const observer = new IntersectionObserver(
-      ([entry], obs) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          obs.unobserve(entry.target); // Unobserve immediately to prevent scroll lag
-        }
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -40px 0px",
-      }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section 
-      ref={sectionRef} 
-      className={`${styles.aboutSection} ${isVisible ? styles.isVisible : ""}`}
-      aria-label="About Nayaab Engineering"
-    >
-      <div className={styles.container}>
-        {/* LEFT COLUMN: TEXT CONTENT */}
-        <div className={styles.textContent}>
-          <h2 className={styles.heading}>About Nayaab Engineering</h2>
-          <div className={styles.accentLine} />
-
-          <p className={styles.paragraph}>
-            <strong>"NAYAAB"</strong> — incorporated in 2024 as a Private Limited Engineering Company (CIN: U42900JK2024PTC015987) under RoC Jammu, began its journey with a vision to deliver precision-engineered civil, structural, and modern architectural solutions.
-          </p>
-
-          <p className={styles.paragraph}>
-            Over the years, Nayaab Engineering Innovations has established strong regional prominence across Jammu &amp; Kashmir with the combined leadership of its board of directors — <strong>Junaid Bilal Sheikh</strong>, <strong>Aaqib Nazir Tantary</strong>, and <strong>Saajid Rashid Malik</strong>.
-          </p>
-
-          <p className={styles.paragraph}>
-            Upholding our core pillars — <em>'Commitment to Structural Integrity, Seismic Safety &amp; Architectural Innovation'</em>, we are recognized by <strong>DPIIT (#startupindia)</strong> under the Government of India, delivering compliant, turnkey engineering developments.
-          </p>
+    <section className={styles.statsSection}>
+      <div className={styles.splitHeaderContainer}>
+        <div className={styles.splitHeaderLeft}>
+          <div className={styles.sectionTagRow}>
+            <FaSquare className={styles.tagSquareIcon} />
+            <span>About Our Company</span>
+          </div>
+          <h2 className={styles.splitTitle}>Driven by Quality</h2>
         </div>
 
-        {/* RIGHT COLUMN: BRAND LOGO */}
-        <div className={styles.logoWrapper}>
+        <div className={styles.splitHeaderRight}>
+          <p className={styles.splitDesc}>
+            Bringing a hands-on, client-first approach to civil and architectural engineering.
+            Incorporated in 2024 and headquartered in Baramulla, we combine formal corporate standards with regional expertise.
+          </p>
+        </div>
+      </div>
+
+      <div className={styles.bentoGrid}>
+        <div className={`${styles.bentoCard} ${styles.cardLarge}`}>
           <img
-            src="/logo-full-white.png"
-            alt="Nayaab Engineering Emblem"
-            className={styles.brandLogo}
-            loading="lazy"
+            src="/logo.png"
+            alt=""
+            className={styles.cardWatermarkCenter}
+            aria-hidden="true"
           />
+
+          <div className={styles.cardContentRelative}>
+            <div className={styles.brandHeader}>
+              <span className={styles.brandName}>Nayaab Engineering</span>
+            </div>
+            <div className={styles.bigStatNum}>2024</div>
+            <p className={styles.bentoText}>
+              Incorporated as a Private Limited Engineering Company (CIN: U42900JK2024PTC015987 ) under RoC Jammu.
+            </p>
+            <div className={styles.avatarStack}>
+              <div className={styles.avatar} title="Junaid Bilal Sheikh">J</div>
+              <div className={styles.avatar} title="Aaqib Nazir Tantary">A</div>
+              <div className={styles.avatar} title="Saajid Rashid Malik">S</div>
+              <div className={styles.avatarPlus}>+</div>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.bentoStack}>
+          <div className={styles.bentoCard}>
+            <div className={styles.cardIconBox}>
+              <FaMicrochip />
+            </div>
+            <h4 className={styles.cardSmallTitle}>Modern Technology</h4>
+            <p className={styles.cardSmallDesc}>
+              We integrate 3D CAD modeling, elevation renders, and structural engineering software for technical accuracy.
+            </p>
+          </div>
+
+          <div className={styles.bentoCard}>
+            <div className={styles.cardIconBox}>
+              <FaAward />
+            </div>
+            <div className={styles.mediumStatNum}>DPIIT</div>
+            <p className={styles.cardSmallDesc}>Recognized Startup in Construction &amp; Civil Engineering by Govt. of India.</p>
+          </div>
+        </div>
+
+        <div className={styles.bentoStack}>
+          <div className={styles.bentoCard}>
+            <div className={styles.cardIconBox}>
+              <FaCheckCircle />
+            </div>
+            <div className={styles.mediumStatNum}>100%</div>
+            <p className={styles.cardSmallDesc}>Commitment to structural safety, material standards, and compliance.</p>
+          </div>
+
+          <div className={styles.bentoCard}>
+            <div className={styles.cardIconBox}>
+              <FaUsers />
+            </div>
+            <h4 className={styles.cardSmallTitle}>Experienced Leadership</h4>
+            <p className={styles.cardSmallDesc}>
+              Led by a board of three directors dedicated to advancing infrastructure and residential builds in J&amp;K.
+            </p>
+          </div>
         </div>
       </div>
     </section>

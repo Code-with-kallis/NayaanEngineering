@@ -1,16 +1,18 @@
 /* src/components/home/SplitShowcase.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/* ===== UNIFIED SINGLE BACKGROUND (NO SEAM) ===== */
+/* ===== UNIFIED SINGLE BACKGROUND (FIT TO EXACT SCREEN HEIGHT) ===== */
 .fullBleedSplitSection {
   position: relative;
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  min-height: 560px;
+  min-height: 100vh;
+  max-height: 100vh;
   display: flex;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
   overflow: hidden;
   background: linear-gradient(90deg, #2D445D 0%, #283D54 45%, #25394E 100%);
   z-index: 5;
@@ -177,7 +179,7 @@
   margin: 0;
   font-size: 0.825rem;
   color: #CBD5E1;
-  line-height: 1.45;
+  line-line: 1.45;
 }
 
 .typoBottomBar {
@@ -231,6 +233,7 @@
     flex-direction: column;
     height: auto;
     min-height: auto;
+    max-height: none;
     background: linear-gradient(180deg, #2D445D 0%, #283D54 45%, #25394E 100%);
     overflow: visible;
   }

@@ -1,0 +1,388 @@
+/* src/pages/legal/Legal.module.css
+   ==========================================================================
+   NAYAAB ENGINEERING INNOVATIONS — PURE LIGHT THEME LEGAL PAGES
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+.legalPage {
+  background-color: #F8FAFC;
+  color: #1E293B;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  padding-bottom: 5rem;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   CENTERED HERO / HEADER (NO NAVBAR)
+   ========================================================================== */
+.headerSection {
+  padding-top: 3.5rem;
+  padding-bottom: 3rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E2E8F0;
+  text-align: center;
+}
+
+.topActionRow {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  color: #334155;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+  background: #B7410E;
+  border-color: #B7410E;
+  color: #FFFFFF;
+  transform: translateX(-3px);
+  box-shadow: 0 4px 12px rgba(183, 65, 14, 0.2);
+}
+
+.centeredLogoWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.pageLogo {
+  height: 65px;
+  width: auto;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.pageLogo:hover {
+  transform: scale(1.03);
+}
+
+.headerBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 5px 14px;
+  background: #FFF7ED;
+  border: 1px solid #FFEDD5;
+  border-radius: 9999px;
+  color: #C2410C;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.pageTitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 0.5rem 0;
+  color: #0F172A;
+}
+
+.lastUpdated {
+  font-size: 0.875rem;
+  color: #64748B;
+  margin: 0;
+}
+
+/* ==========================================================================
+   DOCUMENT LAYOUT
+   ========================================================================== */
+.contentSection {
+  padding-top: 3.5rem;
+}
+
+.legalLayout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.sidebar {
+  position: sticky;
+  top: 2rem;
+}
+
+.tocCard {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.tocTitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.75rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #F1F5F9;
+  color: #0F172A;
+}
+
+.tocNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tocNav a {
+  color: #64748B;
+  text-decoration: none;
+  font-size: 0.825rem;
+  line-height: 1.4;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.tocNav a:hover {
+  color: #B7410E;
+  background: #FFF7ED;
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   DOCUMENT BODY & CLAUSES
+   ========================================================================== */
+.documentBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
+  background: #FFFFFF;
+  padding: 3rem;
+  border-radius: 14px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.clause {
+  scroll-margin-top: 2rem;
+}
+
+.clauseTitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.55rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #0F172A;
+  margin: 0 0 0.85rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.clauseNumber {
+  color: #B7410E;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.clause p {
+  font-size: 0.935rem;
+  line-height: 1.75;
+  color: #334155;
+  margin: 0 0 0.85rem 0;
+}
+
+.clause p strong {
+  color: #0F172A;
+  font-weight: 600;
+}
+
+.clauseList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.clauseList li {
+  position: relative;
+  padding-left: 1.35rem;
+  font-size: 0.915rem;
+  line-height: 1.65;
+  color: #334155;
+}
+
+.clauseList li strong {
+  color: #0F172A;
+  font-weight: 600;
+}
+
+.clauseList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 5px;
+  height: 5px;
+  background: #B7410E;
+  border-radius: 50%;
+}
+
+.factGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.85rem;
+  margin: 1.25rem 0;
+}
+
+.factItem {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.factLabel {
+  font-size: 0.725rem;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.factValue {
+  font-size: 0.925rem;
+  color: #0F172A;
+  font-weight: 600;
+}
+
+.noticeBox {
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  color: #7C2D12;
+  border-radius: 8px;
+  padding: 1.15rem 1.25rem;
+  margin: 1.25rem 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.noticeBox strong {
+  color: #431407;
+}
+
+.noticeBox a {
+  color: #C2410C;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.contactCard {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-left: 3px solid #B7410E;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.contactIcon {
+  color: #B7410E;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.contactRow a {
+  color: #0F172A;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.contactRow a:hover {
+  color: #B7410E;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .legalLayout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .documentBody {
+    padding: 2rem 1.5rem;
+  }
+
+  .factGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .headerSection {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .contentSection {
+    padding-top: 2rem;
+  }
+
+  .clauseTitle {
+    font-size: 1.35rem;
+  }
+}

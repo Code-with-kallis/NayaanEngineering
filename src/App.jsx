@@ -1,59 +1,67 @@
+// src/App.jsx
 import { useState, useEffect, lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import Layout from "./components/layout/Layout/Layout"; //
-import ScrollToTop from "./components/ScrollToTop"; //[cite: 16]
-import PageLoader from "./components/common/PageLoader"; //[cite: 16]
+import Layout from "./components/layout/Layout/Layout";
+import ScrollToTop from "./components/ScrollToTop";
+import PageLoader from "./components/common/PageLoader";
 
 // 1. Direct Home import (Initial load ke turant baad smoothly visible hoga)
-import Home from "./pages/Home/Home"; //[cite: 16]
+import Home from "./pages/Home/Home";
 
 // 2. Lazy-loaded pages
-const Contact = lazy(() => import("./pages/Contact/Contact")); //[cite: 16]
-const About = lazy(() => import("./pages/About/About")); //[cite: 16]
-const Projects = lazy(() => import("./pages/Projects/Projects")); //[cite: 16]
-const ProjectDetail = lazy(() => import("./pages/Projects/ProjectDetail")); //[cite: 16]
-const Services = lazy(() => import("./pages/Services/Services")); //[cite: 16]
-const ServiceDetail = lazy(() => import("./pages/Services/ServiceDetail")); //[cite: 16]
-const TeamProfile = lazy(() => import("./pages/Team/TeamProfile")); //[cite: 16]
-const Admin = lazy(() => import("./pages/Admin/Admin")); //[cite: 16]
+const Contact = lazy(() => import("./pages/Contact/Contact"));
+const About = lazy(() => import("./pages/About/About"));
+const Projects = lazy(() => import("./pages/Projects/Projects"));
+const ProjectDetail = lazy(() => import("./pages/Projects/ProjectDetail"));
+const Services = lazy(() => import("./pages/Services/Services"));
+const ServiceDetail = lazy(() => import("./pages/Services/ServiceDetail"));
+const TeamProfile = lazy(() => import("./pages/Team/TeamProfile"));
+const Admin = lazy(() => import("./pages/Admin/Admin"));
+
+// 3. Standalone Legal Pages (No Navbar, No Footer)
+const Terms = lazy(() => import("./pages/legal/Terms"));
+const Privacy = lazy(() => import("./pages/legal/Privacy"));
 
 function App() {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-  // Jab bhi koi website pehli baar kholega ya page refresh karega:
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsInitialLoading(false);
-    }, 750); // 750ms ka clean premium branding loader
+    }, 750);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // 1. Full Page Loader on Initial Open / Refresh
   if (isInitialLoading) {
     return <PageLoader />;
   }
 
   return (
     <>
-      <ScrollToTop /> {/*[cite: 16] */}
+      <ScrollToTop />
 
-      {/* 2. Route-level Suspense loader during page navigation */}
-      <Suspense fallback={<PageLoader />}> {/*[cite: 16] */}
+      <Suspense fallback={<PageLoader />}>
         <Routes>
-          <Route path="/" element={<Layout />}> {/*[cite: 16] */}
-            <Route index element={<Home />} /> {/*[cite: 16] */}
-            <Route path="contact" element={<Contact />} /> {/*[cite: 16] */}
-            <Route path="about" element={<About />} /> {/*[cite: 16] */}
-            <Route path="team" element={<Navigate to="/about" replace />} /> {/*[cite: 16] */}
-            <Route path="projects" element={<Projects />} /> {/*[cite: 16] */}
-            <Route path="projects/:slug" element={<ProjectDetail />} /> {/*[cite: 16] */}
-            <Route path="services" element={<Services />} /> {/*[cite: 16] */}
-            <Route path="services/:slug" element={<ServiceDetail />} /> {/*[cite: 16] */}
+          {/* Main Website Layout (Includes Navbar & Footer) */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="about" element={<About />} />
+            <Route path="team" element={<Navigate to="/about" replace />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="projects/:slug" element={<ProjectDetail />} />
+            <Route path="services" element={<Services />} />
+            <Route path="services/:slug" element={<ServiceDetail />} />
           </Route>
 
-          <Route path="/team/:employeeId" element={<TeamProfile />} /> {/*[cite: 16] */}
-          <Route path="/admin" element={<Admin />} /> {/*[cite: 16] */}
+          {/* Standalone Legal Pages (No Navbar, No Footer) */}
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+
+          {/* Other Standalone Routes */}
+          <Route path="/team/:employeeId" element={<TeamProfile />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </Suspense>
     </>

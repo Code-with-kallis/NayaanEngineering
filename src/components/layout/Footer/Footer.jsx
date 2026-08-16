@@ -1,6 +1,8 @@
+// src/components/layout/Footer/Footer.jsx
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
-import logoBg from "/assets/footer/logo-bg.png"; // Single unified logo badge
+import logoBg from "/assets/footer/logo-bg.png";
 
 import {
   FaMapMarkerAlt,
@@ -9,13 +11,78 @@ import {
   FaWhatsapp,
   FaFacebookF,
   FaInstagram,
-  FaArrowUp,
   FaChevronRight,
-  FaBuilding,
+  FaPaperPlane,
+  FaCheckCircle,
+  FaExclamationCircle,
+  FaSpinner,
 } from "react-icons/fa";
 
 const Footer = () => {
   const year = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [alreadySubscribed, setAlreadySubscribed] = useState(false);
+  const [status, setStatus] = useState({
+    success: false,
+    error: false,
+    message: "",
+  });
+
+  useEffect(() => {
+    const isSubbed = localStorage.getItem("nei_newsletter_subscribed");
+    if (isSubbed === "true") {
+      setAlreadySubscribed(true);
+    }
+  }, []);
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email.trim() || submitting || alreadySubscribed) return;
+
+    setSubmitting(true);
+    setStatus({ success: false, error: false, message: "" });
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+          from_name: "Nayaab Engineering Website",
+          subject: `New Newsletter Subscriber: ${email}`,
+          email: email,
+          message: `New subscriber email registered via Footer: ${email}`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        localStorage.setItem("nei_newsletter_subscribed", "true");
+        setAlreadySubscribed(true);
+        setStatus({
+          success: true,
+          error: false,
+          message: "Thank you for subscribing!",
+        });
+        setEmail("");
+      } else {
+        throw new Error(result.message || "Failed to subscribe. Please try again.");
+      }
+    } catch (err) {
+      setStatus({
+        success: false,
+        error: true,
+        message: err.message || "Subscription failed. Check connection.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const scrollTop = () => {
     window.scrollTo({
@@ -26,9 +93,9 @@ const Footer = () => {
 
   return (
     <footer className={styles.footer}>
-      {/* Main Footer Container */}
+      {/* Main Footer 4-Column Grid Container */}
       <div className={styles.footerContainer}>
-        {/* Column 1: Company Profile with Single Merged Logo Image */}
+        {/* Column 1: Company Profile */}
         <div className={`${styles.footerColumn} ${styles.companyColumn}`}>
           <div className={styles.logoWrapper}>
             <img
@@ -144,6 +211,58 @@ const Footer = () => {
             </li>
           </ul>
         </div>
+
+        {/* Column 4: Subscribe For Updates */}
+        <div className={`${styles.footerColumn} ${styles.newsletterColumn}`}>
+          <h3 className={styles.columnTitle}>Subscribe for Updates</h3>
+          <p className={styles.newsletterText}>
+            Subscribe to get the latest project releases and architectural insights.
+          </p>
+
+          {alreadySubscribed ? (
+            <div className={styles.subscribedBadgeBox}>
+              <FaCheckCircle className={styles.subscribedCheckIcon} />
+              <span>Subscribed</span>
+            </div>
+          ) : (
+            <form className={styles.subscribeForm} onSubmit={handleSubscribe}>
+              <div className={styles.inputWrapper}>
+                <input
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={submitting}
+                  className={styles.subscribeInput}
+                />
+                <button
+                  type="submit"
+                  className={styles.subscribeButton}
+                  aria-label="Subscribe"
+                  disabled={submitting}
+                >
+                  {submitting ? (
+                    <FaSpinner className={styles.spinnerIcon} />
+                  ) : (
+                    <FaPaperPlane />
+                  )}
+                </button>
+              </div>
+
+              {status.error && (
+                <div className={styles.errorMessage}>
+                  <FaExclamationCircle />
+                  <span>{status.message}</span>
+                </div>
+              )}
+            </form>
+          )}
+
+          <span className={styles.newsletterBadge}>
+            🔒 Strictly no spam. Unsubscribe anytime.
+          </span>
+        </div>
       </div>
 
       {/* Solid Black Bottom Bar */}
@@ -153,9 +272,16 @@ const Footer = () => {
             &copy; {year} Nayaab Engineering Innovations Pvt. Ltd. All rights reserved.
           </p>
 
-          <span className={styles.devBadge}>
-            <FaBuilding className={styles.badgeIcon} /> Registered Private Limited
-          </span>
+          {/* Clean Legal Links (No onClick scroll triggers) */}
+          <div className={styles.legalLinks}>
+            <Link to="/privacy" className={styles.legalLink}>
+              Privacy Policy
+            </Link>
+            <span className={styles.legalDivider}>•</span>
+            <Link to="/terms" className={styles.legalLink}>
+              Terms &amp; Conditions
+            </Link>
+          </div>
 
           <p className={styles.devCredit}>
             Designed &amp; Developed by{" "}
@@ -169,14 +295,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-
-      <button
-        className={styles.scrollTop}
-        onClick={scrollTop}
-        aria-label="Scroll to top"
-      >
-        <FaArrowUp />
-      </button>
     </footer>
   );
 };
