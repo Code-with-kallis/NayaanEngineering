@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import styles from "./GoogleReviews.module.css";
 
-// 100% environment-driven — zero hardcoded fallbacks
+// 100% environment-driven API endpoint
 const API_URL = import.meta.env.VITE_FEATURABLE_API_URL;
 
 const GOOGLE_WRITE_REVIEW_URL =
@@ -75,7 +75,7 @@ function getReviewPhotoUrl(r) {
   return null;
 }
 
-// Avatar sub-component with fallback handling
+// Avatar sub-component with letter fallback
 function ReviewAvatar({ photoUrl, name, index }) {
   const [imgFailed, setImgFailed] = useState(false);
   const letter = (name || "G").charAt(0).toUpperCase();
@@ -104,21 +104,21 @@ function ReviewAvatar({ photoUrl, name, index }) {
 export default function GoogleReviews() {
   const [reviews, setReviews] = useState([]);
   const [summary, setSummary] = useState({
-    rating: null,
-    count: null,
+    rating: 4.8,
+    count: 17,
     label: "Excellent",
   });
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
 
-  // Drag and Swipe State
+  // Drag & Swipe State
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const trackRef = useRef(null);
 
-  // Fetch and Parse Live Reviews & Summary from Featurable API
+  // Fetch and Parse Reviews & Place Stats
   useEffect(() => {
     if (!API_URL) {
       console.error("VITE_FEATURABLE_API_URL is missing in your .env file");
@@ -132,7 +132,59 @@ export default function GoogleReviews() {
         return res.json();
       })
       .then((data) => {
-        // 1. Dynamic Reviews Parsing
+        // 1. Deep Extraction for Google Business Summary Rating
+        const rawApiRating =
+          data?.business?.rating ||
+          data?.place?.rating ||
+          data?.widget?.business?.rating ||
+          data?.stats?.rating ||
+          data?.rating ||
+          data?.averageRating ||
+          data?.average_rating ||
+          data?.widget?.rating ||
+          data?.widget?.average_rating;
+
+        const parsedRating =
+          rawApiRating !== undefined && !isNaN(Number(rawApiRating)) && Number(rawApiRating) > 0
+            ? Math.max(1, Math.min(5, Number(rawApiRating)))
+            : 4.8;
+
+        // 2. Deep Extraction for Total Google Review Count (17+)
+        const rawApiCount =
+          data?.business?.reviews_count ||
+          data?.business?.review_count ||
+          data?.business?.total_reviews ||
+          data?.place?.user_ratings_total ||
+          data?.place?.reviews_count ||
+          data?.stats?.total_reviews ||
+          data?.stats?.reviews_count ||
+          data?.stats?.count ||
+          data?.totalReviews ||
+          data?.reviewsCount ||
+          data?.total_reviews ||
+          data?.widget?.total_reviews ||
+          data?.widget?.totalReviews ||
+          data?.total_count;
+
+        const parsedCount =
+          rawApiCount !== undefined && !isNaN(Number(rawApiCount)) && Number(rawApiCount) > 0
+            ? Number(rawApiCount)
+            : 17;
+
+        const getRatingLabel = (score) => {
+          if (score >= 4.5) return "Excellent";
+          if (score >= 4.0) return "Very Good";
+          if (score >= 3.5) return "Good";
+          return "Average";
+        };
+
+        setSummary({
+          rating: Number(parsedRating.toFixed(1)),
+          count: parsedCount,
+          label: getRatingLabel(parsedRating),
+        });
+
+        // 3. Dynamic Reviews Cards Extraction
         const rawList =
           data?.reviews ||
           data?.data?.reviews ||
@@ -180,50 +232,6 @@ export default function GoogleReviews() {
           };
         });
 
-        // 2. 100% Dynamic Rating & Review Count Calculation
-        const apiRating = Number(
-          data?.rating ||
-          data?.averageRating ||
-          data?.average_rating ||
-          data?.widget?.rating ||
-          data?.widget?.average_rating
-        );
-
-        let finalRating;
-        if (!isNaN(apiRating) && apiRating > 0) {
-          finalRating = Math.max(1, Math.min(5, apiRating));
-        } else if (parsedReviews.length > 0) {
-          const sum = parsedReviews.reduce((acc, curr) => acc + curr.rating, 0);
-          finalRating = sum / parsedReviews.length;
-        } else {
-          finalRating = 5.0;
-        }
-
-        const apiCount = Number(
-          data?.totalReviews ||
-          data?.reviewsCount ||
-          data?.total_reviews ||
-          data?.widget?.total_reviews ||
-          data?.widget?.totalReviews ||
-          data?.count
-        );
-
-        const finalCount =
-          !isNaN(apiCount) && apiCount > 0 ? apiCount : parsedReviews.length;
-
-        const getRatingLabel = (score) => {
-          if (score >= 4.5) return "Excellent";
-          if (score >= 4.0) return "Very Good";
-          if (score >= 3.5) return "Good";
-          return "Average";
-        };
-
-        setSummary({
-          rating: Number(finalRating.toFixed(1)),
-          count: finalCount,
-          label: getRatingLabel(finalRating),
-        });
-
         setReviews(parsedReviews);
         setLoading(false);
       })
@@ -269,7 +277,7 @@ export default function GoogleReviews() {
     setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
   };
 
-  // Pointer Handlers for Mouse and Touch Drag
+  // Pointer Handlers for Drag & Swipe
   const handlePointerDown = (e) => {
     if (reviews.length <= cardsPerView) return;
     setIsDragging(true);
@@ -304,8 +312,8 @@ export default function GoogleReviews() {
 
   const totalPages = Math.max(1, maxIndex + 1);
 
-  // Star Calculation
-  const displayRating = summary.rating || 5.0;
+  // Star Rating Breakdown
+  const displayRating = summary.rating || 4.8;
   const fullStarsCount = Math.floor(displayRating);
   const decimalPart = Number((displayRating % 1).toFixed(1));
   const partialFillPercent = decimalPart > 0 ? Math.round(decimalPart * 100) : 0;
@@ -357,9 +365,7 @@ export default function GoogleReviews() {
 
             <div className={styles.ratingInfo}>
               <div className={styles.topScoreLine}>
-                <span className={styles.scoreNumber}>
-                  {summary.rating !== null ? summary.rating : "—"}
-                </span>
+                <span className={styles.scoreNumber}>{summary.rating}</span>
                 <span className={styles.scoreLabel}>{summary.label}</span>
                 <div
                   className={styles.starCluster}
@@ -382,13 +388,13 @@ export default function GoogleReviews() {
                   {hasPartialStar && (
                     <svg viewBox="0 0 24 24" width="18" height="18">
                       <defs>
-                        <linearGradient id="prod-star-gradient">
+                        <linearGradient id="summary-star-partial-grad">
                           <stop offset={`${partialFillPercent}%`} stopColor="#FBBC04" />
                           <stop offset={`${partialFillPercent}%`} stopColor="#E2E8F0" />
                         </linearGradient>
                       </defs>
                       <path
-                        fill="url(#prod-star-gradient)"
+                        fill="url(#summary-star-partial-grad)"
                         d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                       />
                     </svg>
@@ -411,9 +417,7 @@ export default function GoogleReviews() {
 
               <div className={styles.subMetaLine}>
                 <span className={styles.reviewsCount}>
-                  {summary.count !== null
-                    ? `Based on ${summary.count} reviews`
-                    : "Verified Google reviews"}
+                  Based on {summary.count} reviews
                 </span>
                 <span className={styles.metaDot}>•</span>
                 <div className={styles.verifiedBadge}>
