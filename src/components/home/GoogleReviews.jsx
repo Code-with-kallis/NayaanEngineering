@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import styles from "./GoogleReviews.module.css";
 
-const API_URL =
-  "https://featurable.com/api/v2/widgets/f8f40764-abc9-4443-9e45-277e12fac031";
+// 100% environment-driven — zero hardcoded fallbacks
+const API_URL = import.meta.env.VITE_FEATURABLE_API_URL;
 
 const GOOGLE_WRITE_REVIEW_URL =
   "https://www.google.com/search?q=Nayaab+Engineering+Innovations+Private+Limited#lrd=0x38e107b7aa028b1b:0x62f20694ef46156d,3";
@@ -18,7 +18,7 @@ const AVATAR_GRADIENTS = [
   "linear-gradient(135deg, #db2777, #be185d)",
 ];
 
-// Helper to extract profile photo URL from Featurable API response variants
+// Helper to extract review photo URLs across all API variants
 function getReviewPhotoUrl(r) {
   if (!r) return null;
   let url =
@@ -75,7 +75,7 @@ function getReviewPhotoUrl(r) {
   return null;
 }
 
-// Avatar sub-component with fallback support
+// Avatar sub-component with fallback handling
 function ReviewAvatar({ photoUrl, name, index }) {
   const [imgFailed, setImgFailed] = useState(false);
   const letter = (name || "G").charAt(0).toUpperCase();
@@ -104,8 +104,8 @@ function ReviewAvatar({ photoUrl, name, index }) {
 export default function GoogleReviews() {
   const [reviews, setReviews] = useState([]);
   const [summary, setSummary] = useState({
-    rating: 4.8,
-    count: 16,
+    rating: null,
+    count: null,
     label: "Excellent",
   });
   const [loading, setLoading] = useState(true);
@@ -120,47 +120,19 @@ export default function GoogleReviews() {
 
   // Fetch and Parse Live Reviews & Summary from Featurable API
   useEffect(() => {
+    if (!API_URL) {
+      console.error("VITE_FEATURABLE_API_URL is missing in your .env file");
+      setLoading(false);
+      return;
+    }
+
     fetch(API_URL)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
       })
       .then((data) => {
-        // 1. Dynamic Rating & Count Extraction
-        const rawRating = Number(
-          data?.rating ||
-          data?.averageRating ||
-          data?.average_rating ||
-          data?.widget?.rating ||
-          data?.widget?.average_rating ||
-          4.8
-        );
-        const parsedRating = isNaN(rawRating) ? 4.8 : Math.max(1, Math.min(5, rawRating));
-
-        const rawCount = Number(
-          data?.totalReviews ||
-          data?.reviewsCount ||
-          data?.total_reviews ||
-          data?.widget?.total_reviews ||
-          data?.widget?.totalReviews ||
-          16
-        );
-        const parsedCount = isNaN(rawCount) ? 16 : Math.max(1, rawCount);
-
-        const getRatingLabel = (score) => {
-          if (score >= 4.5) return "Excellent";
-          if (score >= 4.0) return "Very Good";
-          if (score >= 3.5) return "Good";
-          return "Average";
-        };
-
-        setSummary({
-          rating: Number(parsedRating.toFixed(1)),
-          count: parsedCount,
-          label: getRatingLabel(parsedRating),
-        });
-
-        // 2. Dynamic Reviews Parsing
+        // 1. Dynamic Reviews Parsing
         const rawList =
           data?.reviews ||
           data?.data?.reviews ||
@@ -206,6 +178,50 @@ export default function GoogleReviews() {
             text,
             rating: safeRating,
           };
+        });
+
+        // 2. 100% Dynamic Rating & Review Count Calculation
+        const apiRating = Number(
+          data?.rating ||
+          data?.averageRating ||
+          data?.average_rating ||
+          data?.widget?.rating ||
+          data?.widget?.average_rating
+        );
+
+        let finalRating;
+        if (!isNaN(apiRating) && apiRating > 0) {
+          finalRating = Math.max(1, Math.min(5, apiRating));
+        } else if (parsedReviews.length > 0) {
+          const sum = parsedReviews.reduce((acc, curr) => acc + curr.rating, 0);
+          finalRating = sum / parsedReviews.length;
+        } else {
+          finalRating = 5.0;
+        }
+
+        const apiCount = Number(
+          data?.totalReviews ||
+          data?.reviewsCount ||
+          data?.total_reviews ||
+          data?.widget?.total_reviews ||
+          data?.widget?.totalReviews ||
+          data?.count
+        );
+
+        const finalCount =
+          !isNaN(apiCount) && apiCount > 0 ? apiCount : parsedReviews.length;
+
+        const getRatingLabel = (score) => {
+          if (score >= 4.5) return "Excellent";
+          if (score >= 4.0) return "Very Good";
+          if (score >= 3.5) return "Good";
+          return "Average";
+        };
+
+        setSummary({
+          rating: Number(finalRating.toFixed(1)),
+          count: finalCount,
+          label: getRatingLabel(finalRating),
         });
 
         setReviews(parsedReviews);
@@ -288,9 +304,10 @@ export default function GoogleReviews() {
 
   const totalPages = Math.max(1, maxIndex + 1);
 
-  // Dynamic calculation of full & partial summary stars
-  const fullStarsCount = Math.floor(summary.rating);
-  const decimalPart = summary.rating % 1;
+  // Star Calculation
+  const displayRating = summary.rating || 5.0;
+  const fullStarsCount = Math.floor(displayRating);
+  const decimalPart = Number((displayRating % 1).toFixed(1));
   const partialFillPercent = decimalPart > 0 ? Math.round(decimalPart * 100) : 0;
   const hasPartialStar = decimalPart > 0;
   const emptyStarsCount = Math.max(0, 5 - fullStarsCount - (hasPartialStar ? 1 : 0));
@@ -314,7 +331,7 @@ export default function GoogleReviews() {
           </p>
         </div>
 
-        {/* Rating Summary Card (100% Live & Dynamic) */}
+        {/* Rating Summary Card */}
         <div className={styles.summaryCard}>
           <div className={styles.leftSummaryGroup}>
             <div className={styles.googleBadge}>
@@ -340,11 +357,13 @@ export default function GoogleReviews() {
 
             <div className={styles.ratingInfo}>
               <div className={styles.topScoreLine}>
-                <span className={styles.scoreNumber}>{summary.rating}</span>
+                <span className={styles.scoreNumber}>
+                  {summary.rating !== null ? summary.rating : "—"}
+                </span>
                 <span className={styles.scoreLabel}>{summary.label}</span>
                 <div
                   className={styles.starCluster}
-                  aria-label={`${summary.rating} out of 5 stars`}
+                  aria-label={`${displayRating} out of 5 stars`}
                 >
                   {/* Full Stars */}
                   {Array.from({ length: fullStarsCount }).map((_, i) => (
@@ -363,13 +382,13 @@ export default function GoogleReviews() {
                   {hasPartialStar && (
                     <svg viewBox="0 0 24 24" width="18" height="18">
                       <defs>
-                        <linearGradient id="header-star-partial">
+                        <linearGradient id="prod-star-gradient">
                           <stop offset={`${partialFillPercent}%`} stopColor="#FBBC04" />
                           <stop offset={`${partialFillPercent}%`} stopColor="#E2E8F0" />
                         </linearGradient>
                       </defs>
                       <path
-                        fill="url(#header-star-partial)"
+                        fill="url(#prod-star-gradient)"
                         d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
                       />
                     </svg>
@@ -392,7 +411,9 @@ export default function GoogleReviews() {
 
               <div className={styles.subMetaLine}>
                 <span className={styles.reviewsCount}>
-                  Based on {summary.count} reviews
+                  {summary.count !== null
+                    ? `Based on ${summary.count} reviews`
+                    : "Verified Google reviews"}
                 </span>
                 <span className={styles.metaDot}>•</span>
                 <div className={styles.verifiedBadge}>
