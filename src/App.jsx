@@ -1,14 +1,11 @@
-// src/App.jsx
 import { useState, useEffect, lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./components/layout/Layout/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import PageLoader from "./components/common/PageLoader";
 
-// 1. Direct Home import (Initial load ke turant baad smoothly visible hoga)
-import Home from "./pages/Home/Home";
-
-// 2. Lazy-loaded pages
+// Lazy-loaded routes
+const Home = lazy(() => import("./pages/Home/Home"));
 const Contact = lazy(() => import("./pages/Contact/Contact"));
 const About = lazy(() => import("./pages/About/About"));
 const Projects = lazy(() => import("./pages/Projects/Projects"));
@@ -17,33 +14,32 @@ const Services = lazy(() => import("./pages/Services/Services"));
 const ServiceDetail = lazy(() => import("./pages/Services/ServiceDetail"));
 const TeamProfile = lazy(() => import("./pages/Team/TeamProfile"));
 const Admin = lazy(() => import("./pages/Admin/Admin"));
-
-// 3. Standalone Legal Pages (No Navbar, No Footer)
 const Terms = lazy(() => import("./pages/legal/Terms"));
 const Privacy = lazy(() => import("./pages/legal/Privacy"));
+const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
 
-function App() {
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+export default function App() {
+  const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
+    // Ensures clean splash render on initial entry
     const timer = setTimeout(() => {
-      setIsInitialLoading(false);
-    }, 750);
+      setInitialLoading(false);
+    }, 850);
 
     return () => clearTimeout(timer);
   }, []);
 
-  if (isInitialLoading) {
+  if (initialLoading) {
     return <PageLoader />;
   }
 
   return (
     <>
       <ScrollToTop />
-
       <Suspense fallback={<PageLoader />}>
         <Routes>
-          {/* Main Website Layout (Includes Navbar & Footer) */}
+          {/* Main Website Wrapper */}
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="contact" element={<Contact />} />
@@ -53,19 +49,18 @@ function App() {
             <Route path="projects/:slug" element={<ProjectDetail />} />
             <Route path="services" element={<Services />} />
             <Route path="services/:slug" element={<ServiceDetail />} />
+            <Route path="terms" element={<Terms />} />
+            <Route path="privacy" element={<Privacy />} />
           </Route>
 
-          {/* Standalone Legal Pages (No Navbar, No Footer) */}
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-
-          {/* Other Standalone Routes */}
+          {/* Standalone / App Routes */}
           <Route path="/team/:employeeId" element={<TeamProfile />} />
           <Route path="/admin" element={<Admin />} />
+
+          {/* 404 Catch-All */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </>
   );
 }
-
-export default App;

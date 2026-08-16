@@ -1,13 +1,26 @@
-/* src/index.css — Main Style Entry Point */
-
-@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap");
-
+/* src/index.css */
 @import "./styles/tokens.css";
 @import "./styles/global.css";
 
-/* Modal Open Scroll Locking Override */
+/* App Layout & Constraints */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--nei-bg-page);
+  color: var(--nei-text-title);
+}
+
+main#main {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal Open Scroll Locking */
 html.nav-menu-open,
 body.nav-menu-open {
-  overflow: hidden !important;
+  overflow: hidden;
   overscroll-behavior: none;
 }
