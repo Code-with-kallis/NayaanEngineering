@@ -9,20 +9,19 @@ export default function Layout() {
   const [isNavigating, setIsNavigating] = useState(false);
   const prevPathRef = useRef(location.pathname);
 
-  // Pages where Navbar and Footer should not appear
   const hideNavbarAndFooter = ["/admin", "/terms", "/privacy"].some(
     (path) => location.pathname === path || location.pathname.startsWith(`${path}/`)
   );
 
   useEffect(() => {
-    // Only trigger if the pathname actually changed to a new page
     if (prevPathRef.current !== location.pathname) {
       prevPathRef.current = location.pathname;
       setIsNavigating(true);
 
+      // Smooth navigation transition time
       const timer = setTimeout(() => {
         setIsNavigating(false);
-      }, 450);
+      }, 600);
 
       return () => clearTimeout(timer);
     }

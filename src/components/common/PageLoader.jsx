@@ -17,17 +17,17 @@ export default function PageLoader() {
             aria-hidden="true"
           >
             <defs>
-              {/* Native SMIL Vector Clip Path with Cubic Spline Easing */}
+              {/* Single complete smooth wipe from 0 to 100% */}
               <clipPath id="neiplWipe">
                 <rect x="0" y="0" width="0" height="90">
                   <animate
                     attributeName="width"
-                    values="0; 320; 320; 0"
-                    keyTimes="0; 0.45; 0.7; 1"
-                    keySplines="0.25 0.1 0.25 1; 0.25 0.1 0.25 1; 0.25 0.1 0.25 1"
+                    values="0; 320"
+                    dur="0.8s"
+                    fill="freeze"
+                    keyTimes="0; 1"
+                    keySplines="0.25 0.1 0.25 1"
                     calcMode="spline"
-                    dur="2.2s"
-                    repeatCount="indefinite"
                   />
                 </rect>
               </clipPath>
@@ -60,7 +60,7 @@ export default function PageLoader() {
           Nayaab Engineering Innovations
         </p>
 
-        {/* Synchronized Vector Progress Line with Cubic Spline Easing */}
+        {/* Synchronized Vector Progress Line */}
         <div className={styles.progressWrapper} aria-hidden="true">
           <svg viewBox="0 0 160 4" className={styles.progressSvg}>
             {/* Background Line */}
@@ -70,12 +70,12 @@ export default function PageLoader() {
             <rect x="0" y="0" width="0" height="4" rx="2" fill="#0099FF">
               <animate
                 attributeName="width"
-                values="0; 160; 160; 0"
-                keyTimes="0; 0.45; 0.7; 1"
-                keySplines="0.25 0.1 0.25 1; 0.25 0.1 0.25 1; 0.25 0.1 0.25 1"
+                values="0; 160"
+                dur="0.8s"
+                fill="freeze"
+                keyTimes="0; 1"
+                keySplines="0.25 0.1 0.25 1"
                 calcMode="spline"
-                dur="2.2s"
-                repeatCount="indefinite"
               />
             </rect>
           </svg>
