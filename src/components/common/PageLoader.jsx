@@ -17,13 +17,15 @@ export default function PageLoader() {
             aria-hidden="true"
           >
             <defs>
-              {/* Native SMIL Vector Clip Path (Wiping Width from 0 to 320) */}
+              {/* Native SMIL Vector Clip Path with Cubic Spline Easing */}
               <clipPath id="neiplWipe">
                 <rect x="0" y="0" width="0" height="90">
                   <animate
                     attributeName="width"
                     values="0; 320; 320; 0"
                     keyTimes="0; 0.45; 0.7; 1"
+                    keySplines="0.25 0.1 0.25 1; 0.25 0.1 0.25 1; 0.25 0.1 0.25 1"
+                    calcMode="spline"
                     dur="2.2s"
                     repeatCount="indefinite"
                   />
@@ -58,7 +60,7 @@ export default function PageLoader() {
           Nayaab Engineering Innovations
         </p>
 
-        {/* Synchronized Vector Progress Line */}
+        {/* Synchronized Vector Progress Line with Cubic Spline Easing */}
         <div className={styles.progressWrapper} aria-hidden="true">
           <svg viewBox="0 0 160 4" className={styles.progressSvg}>
             {/* Background Line */}
@@ -70,6 +72,8 @@ export default function PageLoader() {
                 attributeName="width"
                 values="0; 160; 160; 0"
                 keyTimes="0; 0.45; 0.7; 1"
+                keySplines="0.25 0.1 0.25 1; 0.25 0.1 0.25 1; 0.25 0.1 0.25 1"
+                calcMode="spline"
                 dur="2.2s"
                 repeatCount="indefinite"
               />

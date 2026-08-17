@@ -1,5 +1,5 @@
-// src/pages/Home/Home.jsx
 import React, { useState, useEffect, useCallback } from "react";
+import { Helmet } from "react-helmet-async";
 import Hero from "../../components/home/Hero";
 import BrandMarquee from "../../components/home/BrandMarquee";
 import AboutBento from "../../components/home/AboutBento";
@@ -21,6 +21,8 @@ export default function Home() {
 
   // Fetch Live Featured Projects directly from Supabase
   useEffect(() => {
+    let isMounted = true;
+
     async function loadProjects() {
       try {
         const { data, error } = await supabase
@@ -30,42 +32,51 @@ export default function Home() {
 
         if (error) throw error;
 
-        if (data && data.length > 0) {
-          const formatted = data.map((item) => ({
-            id: item.id,
-            title: item.title,
-            slug: item.slug,
-            category: item.category,
-            location: item.location,
-            duration: item.duration,
-            summary: item.summary,
-            deliverables: item.deliverables || [],
-            description: item.description,
-            coverImage: item.cover_image,
-            galleryImages: item.gallery_images || [],
-          }));
-          setProjects(formatted);
-        } else {
-          setProjects([]);
+        if (isMounted) {
+          if (data && data.length > 0) {
+            const formatted = data.map((item) => ({
+              id: item.id,
+              title: item.title,
+              slug: item.slug,
+              category: item.category,
+              location: item.location,
+              duration: item.duration,
+              summary: item.summary,
+              deliverables: item.deliverables || [],
+              description: item.description,
+              coverImage: item.cover_image,
+              galleryImages: item.gallery_images || [],
+            }));
+            setProjects(formatted);
+          } else {
+            setProjects([]);
+          }
         }
       } catch (err) {
         console.error("Error loading live projects on Home:", err);
-        setProjects([]);
+        if (isMounted) setProjects([]);
       } finally {
-        setLoadingProjects(false);
+        if (isMounted) setLoadingProjects(false);
       }
     }
 
     loadProjects();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // Sync state with URL Hash (#project-slug)
+  // Sync state with URL Hash (#project-slug) and browser history navigation
   useEffect(() => {
     if (projects.length === 0) return;
+
     const handleHashChange = () => {
       const hash = window.location.hash.replace("#", "");
       if (hash) {
-        const found = projects.find((p) => p.slug === hash || String(p.id) === hash);
+        const found = projects.find(
+          (p) => p.slug === hash || String(p.id) === hash
+        );
         if (found) setSelectedProject(found);
       } else {
         setSelectedProject(null);
@@ -74,39 +85,61 @@ export default function Home() {
 
     handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    window.addEventListener("popstate", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+      window.removeEventListener("popstate", handleHashChange);
+    };
   }, [projects]);
 
-  const openProjectModal = (project) => {
+  const openProjectModal = useCallback((project) => {
     setSelectedProject(project);
-    window.history.pushState(null, "", `#${project.slug}`);
-  };
+    if (window.location.hash !== `#${project.slug}`) {
+      window.history.pushState(null, "", `#${project.slug}`);
+    }
+  }, []);
 
-  const closeProjectModal = () => {
+  const closeProjectModal = useCallback(() => {
     setSelectedProject(null);
     if (window.location.hash) {
-      window.history.pushState(null, "", window.location.pathname + window.location.search);
+      window.history.pushState(
+        null,
+        "",
+        window.location.pathname + window.location.search
+      );
     }
-  };
+  }, []);
 
   const currentModalIndex = selectedProject
-    ? projects.findIndex((p) => (p.slug || p.id) === (selectedProject.slug || selectedProject.id))
+    ? projects.findIndex(
+        (p) => (p.slug || p.id) === (selectedProject.slug || selectedProject.id)
+      )
     : 0;
 
   const handleNextProject = useCallback(() => {
     if (projects.length === 0) return;
     const nextIdx = (currentModalIndex + 1) % projects.length;
     openProjectModal(projects[nextIdx]);
-  }, [currentModalIndex, projects]);
+  }, [currentModalIndex, projects, openProjectModal]);
 
   const handlePrevProject = useCallback(() => {
     if (projects.length === 0) return;
     const prevIdx = (currentModalIndex - 1 + projects.length) % projects.length;
     openProjectModal(projects[prevIdx]);
-  }, [currentModalIndex, projects]);
+  }, [currentModalIndex, projects, openProjectModal]);
 
   return (
     <>
+      <Helmet>
+        <title>Nayaab Engineering | Premier Architectural & Structural Engineering</title>
+        <meta
+          name="description"
+          content="Nayaab Engineering provides turnkey construction, architectural design, and structural consultancy in Kashmir. View our featured projects and request a consultation."
+        />
+        <link rel="canonical" href="https://www.nayaabengineering.com/" />
+      </Helmet>
+
       {/* 1. HERO - Hook & Main Headline */}
       <section className={styles.heroWrapper}>
         <Hero />
@@ -128,7 +161,7 @@ export default function Home() {
         onOpenModal={openProjectModal}
       />
 
-      {/* 6. OUR PROCESS - How We Work (Removes Ambiguity) */}
+      {/* 6. OUR PROCESS - How We Work */}
       <ProcessSection />
 
       {/* 7. WHY TRUST US - Value Props & Risk Reversal */}
@@ -142,7 +175,6 @@ export default function Home() {
 
       {/* 10. CONTACT FORM - Final Conversion Point */}
       <ContactForm
-        eyebrow="GET IN TOUCH"
         title="Let's talk"
         subtitle="To request a quote or meet for coffee at our Baramulla office, contact us directly or fill out the form below."
       />

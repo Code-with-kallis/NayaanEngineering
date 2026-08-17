@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { 
   FaHome, 
   FaMapMarkerAlt, 
@@ -38,8 +39,10 @@ export default function Projects() {
   
   const projectsSectionRef = useRef(null);
 
-  // Fetch Live Projects directly from Supabase
+  // Fetch Live Projects directly from Supabase with unmount guard
   useEffect(() => {
+    let isMounted = true;
+
     async function loadProjects() {
       try {
         const { data, error } = await supabase
@@ -49,33 +52,39 @@ export default function Projects() {
 
         if (error) throw error;
 
-        if (data && data.length > 0) {
-          const formatted = data.map((item) => ({
-            id: item.id,
-            title: item.title,
-            slug: item.slug,
-            category: item.category,
-            location: item.location,
-            duration: item.duration,
-            summary: item.summary,
-            deliverables: item.deliverables || [],
-            description: item.description,
-            coverImage: item.cover_image,
-            galleryImages: item.gallery_images || [],
-          }));
-          setProjects(formatted);
-        } else {
-          setProjects([]);
+        if (isMounted) {
+          if (data && data.length > 0) {
+            const formatted = data.map((item) => ({
+              id: item.id,
+              title: item.title,
+              slug: item.slug,
+              category: item.category,
+              location: item.location,
+              duration: item.duration,
+              summary: item.summary,
+              deliverables: item.deliverables || [],
+              description: item.description,
+              coverImage: item.cover_image,
+              galleryImages: item.gallery_images || [],
+            }));
+            setProjects(formatted);
+          } else {
+            setProjects([]);
+          }
         }
       } catch (err) {
         console.error("Error loading live projects from Supabase:", err);
-        setProjects([]);
+        if (isMounted) setProjects([]);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     }
 
     loadProjects();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Category filter
@@ -88,9 +97,10 @@ export default function Projects() {
   const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
   const paginatedProjects = filteredProjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-  // Sync state with URL Hash (#project-slug)
+  // Sync state with URL Hash (#project-slug) and browser history navigation
   useEffect(() => {
     if (projects.length === 0) return;
+
     const handleHashChange = () => {
       const hash = window.location.hash.replace("#", "");
       if (hash) {
@@ -103,20 +113,27 @@ export default function Projects() {
 
     handleHashChange();
     window.addEventListener("hashchange", handleHashChange);
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    window.addEventListener("popstate", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+      window.removeEventListener("popstate", handleHashChange);
+    };
   }, [projects]);
 
-  const openProjectModal = (project) => {
+  const openProjectModal = useCallback((project) => {
     setSelectedProject(project);
-    window.history.pushState(null, "", `#${project.slug}`);
-  };
+    if (window.location.hash !== `#${project.slug}`) {
+      window.history.pushState(null, "", `#${project.slug}`);
+    }
+  }, []);
 
-  const closeProjectModal = () => {
+  const closeProjectModal = useCallback(() => {
     setSelectedProject(null);
     if (window.location.hash) {
       window.history.pushState(null, "", window.location.pathname + window.location.search);
     }
-  };
+  }, []);
 
   const scrollToProjectsTop = () => {
     if (projectsSectionRef.current) {
@@ -148,16 +165,25 @@ export default function Projects() {
     if (filteredProjects.length === 0) return;
     const nextIdx = (currentModalIndex + 1) % filteredProjects.length;
     openProjectModal(filteredProjects[nextIdx]);
-  }, [currentModalIndex, filteredProjects]);
+  }, [currentModalIndex, filteredProjects, openProjectModal]);
 
   const handlePrevProject = useCallback(() => {
     if (filteredProjects.length === 0) return;
     const prevIdx = (currentModalIndex - 1 + filteredProjects.length) % filteredProjects.length;
     openProjectModal(filteredProjects[prevIdx]);
-  }, [currentModalIndex, filteredProjects]);
+  }, [currentModalIndex, filteredProjects, openProjectModal]);
 
   return (
     <div className={styles.pageWrapper}>
+      <Helmet>
+        <title>Portfolio & Completed Projects | Nayaab Engineering Innovations</title>
+        <meta
+          name="description"
+          content="Explore our extensive portfolio of completed residential, commercial, and structural engineering projects across Kashmir by Nayaab Engineering Innovations."
+        />
+        <link rel="canonical" href="https://www.nayaabengineering.com/projects" />
+      </Helmet>
+
       {/* HERO SECTION */}
       <section className={styles.heroSection} aria-labelledby="hero-title">
         <div className={styles.heroContainer}>

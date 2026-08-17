@@ -1,15 +1,16 @@
-// src/components/home/GoogleReviews.jsx
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import styles from "./GoogleReviews.module.css";
 
 // 100% environment-driven API endpoint
 const API_URL = import.meta.env.VITE_FEATURABLE_API_URL;
 
+// Official Google Place ID Deep-Links
+// These trigger the actual review modal / reviews tab on all mobile and desktop browsers
 const GOOGLE_WRITE_REVIEW_URL =
-  "https://www.google.com/search?q=Nayaab+Engineering+Innovations+Private+Limited#lrd=0x38e107b7aa028b1b:0x62f20694ef46156d,3";
+  "https://search.google.com/local/writereview?placeid=ChIJG4sCqrcH4TkRbRVG75QG8mI";
 
 const GOOGLE_READ_ALL_URL =
-  "https://www.google.com/search?q=Nayaab+Engineering+Innovations+Private+Limited#lrd=0x38e107b7aa028b1b:0x62f20694ef46156d,1";
+  "https://search.google.com/local/reviews?placeid=ChIJG4sCqrcH4TkRbRVG75QG8mI";
 
 const AVATAR_GRADIENTS = [
   "linear-gradient(135deg, #0284c7, #0369a1)",

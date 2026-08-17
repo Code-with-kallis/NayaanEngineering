@@ -1,5 +1,15 @@
+import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import {
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaWhatsapp,
+  FaEnvelope,
+  FaClock,
+  FaExternalLinkAlt,
+  FaChevronDown,
+} from "react-icons/fa";
 import ContactForm from "../../components/common/ContactForm/ContactForm";
-import { FaMapMarkerAlt, FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
 import styles from "./Contact.module.css";
 
 const officeAddress =
@@ -10,107 +20,194 @@ const officeMapLink = "https://maps.app.goo.gl/2eVktdmG7WoQGscE6";
 const officeMapEmbed =
   "https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d13199.385365087526!2d74.35188535!3d34.20140225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x38e107b7aa028b1b%3A0x62f20694ef46156d!2sNayaab%20Engineering%20Innovations%20Private%20Limited%2C%203rd%20Floor%2C%20Qutub%20Complex%2C%20opp.%20JKBank%2C%20Baramulla%2C%20Jammu%20and%20Kashmir%20193101!3m2!1d34.2062866!2d74.3427435!5e0!3m2!1sen!2sin!4v1785871591762!5m2!1sen!2sin";
 
-const faqItems = [
+const faqList = [
   {
-    question: "What kind of projects can I discuss through this page?",
-    answer:
-      "You can contact us for residential, commercial, and public infrastructure requirements including design, structural review, project planning, consultancy, supervision, and turnkey execution.",
+    q: "What types of projects do you handle?",
+    a: "We provide complete architectural planning, structural load calculations, municipal approvals, 3D visualizations, and turnkey civil construction for residential, commercial, and institutional developments across Jammu & Kashmir.",
   },
   {
-    question: "Can I use this page to schedule a site visit or office meeting?",
-    answer:
-      "Yes. Use the inquiry form, direct office number, or WhatsApp button to request a meeting, technical discussion, or site coordination call.",
+    q: "How do I schedule an in-person consultation or site visit?",
+    a: "You can reach out through our contact form, direct phone line, or WhatsApp. We coordinate an initial discovery meeting at our Baramulla studio or arrange a site inspection to review feasibility.",
   },
   {
-    question: "How should I share drawings or project documents?",
-    answer:
-      "Email is the best option for sending plans, briefs, and supporting files. You can also begin the conversation on WhatsApp and continue with email for formal documentation.",
+    q: "What is the best way to send project drawings or CAD files?",
+    a: "For architectural plans, drawings, or structural documentation, email your files directly to our engineering desk or share initial PDFs over WhatsApp for immediate review.",
+  },
+  {
+    q: "How soon will I receive a response to my inquiry?",
+    a: "All online inquiries and WhatsApp requests are reviewed by our engineering team within 2 to 4 business hours. Urgent project calls are handled immediately during working hours.",
   },
 ];
 
-function Contact() {
-  return (
-    <main className={styles.contactPage}>
-      {/* SECTION 1: HERO WITH EMBEDDED MAP AT TOP */}
-      <section className={styles.contactHero}>
-        <div className={styles.contactHeroMesh} aria-hidden="true" />
-        <div className={styles.contactHeroContainer}>
-          <div className={styles.contactHeroContent}>
-            <p className={styles.contactHeroEyebrow}>Contact Nayaab Engineering</p>
-            <h1 className={styles.contactHeroTitle}>
-              Start Your Next Project Discussion
-            </h1>
-            <p className={styles.contactHeroSubtitle}>
-              Reach us for architectural planning, structural engineering,
-              construction coordination, and turnkey project execution. Visit our
-              office in Baramulla or connect directly via phone or WhatsApp.
-            </p>
+export default function Contact() {
+  const [openFaq, setOpenFaq] = useState(0);
 
-            <div className={styles.contactHeroActions}>
-              <a
-                href="tel:+911952455465"
-                className={`${styles.contactButton} ${styles.contactButtonPrimary}`}
-              >
-                <FaPhoneAlt />
-                <span>Call +91 1952-455465</span>
-              </a>
-             
-            </div>
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? -1 : index);
+  };
+
+  return (
+    <main className={styles.pageContainer}>
+      <Helmet>
+        <title>Contact Us | Nayaab Engineering Innovations</title>
+        <meta
+          name="description"
+          content="Get in touch with Nayaab Engineering Innovations. Connect with our architectural and structural engineering team in Baramulla, Jammu & Kashmir."
+        />
+        <link rel="canonical" href="https://www.nayaabengineering.com/contact" />
+      </Helmet>
+
+      {/* 1. HERO & DIRECT CONTACT CARDS */}
+      <section className={styles.heroSection}>
+        <div className={styles.heroWrapper}>
+          <div className={styles.heroHeader}>
+            <span className={styles.pillBadge}>Contact Us</span>
+            <h1 className={styles.heroTitle}>
+              Let&apos;s build something <span className={styles.accentText}>remarkable</span> together.
+            </h1>
+            <p className={styles.heroSubtitle}>
+              Have a project in mind or need expert structural guidance? Connect directly with our engineering studio or visit us in Baramulla.
+            </p>
           </div>
 
-          {/* Location Map Embedded directly at top */}
-          <div className={styles.contactTopMapCard}>
-            <div className={styles.contactTopMapFrame}>
+          {/* Quick Contact Chips Grid */}
+          <div className={styles.channelsGrid}>
+            <a href="tel:+911952455465" className={styles.channelCard}>
+              <div className={styles.channelIcon}>
+                <FaPhoneAlt />
+              </div>
+              <div className={styles.channelInfo}>
+                <span className={styles.channelLabel}>Phone Line</span>
+                <span className={styles.channelValue}>+91 1952-455465</span>
+              </div>
+            </a>
+
+            <a
+              href="https://wa.me/919858765435?text=Hello%20Nayaab%20Engineering%20Team%2C%20I%20would%20like%20to%20inquire%20about%20your%20services."
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${styles.channelCard} ${styles.channelCardWa}`}
+            >
+              <div className={styles.channelIcon}>
+                <FaWhatsapp />
+              </div>
+              <div className={styles.channelInfo}>
+                <span className={styles.channelLabel}>Quick Chat</span>
+                <span className={styles.channelValue}>WhatsApp Support</span>
+              </div>
+            </a>
+
+            <a href="mailto:info@nayaabengineering.com" className={styles.channelCard}>
+              <div className={styles.channelIcon}>
+                <FaEnvelope />
+              </div>
+              <div className={styles.channelInfo}>
+                <span className={styles.channelLabel}>Email Desk</span>
+                <span className={styles.channelValue}>info@nayaabengineering.com</span>
+              </div>
+            </a>
+
+            <div className={styles.channelCard}>
+              <div className={styles.channelIcon}>
+                <FaClock />
+              </div>
+              <div className={styles.channelInfo}>
+                <span className={styles.channelLabel}>Studio Hours</span>
+                <span className={styles.channelValue}>Mon – Sat: 9:30 AM – 6:30 PM</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. MAP & STUDIO LOCATION */}
+      <section className={styles.locationSection}>
+        <div className={styles.locationWrapper}>
+          <div className={styles.mapCard}>
+            <div className={styles.mapFrameWrapper}>
               <iframe
                 src={officeMapEmbed}
-                title="Nayaab Engineering office location map"
+                title="Nayaab Engineering Studio Map"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
-            <div className={styles.contactTopMapFooter}>
-              <div className={styles.contactTopMapAddress}>
-                <FaMapMarkerAlt className={styles.contactTopMapIcon} />
-                <span>{officeAddress}</span>
+
+            <div className={styles.mapDetailsBar}>
+              <div className={styles.addressArea}>
+                <div className={styles.pinIconBox}>
+                  <FaMapMarkerAlt />
+                </div>
+                <div className={styles.addressText}>
+                  <strong>Baramulla Headquarters</strong>
+                  <p>{officeAddress}</p>
+                </div>
               </div>
+
               <a
                 href={officeMapLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.contactButtonSecondaryInline}
+                className={styles.mapActionBtn}
               >
-                Open in Maps
+                <span>Open in Google Maps</span>
+                <FaExternalLinkAlt className={styles.btnIcon} />
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 2: EDITORIAL FORM (FULL BLEED DIRECT RENDER) */}
-      <ContactForm
-        title="Contact us"
-        subtitle="Get in touch and let us know how we can help."
-      />
+      {/* 3. CONTACT FORM INTEGRATION */}
+      <section className={styles.formSection}>
+        <ContactForm
+          eyebrow="Direct Inquiry"
+          title="Send a Project Brief"
+          subtitle="Fill out the details below and an engineer from our team will get back to you promptly."
+        />
+      </section>
 
-      {/* SECTION 3: FAQ */}
-      <section className={styles.contactFaq}>
-        <div className={styles.contactFaqContainer}>
-          <div className={styles.contactFaqContent}>
-            <span className={styles.contactSectionHeadingEyebrow}>Questions</span>
-            <h2>Common Contact Questions</h2>
-            <div className={styles.contactFaqItems}>
-              {faqItems.map((item) => (
-                <details className={styles.contactFaqItem} key={item.question}>
-                  <summary>{item.question}</summary>
-                  <p>{item.answer}</p>
-                </details>
-              ))}
-            </div>
+      {/* 4. FAQ ACCORDION */}
+      <section className={styles.faqSection}>
+        <div className={styles.faqWrapper}>
+          <div className={styles.faqHeader}>
+            <span className={styles.pillBadge}>Common Questions</span>
+            <h2 className={styles.faqTitle}>Frequently Asked Questions</h2>
+            <p className={styles.faqSubtitle}>
+              Everything you need to know about starting a project consultation with us.
+            </p>
+          </div>
+
+          <div className={styles.faqList}>
+            {faqList.map((item, index) => {
+              const isOpen = openFaq === index;
+              return (
+                <div
+                  key={index}
+                  className={`${styles.faqCard} ${isOpen ? styles.faqCardOpen : ""}`}
+                >
+                  <button
+                    type="button"
+                    className={styles.faqQuestionBtn}
+                    onClick={() => toggleFaq(index)}
+                    aria-expanded={isOpen}
+                  >
+                    <span>{item.q}</span>
+                    <FaChevronDown
+                      className={`${styles.faqChevron} ${isOpen ? styles.faqChevronRotated : ""}`}
+                    />
+                  </button>
+                  {isOpen && (
+                    <div className={styles.faqAnswer}>
+                      <p>{item.a}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
     </main>
   );
 }
-
-export default Contact;

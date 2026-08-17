@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-  FaArrowRight,
   FaWhatsapp,
   FaFacebookF,
   FaInstagram,
   FaCheckCircle,
   FaExclamationCircle,
+  FaPaperPlane,
 } from "react-icons/fa";
 import styles from "./ContactForm.module.css";
 import contactArt from "../../../assets/images/contact/form.png";
@@ -19,11 +19,16 @@ const serviceOptions = [
   "Turnkey Solutions",
 ];
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MAX_SUBMISSIONS = 2;
+const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 Hours
+const RATE_LIMIT_STORAGE_KEY = "ne_contact_submissions";
+
 export default function ContactForm({
   accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
-  title = "Let's talk",
-  subtitle = "To request a quote or want to meet up for coffee, contact us directly or fill out the form and we will get back to you promptly.",
-  eyebrow,
+  title = "Send a Project Brief",
+  subtitle = "Fill out the form below with your project requirements and our team will get back to you with an initial assessment.",
+  eyebrow = "Direct Inquiry",
 }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -41,6 +46,28 @@ export default function ContactForm({
     message: "",
   });
 
+  const getRecentSubmissions = () => {
+    try {
+      const stored = localStorage.getItem(RATE_LIMIT_STORAGE_KEY);
+      if (!stored) return [];
+      const timestamps = JSON.parse(stored);
+      const now = Date.now();
+      return timestamps.filter((time) => now - time < RATE_LIMIT_WINDOW_MS);
+    } catch {
+      return [];
+    }
+  };
+
+  const recordSubmission = () => {
+    try {
+      const recent = getRecentSubmissions();
+      recent.push(Date.now());
+      localStorage.setItem(RATE_LIMIT_STORAGE_KEY, JSON.stringify(recent));
+    } catch {
+      // Ignore storage write errors in private mode
+    }
+  };
+
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData((prev) => ({
@@ -49,8 +76,62 @@ export default function ContactForm({
     }));
   };
 
+  const validateForm = () => {
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedMessage = formData.message.trim();
+
+    if (!trimmedName) {
+      return "Please enter your name.";
+    }
+    if (!trimmedEmail || !EMAIL_REGEX.test(trimmedEmail)) {
+      return "Please enter a valid email address.";
+    }
+    if (!trimmedMessage) {
+      return "Please type your message.";
+    }
+    if (!accessKey) {
+      return "Contact service is temporarily unavailable. Please reach us via WhatsApp.";
+    }
+    return null;
+  };
+
   const handleDirectWeb3Submit = async (e) => {
     e.preventDefault();
+
+    if (formData.botcheck) {
+      setStatus({
+        submitting: false,
+        success: true,
+        error: false,
+        message: "Thank you! Your message has been received.",
+      });
+      return;
+    }
+
+    const recentSubmissions = getRecentSubmissions();
+    if (recentSubmissions.length >= MAX_SUBMISSIONS) {
+      setStatus({
+        submitting: false,
+        success: false,
+        error: true,
+        message:
+          "Daily limit reached (maximum 2 submissions per 24 hours). Please contact us directly via WhatsApp.",
+      });
+      return;
+    }
+
+    const validationError = validateForm();
+    if (validationError) {
+      setStatus({
+        submitting: false,
+        success: false,
+        error: true,
+        message: validationError,
+      });
+      return;
+    }
+
     setStatus({ submitting: true, success: false, error: false, message: "" });
 
     try {
@@ -63,12 +144,12 @@ export default function ContactForm({
         body: JSON.stringify({
           access_key: accessKey,
           from_name: "Nayaab Engineering Website",
-          subject: `New Inquiry: ${formData.service} - ${formData.name}`,
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone || "Not Provided",
+          subject: `New Inquiry: ${formData.service} - ${formData.name.trim()}`,
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim() || "Not Provided",
           service: formData.service,
-          message: formData.message,
+          message: formData.message.trim(),
           botcheck: formData.botcheck,
         }),
       });
@@ -76,11 +157,12 @@ export default function ContactForm({
       const result = await response.json();
 
       if (result.success) {
+        recordSubmission();
         setStatus({
           submitting: false,
           success: true,
           error: false,
-          message: "Thank you! Your message has been sent successfully.",
+          message: "Thank you! Your message has been sent successfully. We will get back to you shortly.",
         });
         setFormData({
           name: "",
@@ -108,13 +190,13 @@ export default function ContactForm({
     const inquiryBody = [
       "Hello Nayaab Engineering Team,",
       "",
-      `Name: ${formData.name}`,
-      `Email: ${formData.email || "-"}`,
-      `Phone: ${formData.phone || "-"}`,
+      `Name: ${formData.name.trim()}`,
+      `Email: ${formData.email.trim() || "-"}`,
+      `Phone: ${formData.phone.trim() || "-"}`,
       `Service: ${formData.service}`,
       "",
       "Project Details:",
-      formData.message,
+      formData.message.trim(),
     ].join("\n");
 
     window.open(
@@ -125,22 +207,22 @@ export default function ContactForm({
   };
 
   return (
-    <section className={styles.sectionOuter} aria-label="Contact Section">
-      <div className={styles.contactWrapper}>
-        {/* Left Column: Form */}
+    <section className={styles.sectionOuter} aria-label="Contact Form Section">
+      <div className={styles.formCardContainer}>
+        {/* Left Column: Form Stage */}
         <div className={styles.formCol}>
           <div className={styles.headerArea}>
-            {eyebrow && <span className={styles.eyebrow}>{eyebrow}</span>}
+            {eyebrow && <span className={styles.pillBadge}>{eyebrow}</span>}
             <h2 className={styles.title}>{title}</h2>
             {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
           </div>
 
-          <form 
-            className={styles.contactForm} 
-            onSubmit={handleDirectWeb3Submit} 
+          <form
+            className={styles.contactForm}
+            onSubmit={handleDirectWeb3Submit}
             noValidate
           >
-            {/* Spam Protection Honeypot */}
+            {/* Honeypot Spam Guard */}
             <input
               type="checkbox"
               name="botcheck"
@@ -167,7 +249,7 @@ export default function ContactForm({
               </div>
 
               <div className={styles.field}>
-                <label htmlFor="form-email">E-mail *</label>
+                <label htmlFor="form-email">Email *</label>
                 <input
                   type="email"
                   id="form-email"
@@ -175,7 +257,7 @@ export default function ContactForm({
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  placeholder="name@example.com"
+                  placeholder="Your email address"
                   autoComplete="email"
                 />
               </div>
@@ -183,14 +265,14 @@ export default function ContactForm({
 
             <div className={styles.formRow}>
               <div className={styles.field}>
-                <label htmlFor="form-phone">Phone Number</label>
+                <label htmlFor="form-phone">Phone Number (Optional)</label>
                 <input
                   type="tel"
                   id="form-phone"
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  placeholder="+91 ..."
+                  placeholder="Your phone number"
                   autoComplete="tel"
                 />
               </div>
@@ -213,33 +295,34 @@ export default function ContactForm({
             </div>
 
             <div className={styles.field}>
-              <label htmlFor="form-message">Your message *</label>
+              <label htmlFor="form-message">Your Message *</label>
               <textarea
                 id="form-message"
                 name="message"
                 required
-                rows="3"
+                rows="4"
                 value={formData.message}
                 onChange={handleInputChange}
                 placeholder="Type your message here..."
               />
             </div>
 
-            {/* Notification Banners */}
+            {/* Status Notifications */}
             {status.success && (
               <div className={styles.successBanner} role="alert">
-                <FaCheckCircle className={styles.statusIcon} /> 
+                <FaCheckCircle className={styles.statusIcon} />
                 <span>{status.message}</span>
               </div>
             )}
 
             {status.error && (
               <div className={styles.errorBanner} role="alert">
-                <FaExclamationCircle className={styles.statusIcon} /> 
+                <FaExclamationCircle className={styles.statusIcon} />
                 <span>{status.message}</span>
               </div>
             )}
 
+            {/* Action Bar */}
             <div className={styles.actionFooter}>
               <div className={styles.buttonGroup}>
                 <button
@@ -248,8 +331,8 @@ export default function ContactForm({
                   disabled={status.submitting}
                   aria-busy={status.submitting}
                 >
-                  <span>{status.submitting ? "Sending..." : "Send Message"}</span>
-                  <FaArrowRight className={styles.btnArrow} />
+                  <FaPaperPlane className={styles.btnIcon} />
+                  <span>{status.submitting ? "Sending..." : "Submit Inquiry"}</span>
                 </button>
 
                 <button
@@ -260,7 +343,7 @@ export default function ContactForm({
                   aria-label="Send inquiry via WhatsApp"
                 >
                   <FaWhatsapp className={styles.waIcon} />
-                  <span>WhatsApp</span>
+                  <span>Send to WhatsApp</span>
                 </button>
               </div>
 
@@ -271,7 +354,7 @@ export default function ContactForm({
                     href="https://www.facebook.com/nayaabengineering/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Visit Nayaab Engineering on Facebook"
+                    aria-label="Visit Facebook"
                   >
                     <FaFacebookF />
                   </a>
@@ -279,7 +362,7 @@ export default function ContactForm({
                     href="https://www.instagram.com/nayaabengineering/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Visit Nayaab Engineering on Instagram"
+                    aria-label="Visit Instagram"
                   >
                     <FaInstagram />
                   </a>
@@ -289,16 +372,20 @@ export default function ContactForm({
           </form>
         </div>
 
-        {/* Right Column: Image Stage */}
+        {/* Right Column: Decorative Illustration Stage (Visible on Both Desktop & Mobile) */}
         <div className={styles.artCol}>
-          <div className={styles.artContainer}>
+          <div className={styles.artWrapper}>
             <img
               src={contactArt}
-              alt="Engineering Consulting & Turnkey Construction"
-              className={styles.artSvg}
+              alt="Engineering Consulting & Architecture"
+              className={styles.artImg}
               loading="lazy"
               decoding="async"
             />
+            <div className={styles.artCardFooter}>
+              <strong>Direct Engineering Consultancy</strong>
+              <p>Turnkey civil construction &amp; architectural design across Kashmir</p>
+            </div>
           </div>
         </div>
       </div>

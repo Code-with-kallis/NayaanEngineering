@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { 
   FaHome,
   FaSquare, 
@@ -26,7 +27,7 @@ const ICON_MAP = {
 };
 
 // 5 Service Cover Images for Automatic Hero Slider
-const HERO_SLIDES = SERVICES_DATA.slice(0, 5).map((service) => ({
+const HERO_SLIDES = (SERVICES_DATA || []).slice(0, 5).map((service) => ({
   id: service.id || service.slug,
   title: service.title,
   image: service.coverImage,
@@ -52,10 +53,12 @@ export default function Services() {
   }, []);
 
   const handlePrevSlide = () => {
+    if (HERO_SLIDES.length === 0) return;
     setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
   };
 
   const handleNextSlide = () => {
+    if (HERO_SLIDES.length === 0) return;
     setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
   };
 
@@ -78,10 +81,23 @@ export default function Services() {
     } else if (distance < -minSwipeDistance) {
       handlePrevSlide();
     }
+
+    // Reset touch coordinates
+    touchStartX.current = 0;
+    touchEndX.current = 0;
   };
 
   return (
     <main className={styles.pageWrapper}>
+      <Helmet>
+        <title>Engineering & Architectural Services | Nayaab Engineering Innovations</title>
+        <meta
+          name="description"
+          content="Explore civil engineering, 3D architectural modeling, structural analysis, turnkey construction, and interior design services by Nayaab Engineering in Kashmir."
+        />
+        <link rel="canonical" href="https://www.nayaabengineering.com/services" />
+      </Helmet>
+
       {/* ================= HERO SECTION ================= */}
       <section className={styles.heroSection} aria-labelledby="services-hero-title">
         {/* DESKTOP BACKGROUND FULL-SCREEN SLIDER & OVERLAY */}
@@ -171,7 +187,7 @@ export default function Services() {
             </div>
           </div>
 
-          {/* CLEAN FLOATING SLIDER CONTROLS (NO CARD WRAPPER) */}
+          {/* CLEAN FLOATING SLIDER CONTROLS */}
           <div className={`${styles.desktopSliderControls} ${styles.animateSlideLeft} ${styles.delay4}`}>
             <div className={styles.sliderControlHeader}>
               <span className={styles.sliderTrackLabel}>Featured Discipline</span>
@@ -199,7 +215,11 @@ export default function Services() {
               <div className={styles.progressBarWrapper}>
                 <div 
                   className={styles.progressBar} 
-                  style={{ width: `${((currentSlide + 1) / HERO_SLIDES.length) * 100}%` }}
+                  style={{ 
+                    width: HERO_SLIDES.length > 0 
+                      ? `${((currentSlide + 1) / HERO_SLIDES.length) * 100}%` 
+                      : "0%" 
+                  }}
                 />
               </div>
               <div className={styles.counterBadge}>
@@ -224,15 +244,15 @@ export default function Services() {
           </div>
 
           <div className={styles.serviceGrid}>
-            {/* 1st - 5th Standard Discipline Cards */}
-            {SERVICES_DATA.map((service) => (
+            {/* Standard Discipline Cards */}
+            {(SERVICES_DATA || []).map((service) => (
               <article key={service.id || service.slug} className={styles.cardItem}>
                 <Link 
                   to={`/services/${service.slug}`} 
                   className={styles.serviceCard}
                   aria-label={`Explore details for ${service.title}`}
                 >
-                  {/* GPU-Accelerated Chamfered Image Stage */}
+                  {/* Chamfered Image Stage */}
                   <div className={styles.cardImageWrapper}>
                     <img 
                       src={service.coverImage} 
@@ -273,14 +293,13 @@ export default function Services() {
               </article>
             ))}
 
-            {/* ================= 6TH DISTINCT INTERACTIVE CTA CARD ================= */}
+            {/* Distinct Interactive CTA Card */}
             <article className={`${styles.cardItem} ${styles.specialCtaItem}`}>
               <Link 
                 to="/contact" 
                 className={styles.specialCtaCard}
                 aria-label="Start your custom project with Nayaab Engineering"
               >
-                {/* Architectural Elements */}
                 <div className={styles.ctaCardDecor} aria-hidden="true">
                   <div className={styles.crosshairTop}>+</div>
                   <div className={styles.crosshairBottom}>+</div>

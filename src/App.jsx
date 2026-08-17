@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Layout from "./components/layout/Layout/Layout";
@@ -21,28 +21,13 @@ const Privacy = lazy(() => import("./pages/legal/Privacy"));
 const NotFound = lazy(() => import("./pages/NotFound/NotFound"));
 
 export default function App() {
-  const [initialLoading, setInitialLoading] = useState(true);
-
-  useEffect(() => {
-    // Ensures clean splash render on initial entry
-    const timer = setTimeout(() => {
-      setInitialLoading(false);
-    }, 850);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (initialLoading) {
-    return <PageLoader />;
-  }
-
   return (
     <HelmetProvider>
       <ErrorBoundary>
         <ScrollToTop />
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* All routes are now wrapped by Layout so Layout.jsx can control Navbar/Footer visibility */}
+            {/* All routes are wrapped by Layout to manage route transitions and chrome visibility */}
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="contact" element={<Contact />} />
