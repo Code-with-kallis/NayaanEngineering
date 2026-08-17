@@ -8,8 +8,8 @@ import {
   FaShieldAlt,
   FaArrowRight,
 } from "react-icons/fa";
-import house3dDesktop from "../../assets/images/home/3d-house.png";
-import house3dMobile from "../../assets/images/home/3d-house-mobile.png";
+import house3dDesktop from "../../assets/images/home/3d-house.webp";
+import house3dMobile from "../../assets/images/home/3d-house-mobile.webp";
 import styles from "./SplitShowcase.module.css";
 
 export default function SplitShowcase() {
