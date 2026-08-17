@@ -8,6 +8,7 @@ import {
   FaExclamationCircle,
 } from "react-icons/fa";
 import styles from "./ContactForm.module.css";
+import contactArt from "../../../assets/images/contact/form.png";
 
 const serviceOptions = [
   "Architectural Design",
@@ -18,10 +19,11 @@ const serviceOptions = [
   "Turnkey Solutions",
 ];
 
-function ContactForm({
+export default function ContactForm({
   accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
   title = "Let's talk",
   subtitle = "To request a quote or want to meet up for coffee, contact us directly or fill out the form and we will get back to you promptly.",
+  eyebrow,
 }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -123,165 +125,183 @@ function ContactForm({
   };
 
   return (
-    <section className={styles.contactWrapper}>
-      {/* Left Column: Form */}
-      <div className={styles.formCol}>
-        <div className={styles.headerArea}>
-          <h2 className={styles.title}>{title}</h2>
-          {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
-        </div>
-
-        <form className={styles.contactForm} onSubmit={handleDirectWeb3Submit}>
-          <input
-            type="checkbox"
-            name="botcheck"
-            className={styles.honeypot}
-            onChange={handleInputChange}
-            checked={formData.botcheck}
-          />
-
-          <div className={styles.formRow}>
-            <div className={styles.field}>
-              <label htmlFor="name">Name *</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Your name"
-              />
-            </div>
-
-            <div className={styles.field}>
-              <label htmlFor="email">E-mail *</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="name@example.com"
-              />
-            </div>
+    <section className={styles.sectionOuter} aria-label="Contact Section">
+      <div className={styles.contactWrapper}>
+        {/* Left Column: Form */}
+        <div className={styles.formCol}>
+          <div className={styles.headerArea}>
+            {eyebrow && <span className={styles.eyebrow}>{eyebrow}</span>}
+            <h2 className={styles.title}>{title}</h2>
+            {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
           </div>
 
-          <div className={styles.formRow}>
-            <div className={styles.field}>
-              <label htmlFor="phone">Phone Number</label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                placeholder="+91 ..."
-              />
-            </div>
-
-            <div className={styles.field}>
-              <label htmlFor="service">Topic / Service</label>
-              <select
-                id="service"
-                name="service"
-                value={formData.service}
-                onChange={handleInputChange}
-              >
-                {serviceOptions.map((service) => (
-                  <option key={service} value={service}>
-                    {service}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor="message">Your message *</label>
-            <textarea
-              id="message"
-              name="message"
-              required
-              rows="3"
-              value={formData.message}
+          <form 
+            className={styles.contactForm} 
+            onSubmit={handleDirectWeb3Submit} 
+            noValidate
+          >
+            {/* Spam Protection Honeypot */}
+            <input
+              type="checkbox"
+              name="botcheck"
+              className={styles.honeypot}
               onChange={handleInputChange}
-              placeholder="Type your message here..."
+              checked={formData.botcheck}
+              tabIndex={-1}
+              autoComplete="off"
             />
-          </div>
 
-          {status.success && (
-            <div className={styles.successBanner}>
-              <FaCheckCircle /> <span>{status.message}</span>
-            </div>
-          )}
+            <div className={styles.formRow}>
+              <div className={styles.field}>
+                <label htmlFor="form-name">Name *</label>
+                <input
+                  type="text"
+                  id="form-name"
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Your name"
+                  autoComplete="name"
+                />
+              </div>
 
-          {status.error && (
-            <div className={styles.errorBanner}>
-              <FaExclamationCircle /> <span>{status.message}</span>
-            </div>
-          )}
-
-          <div className={styles.actionFooter}>
-            <div className={styles.buttonGroup}>
-              <button
-                type="submit"
-                className={styles.submitBtn}
-                disabled={status.submitting}
-              >
-                <span>{status.submitting ? "Sending..." : "Send Message"}</span>
-                <FaArrowRight className={styles.btnArrow} />
-              </button>
-
-              <button
-                type="button"
-                className={styles.whatsappBtn}
-                onClick={openWhatsApp}
-                disabled={!formData.name.trim() || !formData.message.trim()}
-              >
-                <FaWhatsapp />
-                <span>WhatsApp</span>
-              </button>
-            </div>
-
-            <div className={styles.socialFollow}>
-              <span>Follow Us</span>
-              <div className={styles.socialIcons}>
-                <a
-                  href="https://www.facebook.com/nayaabengineering/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook"
-                >
-                  <FaFacebookF />
-                </a>
-                <a
-                  href="https://www.instagram.com/nayaabengineering/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Instagram"
-                >
-                  <FaInstagram />
-                </a>
+              <div className={styles.field}>
+                <label htmlFor="form-email">E-mail *</label>
+                <input
+                  type="email"
+                  id="form-email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="name@example.com"
+                  autoComplete="email"
+                />
               </div>
             </div>
-          </div>
-        </form>
-      </div>
 
-      {/* Right Column: Custom Asset Image */}
-      <div className={styles.artCol}>
-        <div className={styles.artContainer}>
-          <img
-            src="/assets/contact/form.png"
-            alt="Contact Illustration"
-            className={styles.artSvg}
-          />
+            <div className={styles.formRow}>
+              <div className={styles.field}>
+                <label htmlFor="form-phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="form-phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="+91 ..."
+                  autoComplete="tel"
+                />
+              </div>
+
+              <div className={styles.field}>
+                <label htmlFor="form-service">Topic / Service</label>
+                <select
+                  id="form-service"
+                  name="service"
+                  value={formData.service}
+                  onChange={handleInputChange}
+                >
+                  {serviceOptions.map((service) => (
+                    <option key={service} value={service}>
+                      {service}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className={styles.field}>
+              <label htmlFor="form-message">Your message *</label>
+              <textarea
+                id="form-message"
+                name="message"
+                required
+                rows="3"
+                value={formData.message}
+                onChange={handleInputChange}
+                placeholder="Type your message here..."
+              />
+            </div>
+
+            {/* Notification Banners */}
+            {status.success && (
+              <div className={styles.successBanner} role="alert">
+                <FaCheckCircle className={styles.statusIcon} /> 
+                <span>{status.message}</span>
+              </div>
+            )}
+
+            {status.error && (
+              <div className={styles.errorBanner} role="alert">
+                <FaExclamationCircle className={styles.statusIcon} /> 
+                <span>{status.message}</span>
+              </div>
+            )}
+
+            <div className={styles.actionFooter}>
+              <div className={styles.buttonGroup}>
+                <button
+                  type="submit"
+                  className={styles.submitBtn}
+                  disabled={status.submitting}
+                  aria-busy={status.submitting}
+                >
+                  <span>{status.submitting ? "Sending..." : "Send Message"}</span>
+                  <FaArrowRight className={styles.btnArrow} />
+                </button>
+
+                <button
+                  type="button"
+                  className={styles.whatsappBtn}
+                  onClick={openWhatsApp}
+                  disabled={!formData.name.trim() || !formData.message.trim()}
+                  aria-label="Send inquiry via WhatsApp"
+                >
+                  <FaWhatsapp className={styles.waIcon} />
+                  <span>WhatsApp</span>
+                </button>
+              </div>
+
+              <div className={styles.socialFollow}>
+                <span>Follow Us</span>
+                <div className={styles.socialIcons}>
+                  <a
+                    href="https://www.facebook.com/nayaabengineering/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit Nayaab Engineering on Facebook"
+                  >
+                    <FaFacebookF />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/nayaabengineering/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Visit Nayaab Engineering on Instagram"
+                  >
+                    <FaInstagram />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        {/* Right Column: Image Stage */}
+        <div className={styles.artCol}>
+          <div className={styles.artContainer}>
+            <img
+              src={contactArt}
+              alt="Engineering Consulting & Turnkey Construction"
+              className={styles.artSvg}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
-export default ContactForm;

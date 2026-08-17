@@ -35,15 +35,15 @@ const Navbar = () => {
   // Unified scroll locking hook for mobile menu drawer
   useScrollLock(isOpen);
 
-  // Dark Video Hero pages (White Text Navbar)
-  const isDarkHero = pathname === "/";
+  // Dark Full-Screen Hero pages (Transparent Header with White Text)
+  const isDarkHero = pathname === "/" || pathname === "/services";
   
-  // Light Hero pages (Dark Text Navbar for visibility)
+  // Light Hero pages (Transparent Header with Dark Text)
   const isLightHero =
     pathname === "/about" ||
     pathname === "/projects" ||
     pathname === "/contact" ||
-    pathname.startsWith("/services");
+    (pathname.startsWith("/services/") && pathname !== "/services");
 
   const toggleMenu = () => {
     setIsOpen((prev) => {

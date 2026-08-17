@@ -41,7 +41,7 @@
   box-sizing: border-box;
 }
 
-/* ===== TRANSPARENT DARK HERO MODE (Home Page) ===== */
+/* ===== TRANSPARENT DARK HERO MODE (Home & Services Pages) ===== */
 .navbarDarkHero:not(.navbarScrolled) {
   background: transparent !important;
   backdrop-filter: none !important;
@@ -51,7 +51,7 @@
 }
 
 .navbarDarkHero:not(.navbarScrolled) .navItem {
-  color: var(--nei-text-light, rgba(255, 255, 255, 0.9));
+  color: var(--nei-text-light, rgba(255, 255, 255, 0.95));
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 

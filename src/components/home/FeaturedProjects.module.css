@@ -1,6 +1,7 @@
 /* src/components/home/FeaturedProjects.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
 
+/* ===== GLOBAL SECTION WRAPPER ===== */
 .projectsPreview {
   width: 100%;
   margin: 0;
@@ -8,8 +9,18 @@
   padding-inline: clamp(1.5rem, 5vw, 4rem);
   box-sizing: border-box;
   background: #FFFFFF;
+  overflow-x: clip;
 }
 
+/* 4K & Ultrawide Container Boundary */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+/* ===== UNCHANGED HEADER TYPOGRAPHY STYLES ===== */
 .sectionTagRow {
   display: inline-flex;
   align-items: center;
@@ -63,10 +74,14 @@
   font-family: 'Inter', sans-serif;
 }
 
+/* ==========================================================================
+   EQUALIZED CARD GRID MATCHING PROJECTS PAGE WITH HARDWARE ACCELERATION
+   ========================================================================== */
 .projectGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2.5rem 1.75rem;
+  align-items: stretch;
 }
 
 .projectCard {
@@ -74,21 +89,37 @@
   flex-direction: column;
   background: transparent;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  height: 100%;
+  box-sizing: border-box;
+  outline-offset: 4px;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
 }
 
 .projectCard:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
 }
 
+.projectCard:focus-visible {
+  outline: 2px solid #B7410E;
+  border-radius: 8px;
+}
+
+/* Chamfered Image Container with GPU Hover Zoom */
 .cardImageWrapper {
+  position: relative;
   width: 100%;
-  height: 220px;
+  aspect-ratio: 16 / 10;
+  height: auto;
   overflow: hidden;
-  background: #E5E5E5;
-  clip-path: polygon(36px 0, 100% 0, 100% calc(100% - 36px), calc(100% - 36px) 100%, 0 100%, 0 36px);
-  margin-bottom: 1.25rem;
+  background: transparent;
+  clip-path: polygon(32px 0, 100% 0, 100% calc(100% - 32px), calc(100% - 32px) 100%, 0 100%, 0 32px);
+  -webkit-clip-path: polygon(32px 0, 100% 0, 100% calc(100% - 32px), calc(100% - 32px) 100%, 0 100%, 0 32px);
   border-radius: 16px;
+  margin-bottom: 1.25rem;
+  flex-shrink: 0;
+  transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .cardImageWrapper img {
@@ -96,12 +127,21 @@
   height: 100%;
   object-fit: cover;
   display: block;
+  transform: scale(1.0001);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
+.projectCard:hover .cardImageWrapper img {
+  transform: scale(1.08);
+}
+
+/* Card Body */
 .cardBody {
   display: flex;
   flex-direction: column;
   flex: 1;
+  justify-content: flex-start;
 }
 
 .cardTitle {
@@ -111,38 +151,66 @@
   color: #111111;
   margin: 0 0 0.4rem 0;
   line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  transition: color 0.2s ease;
 }
 
+.projectCard:hover .cardTitle {
+  color: #B7410E;
+}
+
+/* Uniform 2-Line Summary */
 .cardSummary {
   color: #666666;
   font-size: 0.85rem;
   line-height: 1.55;
   margin: 0 0 1rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.65em;
+  max-height: 2.65em;
 }
 
+/* Desktop: Single Balanced Grid Row with Ellipsis */
 .cardMeta {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.6rem 1.25rem;
-  font-size: 0.8rem;
-  color: #666666;
-  margin-bottom: 1rem;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  color: #777777;
+  margin-top: auto;
+  margin-bottom: 0.85rem;
+  min-height: 24px;
 }
 
 .metaItem {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  line-height: 1.35;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.metaItem span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  min-width: 0;
 }
 
 .metaIcon {
   color: #B7410E;
-  font-size: 0.825rem;
+  font-size: 0.8rem;
   flex-shrink: 0;
 }
 
+/* Interactive Details Button */
 .viewDetailBtn {
   display: inline-flex;
   align-items: center;
@@ -150,17 +218,37 @@
   color: #B7410E;
   font-weight: 600;
   font-size: 0.85rem;
+  margin-top: 0.25rem;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  margin-top: auto;
+  transition: gap 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projectCard:hover .viewDetailBtn {
+  gap: 0.75rem;
 }
 
 .linkArrow {
   font-size: 0.75rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.projectCard:hover .linkArrow {
+  transform: translateX(4px);
+}
+
+/* Status / Empty States */
+.statusBox {
+  text-align: center;
+  padding: 3rem;
+  color: #64748B;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+}
+
+/* View All Action */
 .viewAllWrapper {
   display: flex;
   justify-content: center;
@@ -182,26 +270,94 @@
   text-decoration: none;
   box-shadow: 0 4px 14px rgba(183, 65, 14, 0.25);
   border-radius: 12px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease,
+              box-shadow 0.25s ease;
 }
 
+.viewAllBtn:hover {
+  background: #9E370C;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(183, 65, 14, 0.4);
+}
+
+.btnArrow {
+  font-size: 0.8rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.viewAllBtn:hover .btnArrow {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
+   ========================================================================== */
+
+/* Intermediate Tablet Landscape & Laptops (1024px – 900px) */
 @media (max-width: 1024px) {
   .splitHeaderContainer {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
   }
 
   .projectGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem 1.25rem;
   }
 }
 
+/* Baseline Mobile (<= 768px) */
 @media (max-width: 768px) {
   .projectsPreview {
     padding-block: 3.5rem 2.5rem;
     padding-inline: 1.25rem;
   }
 
-  .splitTitle {
-    font-size: 1.85rem;
+  .splitHeaderContainer {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .projectGrid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .cardImageWrapper {
+    aspect-ratio: 16 / 10;
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    -webkit-clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    border-radius: 12px;
+  }
+
+  .cardSummary {
+    min-height: auto;
+    max-height: none;
+  }
+
+  /* Stacked Column Meta on Mobile */
+  .cardMeta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    min-height: auto;
+  }
+
+  .metaItem {
+    width: 100%;
+  }
+
+  .metaItem span {
+    white-space: normal;
+    text-overflow: clip;
+  }
+
+  .viewAllBtn {
+    width: 100%;
+    justify-content: center;
   }
 }

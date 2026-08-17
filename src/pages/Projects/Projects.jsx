@@ -11,6 +11,11 @@ import { supabase } from "../../lib/supabaseClient";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
 import styles from "./Projects.module.css";
 
+// Bundler asset imports
+import heroImage1 from "../../assets/images/projects/projects-hero-01.webp";
+import heroImage2 from "../../assets/images/projects/projects-hero-02.webp";
+import heroImage3 from "../../assets/images/projects/projects-hero-03.webp";
+
 const CATEGORIES = [
   "All",
   "Aviation",
@@ -154,162 +159,204 @@ export default function Projects() {
   return (
     <div className={styles.pageWrapper}>
       {/* HERO SECTION */}
-      <section className={styles.heroSection}>
-        <div className={styles.heroLeftCard}>
-          <div className={`${styles.breadcrumb} ${styles.animateSlideLeft} ${styles.delay1}`}>
-            <FaHome className={styles.homeIcon} />
-            <span>Home</span>
-            <span className={styles.slash}>/</span>
-            <strong className={styles.activeBreadcrumb}>Project</strong>
-          </div>
-
-          <h1 className={`${styles.heroTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
-            <span className={styles.titleDark}>From Vision to  </span>
-            <span className={styles.titleMuted}>
-              Exceptional
-              <br />
-              Built Realities:
-            </span>
-          </h1>
-
-          <p className={`${styles.heroText} ${styles.animateSlideLeft} ${styles.delay3}`}>
-           Every project at Nayaab Engineering Innovations is thoughtfully planned, precisely executed, and built around the unique needs of our clients. From the initial concept to the final execution, we combine engineering expertise, attention to detail, and uncompromising quality to turn ambitious ideas into spaces that are functional, refined, and built to stand the test of time.
-
-          </p>
-
-          <Link to="/contact" className={`${styles.heroBtn} ${styles.animateSlideLeft} ${styles.delay4}`}>
-            Contact Us
-          </Link>
-        </div>
-
-        <div className={styles.heroRightGrid}>
-          <div className={styles.heroImageMain}>
-            <img src="/assets/projects/hero/projects-hero-01.webp" alt="Comprehensive multi-story residential project" />
-          </div>
-          <div className={styles.heroSubGrid}>
-            <div className={styles.heroImageSub1}>
-              <img src="/assets/projects/hero/projects-hero-02.webp" alt="Residential House" />
+      <section className={styles.heroSection} aria-labelledby="hero-title">
+        <div className={styles.heroContainer}>
+          <div className={styles.heroLeftCard}>
+            <div className={`${styles.breadcrumb} ${styles.animateSlideLeft} ${styles.delay1}`}>
+              <FaHome className={styles.homeIcon} aria-hidden="true" />
+              <Link to="/" className={styles.breadcrumbLink}>Home</Link>
+              <span className={styles.slash}>/</span>
+              <strong className={styles.activeBreadcrumb}>Project</strong>
             </div>
-            <div className={styles.heroImageSub2}>
-              <img src="/assets/projects/hero/projects-hero-03.webp" alt="Modern Kitchen Interior" />
+
+            <h1 id="hero-title" className={`${styles.heroTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
+              <span className={styles.titleDark}>From Vision to  </span>
+              <span className={styles.titleMuted}>
+                Exceptional
+                <br />
+                Built Realities:
+              </span>
+            </h1>
+
+            <p className={`${styles.heroText} ${styles.animateSlideLeft} ${styles.delay3}`}>
+              Every project at Nayaab Engineering Innovations is thoughtfully planned, precisely executed, and built around the unique needs of our clients. From the initial concept to the final execution, we combine engineering expertise, attention to detail, and uncompromising quality to turn ambitious ideas into spaces that are functional, refined, and built to stand the test of time.
+            </p>
+
+            <Link to="/contact" className={`${styles.heroBtn} ${styles.animateSlideLeft} ${styles.delay4}`}>
+              Contact Us
+            </Link>
+          </div>
+
+          <div className={styles.heroRightGrid}>
+            <div className={styles.heroImageMain}>
+              <img 
+                src={heroImage1} 
+                alt="Comprehensive multi-story residential project" 
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+            <div className={styles.heroSubGrid}>
+              <div className={styles.heroImageSub1}>
+                <img 
+                  src={heroImage2} 
+                  alt="Residential House" 
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div className={styles.heroImageSub2}>
+                <img 
+                  src={heroImage3} 
+                  alt="Modern Kitchen Interior" 
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* PROJECTS GRID SECTION */}
-      <section className={styles.projectsSection} ref={projectsSectionRef}>
-        <div className={styles.sectionTagRow}>
-          <FaSquare className={styles.tagSquareIcon} />
-          <span>See all Projects</span>
-        </div>
-
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>
-            Discover Our Completed<br />Projects
-          </h2>
-          <p className={styles.sectionDescription}>
-            Browse through our portfolio of engineering, structural design, and turnkey construction developments.
-          </p>
-        </div>
-
-        {/* Category Filter Bar */}
-        <div className={styles.filterBar}>
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              className={`${styles.filterTab} ${activeCategory === cat ? styles.activeFilterTab : ""}`}
-              onClick={() => handleFilter(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Grid Cards */}
-        {loading ? (
-          <div style={{ textAlign: "center", padding: "3rem", color: "#64748B" }}>
-            Loading live portfolio...
+      <section className={styles.projectsSection} ref={projectsSectionRef} aria-labelledby="section-title">
+        <div className={styles.projectsContainer}>
+          <div className={styles.sectionTagRow}>
+            <FaSquare className={styles.tagSquareIcon} aria-hidden="true" />
+            <span>See all Projects</span>
           </div>
-        ) : filteredProjects.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "3rem", color: "#64748B" }}>
-            No projects found in this category.
+
+          <div className={styles.sectionHeader}>
+            <h2 id="section-title" className={styles.sectionTitle}>
+              Discover Our Completed<br />Projects
+            </h2>
+            <p className={styles.sectionDescription}>
+              Browse through our portfolio of engineering, structural design, and turnkey construction developments.
+            </p>
           </div>
-        ) : (
-          <div className={styles.grid}>
-            {paginatedProjects.map((project) => {
-              const cover = project.coverImage || project.cover_image || project.image;
-              return (
-                <article 
-                  key={project.id || project.slug} 
-                  className={styles.projectCard}
-                  onClick={() => openProjectModal(project)}
-                >
-                  <div className={styles.cardImageWrapper}>
-                    <img src={cover} alt={project.title} loading="lazy" />
-                  </div>
-                  <div className={styles.cardBody}>
-                    <h3 className={styles.cardTitle}>{project.title}</h3>
-                    <p className={styles.cardSummary}>{project.summary || project.description}</p>
 
-                    <div className={styles.cardMeta}>
-                      <div className={styles.metaItem}>
-                        <FaMapMarkerAlt className={styles.metaIcon} />
-                        <span>{project.location}</span>
-                      </div>
-                      {project.duration && (
-                        <div className={styles.metaItem}>
-                          <FaClock className={styles.metaIcon} />
-                          <span>{project.duration}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <button 
-                      className={styles.viewDetailBtn}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openProjectModal(project);
-                      }}
-                    >
-                      <span>View More</span>
-                      <FaArrowRight className={styles.linkArrow} />
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Pagination Controls */}
-        {filteredProjects.length > ITEMS_PER_PAGE && (
-          <div className={styles.pagination}>
-            <button 
-              className={styles.pageBtn} 
-              disabled={activePage === 1}
-              onClick={() => handlePageChange(activePage - 1)}
-            >
-              Previous
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+          {/* Category Filter Bar */}
+          <div className={styles.filterBar} role="tablist" aria-label="Filter projects by category">
+            {CATEGORIES.map((cat) => (
               <button
-                key={num}
-                className={`${styles.pageNumber} ${activePage === num ? styles.activePage : ""}`}
-                onClick={() => handlePageChange(num)}
+                key={cat}
+                role="tab"
+                aria-selected={activeCategory === cat}
+                className={`${styles.filterTab} ${activeCategory === cat ? styles.activeFilterTab : ""}`}
+                onClick={() => handleFilter(cat)}
               >
-                {num}
+                {cat}
               </button>
             ))}
-            <button 
-              className={styles.pageBtn} 
-              disabled={activePage === totalPages}
-              onClick={() => handlePageChange(activePage + 1)}
-            >
-              Next
-            </button>
           </div>
-        )}
+
+          {/* Equalized Grid Cards with GPU Hover Animations */}
+          {loading ? (
+            <div className={styles.statusBox}>
+              Loading live portfolio...
+            </div>
+          ) : filteredProjects.length === 0 ? (
+            <div className={styles.statusBox}>
+              No projects found in this category.
+            </div>
+          ) : (
+            <div className={styles.grid}>
+              {paginatedProjects.map((project) => {
+                const cover = project.coverImage || project.cover_image || project.image;
+                const projectId = project.id || project.slug;
+
+                return (
+                  <article 
+                    key={projectId} 
+                    className={styles.projectCard}
+                    onClick={() => openProjectModal(project)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        openProjectModal(project);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View details for ${project.title}`}
+                  >
+                    <div className={styles.cardImageWrapper}>
+                      <img 
+                        src={cover} 
+                        alt={project.title} 
+                        loading="lazy" 
+                        decoding="async"
+                      />
+                    </div>
+
+                    <div className={styles.cardBody}>
+                      <h3 className={styles.cardTitle} title={project.title}>
+                        {project.title}
+                      </h3>
+
+                      <p className={styles.cardSummary}>
+                        {project.summary || project.description}
+                      </p>
+
+                      {/* Single-Row Grid on Desktop, Stacked on Mobile */}
+                      <div className={styles.cardMeta}>
+                        <div className={styles.metaItem} title={project.location || ""}>
+                          <FaMapMarkerAlt className={styles.metaIcon} aria-hidden="true" />
+                          <span>{project.location || "Location on Request"}</span>
+                        </div>
+
+                        {project.duration && (
+                          <div className={styles.metaItem} title={project.duration}>
+                            <FaClock className={styles.metaIcon} aria-hidden="true" />
+                            <span>{project.duration}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className={styles.viewDetailBtn}>
+                        <span>View More</span>
+                        <FaArrowRight className={styles.linkArrow} aria-hidden="true" />
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Pagination Controls */}
+          {filteredProjects.length > ITEMS_PER_PAGE && (
+            <nav className={styles.pagination} aria-label="Portfolio pagination">
+              <button 
+                type="button"
+                className={styles.pageBtn} 
+                disabled={activePage === 1}
+                onClick={() => handlePageChange(activePage - 1)}
+              >
+                Previous
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+                <button
+                  type="button"
+                  key={num}
+                  className={`${styles.pageNumber} ${activePage === num ? styles.activePage : ""}`}
+                  onClick={() => handlePageChange(num)}
+                  aria-current={activePage === num ? "page" : undefined}
+                >
+                  {num}
+                </button>
+              ))}
+              <button 
+                type="button"
+                className={styles.pageBtn} 
+                disabled={activePage === totalPages}
+                onClick={() => handlePageChange(activePage + 1)}
+              >
+                Next
+              </button>
+            </nav>
+          )}
+        </div>
       </section>
 
       {/* MODULAR POPUP DRAWER */}

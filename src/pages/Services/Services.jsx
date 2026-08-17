@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { 
+  FaHome,
   FaSquare, 
   FaDraftingCompass, 
   FaBuilding, 
@@ -8,10 +9,12 @@ import {
   FaPalette, 
   FaClipboardCheck, 
   FaArrowRight,
-  FaCheckCircle
+  FaCheckCircle,
+  FaChevronLeft,
+  FaChevronRight,
+  FaHandshake
 } from "react-icons/fa";
 import { SERVICES_DATA } from "../../data/services";
-import ContactForm from "../../components/common/ContactForm/ContactForm";
 import styles from "./Services.module.css";
 
 const ICON_MAP = {
@@ -22,85 +25,308 @@ const ICON_MAP = {
   FaClipboardCheck: <FaClipboardCheck />,
 };
 
+// 5 Service Cover Images for Automatic Hero Slider
+const HERO_SLIDES = SERVICES_DATA.slice(0, 5).map((service) => ({
+  id: service.id || service.slug,
+  title: service.title,
+  image: service.coverImage,
+}));
+
 export default function Services() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Touch Swipe Tracking for Mobile
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const minSwipeDistance = 45;
+
+  // Autoplay Slider (Rotates every 4.5 seconds)
+  useEffect(() => {
+    if (!HERO_SLIDES || HERO_SLIDES.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 4500);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const handlePrevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  };
+
+  const handleNextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+  };
+
+  // Mobile Touch Gestures
+  const onTouchStart = (e) => {
+    touchEndX.current = 0;
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchMove = (e) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+
+    if (distance > minSwipeDistance) {
+      handleNextSlide();
+    } else if (distance < -minSwipeDistance) {
+      handlePrevSlide();
+    }
+  };
+
   return (
     <main className={styles.pageWrapper}>
-      {/* ================= HEADER / HERO SECTION ================= */}
-      <section className={styles.heroSection}>
-        <div className={styles.splitHeaderContainer}>
-          <div className={styles.splitHeaderLeft}>
-            <div className={`${styles.sectionTagRow} ${styles.animateSlideLeft} ${styles.delay1}`}>
-              <FaSquare className={styles.tagSquareIcon} />
+      {/* ================= HERO SECTION ================= */}
+      <section className={styles.heroSection} aria-labelledby="services-hero-title">
+        {/* DESKTOP BACKGROUND FULL-SCREEN SLIDER & OVERLAY */}
+        <div className={styles.desktopHeroSlider} aria-hidden="true">
+          {HERO_SLIDES.map((slide, idx) => (
+            <div
+              key={slide.id + "-desktop"}
+              className={`${styles.desktopSlide} ${
+                idx === currentSlide ? styles.desktopSlideActive : ""
+              }`}
+              style={{ backgroundImage: `url(${slide.image})` }}
+            />
+          ))}
+          <div className={styles.desktopOverlay} />
+        </div>
+
+        {/* MOBILE TOP HALF MEDIA SLIDER (TOUCH SWIPE SUPPORT) */}
+        <div 
+          className={styles.mobileHeroMedia}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          {HERO_SLIDES.map((slide, idx) => (
+            <div
+              key={slide.id + "-mobile"}
+              className={`${styles.mobileSlide} ${
+                idx === currentSlide ? styles.mobileSlideActive : ""
+              }`}
+              style={{ backgroundImage: `url(${slide.image})` }}
+            />
+          ))}
+
+          {/* Mobile Dot Indicators */}
+          <div className={styles.mobileDotsContainer}>
+            {HERO_SLIDES.map((_, dotIdx) => (
+              <button
+                type="button"
+                key={dotIdx}
+                aria-label={`Go to slide ${dotIdx + 1}`}
+                className={`${styles.mobileDot} ${
+                  dotIdx === currentSlide ? styles.mobileDotActive : ""
+                }`}
+                onClick={() => setCurrentSlide(dotIdx)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* HERO CONTENT CONTAINER */}
+        <div className={styles.heroContainer}>
+          <div className={styles.heroContentLeft}>
+            {/* Breadcrumb Navigation */}
+            <nav className={`${styles.breadcrumb} ${styles.animateSlideLeft} ${styles.delay1}`} aria-label="Breadcrumb">
+              <FaHome className={styles.homeIcon} aria-hidden="true" />
+              <Link to="/" className={styles.breadcrumbLink}>Home</Link>
+              <span className={styles.slash}>/</span>
+              <strong className={styles.activeBreadcrumb} aria-current="page">Services</strong>
+            </nav>
+
+            <div className={`${styles.sectionTagRow} ${styles.animateSlideLeft} ${styles.delay2}`}>
+              <FaSquare className={styles.tagSquareIcon} aria-hidden="true" />
               <span>WHAT WE DO</span>
             </div>
-            <h1 className={`${styles.splitTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
-              Comprehensive Civil &amp;<br />Architectural Solutions
-            </h1>
-          </div>
 
-          <div className={styles.splitHeaderRight}>
-            <p className={`${styles.splitDesc} ${styles.animateSlideLeft} ${styles.delay3}`}>
+            {/* Dual-Color Hero Title */}
+            <h1 id="services-hero-title" className={`${styles.heroTitle} ${styles.animateSlideLeft} ${styles.delay3}`}>
+              <span className={styles.titleDark}>Civil &amp; </span>
+              <span className={styles.titleMuted}>
+                Architectural
+                <br />
+                Solutions:
+              </span>
+            </h1>
+
+            {/* Hero Description */}
+            <p className={`${styles.heroText} ${styles.animateSlideLeft} ${styles.delay4}`}>
               From initial 3D architectural modeling and structural load calculations to full turnkey site execution, luxury interior fit-outs, and municipal permissions across Jammu &amp; Kashmir.
             </p>
+
+            {/* Desktop Quick Action */}
+            <div className={`${styles.heroCtaRow} ${styles.animateSlideLeft} ${styles.delay4}`}>
+              <Link to="/contact" className={styles.primaryHeroBtn}>
+                <span>Discuss Your Project</span>
+                <FaArrowRight className={styles.heroBtnArrow} />
+              </Link>
+            </div>
+          </div>
+
+          {/* CLEAN FLOATING SLIDER CONTROLS (NO CARD WRAPPER) */}
+          <div className={`${styles.desktopSliderControls} ${styles.animateSlideLeft} ${styles.delay4}`}>
+            <div className={styles.sliderControlHeader}>
+              <span className={styles.sliderTrackLabel}>Featured Discipline</span>
+              <div className={styles.sliderArrowsGroup}>
+                <button 
+                  type="button" 
+                  className={styles.sliderArrowBtn}
+                  onClick={handlePrevSlide}
+                  aria-label="Previous Slide"
+                >
+                  <FaChevronLeft />
+                </button>
+                <button 
+                  type="button" 
+                  className={styles.sliderArrowBtn}
+                  onClick={handleNextSlide}
+                  aria-label="Next Slide"
+                >
+                  <FaChevronRight />
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.counterTrack}>
+              <div className={styles.progressBarWrapper}>
+                <div 
+                  className={styles.progressBar} 
+                  style={{ width: `${((currentSlide + 1) / HERO_SLIDES.length) * 100}%` }}
+                />
+              </div>
+              <div className={styles.counterBadge}>
+                <span className={styles.counterCurrent}>0{currentSlide + 1}</span>
+                <span className={styles.counterDivider}>/</span>
+                <span className={styles.counterTotal}>0{HERO_SLIDES.length}</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ================= SERVICES CARDS GRID ================= */}
-      <section className={styles.gridSection}>
-        <div className={styles.serviceGrid}>
-          {SERVICES_DATA.map((service) => (
-            <Link 
-              key={service.id || service.slug} 
-              to={`/services/${service.slug}`} 
-              className={styles.serviceCard}
-            >
-              {/* Image Container with Chamfered Cutout */}
-              <div className={styles.cardImageWrapper}>
-                <img 
-                  src={service.coverImage} 
-                  alt={service.title} 
-                  loading="lazy" 
-                />
-                <div className={styles.iconBadge}>
-                  {ICON_MAP[service.icon] || <FaBuilding />}
+      <section className={styles.gridSection} aria-label="Our Services Portfolio">
+        <div className={styles.gridContainer}>
+          <div className={styles.sectionHeader}>
+            <div className={styles.gridTagRow}>
+              <FaSquare className={styles.gridTagIcon} aria-hidden="true" />
+              <span>Full Capabilities</span>
+            </div>
+            <h2 className={styles.gridSectionTitle}>Explore Engineering Disciplines</h2>
+          </div>
+
+          <div className={styles.serviceGrid}>
+            {/* 1st - 5th Standard Discipline Cards */}
+            {SERVICES_DATA.map((service) => (
+              <article key={service.id || service.slug} className={styles.cardItem}>
+                <Link 
+                  to={`/services/${service.slug}`} 
+                  className={styles.serviceCard}
+                  aria-label={`Explore details for ${service.title}`}
+                >
+                  {/* GPU-Accelerated Chamfered Image Stage */}
+                  <div className={styles.cardImageWrapper}>
+                    <img 
+                      src={service.coverImage} 
+                      alt={service.title} 
+                      loading="lazy" 
+                      decoding="async"
+                    />
+                    <div className={styles.iconBadge} aria-hidden="true">
+                      {ICON_MAP[service.icon] || <FaBuilding />}
+                    </div>
+                  </div>
+
+                  {/* Equalized Content Body */}
+                  <div className={styles.cardBody}>
+                    <span className={styles.serviceTag}>Engineering Discipline</span>
+                    <h3 className={styles.cardTitle}>{service.title}</h3>
+                    <p className={styles.cardDesc}>{service.shortDesc}</p>
+
+                    {/* Features List */}
+                    {service.features && service.features.length > 0 && (
+                      <ul className={styles.featuresList}>
+                        {service.features.slice(0, 3).map((feat, idx) => (
+                          <li key={idx}>
+                            <FaCheckCircle className={styles.checkIcon} aria-hidden="true" />
+                            <span>{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {/* Interactive Action Link */}
+                    <div className={styles.detailsBtn}>
+                      <span>Explore Service</span>
+                      <FaArrowRight className={styles.btnArrow} aria-hidden="true" />
+                    </div>
+                  </div>
+                </Link>
+              </article>
+            ))}
+
+            {/* ================= 6TH DISTINCT INTERACTIVE CTA CARD ================= */}
+            <article className={`${styles.cardItem} ${styles.specialCtaItem}`}>
+              <Link 
+                to="/contact" 
+                className={styles.specialCtaCard}
+                aria-label="Start your custom project with Nayaab Engineering"
+              >
+                {/* Architectural Elements */}
+                <div className={styles.ctaCardDecor} aria-hidden="true">
+                  <div className={styles.crosshairTop}>+</div>
+                  <div className={styles.crosshairBottom}>+</div>
+                  <div className={styles.glowingGridLayer} />
                 </div>
-              </div>
 
-              {/* Card Content Body */}
-              <div className={styles.cardBody}>
-                <h2 className={styles.cardTitle}>{service.title}</h2>
-                <p className={styles.cardDesc}>{service.shortDesc}</p>
+                <div className={styles.specialCtaBody}>
+                  <div className={styles.specialCtaTopRow}>
+                    <span className={styles.specialCtaTag}>Direct Engagement</span>
+                    <div className={styles.specialCtaIconBox}>
+                      <FaHandshake />
+                    </div>
+                  </div>
 
-                {/* Service Features Preview */}
-                {service.features && service.features.length > 0 && (
-                  <ul className={styles.featuresList}>
-                    {service.features.slice(0, 3).map((feat, idx) => (
-                      <li key={idx}>
-                        <FaCheckCircle className={styles.checkIcon} />
-                        <span>{feat}</span>
-                      </li>
-                    ))}
+                  <h3 className={styles.specialCtaTitle}>
+                    Have a Custom Project in Mind?
+                  </h3>
+
+                  <p className={styles.specialCtaDesc}>
+                    Collaborate directly with our licensed structural engineers and architects to transform your plans into functional, enduring realities.
+                  </p>
+
+                  <ul className={styles.specialCtaList}>
+                    <li>
+                      <FaCheckCircle className={styles.ctaCheckIcon} aria-hidden="true" />
+                      <span>Complimentary Project Feasibility Review</span>
+                    </li>
+                    <li>
+                      <FaCheckCircle className={styles.ctaCheckIcon} aria-hidden="true" />
+                      <span>Parametric 3D Modelling &amp; Structural Load Audits</span>
+                    </li>
+                    <li>
+                      <FaCheckCircle className={styles.ctaCheckIcon} aria-hidden="true" />
+                      <span>Fast-Track Municipal Permissions &amp; BOQ Costing</span>
+                    </li>
                   </ul>
-                )}
 
-                <div className={styles.detailsBtn}>
-                  <span>Explore Service</span>
-                  <FaArrowRight className={styles.btnArrow} />
+                  <div className={styles.specialCtaActionBtn}>
+                    <span>Initiate Consultation</span>
+                    <FaArrowRight className={styles.specialCtaArrow} aria-hidden="true" />
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            </article>
+          </div>
         </div>
-      </section>
-
-      {/* ================= CONTACT / CTA SECTION ================= */}
-      <section className={styles.ctaSection}>
-        <ContactForm
-          eyebrow="START A CONVERSATION"
-          title="Discuss Your Next Project"
-          subtitle="Need technical advisory, 3D floor plan reviews, or structural cost estimation? Get in touch with our civil engineering team in Baramulla."
-        />
       </section>
     </main>
   );
