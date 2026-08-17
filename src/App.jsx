@@ -1,8 +1,10 @@
 import { useState, useEffect, lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import Layout from "./components/layout/Layout/Layout";
 import ScrollToTop from "./components/ScrollToTop";
 import PageLoader from "./components/common/PageLoader";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Lazy-loaded routes
 const Home = lazy(() => import("./pages/Home/Home"));
@@ -35,32 +37,32 @@ export default function App() {
   }
 
   return (
-    <>
-      <ScrollToTop />
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          {/* Main Website Wrapper */}
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="about" element={<About />} />
-            <Route path="team" element={<Navigate to="/about" replace />} />
-            <Route path="projects" element={<Projects />} />
-            <Route path="projects/:slug" element={<ProjectDetail />} />
-            <Route path="services" element={<Services />} />
-            <Route path="services/:slug" element={<ServiceDetail />} />
-            <Route path="terms" element={<Terms />} />
-            <Route path="privacy" element={<Privacy />} />
-          </Route>
-
-          {/* Standalone / App Routes */}
-          <Route path="/team/:employeeId" element={<TeamProfile />} />
-          <Route path="/admin" element={<Admin />} />
-
-          {/* 404 Catch-All */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </>
+    <HelmetProvider>
+      <ErrorBoundary>
+        <ScrollToTop />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            {/* All routes are now wrapped by Layout so Layout.jsx can control Navbar/Footer visibility */}
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="about" element={<About />} />
+              <Route path="team" element={<Navigate to="/about" replace />} />
+              <Route path="team/:employeeId" element={<TeamProfile />} />
+              <Route path="projects" element={<Projects />} />
+              <Route path="projects/:slug" element={<ProjectDetail />} />
+              <Route path="services" element={<Services />} />
+              <Route path="services/:slug" element={<ServiceDetail />} />
+              <Route path="terms" element={<Terms />} />
+              <Route path="privacy" element={<Privacy />} />
+              <Route path="admin" element={<Admin />} />
+              
+              {/* 404 Catch-All */}
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
+    </HelmetProvider>
   );
 }

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { uploadToCloudflareR2, deleteFromCloudflareR2 } from "../../lib/cloudflareR2";
-import { 
-  FaCloudUploadAlt, 
-  FaLock, 
-  FaTrash, 
-  FaEdit, 
-  FaPlus, 
-  FaList, 
-  FaImages, 
+import {
+  FaCloudUploadAlt,
+  FaLock,
+  FaTrash,
+  FaEdit,
+  FaPlus,
+  FaList,
+  FaImages,
   FaTimes,
   FaHome,
   FaSignOutAlt,
@@ -19,7 +19,7 @@ import {
   FaInfoCircle,
   FaEye,
   FaEyeSlash,
-  FaCheckCircle
+  FaCheckCircle,
 } from "react-icons/fa";
 import styles from "./Admin.module.css";
 
@@ -28,9 +28,9 @@ const CATEGORIES = ["Building", "Commercial", "Residential", "Aviation", "Electr
 // Strict 350 KB Threshold for Auto-Compression to WEBP
 const COMPRESSION_THRESHOLD_BYTES = 350 * 1024; // 350 KB
 
-const compressImageIfNeeded = (file, maxWidth = 1920, quality = 0.80) => {
+const compressImageIfNeeded = (file, maxWidth = 1920, quality = 0.8) => {
   return new Promise((resolve, reject) => {
-    if (!file.type.startsWith("image/")) {
+    if (!file || !file.type.startsWith("image/")) {
       resolve(file);
       return;
     }
@@ -66,7 +66,7 @@ const compressImageIfNeeded = (file, maxWidth = 1920, quality = 0.80) => {
         canvas.toBlob(
           (blob) => {
             if (!blob) {
-              reject(new Error("Compression failed"));
+              resolve(file); // Fallback to original file if blob creation fails
               return;
             }
             const fileNameWEBP = file.name.replace(/\.[^/.]+$/, "") + ".webp";
@@ -81,24 +81,22 @@ const compressImageIfNeeded = (file, maxWidth = 1920, quality = 0.80) => {
         );
       };
 
-      img.onerror = (err) => reject(err);
+      img.onerror = () => resolve(file); // Fallback to original on decode error
     };
 
-    reader.onerror = (err) => reject(err);
+    reader.onerror = () => resolve(file);
   });
 };
 
 export default function Admin() {
-  // Restore login state from localStorage so page refresh doesn't lock out admin
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return localStorage.getItem("neipl_admin_auth") === "true";
-  });
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+
   const [passcode, setPasscode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const [activeTab, setActiveTab] = useState("list");
-  
+
   const [projectsList, setProjectsList] = useState([]);
   const [fetchingProjects, setFetchingProjects] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -111,7 +109,7 @@ export default function Admin() {
   const [summary, setSummary] = useState("");
   const [deliverables, setDeliverables] = useState("");
   const [description, setDescription] = useState("");
-  
+
   // Single Cover Image state
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreview, setCoverPreview] = useState(null);
@@ -123,7 +121,7 @@ export default function Admin() {
   const [existingGalleryUrls, setExistingGalleryUrls] = useState([]);
 
   const [loading, setLoading] = useState(false);
-  
+
   // Custom Status Message & Color Type State ("success" | "danger")
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("success");
@@ -173,19 +171,36 @@ export default function Admin() {
     setModal((prev) => ({ ...prev, isOpen: false }));
   };
 
-  const handleLogin = (e) => {
+  // Restore session on mount and listen for auth changes
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+      setAuthChecked(true);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (passcode === "nayaab2026") {
-      localStorage.setItem("neipl_admin_auth", "true");
-      setIsAuthenticated(true);
-    } else {
+    const { error } = await supabase.auth.signInWithPassword({
+      email: import.meta.env.VITE_ADMIN_EMAIL,
+      password: passcode,
+    });
+
+    if (error) {
       showAlert("Invalid Passcode", "The security passcode you entered is incorrect. Please try again.");
+      return;
     }
+    setPasscode("");
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("neipl_admin_auth");
-    setIsAuthenticated(false);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setPasscode("");
     setShowPassword(false);
   };
@@ -202,6 +217,7 @@ export default function Admin() {
       setProjectsList(data || []);
     } catch (err) {
       console.error("Fetch Error:", err);
+      showAlert("Database Error", "Failed to fetch project list.");
     } finally {
       setFetchingProjects(false);
     }
@@ -214,7 +230,7 @@ export default function Admin() {
   }, [isAuthenticated]);
 
   const handleCoverChange = async (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (!file) return;
 
     try {
@@ -228,7 +244,7 @@ export default function Admin() {
   };
 
   const handleGalleryChange = async (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
 
     const processedFiles = [];
@@ -328,28 +344,18 @@ export default function Admin() {
         try {
           const targetProject = projectsList.find((p) => p.id === id);
 
-          if (targetProject) {
-            if (targetProject.cover_image) {
-              await deleteFromCloudflareR2(targetProject.cover_image);
-            }
-
-            if (Array.isArray(targetProject.gallery_images)) {
-              for (const url of targetProject.gallery_images) {
-                await deleteFromCloudflareR2(url);
-              }
-            }
-          }
-
-          const { error: dbError } = await supabase
-            .from("projects")
-            .delete()
-            .eq("id", id);
-
+          const { error: dbError } = await supabase.from("projects").delete().eq("id", id);
           if (dbError) throw dbError;
 
+          if (targetProject) {
+            const urlsToDelete = [
+              ...(targetProject.cover_image ? [targetProject.cover_image] : []),
+              ...(Array.isArray(targetProject.gallery_images) ? targetProject.gallery_images : []),
+            ];
+            await Promise.all(urlsToDelete.map((url) => deleteFromCloudflareR2(url)));
+          }
+
           setProjectsList((prev) => prev.filter((item) => item.id !== id));
-          
-          // Red banner for deletion
           setMessage(`Project "${projectTitle}" deleted successfully!`);
           setMessageType("danger");
         } catch (err) {
@@ -371,36 +377,30 @@ export default function Admin() {
     setMessage("");
 
     try {
-      const titleSlug = title
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)+/g, "") || "project";
+      const titleSlug =
+        title
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)+/g, "") || "project";
 
-      const uniqueSuffix = Date.now().toString().slice(-4);
+      const uniqueSuffix = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 
       let finalCoverUrl = existingCoverUrl;
-      
-      // Delete old cover image from Cloudflare R2 if a new cover photo is uploaded
+      const oldCoverUrlToDelete = coverFile && existingCoverUrl ? existingCoverUrl : null;
+
       if (coverFile) {
-        if (existingCoverUrl) {
-          await deleteFromCloudflareR2(existingCoverUrl);
-        }
         const coverFileName = `${titleSlug}-cover-${uniqueSuffix}`;
         finalCoverUrl = await uploadToCloudflareR2(coverFile, coverFileName);
       }
 
-      // Upload new gallery files
-      const newUploadedGalleryUrls = [];
-      for (let i = 0; i < galleryFiles.length; i++) {
-        const galleryFileName = `${titleSlug}-gallery-${i + 1}-${uniqueSuffix}`;
-        const uploadedUrl = await uploadToCloudflareR2(galleryFiles[i], galleryFileName);
-        if (uploadedUrl) {
-          newUploadedGalleryUrls.push(uploadedUrl);
-        }
-      }
+      const newUploadedGalleryUrls = await Promise.all(
+        galleryFiles.map((file, i) =>
+          uploadToCloudflareR2(file, `${titleSlug}-gallery-${i + 1}-${uniqueSuffix}`)
+        )
+      );
 
-      const finalGalleryUrls = [...existingGalleryUrls, ...newUploadedGalleryUrls];
+      const finalGalleryUrls = [...existingGalleryUrls, ...newUploadedGalleryUrls.filter(Boolean)];
 
       const deliverablesArray = deliverables
         .split("\n")
@@ -409,18 +409,15 @@ export default function Admin() {
 
       const slug = `${titleSlug}-${uniqueSuffix}`;
 
-      if (editingId) {
-        // Delete removed gallery images from Cloudflare R2
-        const originalProject = projectsList.find((p) => p.id === editingId);
-        if (originalProject && Array.isArray(originalProject.gallery_images)) {
-          const removedGalleryUrls = originalProject.gallery_images.filter(
-            (url) => !existingGalleryUrls.includes(url)
-          );
-          for (const url of removedGalleryUrls) {
-            await deleteFromCloudflareR2(url);
-          }
-        }
+      let removedGalleryUrls = [];
+      const originalProject = editingId ? projectsList.find((p) => p.id === editingId) : null;
+      if (originalProject && Array.isArray(originalProject.gallery_images)) {
+        removedGalleryUrls = originalProject.gallery_images.filter(
+          (url) => !existingGalleryUrls.includes(url)
+        );
+      }
 
+      if (editingId) {
         const { error: updateError } = await supabase
           .from("projects")
           .update({
@@ -437,34 +434,33 @@ export default function Admin() {
           .eq("id", editingId);
 
         if (updateError) throw updateError;
-        
-        // Green banner for project update
+
         setMessage("Project edited successfully!");
         setMessageType("success");
       } else {
-        const { error: insertError } = await supabase
-          .from("projects")
-          .insert([
-            {
-              title,
-              slug,
-              category,
-              location,
-              duration,
-              summary,
-              deliverables: deliverablesArray,
-              description,
-              cover_image: finalCoverUrl,
-              gallery_images: finalGalleryUrls,
-            },
-          ]);
+        const { error: insertError } = await supabase.from("projects").insert([
+          {
+            title,
+            slug,
+            category,
+            location,
+            duration,
+            summary,
+            deliverables: deliverablesArray,
+            description,
+            cover_image: finalCoverUrl,
+            gallery_images: finalGalleryUrls,
+          },
+        ]);
 
         if (insertError) throw insertError;
-        
-        // Green banner for new project creation
+
         setMessage("New project added successfully!");
         setMessageType("success");
       }
+
+      const cleanupUrls = [...(oldCoverUrlToDelete ? [oldCoverUrlToDelete] : []), ...removedGalleryUrls];
+      await Promise.all(cleanupUrls.map((url) => deleteFromCloudflareR2(url)));
 
       resetForm();
       await loadAllProjects();
@@ -477,6 +473,10 @@ export default function Admin() {
     }
   };
 
+  if (!authChecked) {
+    return null;
+  }
+
   if (!isAuthenticated) {
     return (
       <main className={styles.loginWrapper}>
@@ -486,7 +486,6 @@ export default function Admin() {
           </div>
           <h2>Super Admin Portal</h2>
           <p>Enter security passcode to manage NEIPL website</p>
-
           <form onSubmit={handleLogin} className={styles.loginForm}>
             <div className={styles.passwordWrapper}>
               <input
@@ -511,16 +510,16 @@ export default function Admin() {
               Unlock Dashboard
             </button>
           </form>
-
           <Link to="/" className={styles.backToSiteLink}>
-            <FaHome /> Back to Main Website
+            <FaHome />
+            Back to Main Website
           </Link>
         </div>
 
         {modal.isOpen && (
           <div className={styles.modalOverlay} onClick={closeModal}>
             <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
-              <div className={`${styles.modalIconBox} ${modal.isDanger ? styles.dangerIconBox : styles.alertIconBox}`}>
+              <div className={modal.isDanger ? styles.dangerIconBox : styles.alertIconBox}>
                 {modal.isDanger ? <FaExclamationTriangle /> : <FaInfoCircle />}
               </div>
               <h3 className={styles.modalTitle}>{modal.title}</h3>
@@ -541,10 +540,12 @@ export default function Admin() {
     <main className={styles.adminWrapper}>
       <div className={styles.utilityBar}>
         <Link to="/" className={styles.siteLink}>
-          <FaHome /> <span>View Live Site</span>
+          <FaHome />
+          <span>View Live Site</span>
         </Link>
         <button onClick={handleLogout} className={styles.logoutBtn} title="Sign Out">
-          <FaSignOutAlt /> <span>Logout</span>
+          <FaSignOutAlt />
+          <span>Logout</span>
         </button>
       </div>
 
@@ -553,28 +554,39 @@ export default function Admin() {
           <h1>Super Admin Dashboard</h1>
           <p>Manage, upload, and organize projects in real-time.</p>
         </div>
-
         <div className={styles.tabGroup}>
-          <button 
-            className={`${styles.tabBtn} ${activeTab === "list" ? styles.activeTab : ""}`}
+          <button
+            className={activeTab === "list" ? `${styles.tabBtn} ${styles.activeTab}` : styles.tabBtn}
             onClick={() => setActiveTab("list")}
           >
-            <FaList /> <span>Manage Projects ({projectsList.length})</span>
+            <FaList />
+            <span>Manage Projects ({projectsList.length})</span>
           </button>
-          <button 
-            className={`${styles.tabBtn} ${activeTab === "form" ? styles.activeTab : ""}`}
+          <button
+            className={activeTab === "form" ? `${styles.tabBtn} ${styles.activeTab}` : styles.tabBtn}
             onClick={openCreateForm}
           >
-            <FaPlus /> <span>New Project</span>
+            <FaPlus />
+            <span>New Project</span>
           </button>
         </div>
       </header>
 
-      {/* DYNAMIC ALERT BANNER WITH COLOR LOGIC */}
+      {/* DYNAMIC ALERT BANNER */}
       {message && (
-        <div className={`${styles.alertBanner} ${messageType === "danger" ? styles.alertBannerDanger : styles.alertBannerSuccess}`}>
+        <div
+          className={
+            messageType === "danger"
+              ? `${styles.alertBanner} ${styles.alertBannerDanger}`
+              : `${styles.alertBanner} ${styles.alertBannerSuccess}`
+          }
+        >
           <div className={styles.alertContent}>
-            {messageType === "danger" ? <FaExclamationTriangle className={styles.alertIcon} /> : <FaCheckCircle className={styles.alertIcon} />}
+            {messageType === "danger" ? (
+              <FaExclamationTriangle className={styles.alertIcon} />
+            ) : (
+              <FaCheckCircle className={styles.alertIcon} />
+            )}
             <span>{message}</span>
           </div>
           <button onClick={() => setMessage("")} className={styles.closeAlertBtn}>
@@ -597,23 +609,21 @@ export default function Admin() {
               <h3>No Projects Published Yet</h3>
               <p>Your portfolio database is currently empty.</p>
               <button className={styles.submitBtn} onClick={openCreateForm}>
-                <FaPlus /> Upload First Project
+                <FaPlus />
+                Upload First Project
               </button>
             </div>
           ) : (
             <div className={styles.projectsTable}>
               {projectsList.map((project, index) => {
-                // Calculate chronological index (Oldest project = #01)
                 const projectNum = String(projectsList.length - index).padStart(2, "0");
 
                 return (
                   <div key={project.id} className={styles.projectRow}>
                     <span className={styles.projectIndexBadge}>#{projectNum}</span>
-
                     <div className={styles.rowThumb}>
                       <img src={project.cover_image} alt={project.title} loading="lazy" />
                     </div>
-
                     <div className={styles.rowInfo}>
                       <h3>{project.title}</h3>
                       <div className={styles.rowBadges}>
@@ -621,35 +631,34 @@ export default function Admin() {
                         <span className={styles.badgeLoc}>{project.location}</span>
                         {project.gallery_images?.length > 0 && (
                           <span className={styles.badgeGallery}>
-                            <FaImages /> {project.gallery_images.length} Photos
+                            <FaImages />
+                            {project.gallery_images.length} Photos
                           </span>
                         )}
                       </div>
                     </div>
-
                     <div className={styles.rowActions}>
-                      <a 
-                        href={`/projects#${project.slug}`} 
-                        target="_blank" 
-                        rel="noreferrer"
+                      <a
+                        href={`/#${project.slug || project.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={styles.viewLiveBtn}
-                        title="View live card"
+                        title="View live card on main page"
                       >
-                        <FaExternalLinkAlt /> <span className={styles.btnText}>View</span>
+                        <FaExternalLinkAlt />
+                        <span className={styles.btnText}>View</span>
                       </a>
-                      <button 
-                        className={styles.editBtn} 
-                        onClick={() => startEditing(project)}
-                        title="Edit project"
-                      >
-                        <FaEdit /> <span className={styles.btnText}>Edit</span>
+                      <button className={styles.editBtn} onClick={() => startEditing(project)} title="Edit project">
+                        <FaEdit />
+                        <span className={styles.btnText}>Edit</span>
                       </button>
-                      <button 
-                        className={styles.deleteBtn} 
+                      <button
+                        className={styles.deleteBtn}
                         onClick={() => handleDelete(project.id, project.title)}
                         title="Delete project"
                       >
-                        <FaTrash /> <span className={styles.btnText}>Delete</span>
+                        <FaTrash />
+                        <span className={styles.btnText}>Delete</span>
                       </button>
                     </div>
                   </div>
@@ -667,12 +676,15 @@ export default function Admin() {
             <div>
               <h2>{editingId ? "Edit Existing Project" : "Upload New Project"}</h2>
               <p className={styles.formSubhead}>
-                {editingId ? "Modify details or add photos to this entry." : "Fill out details to publish directly to the live portfolio."}
+                {editingId
+                  ? "Modify details or add photos to this entry."
+                  : "Fill out details to publish directly to the live portfolio."}
               </p>
             </div>
             {editingId && (
               <button type="button" className={styles.cancelEditBtn} onClick={resetForm}>
-                <FaTimes /> Cancel Editing
+                <FaTimes />
+                Cancel Editing
               </button>
             )}
           </div>
@@ -686,25 +698,21 @@ export default function Admin() {
                     <div className={styles.previewImageContainer}>
                       <img src={coverPreview} alt="Cover Preview" className={styles.imagePreview} />
                       <div className={styles.changeOverlay}>
-                        <FaCloudUploadAlt /> Change Cover Photo
+                        <FaCloudUploadAlt />
+                        Change Cover Photo
                       </div>
                     </div>
                   ) : (
                     <div className={styles.dropPlaceholder}>
                       <FaCloudUploadAlt className={styles.uploadIcon} />
                       <span>Click to Select Main Cover Photo</span>
-                      <small style={{ color: "#B7410E", fontWeight: 600, marginTop: "6px" }}>
+                      <small style={{ color: "#B7410E", fontWeight: 600, marginTop: 6 }}>
                         ⚡ Images &gt; 350KB auto-compressed to WEBP
                       </small>
                       <small style={{ color: "#94A3B8" }}>Images ≤ 350KB uploaded as original</small>
                     </div>
                   )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleCoverChange}
-                    className={styles.fileInput}
-                  />
+                  <input type="file" accept="image/*" onChange={handleCoverChange} className={styles.fileInput} />
                 </label>
               </div>
 
@@ -714,7 +722,7 @@ export default function Admin() {
                   <FaImages className={styles.uploadIconSmall} />
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <span>Click to select multiple gallery photos</span>
-                    <small style={{ color: "#B7410E", fontWeight: 600, marginTop: "2px" }}>
+                    <small style={{ color: "#B7410E", fontWeight: 600, marginTop: 2 }}>
                       ⚡ Images &gt; 350KB auto-compressed to WEBP
                     </small>
                   </div>
@@ -743,7 +751,6 @@ export default function Admin() {
                         <span className={styles.savedTag}>Saved</span>
                       </div>
                     ))}
-
                     {galleryPreviews.map((preview, index) => (
                       <div key={`new-${index}`} className={styles.galleryThumbCard}>
                         <img src={preview} alt="New preview" />
@@ -780,16 +787,17 @@ export default function Admin() {
                   <label>Category *</label>
                   <select value={category} onChange={(e) => setCategory(e.target.value)}>
                     {CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat}>{cat}</option>
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
                     ))}
                   </select>
                 </div>
-
                 <div className={styles.inputGroup}>
                   <label>Location *</label>
                   <input
                     type="text"
-                    placeholder="e.g. Baramulla, J&K"
+                    placeholder="e.g. Baramulla, JK"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     required
@@ -811,7 +819,7 @@ export default function Admin() {
                 <label>Short Overview / Summary * (Appears ABOVE Gallery)</label>
                 <input
                   type="text"
-                  placeholder="Brief summary shown on project cards and above the gallery in drawer modal"
+                  placeholder="Brief summary shown on project cards and above the gallery in drawer/modal"
                   value={summary}
                   onChange={(e) => setSummary(e.target.value)}
                   required
@@ -821,8 +829,8 @@ export default function Admin() {
               <div className={styles.inputGroup}>
                 <label>Key Deliverables (Enter each point on a new line)</label>
                 <textarea
-                  rows="3"
-                  placeholder="Full architectural & structural engineering compliance&#10;On-time execution with site supervision&#10;High-durability material selection"
+                  rows={3}
+                  placeholder={"Full architectural & structural engineering compliance\nOn-time execution with site supervision\nHigh-durability material selection"}
                   value={deliverables}
                   onChange={(e) => setDeliverables(e.target.value)}
                 />
@@ -830,12 +838,12 @@ export default function Admin() {
 
               <div className={styles.inputGroup}>
                 <label>Architectural & Engineering Scope (Appears BELOW Gallery)</label>
-                <small style={{ color: "#B7410E", fontSize: "0.8rem", fontWeight: 600, display: "block", marginBottom: "6px" }}>
+                <small style={{ color: "#B7410E", fontSize: "0.8rem", fontWeight: 600, display: "block", marginBottom: 6 }}>
                   💡 Formatting Tip: Text before a colon (:) will automatically appear BOLD! (e.g. Roof System: Details)
                 </small>
                 <textarea
-                  rows="6"
-                  placeholder="Located in Dangiwacha, J&K, this project represents...&#10;&#10;Structural Engineering: Reinforced concrete frame with high load capacity&#10;Roof System: Custom gabled truss alignment for snow shedding&#10;Thermal Insulation: Integrated weather barrier protection"
+                  rows={6}
+                  placeholder={"Located in Dangiwacha, JK, this project represents...\n\nStructural Engineering: Reinforced concrete frame with high load capacity\nRoof System: Custom gabled truss alignment for snow shedding\nThermal Insulation: Integrated weather barrier protection"}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
@@ -862,7 +870,7 @@ export default function Admin() {
       {modal.isOpen && (
         <div className={styles.modalOverlay} onClick={closeModal}>
           <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
-            <div className={`${styles.modalIconBox} ${modal.isDanger ? styles.dangerIconBox : styles.alertIconBox}`}>
+            <div className={modal.isDanger ? styles.dangerIconBox : styles.alertIconBox}>
               {modal.isDanger ? <FaExclamationTriangle /> : <FaInfoCircle />}
             </div>
             <h3 className={styles.modalTitle}>{modal.title}</h3>
@@ -873,8 +881,8 @@ export default function Admin() {
                   {modal.cancelText}
                 </button>
               )}
-              <button 
-                className={`${styles.modalConfirmBtn} ${modal.isDanger ? styles.modalDangerBtn : ""}`} 
+              <button
+                className={modal.isDanger ? `${styles.modalConfirmBtn} ${styles.modalDangerBtn}` : styles.modalConfirmBtn}
                 onClick={modal.onConfirm}
               >
                 {modal.confirmText}

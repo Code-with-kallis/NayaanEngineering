@@ -24,3 +24,6 @@ promt.txt
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
+.env*

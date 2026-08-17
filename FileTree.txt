@@ -1,44 +1,13 @@
 NayaabEngineering/
-├─ dist/
-│  ├─ assets/
-│  │  ├─ team/
-│  │  │  ├─ neipl-0101.png
-│  │  │  ├─ neipl-0102.png
-│  │  │  ├─ neipl-0103.png
-│  │  │  ├─ neipl-0104.png
-│  │  │  ├─ neipl-0105.png
-│  │  │  ├─ neipl-0106.jpeg
-│  │  │  ├─ neipl-0107.png
-│  │  │  ├─ neipl-0120.png
-│  │  │  ├─ neipl-0121.png
-│  │  │  ├─ neipl-0122.png
-│  │  │  ├─ neipl-0123.png
-│  │  │  └─ team-hero.webp
-│  │  ├─ index-9yuTuSOX.css
-│  │  └─ index-BC-gKvaY.js
-│  ├─ favicon.svg
-│  ├─ icons.svg
-│  ├─ index.html
-│  ├─ logo.png
-│  ├─ logo.svg
-│  └─ logo2.png
 ├─ public/
 │  ├─ assets/
 │  │  ├─ about/
 │  │  │  ├─ 3d-house.png
 │  │  │  └─ office.webp
-│  │  ├─ contact/
-│  │  │  └─ form.png
 │  │  ├─ footer/
 │  │  │  └─ logo-bg.png
 │  │  ├─ home/
-│  │  │  ├─ 3d-house.png
 │  │  │  └─ hero-mobile.mp4
-│  │  ├─ projects/
-│  │  │  └─ hero/
-│  │  │     ├─ projects-hero-01.webp
-│  │  │     ├─ projects-hero-02.webp
-│  │  │     └─ projects-hero-03.webp
 │  │  └─ team/
 │  │     ├─ junaid.jpg
 │  │     ├─ neipl-0102.png
@@ -66,6 +35,17 @@ NayaabEngineering/
 │  └─ logo2.png
 ├─ src/
 │  ├─ assets/
+│  │  ├─ branding/
+│  │  └─ images/
+│  │     ├─ contact/
+│  │     │  └─ form.png
+│  │     ├─ home/
+│  │     │  ├─ 3d-house-mobile.webp
+│  │     │  └─ 3d-house.webp
+│  │     └─ projects/
+│  │        ├─ projects-hero-01.webp
+│  │        ├─ projects-hero-02.webp
+│  │        └─ projects-hero-03.webp
 │  ├─ components/
 │  │  ├─ about/
 │  │  │  ├─ AboutHero.jsx
@@ -74,7 +54,8 @@ NayaabEngineering/
 │  │  │  ├─ ContactForm/
 │  │  │  │  ├─ ContactForm.jsx
 │  │  │  │  └─ ContactForm.module.css
-│  │  │  └─ PageLoader.jsx
+│  │  │  ├─ PageLoader.jsx
+│  │  │  └─ PageLoader.module.css
 │  │  ├─ home/
 │  │  │  ├─ AboutBento.jsx
 │  │  │  ├─ AboutBento.module.css
@@ -139,6 +120,9 @@ NayaabEngineering/
 │  │  │  ├─ Legal.module.css
 │  │  │  ├─ Privacy.jsx
 │  │  │  └─ Terms.jsx
+│  │  ├─ NotFound/
+│  │  │  ├─ NotFound.jsx
+│  │  │  └─ NotFound.module.css
 │  │  ├─ Projects/
 │  │  │  ├─ ProjectDetail.jsx
 │  │  │  ├─ ProjectDetail.module.css
@@ -166,6 +150,7 @@ NayaabEngineering/
 ├─ index.html
 ├─ package-lock.json
 ├─ package.json
+├─ promt.txt
 ├─ README.md
 ├─ vercel.json
 └─ vite.config.js

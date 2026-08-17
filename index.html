@@ -8,32 +8,54 @@
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512x512.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
     <meta name="theme-color" content="#3590CE" />
 
     <title>Nayaab Engineering Innovations Pvt. Ltd.</title>
+    <meta
+      name="description"
+      content="Nayaab Engineering Innovations Pvt. Ltd. — professional engineering and construction services. Explore our projects, services, and team."
+    />
+    <link rel="canonical" href="https://www.nayaabengineering.com/" />
 
-    <!-- Security Tags -->
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nayaab Engineering Innovations Pvt. Ltd." />
+    <meta
+      property="og:description"
+      content="Professional engineering and construction services. Explore our projects, services, and team."
+    />
+    <meta property="og:image" content="https://www.nayaabengineering.com/logo-full.png" />
+    <meta property="og:url" content="https://www.nayaabengineering.com/" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nayaab Engineering Innovations Pvt. Ltd." />
+    <meta
+      name="twitter:description"
+      content="Professional engineering and construction services."
+    />
+    <meta name="twitter:image" content="https://www.nayaabengineering.com/logo-full.png" />
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Security -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- Content Security Policy allowing Supabase, Cloudflare R2, Google, & Featurable -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.featurable.com https://cdn.featurable.com https://featurable.com;
-        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.featurable.com https://cdn.featurable.com https://featurable.com;
-        font-src 'self' https://fonts.gstatic.com data:;
-        img-src 'self' data: blob: https:;
-        media-src 'self' blob: https://*.r2.dev https:;
-        connect-src 'self' https://*.supabase.co https://*.r2.dev https://*.featurable.com https:;
-        frame-src 'self' https://www.google.com https://maps.google.com https://*.featurable.com https://cdn.featurable.com https://featurable.com;
-        object-src 'none';
-      "
-    />
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Nayaab Engineering Innovations Pvt. Ltd.",
+        "url": "https://www.nayaabengineering.com/",
+        "logo": "https://www.nayaabengineering.com/logo-full.png"
+      }
+    </script>
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
