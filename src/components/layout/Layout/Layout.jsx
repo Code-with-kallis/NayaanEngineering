@@ -7,6 +7,7 @@ import PageLoader from "../../common/PageLoader";
 export default function Layout() {
   const location = useLocation();
   const [isNavigating, setIsNavigating] = useState(false);
+  const isFirstLoad = useRef(true);
   const prevPathRef = useRef(location.pathname);
 
   const hideNavbarAndFooter = ["/admin", "/terms", "/privacy"].some(
@@ -14,14 +15,20 @@ export default function Layout() {
   );
 
   useEffect(() => {
+    // Initial website open par trigger hone se rokein
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      return;
+    }
+
+    // Sirf tab trigger karein jab user actual navigation kare (Navbar ya Buttons se)
     if (prevPathRef.current !== location.pathname) {
       prevPathRef.current = location.pathname;
       setIsNavigating(true);
 
-      // Smooth navigation transition time
       const timer = setTimeout(() => {
         setIsNavigating(false);
-      }, 600);
+      }, 850);
 
       return () => clearTimeout(timer);
     }

@@ -27,7 +27,6 @@ export default function App() {
         <ScrollToTop />
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* All routes are wrapped by Layout to manage route transitions and chrome visibility */}
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="contact" element={<Contact />} />
@@ -41,8 +40,6 @@ export default function App() {
               <Route path="terms" element={<Terms />} />
               <Route path="privacy" element={<Privacy />} />
               <Route path="admin" element={<Admin />} />
-              
-              {/* 404 Catch-All */}
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
