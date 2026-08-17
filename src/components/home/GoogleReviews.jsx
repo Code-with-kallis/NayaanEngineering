@@ -1,3 +1,4 @@
+// src/components/home/GoogleReviews.jsx
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import styles from "./GoogleReviews.module.css";
 
@@ -18,7 +19,7 @@ const AVATAR_GRADIENTS = [
   "linear-gradient(135deg, #db2777, #be185d)",
 ];
 
-// Helper to extract review photo URLs across all API variants
+// Helper to extract review photo URLs across API variants
 function getReviewPhotoUrl(r) {
   if (!r) return null;
   let url =
@@ -95,7 +96,7 @@ function ReviewAvatar({ photoUrl, name, index }) {
   }
 
   return (
-    <div className={styles.avatarLetter} style={{ background: gradient }}>
+    <div className={styles.avatarLetter} style={{ background: gradient }} aria-hidden="true">
       {letter}
     </div>
   );
@@ -132,7 +133,7 @@ export default function GoogleReviews() {
         return res.json();
       })
       .then((data) => {
-        // 1. Deep Extraction for Google Business Summary Rating
+        // 1. Rating extraction
         const rawApiRating =
           data?.business?.rating ||
           data?.place?.rating ||
@@ -149,7 +150,7 @@ export default function GoogleReviews() {
             ? Math.max(1, Math.min(5, Number(rawApiRating)))
             : 4.8;
 
-        // 2. Deep Extraction for Total Google Review Count (17+)
+        // 2. Review count extraction
         const rawApiCount =
           data?.business?.reviews_count ||
           data?.business?.review_count ||
@@ -184,7 +185,7 @@ export default function GoogleReviews() {
           label: getRatingLabel(parsedRating),
         });
 
-        // 3. Dynamic Reviews Cards Extraction
+        // 3. Review list extraction
         const rawList =
           data?.reviews ||
           data?.data?.reviews ||
@@ -241,7 +242,7 @@ export default function GoogleReviews() {
       });
   }, []);
 
-  // Responsive Breakpoints
+  // Fluid responsive cards per view calculation
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -277,7 +278,7 @@ export default function GoogleReviews() {
     setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
   };
 
-  // Pointer Handlers for Drag & Swipe
+  // Pointer Handlers for Unified Mouse Drag & Touch Swipe
   const handlePointerDown = (e) => {
     if (reviews.length <= cardsPerView) return;
     setIsDragging(true);
@@ -321,11 +322,11 @@ export default function GoogleReviews() {
   const emptyStarsCount = Math.max(0, 5 - fullStarsCount - (hasPartialStar ? 1 : 0));
 
   return (
-    <section className={styles.reviewSection}>
+    <section className={styles.reviewSection} aria-labelledby="google-reviews-title">
       <div className={styles.container}>
-        {/* Header */}
+        {/* Section Header */}
         <div className={styles.header}>
-          <h2 className={styles.googleBrandTitle}>
+          <h2 id="google-reviews-title" className={styles.googleBrandTitle}>
             <span style={{ color: "#4285F4" }}>G</span>
             <span style={{ color: "#EA4335" }}>o</span>
             <span style={{ color: "#FBBC05" }}>o</span>
@@ -379,6 +380,7 @@ export default function GoogleReviews() {
                       width="18"
                       height="18"
                       fill="#FBBC04"
+                      aria-hidden="true"
                     >
                       <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                     </svg>
@@ -386,7 +388,7 @@ export default function GoogleReviews() {
 
                   {/* Partial Star */}
                   {hasPartialStar && (
-                    <svg viewBox="0 0 24 24" width="18" height="18">
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                       <defs>
                         <linearGradient id="summary-star-partial-grad">
                           <stop offset={`${partialFillPercent}%`} stopColor="#FBBC04" />
@@ -408,6 +410,7 @@ export default function GoogleReviews() {
                       width="18"
                       height="18"
                       fill="#E2E8F0"
+                      aria-hidden="true"
                     >
                       <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                     </svg>
@@ -419,7 +422,7 @@ export default function GoogleReviews() {
                 <span className={styles.reviewsCount}>
                   Based on {summary.count} reviews
                 </span>
-                <span className={styles.metaDot}>•</span>
+                <span className={styles.metaDot} aria-hidden="true">•</span>
                 <div className={styles.verifiedBadge}>
                   <svg
                     viewBox="0 0 20 20"
@@ -456,12 +459,13 @@ export default function GoogleReviews() {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                aria-hidden="true"
               >
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                 <polyline points="15 3 21 3 21 9" />
                 <line x1="10" y1="14" x2="21" y2="3" />
               </svg>
-              Read All Reviews
+              <span>Read All Reviews</span>
             </a>
 
             <a
@@ -479,22 +483,23 @@ export default function GoogleReviews() {
                 strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                aria-hidden="true"
               >
                 <path d="M12 20h9" />
                 <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
               </svg>
-              Write a Review
+              <span>Write a Review</span>
             </a>
           </div>
         </div>
 
-        {/* Carousel */}
+        {/* Carousel Viewport */}
         {loading ? (
-          <div style={{ textAlign: "center", padding: "40px 0", color: "#64748B" }}>
+          <div className={styles.statusBox}>
             Loading Google reviews...
           </div>
         ) : reviews.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "40px 0", color: "#64748B" }}>
+          <div className={styles.statusBox}>
             No reviews available at this time.
           </div>
         ) : (
@@ -506,7 +511,7 @@ export default function GoogleReviews() {
               onClick={prevSlide}
               aria-label="Previous review"
             >
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
               </svg>
             </button>
@@ -547,7 +552,7 @@ export default function GoogleReviews() {
                         />
 
                         <div className={styles.authorMeta}>
-                          <strong className={styles.authorName}>
+                          <strong className={styles.authorName} title={review.authorName}>
                             {review.authorName}
                           </strong>
                           <span className={styles.reviewDate}>
@@ -590,6 +595,7 @@ export default function GoogleReviews() {
                             width="17"
                             height="17"
                             fill="#FBBC04"
+                            aria-hidden="true"
                           >
                             <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                           </svg>
@@ -608,6 +614,7 @@ export default function GoogleReviews() {
                             height="12"
                             fill="#166534"
                             style={{ marginRight: 4 }}
+                            aria-hidden="true"
                           >
                             <path
                               fillRule="evenodd"
@@ -631,12 +638,12 @@ export default function GoogleReviews() {
               onClick={nextSlide}
               aria-label="Next review"
             >
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
                 <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
               </svg>
             </button>
 
-            {/* Mobile Controls */}
+            {/* Mobile / Tablet Controls */}
             <div className={styles.bottomControls}>
               <button
                 type="button"
@@ -644,12 +651,12 @@ export default function GoogleReviews() {
                 onClick={prevSlide}
                 aria-label="Previous review"
               >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
                   <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
                 </svg>
               </button>
 
-              <div className={styles.dotsGroup}>
+              <div className={styles.dotsGroup} aria-label="Review pagination">
                 {Array.from({ length: totalPages }).map((_, pageIndex) => (
                   <button
                     key={pageIndex}
@@ -669,7 +676,7 @@ export default function GoogleReviews() {
                 onClick={nextSlide}
                 aria-label="Next review"
               >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
                   <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
                 </svg>
               </button>

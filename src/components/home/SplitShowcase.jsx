@@ -1,4 +1,3 @@
-// src/components/home/SplitShowcase.jsx
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -9,16 +8,16 @@ import {
   FaShieldAlt,
   FaArrowRight,
 } from "react-icons/fa";
+import house3dDesktop from "../../assets/images/home/3d-house.png";
+import house3dMobile from "../../assets/images/home/3d-house-mobile.png";
 import styles from "./SplitShowcase.module.css";
-
-const HOUSE_3D_IMAGE = "assets/home/3d-house.png";
 
 export default function SplitShowcase() {
   const splitSectionRef = useRef(null);
   const isLockedRef = useRef(false);
 
   useEffect(() => {
-    // Entrance reveal animation
+    // 1. Direct DOM animation trigger
     const observer = new IntersectionObserver(
       ([entry], obs) => {
         if (entry.isIntersecting) {
@@ -35,7 +34,7 @@ export default function SplitShowcase() {
       observer.observe(splitSectionRef.current);
     }
 
-    // 1-Scroll Precision Snap to Fit Display (Desktop Only)
+    // 2. 1-Scroll Precision Snap to Fit Display (Desktop Only)
     const isTouch =
       typeof window !== "undefined" &&
       ("ontouchstart" in window ||
@@ -49,7 +48,6 @@ export default function SplitShowcase() {
         if (!splitSectionRef.current) return;
         isLockedRef.current = true;
 
-        // Exact pixel top calculation relative to entire page
         const targetTop =
           splitSectionRef.current.getBoundingClientRect().top + window.pageYOffset;
 
@@ -58,7 +56,6 @@ export default function SplitShowcase() {
           behavior: "smooth",
         });
 
-        // Absorb all wheel inertia until smooth scroll animation settles
         setTimeout(() => {
           isLockedRef.current = false;
         }, 900);
@@ -67,7 +64,6 @@ export default function SplitShowcase() {
       const handleWheel = (e) => {
         if (!splitSectionRef.current) return;
 
-        // Prevent wheel jitter while snapping
         if (isLockedRef.current) {
           e.preventDefault();
           return;
@@ -76,7 +72,6 @@ export default function SplitShowcase() {
         const rect = splitSectionRef.current.getBoundingClientRect();
         const windowHeight = window.innerHeight;
 
-        // Triggers as soon as user scrolls down on About and SplitShowcase enters view
         if (
           e.deltaY > 0 &&
           rect.top > 8 &&
@@ -105,15 +100,18 @@ export default function SplitShowcase() {
       ref={splitSectionRef}
       className={styles.fullBleedSplitSection}
       aria-label="Core Engineering Services and Architectural Visualization"
+      style={{
+        "--bg-desktop": `url(${house3dDesktop})`,
+        "--bg-mobile": `url(${house3dMobile})`,
+      }}
     >
+      {/* LEFT HALF: 3D Image */}
       <div className={styles.splitHalfLeft}>
-        <div
-          className={styles.splitBackground}
-          style={{ backgroundImage: `url(${HOUSE_3D_IMAGE})` }}
-        />
+        <div className={styles.splitBackground} />
         <div className={styles.ambientGlowLeft} />
       </div>
 
+      {/* RIGHT HALF: Typography */}
       <div className={styles.splitHalfRight}>
         <div className={styles.typographyContentWrapper}>
           <div className={styles.typoEyebrowBadge}>
@@ -166,12 +164,18 @@ export default function SplitShowcase() {
             <span className={styles.typoLocationTag}>
               <FaShieldAlt /> DPIIT Recognized • IS Code Compliant
             </span>
-            <Link to="/services" className={styles.typoActionLink}>
-              <span>Explore All Services</span>
-              <FaArrowRight />
-            </Link>
           </div>
         </div>
+      </div>
+
+      {/* CENTER-BOTTOM ACTION BUTTON */}
+      <div className={styles.centerBottomAction}>
+        <Link to="/services" className={styles.exploreBtn}>
+          <span>Explore All Services</span>
+          <span className={styles.exploreBtnArrow}>
+            <FaArrowRight />
+          </span>
+        </Link>
       </div>
     </section>
   );

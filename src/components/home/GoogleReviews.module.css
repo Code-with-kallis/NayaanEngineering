@@ -1,26 +1,32 @@
+/* src/components/home/GoogleReviews.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+
 .reviewSection {
   width: 100%;
-  padding: 4.5rem 0;
+  padding-block: clamp(3.5rem, 5vw, 4.75rem);
+  padding-inline: clamp(1.25rem, 5vw, 4rem);
   background-color: #F8FAFC;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-x: clip;
 }
 
+/* 4K & Ultrawide Boundary */
 .container {
   width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  max-width: 1440px;
+  margin-inline: auto;
   box-sizing: border-box;
 }
 
 .header {
   text-align: center;
   max-width: 680px;
-  margin: 0 auto 2.2rem auto;
+  margin: 0 auto clamp(1.75rem, 3vw, 2.25rem) auto;
+  padding-inline: 0.5rem;
 }
 
 .googleBrandTitle {
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -33,27 +39,30 @@
 }
 
 .reviewsWord {
-  color: #0f172a;
+  color: #0F172A;
   margin-left: 10px;
 }
 
 .subtitle {
-  font-size: 0.96rem;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.875rem, 1.1vw, 0.96rem);
   line-height: 1.55;
-  color: #64748b;
+  color: #64748B;
   margin: 0;
 }
 
-/* Rating Summary Card */
+/* =========================================================
+   RATING SUMMARY CARD
+   ========================================================= */
 .summaryCard {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
   border-radius: 16px;
   padding: 1.25rem 1.75rem;
-  margin: 0 auto 2.75rem auto;
+  margin: 0 auto clamp(2rem, 3vw, 2.75rem) auto;
   max-width: 980px;
   box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
   box-sizing: border-box;
@@ -62,7 +71,7 @@
 }
 
 .summaryCard:hover {
-  border-color: #cbd5e1;
+  border-color: #CBD5E1;
   box-shadow: 0 8px 30px -4px rgba(15, 23, 42, 0.08);
 }
 
@@ -70,6 +79,7 @@
   display: flex;
   align-items: center;
   gap: 1.25rem;
+  min-width: 0;
 }
 
 .googleBadge {
@@ -78,8 +88,8 @@
   justify-content: center;
   width: 50px;
   height: 50px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
   border-radius: 12px;
   flex-shrink: 0;
 }
@@ -88,18 +98,20 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-width: 0;
 }
 
 .topScoreLine {
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  flex-wrap: wrap;
 }
 
 .scoreNumber {
   font-size: 1.45rem;
   font-weight: 800;
-  color: #0f172a;
+  color: #0F172A;
   line-height: 1;
   letter-spacing: -0.02em;
 }
@@ -107,7 +119,7 @@
 .scoreLabel {
   font-size: 0.96rem;
   font-weight: 700;
-  color: #0f172a;
+  color: #0F172A;
 }
 
 .starCluster {
@@ -126,29 +138,31 @@
 
 .reviewsCount {
   font-size: 0.85rem;
-  color: #64748b;
+  color: #64748B;
   font-weight: 500;
 }
 
 .metaDot {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: #94A3B8;
 }
 
 .verifiedBadge {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: #f0fdf4;
-  border: 1px solid #dcfce7;
+  background: #F0FDF4;
+  border: 1px solid #DCFCE7;
   padding: 0.15rem 0.55rem;
   border-radius: 9999px;
+  flex-shrink: 0;
 }
 
 .verifiedText {
   font-size: 0.78rem;
   font-weight: 600;
   color: #166534;
+  white-space: nowrap;
 }
 
 /* Action Button Group */
@@ -164,23 +178,23 @@
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   color: #334155;
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
   padding: 0.7rem 1.15rem;
   border-radius: 8px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #CBD5E1;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
 }
 
 .readAllReviewsBtn:hover {
-  background-color: #f8fafc;
-  color: #0f172a;
-  border-color: #94a3b8;
+  background-color: #F8FAFC;
+  color: #0F172A;
+  border-color: #94A3B8;
   transform: translateY(-1px);
 }
 
@@ -190,7 +204,7 @@
   justify-content: center;
   gap: 0.45rem;
   background-color: #B7410E;
-  color: #ffffff;
+  color: #FFFFFF;
   font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
@@ -205,18 +219,18 @@
 
 .writeReviewBtn:hover {
   background-color: #8F321B;
-  color: #ffffff;
+  color: #FFFFFF;
   transform: translateY(-1px);
   box-shadow: 0 4px 14px rgba(143, 50, 27, 0.32);
 }
 
 /* =========================================================
-   INTERACTIVE SWIPE & DRAG CAROUSEL
+   CAROUSEL SLIDER & CARDS
    ========================================================= */
 .carouselWrapper {
   position: relative;
   width: 100%;
-  padding: 10px 58px;
+  padding: 10px 52px;
   box-sizing: border-box;
 }
 
@@ -243,15 +257,16 @@
   box-sizing: border-box;
   padding: 0 10px;
   flex-shrink: 0;
+  min-width: 0;
 }
 
-/* Beautiful Card Design */
 .reviewCard {
   width: 100%;
-  height: 245px;
+  min-height: 245px;
+  height: 100%;
   box-sizing: border-box;
   padding: 22px 24px;
-  background: #ffffff;
+  background: #FFFFFF;
   border: 1px solid #E2E8F0;
   border-radius: 18px;
   box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
@@ -269,12 +284,12 @@
               0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
-/* Author Row */
 .authorRow {
   display: flex;
   align-items: center;
   gap: 12px;
   position: relative;
+  min-width: 0;
 }
 
 .avatarImg {
@@ -290,7 +305,7 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  color: #ffffff;
+  color: #FFFFFF;
   font-weight: 700;
   font-size: 1.1rem;
   display: flex;
@@ -306,6 +321,7 @@
   flex-direction: column;
   gap: 2px;
   flex: 1;
+  min-width: 0;
 }
 
 .authorName {
@@ -313,6 +329,9 @@
   font-weight: 700;
   color: #0F172A;
   line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .reviewDate {
@@ -326,7 +345,6 @@
   opacity: 0.95;
 }
 
-/* Card Stars Row */
 .cardStarsRow {
   display: flex;
   align-items: center;
@@ -334,7 +352,6 @@
   margin: 10px 0 6px 0;
 }
 
-/* Review Text */
 .reviewText {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -346,9 +363,10 @@
   color: #334155;
   margin: 0;
   font-style: italic;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
-/* Card Bottom Footer */
 .cardFooter {
   display: flex;
   align-items: center;
@@ -373,7 +391,7 @@
   transform: translateY(-50%);
   width: 42px;
   height: 42px;
-  background: #ffffff;
+  background: #FFFFFF;
   border: 1px solid #CBD5E1;
   border-radius: 50%;
   color: #0F172A;
@@ -389,17 +407,17 @@
 .navBtn:hover {
   background: #B7410E;
   border-color: #B7410E;
-  color: #ffffff;
+  color: #FFFFFF;
   box-shadow: 0 6px 18px rgba(183, 65, 14, 0.3);
   transform: translateY(-50%) scale(1.06);
 }
 
 .prevBtn {
-  left: 6px;
+  left: 0;
 }
 
 .nextBtn {
-  right: 6px;
+  right: 0;
 }
 
 /* Bottom Controls */
@@ -437,14 +455,23 @@
   background: #B7410E;
 }
 
-/* Responsive Media Queries */
-@media (max-width: 860px) {
+.statusBox {
+  text-align: center;
+  padding: 3rem 0;
+  color: #64748B;
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
+   ========================================================= */
+@media (max-width: 900px) {
   .summaryCard {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 1.25rem;
-    padding: 1.25rem 1rem;
+    padding: 1.35rem 1.25rem;
     margin-bottom: 2rem;
   }
 
@@ -468,11 +495,11 @@
   .readAllReviewsBtn,
   .writeReviewBtn {
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
   }
 
   .carouselWrapper {
-    padding: 10px 0 0 0;
+    padding: 6px 0 0 0;
   }
 
   .navBtn {
@@ -485,7 +512,7 @@
     justify-content: center;
     width: 36px;
     height: 36px;
-    background: #ffffff;
+    background: #FFFFFF;
     border: 1px solid #CBD5E1;
     border-radius: 50%;
     color: #475569;
@@ -498,31 +525,50 @@
   .mobileNavBtn:active {
     background: #B7410E;
     border-color: #B7410E;
-    color: #ffffff;
+    color: #FFFFFF;
     transform: translateY(-2px);
   }
 
   .slideItem {
-    padding: 0 4px;
+    padding: 0 6px;
   }
 
   .reviewCard {
-    height: 235px;
+    min-height: 235px;
     padding: 18px 20px;
   }
 }
 
 @media (max-width: 480px) {
   .reviewSection {
-    padding: 3rem 0;
+    padding-block: 2.75rem 2rem;
+    padding-inline: 1rem;
   }
 
-  .container {
-    padding: 0 0.75rem;
+  .summaryCard {
+    padding: 1.15rem 0.85rem;
+    border-radius: 14px;
   }
 
   .readAllReviewsBtn,
   .writeReviewBtn {
     max-width: 100%;
+  }
+
+  .slideItem {
+    padding: 0 2px;
+  }
+
+  .reviewCard {
+    padding: 16px 18px;
+    border-radius: 14px;
+  }
+
+  .authorName {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }

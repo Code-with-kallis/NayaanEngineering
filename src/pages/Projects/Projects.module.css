@@ -3,11 +3,12 @@
 /* ===== GLOBAL PAGE WRAPPER ===== */
 .pageWrapper {
   width: 100%;
+  max-width: 100vw;
   background: #FFFFFF;
   color: #111111;
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* 4K & Ultrawide Container Boundaries */
@@ -214,6 +215,7 @@
 /* ===== PROJECTS SECTION ===== */
 .projectsSection {
   padding-block: 4rem 4rem;
+  width: 100%;
 }
 
 .sectionTagRow {
@@ -236,6 +238,7 @@
   gap: 2rem;
   align-items: flex-start;
   margin-bottom: 2.25rem;
+  width: 100%;
 }
 
 /* EXACT UNCHANGED SECTION TITLE STYLES */
@@ -265,7 +268,10 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .filterBar::-webkit-scrollbar {
@@ -282,6 +288,7 @@
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.2s ease;
 }
 
@@ -302,13 +309,15 @@
 }
 
 /* ==========================================================================
-   CARD GRID WITH ACTIVE HARDWARE-ACCELERATED HOVER EFFECTS
+   CARD GRID WITH CLEAN TYPOGRAPHY ROOM & ZERO CLIPPING
    ========================================================================== */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2.5rem 1.75rem;
   align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .projectCard {
@@ -317,6 +326,9 @@
   background: transparent;
   cursor: pointer;
   height: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   outline-offset: 4px;
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   will-change: transform;
@@ -331,7 +343,7 @@
   border-radius: 8px;
 }
 
-/* Chamfered Image Stage with Forced GPU Layer */
+/* Chamfered Image Stage */
 .cardImageWrapper {
   position: relative;
   width: 100%;
@@ -368,19 +380,25 @@
   flex-direction: column;
   flex: 1;
   justify-content: flex-start;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 4px;
 }
 
-/* EXACT UNCHANGED CARD TITLE STYLES */
+/* CARD TITLE */
 .cardTitle {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 1.35rem;
   font-weight: 700;
   color: #111111;
-  margin: 0 0 0.4rem 0;
-  line-height: 1.2;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.25;
+  padding-block: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
   display: block;
   transition: color 0.2s ease;
 }
@@ -389,7 +407,7 @@
   color: #B7410E;
 }
 
-/* Uniform 2-Line Summary Height */
+/* 2-Line Clamped Summary with Full Line-Height Visibility */
 .cardSummary {
   color: #666666;
   font-size: 0.85rem;
@@ -399,11 +417,13 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2.65em;
-  max-height: 2.65em;
+  min-height: 3.1em; /* Exactly 2 lines at 1.55 line-height */
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
-/* Desktop: Single Balanced Grid Row with Ellipsis */
+/* Desktop: Single Balanced Grid Row */
 .cardMeta {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
@@ -414,6 +434,8 @@
   margin-top: auto;
   margin-bottom: 0.85rem;
   min-height: 24px;
+  min-width: 0;
+  width: 100%;
 }
 
 .metaItem {
@@ -421,6 +443,7 @@
   align-items: center;
   gap: 0.35rem;
   min-width: 0;
+  max-width: 100%;
 }
 
 .metaItem span {
@@ -429,6 +452,7 @@
   text-overflow: ellipsis;
   display: block;
   min-width: 0;
+  max-width: 100%;
 }
 
 /* Brand Accent Color Icons */
@@ -470,6 +494,8 @@
   justify-content: center;
   gap: 0.5rem;
   margin-top: 3.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .pageBtn, .pageNumber {
@@ -535,14 +561,19 @@
   }
 }
 
-/* Baseline Mobile Preservation (<= 768px) */
+/* Baseline Mobile (<= 768px) */
 @media (max-width: 768px) {
+  .projectsSection {
+    padding-inline: 1.25rem;
+  }
+
   .heroLeftCard {
     padding-right: 0;
   }
 
   .grid {
     grid-template-columns: 1fr;
+    gap: 2.25rem;
   }
 
   .animateSlideLeft {
@@ -578,13 +609,46 @@
     border-radius: 10px;
   }
 
+  .cardImageWrapper {
+    aspect-ratio: 16 / 10;
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    -webkit-clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    border-radius: 12px;
+  }
+
+  /* Safe 2-line title wrap on mobile */
+  .cardTitle {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 100%;
+    line-height: 1.25;
+    padding-block: 2px;
+    margin-bottom: 0.4rem;
+  }
+
+  /* Allow natural 2-line height without bottom clipping */
+  .cardSummary {
+    min-height: auto;
+    max-height: none;
+    line-height: 1.55;
+    margin-bottom: 0.85rem;
+    padding-bottom: 2px;
+  }
+
   /* Stacked Column Layout on Mobile */
   .cardMeta {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.4rem;
+    gap: 0.45rem;
     min-height: auto;
+    width: 100%;
+    margin-bottom: 0.75rem;
   }
 
   .metaItem {
@@ -593,7 +657,10 @@
 
   .metaItem span {
     white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
     text-overflow: clip;
+    line-height: 1.35;
   }
 
   .filterBar {

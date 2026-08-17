@@ -1,7 +1,6 @@
-/* src/components/home/SplitShowcase.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
 
-/* ===== UNIFIED SINGLE BACKGROUND (FIT TO EXACT SCREEN HEIGHT) ===== */
+/* ===== BASE WRAPPER ===== */
 .fullBleedSplitSection {
   position: relative;
   width: 100%;
@@ -18,7 +17,10 @@
   z-index: 5;
 }
 
-/* LEFT HALF: 3D MODEL CONTAINER (DESKTOP) */
+/* Explicit class token export for CSS Modules */
+.isVisible {}
+
+/* LEFT HALF: 3D MODEL (DESKTOP SLIDE-IN) */
 .splitHalfLeft {
   position: relative;
   width: 50%;
@@ -38,6 +40,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  background-image: var(--bg-desktop);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -62,7 +65,7 @@
   z-index: 1;
 }
 
-/* RIGHT HALF: TYPOGRAPHY CONTAINER (DESKTOP) */
+/* RIGHT HALF: TYPOGRAPHY (DESKTOP SLIDE-IN) */
 .splitHalfRight {
   position: relative;
   width: 50%;
@@ -71,7 +74,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(2.5rem, 5vw, 4.5rem);
+  padding: clamp(2rem, 4vw, 4.5rem);
   box-sizing: border-box;
   background: transparent;
   opacity: 0;
@@ -79,7 +82,7 @@
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
 }
 
-/* DESKTOP ENTRANCE TRIGGER */
+/* ENTRANCE TRIGGER */
 .fullBleedSplitSection.isVisible .splitHalfLeft,
 .fullBleedSplitSection.isVisible .splitHalfRight {
   opacity: 1;
@@ -91,29 +94,30 @@
   z-index: 3;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.15rem;
   width: 100%;
   max-width: 560px;
 }
 
+/* CLEAN TRANSPARENT EYEBROW BADGE */
 .typoEyebrowBadge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(183, 65, 14, 0.18);
-  border: 1px solid rgba(183, 65, 14, 0.45);
+  background: transparent;
+  border: none;
+  padding: 0;
   color: #FF7A45;
-  font-size: 0.725rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
-  padding: 6px 14px;
-  border-radius: 4px;
-  width: fit-content;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  width: fit-content;
 }
 
 .badgeIcon {
   font-size: 0.85rem;
+  color: #FF7A45;
 }
 
 .typoMainHeading {
@@ -133,15 +137,15 @@
 .typoDescription {
   margin: 0;
   font-size: 0.95rem;
-  line-height: 1.65;
+  line-height: 1.6;
   color: #CBD5E1;
 }
 
 .typoFeatureList {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding-top: 0.5rem;
+  gap: 0.9rem;
+  padding-top: 0.45rem;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -179,17 +183,15 @@
   margin: 0;
   font-size: 0.825rem;
   color: #CBD5E1;
-  line-line: 1.45;
+  line-height: 1.45;
 }
 
 .typoBottomBar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  padding-top: 1rem;
+  padding-top: 0.85rem;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
-  flex-wrap: wrap;
 }
 
 .typoLocationTag {
@@ -207,26 +209,77 @@
   color: #FF7A45;
 }
 
-.typoActionLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #FFFFFF;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  text-decoration: none;
-  transition: color 200ms ease, transform 200ms ease;
+/* ===== DESKTOP CENTER-BOTTOM ACTION BUTTON ===== */
+.centerBottomAction {
+  position: absolute;
+  bottom: clamp(1.25rem, 2.6vh, 2.25rem);
+  left: 50%;
+  transform: translate(-50%, 20px);
+  z-index: 10;
+  opacity: 0;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
+              opacity 0.7s ease 0.25s;
+  pointer-events: auto;
 }
 
-.typoActionLink:hover {
-  color: #FF7A45;
-  transform: translateX(3px);
+.fullBleedSplitSection.isVisible .centerBottomAction {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* COMPACT GLASS BUTTON DESIGN */
+.exploreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 6px 5px 15px;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 122, 69, 0.45);
+  border-radius: 999px;
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3),
+              0 0 16px rgba(255, 122, 69, 0.15);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.exploreBtnArrow {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #FF7A45;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.25s ease;
+  flex-shrink: 0;
+}
+
+.exploreBtn:hover {
+  background: rgba(255, 122, 69, 0.22);
+  border-color: #FF7A45;
+  color: #FFFFFF;
+  box-shadow: 0 6px 24px rgba(255, 122, 69, 0.35),
+              0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.exploreBtn:hover .exploreBtnArrow {
+  transform: translateX(2px);
+  background: #FF8F5E;
 }
 
 /* =========================================================================
-   100% NATIVE SMOOTH MOBILE PERFORMANCE (< 1024px)
+   MOBILE & TABLETS (<= 1024px)
    ========================================================================= */
 @media (max-width: 1024px) {
   .fullBleedSplitSection {
@@ -247,6 +300,7 @@
   }
 
   .splitBackground {
+    background-image: var(--bg-mobile);
     mask-image: none;
     -webkit-mask-image: none;
   }
@@ -258,7 +312,7 @@
   .splitHalfRight {
     width: 100%;
     height: auto;
-    padding: 2.25rem 1.25rem;
+    padding: 2.25rem 1.25rem 1.5rem;
     opacity: 0;
     transform: translate3d(0, 18px, 0);
     transition: opacity 0.45s ease-out 0.08s, transform 0.45s ease-out 0.08s;
@@ -274,5 +328,23 @@
   .typographyContentWrapper {
     gap: 1rem;
     max-width: 100%;
+  }
+
+  /* Centered flow position on mobile */
+  .centerBottomAction {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    transform: translate3d(0, 18px, 0);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0 1.25rem 2.5rem;
+    transition: opacity 0.45s ease-out 0.12s, transform 0.45s ease-out 0.12s;
+  }
+
+  .fullBleedSplitSection.isVisible .centerBottomAction {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
