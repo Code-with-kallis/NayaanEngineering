@@ -1,4 +1,5 @@
 /* src/components/home/Hero.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 .heroTrack {
   position: relative;
@@ -16,44 +17,37 @@
   height: 100dvh;
   width: 100%;
   padding: 6rem var(--nei-container-pad, 2rem) 2rem;
-  color: #FFFFFF;
-  font-family: var(--nei-font-primary, 'Inter', sans-serif);
+  color: #0A0A0A;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   box-sizing: border-box;
   overflow: hidden;
+  background: #FFFFFF;
 }
 
-/* VIDEO BACKGROUND & OVERLAY */
-.videoContainer {
+/* IMAGE BACKGROUND & OVERLAY */
+.imageContainer {
   position: absolute;
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  background: #05070A;
+  background: #FFFFFF;
   transform: translateZ(0);
 }
 
-.videoElement {
+.imageElement {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
+  object-position: center;
   display: block;
   pointer-events: none;
 }
 
-.videoOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(5, 7, 10, 0.75) 0%,
-    rgba(5, 7, 10, 0.50) 50%,
-    rgba(5, 7, 10, 0.85) 100%
-  );
-  pointer-events: none;
+.imageOverlay {
+  display: none;
 }
 
-/* OPENING ANIMATIONS (EXACT WORKING ORIGINAL TIMING) */
+/* OPENING ANIMATIONS */
 .animateSlideLeft {
   opacity: 0;
   transform: translateX(-120px);
@@ -61,8 +55,6 @@
 }
 
 .delay1 { animation-delay: 0.15s; }
-.delay2 { animation-delay: 0.35s; }
-.delay3 { animation-delay: 0.55s; }
 
 @keyframes slideInFromLeft {
   0% {
@@ -75,7 +67,7 @@
   }
 }
 
-/* HERO CONTENT */
+/* HERO CONTENT (DESKTOP UNCHANGED) */
 .heroContent {
   flex: 1;
   display: flex;
@@ -83,12 +75,25 @@
   padding: 2rem 0;
 }
 
+/* CLIPPED-CORNER BLACK CONTAINER */
 .textWrapper {
-  max-width: 720px;
-  width: 100%;
+  width: fit-content;
+  max-width: 480px;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  padding: 2.5rem 2.25rem;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 24px) 0,
+    100% 24px,
+    100% 100%,
+    24px 100%,
+    0 calc(100% - 24px)
+  );
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 }
 
-/* SLEEK MODERN EYEBROW TAGLINE */
+/* EYEBROW TAGLINE */
 .eyebrowWrapper {
   display: inline-flex;
   align-items: center;
@@ -100,55 +105,59 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #B7410E;
-  box-shadow: 0 0 10px rgba(183, 65, 14, 0.8);
+  background: #FFFFFF;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 .eyebrowText {
-  font-family: var(--nei-font-primary, 'Inter', sans-serif);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: #CBD5E1;
+  font-size: 0.775rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #D4D4D8;
   text-transform: uppercase;
 }
 
-/* TITLE & SUBTITLE */
+/* CLEAN TITLE & REFINED WEIGHT */
 .mainTitle {
-  font-size: var(--nei-font-display, 3.2rem);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 2.75vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
   color: #FFFFFF;
-  margin: 0 0 0.8rem 0;
+  margin: 0 0 0.85rem 0;
+}
+
+.titleGrey {
+  color: #A1A1AA;
+  font-weight: 500;
 }
 
 .subTitle {
-  font-size: var(--nei-font-h2, 1.5rem);
-  font-weight: 500;
+  font-size: 1.05rem;
+  font-weight: 400;
+  line-height: 1.5;
   margin: 0 0 1.75rem 0;
-  color: #CBD5E1;
+  color: #A1A1AA;
 }
 
 .ctaGroup {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
-/* BUTTON BASE */
+/* MONOCHROME BUTTONS */
 .btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.85rem 2.2rem;
+  padding: 0.8rem 1.8rem;
   border-radius: 0px;
-  font-family: var(--nei-font-primary, 'Inter', sans-serif);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -186,44 +195,42 @@
 }
 
 .btnPrimary {
-  background: linear-gradient(135deg, #C84B15 0%, #B7410E 100%);
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 20px rgba(183, 65, 14, 0.35);
+  background: rgb(255, 187, 15);
+  color: #0A0A0A;
+  border: 1px solid rgb(255, 187, 15);
+  box-shadow: 0 4px 14px rgba(255, 187, 15, 0.35);
 }
 
 .btnPrimary::before {
-  background: #FFFFFF;
+  background: #0A0A0A;
 }
 
 .btnPrimary:hover span {
-  color: #0F172A;
+  color: rgb(255, 187, 15);
 }
 
 .btnPrimary:hover {
-  border-color: #FFFFFF;
-  box-shadow: 0 12px 28px rgba(255, 255, 255, 0.3);
+  border-color: rgb(255, 187, 15);
+  box-shadow: 0 6px 20px rgba(255, 187, 15, 0.45);
 }
 
 .btnOutline {
-  background: rgba(255, 255, 255, 0.08);
+  background: transparent;
   color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .btnOutline::before {
-  background: linear-gradient(135deg, #C84B15 0%, #B7410E 100%);
+  background: #FFFFFF;
 }
 
 .btnOutline:hover span {
-  color: #FFFFFF;
+  color: #0A0A0A;
 }
 
 .btnOutline:hover {
-  border-color: #C84B15;
-  box-shadow: 0 12px 28px rgba(183, 65, 14, 0.4);
+  border-color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 
 /* FOOTER */
@@ -232,7 +239,7 @@
   justify-content: space-between;
   align-items: flex-end;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .footerLeft {
@@ -253,22 +260,20 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.85);
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
   font-size: 1rem;
-  color: #FFFFFF;
+  color: #0A0A0A;
   text-decoration: none;
 }
 
 .socialLinks a:hover {
-  background: #B7410E;
-  border-color: #B7410E;
+  background: #0A0A0A;
+  border-color: #0A0A0A;
   color: #FFFFFF;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(183, 65, 14, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* CENTERED BOTTOM SCROLL INDICATOR */
@@ -287,20 +292,20 @@
 .scrollMouse {
   width: 20px;
   height: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   display: flex;
   justify-content: center;
   padding-top: 5px;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .wheel {
   width: 3px;
   height: 6px;
-  background: #CBD5E1;
+  background: #0A0A0A;
   border-radius: 2px;
-  box-shadow: 0 0 6px #CBD5E1;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
   animation: scrollWheel 2s infinite;
 }
 
@@ -310,31 +315,48 @@
 }
 
 /* =========================================================================
-   MOBILE HARDWARE PERFORMANCE OPTIMIZATIONS (< 768px)
+   MOBILE RESPONSIVENESS (< 768px)
    ========================================================================= */
 @media (max-width: 768px) {
   .heroSection {
     padding: 5.5rem 1.25rem 1.5rem;
   }
 
-  .btnOutline {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: rgba(255, 255, 255, 0.12);
+  .heroContent {
+    align-items: flex-start;
+    padding-top: 6rem; /* Mobile padding of rectangle*/
+    padding-bottom: 1rem;
   }
 
-  .socialLinks a {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: rgba(0, 0, 0, 0.5);
+  .textWrapper {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.6rem 1.25rem;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 16px) 0,
+      100% 16px,
+      100% 100%,
+      16px 100%,
+      0 calc(100% - 16px)
+    );
   }
 
   .eyebrowWrapper {
-    margin-bottom: 0.85rem;
+    margin-bottom: 0.75rem;
   }
 
   .eyebrowText {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .mainTitle {
+    font-size: 1.85rem;
+  }
+
+  .subTitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.2rem;
   }
 
   .ctaGroup {

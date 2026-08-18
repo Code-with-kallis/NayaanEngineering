@@ -77,7 +77,6 @@ function About() {
   // 2. Entrance Observer for Scroll Animations
   useEffect(() => {
     document.title = "About Us & Corporate Profile | Nayaab Engineering Innovations";
-    window.scrollTo(0, 0);
 
     const observer = new IntersectionObserver(
       (entries, obs) => {

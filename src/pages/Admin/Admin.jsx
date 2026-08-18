@@ -313,7 +313,11 @@ export default function Admin() {
   const openCreateForm = () => {
     resetForm();
     setActiveTab("form");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (window.lenis) {
+      window.lenis.scrollTo(0);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   const startEditing = (project) => {
@@ -331,7 +335,11 @@ export default function Admin() {
     setGalleryFiles([]);
     setGalleryPreviews([]);
     setActiveTab("form");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (window.lenis) {
+      window.lenis.scrollTo(0);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   const handleDelete = (id, projectTitle) => {

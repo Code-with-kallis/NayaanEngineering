@@ -1,86 +1,54 @@
 // src/components/home/Hero.jsx
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import heroDesktop from "../../assets/images/home/hero-desktop.webp";
+import heroMobile from "../../assets/images/home/hero-mobile.webp";
 import styles from "./Hero.module.css";
-import posterImage from "../../assets/images/home/3d-house.webp";
+
 const SOCIAL_LINKS = [
   { label: "Facebook", href: "https://www.facebook.com/nayaabengineering/", icon: <FaFacebookF /> },
   { label: "Instagram", href: "https://www.instagram.com/nayaabengineering/", icon: <FaInstagram /> },
 ];
 
-const DESKTOP_VIDEO_SRC = "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/HOME/hero.mp4";
-const MOBILE_VIDEO_SRC = "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/HOME/hero-mobile.mp4";
-const POSTER_IMAGE = "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/structural-engineering.webp";
-
 const Hero = () => {
-  const heroRef = useRef(null);
-  const videoRef = useRef(null);
-
-  // Auto-pause video when scrolled out of view to preserve GPU cycles
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (heroRef.current) {
-      observer.observe(heroRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div ref={heroRef} className={styles.heroTrack}>
+    <div className={styles.heroTrack}>
       <section className={styles.heroSection} aria-label="Hero">
-        {/* Background Video */}
-        <div className={styles.videoContainer}>
-          <video
-            ref={videoRef}
-            className={styles.videoElement}
-            poster={POSTER_IMAGE}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          >
-            <source src={MOBILE_VIDEO_SRC} media="(max-width: 768px)" type="video/mp4" />
-            <source src={DESKTOP_VIDEO_SRC} media="(min-width: 769px)" type="video/mp4" />
-          </video>
-          <div className={styles.videoOverlay} />
+        {/* Responsive Background Images */}
+        <div className={styles.imageContainer}>
+          <picture>
+            <source media="(max-width: 768px)" srcSet={heroMobile} />
+            <img
+              src={heroDesktop}
+              alt="Nayaab Engineering Hero"
+              className={styles.imageElement}
+              fetchPriority="high"
+              loading="eager"
+            />
+          </picture>
+          <div className={styles.imageOverlay} />
         </div>
 
         {/* Content */}
         <div className={styles.heroContent}>
-          <div className={styles.textWrapper}>
+          <div className={`${styles.textWrapper} ${styles.animateSlideLeft} ${styles.delay1}`}>
             <div className={styles.eyebrowWrapper}>
               <span className={styles.eyebrowDot} />
               <span className={styles.eyebrowText}>NAYAAB ENGINEERING</span>
             </div>
 
-            <h1 className={`${styles.mainTitle} ${styles.animateSlideLeft} ${styles.delay1}`}>
+            <h1 className={styles.mainTitle}>
               Engineering Excellence
               <br />
-              &amp; Innovation
+              <span className={styles.titleGrey}>&amp; Innovation</span>
             </h1>
 
-            <h2 className={`${styles.subTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
+            <h2 className={styles.subTitle}>
               Building the future with precision.
             </h2>
 
-            <div className={`${styles.ctaGroup} ${styles.animateSlideLeft} ${styles.delay3}`}>
+            <div className={styles.ctaGroup}>
               <Link to="/contact" className={`${styles.btn} ${styles.btnPrimary}`}>
                 <span>Contact Us</span>
               </Link>

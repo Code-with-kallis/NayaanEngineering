@@ -1,18 +1,4 @@
 /* src/pages/Home/Home.module.css */
-@media (min-width: 1025px) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Disable synthetic smooth scroll on mobile to keep momentum fast & unthrottled */
-@media (max-width: 1024px) {
-  html, body {
-    scroll-behavior: auto;
-    -webkit-overflow-scrolling: touch;
-    overflow-x: clip;
-  }
-}
 
 .heroWrapper {
   width: 100%;

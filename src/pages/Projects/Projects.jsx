@@ -136,10 +136,18 @@ export default function Projects() {
   }, []);
 
   const scrollToProjectsTop = () => {
-    if (projectsSectionRef.current) {
-      projectsSectionRef.current.scrollIntoView({ behavior: "smooth" });
+    if (window.lenis) {
+      if (projectsSectionRef.current) {
+        window.lenis.scrollTo(projectsSectionRef.current, { offset: -70 });
+      } else {
+        window.lenis.scrollTo(0);
+      }
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (projectsSectionRef.current) {
+        projectsSectionRef.current.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   };
 

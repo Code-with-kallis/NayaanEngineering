@@ -10,7 +10,12 @@ function ScrollToTop() {
     // Naye page link par click hone par hi top par jaye (PUSH navigation)
     // Jab user Back / Return kare (POP navigation), toh scroll position wahi rahe
     if (navType !== "POP") {
-      window.scrollTo(0, 0);
+      // Use Lenis scrollTo if available, otherwise fall back to native
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo(0, 0);
+      }
     }
   }, [pathname, navType]);
 

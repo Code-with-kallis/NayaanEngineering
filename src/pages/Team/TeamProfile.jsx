@@ -23,7 +23,6 @@ function TeamProfile() {
   useEffect(() => {
     if (employee) {
       document.title = `${employee.name} | Official ID Verification | NEIPL`;
-      window.scrollTo(0, 0);
 
       const timer = setTimeout(() => {
         setIsVerifying(false);

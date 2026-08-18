@@ -11,9 +11,19 @@ export default function useScrollLock(isLocked) {
     html.classList.add("nav-menu-open");
     body.classList.add("nav-menu-open");
 
+    // Pause Lenis smooth scrolling while locked
+    if (window.lenis) {
+      window.lenis.stop();
+    }
+
     return () => {
       html.classList.remove("nav-menu-open");
       body.classList.remove("nav-menu-open");
+
+      // Resume Lenis smooth scrolling when unlocked
+      if (window.lenis) {
+        window.lenis.start();
+      }
     };
   }, [isLocked]);
 }

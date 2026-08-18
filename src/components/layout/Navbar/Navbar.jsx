@@ -10,6 +10,7 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import useScrollLock from "../../../hooks/useScrollLock";
+import menuBarIcon from "../../../assets/images/navbar/menu-bar.png";
 import styles from "./Navbar.module.css";
 import logo from "/logo-original.png";
 
@@ -36,10 +37,11 @@ const Navbar = () => {
   useScrollLock(isOpen);
 
   // Dark Full-Screen Hero pages (Transparent Header with White Text)
-  const isDarkHero = pathname === "/" || pathname === "/services";
+  const isDarkHero = pathname === "/services";
   
   // Light Hero pages (Transparent Header with Dark Text)
   const isLightHero =
+    pathname === "/" ||
     pathname === "/about" ||
     pathname === "/projects" ||
     pathname === "/contact" ||
@@ -220,16 +222,19 @@ const Navbar = () => {
               <span>Contact</span>
             </NavLink>
 
+            {/* Custom PNG Menu Button */}
             <button
-              className={`${styles.hamburger} ${isOpen ? styles.open : ""}`}
+              className={`${styles.menuToggleBtn} ${isOpen ? styles.menuOpen : ""}`}
               onClick={toggleMenu}
               aria-label="Toggle navigation menu"
               aria-expanded={isOpen}
               aria-controls="navbar-mobile-panel"
             >
-              <span />
-              <span />
-              <span />
+              <img
+                src={menuBarIcon}
+                alt="Menu Icon"
+                className={styles.menuIconImg}
+              />
             </button>
           </div>
         </div>

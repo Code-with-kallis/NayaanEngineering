@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Layout from "./components/layout/Layout/Layout";
 import ScrollToTop from "./components/ScrollToTop";
+import SmoothScroll from "./components/SmoothScroll";
 import PageLoader from "./components/common/PageLoader";
 import ErrorBoundary from "./components/ErrorBoundary";
 
@@ -24,6 +25,7 @@ export default function App() {
   return (
     <HelmetProvider>
       <ErrorBoundary>
+        <SmoothScroll />
         <ScrollToTop />
         <Suspense fallback={<PageLoader />}>
           <Routes>

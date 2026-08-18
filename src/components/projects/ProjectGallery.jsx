@@ -59,6 +59,7 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
     // Lock body scrolling behind modal
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    if (window.lenis) window.lenis.stop();
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
@@ -74,6 +75,7 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
 
     return () => {
       document.body.style.overflow = originalOverflow;
+      if (window.lenis) window.lenis.start();
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isLightboxOpen, handlePrev, handleNext]);
