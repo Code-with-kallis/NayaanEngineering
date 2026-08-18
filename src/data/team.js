@@ -26,7 +26,7 @@ export const TEAM_SECTIONS = [
 export const teamMembers = [
   {
     employeeId: "neipl-0101",
-    name: "Waseem Manzoor",
+    name: "Er. Waseem Manzoor",
     designation: "Chairman",
     gender: "Male",
     department: "Board of Directors",
@@ -56,7 +56,7 @@ export const teamMembers = [
   
   {
     employeeId: "neipl-0102",
-    name: "Saajid Rashid",
+    name: "Er. Saajid Rashid",
     designation: "Director",
     gender: "Male",
     department: "Construction & Site Operations",
@@ -85,7 +85,7 @@ export const teamMembers = [
   },
   {
     employeeId: "neipl-0103",
-    name: "Aaqib Nazir",
+    name: "Er. Aaqib Nazir",
     designation: "Director",
     gender: "Male",
     department: "Engineering & Technical Operations",
@@ -114,7 +114,7 @@ export const teamMembers = [
   },
   {
     employeeId: "neipl-0104",
-    name: "Junaid Bilal",
+    name:  "Er. Junaid Bilal",
     designation: "Managing Director",
     gender: "Male",
     department: "Executive Leadership",
