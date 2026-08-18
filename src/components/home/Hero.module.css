@@ -32,7 +32,7 @@
   transform: translateZ(0);
 }
 
-.videoContainer video {
+.videoElement {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -41,7 +41,6 @@
   pointer-events: none;
 }
 
-/* DARK OVERLAY (Active on Desktop & Mobile for Text Legibility) */
 .videoOverlay {
   position: absolute;
   inset: 0;
@@ -54,7 +53,7 @@
   pointer-events: none;
 }
 
-/* OPENING ANIMATIONS */
+/* OPENING ANIMATIONS (EXACT WORKING ORIGINAL TIMING) */
 .animateSlideLeft {
   opacity: 0;
   transform: translateX(-120px);
@@ -318,17 +317,8 @@
     padding: 5.5rem 1.25rem 1.5rem;
   }
 
-  .videoContainer {
-    inset: 0;
-  }
-
-  .videoContainer video {
-    object-position: center top;
-    transform: none; /* Native hardware surface decoding without GPU layer scaling */
-  }
-
   .btnOutline {
-    backdrop-filter: none; /* Disabling mobile backdrop filter eliminates frame drops */
+    backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: rgba(255, 255, 255, 0.12);
   }
@@ -369,12 +359,23 @@
     gap: 1.25rem;
   }
 
-  .animateSlideLeft {
-    transform: translateX(-40px);
+  .scrollIndicator {
+    display: none;
   }
 
-  @keyframes slideInFromLeft {
-    0% { opacity: 0; transform: translateX(-40px); }
-    100% { opacity: 1; transform: translateX(0); }
+  .animateSlideLeft {
+    transform: translateX(-40px);
+    animation-name: slideInFromLeftMobile;
+  }
+}
+
+@keyframes slideInFromLeftMobile {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

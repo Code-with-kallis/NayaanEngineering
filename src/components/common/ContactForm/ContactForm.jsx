@@ -1,5 +1,7 @@
+// src/components/common/ContactForm/ContactForm.jsx
 import React, { useState } from "react";
 import {
+  FaPhoneAlt,
   FaWhatsapp,
   FaFacebookF,
   FaInstagram,
@@ -26,9 +28,9 @@ const RATE_LIMIT_STORAGE_KEY = "ne_contact_submissions";
 
 export default function ContactForm({
   accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
-  title = "Send a Project Brief",
-  subtitle = "Fill out the form below with your project requirements and our team will get back to you with an initial assessment.",
-  eyebrow = "Direct Inquiry",
+  title = "Tell Us About Your Project",
+  subtitle = "Tell us about your project, and a member of our engineering team will get in touch with you shortly.",
+  eyebrow = "LET’S CONNECT",
 }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -209,14 +211,38 @@ export default function ContactForm({
   return (
     <section className={styles.sectionOuter} aria-label="Contact Form Section">
       <div className={styles.formCardContainer}>
-        {/* Left Column: Form Stage */}
+        {/* Main Column */}
         <div className={styles.formCol}>
+          {/* Header Title & Subtitle */}
           <div className={styles.headerArea}>
             {eyebrow && <span className={styles.pillBadge}>{eyebrow}</span>}
-            <h2 className={styles.title}>{title}</h2>
+            
+            <h2 className={styles.title}>
+              <span className={styles.titleIconBox} aria-hidden="true">
+                <FaPhoneAlt />
+              </span>
+              <span>{title}</span>
+            </h2>
+
             {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
           </div>
 
+          {/* Mobile & Tablet Image Banner (Between Header Text & Form) */}
+          <div className={styles.mobileArtCol}>
+            <img
+              src={contactArt}
+              alt="Engineering Consulting & Architecture"
+              className={styles.mobileArtImg}
+              loading="lazy"
+              decoding="async"
+            />
+            <div className={styles.mobileArtFooter}>
+              <strong>Direct Engineering Consultancy</strong>
+              <p>Turnkey civil construction &amp; architectural design across Kashmir</p>
+            </div>
+          </div>
+
+          {/* Form */}
           <form
             className={styles.contactForm}
             onSubmit={handleDirectWeb3Submit}
@@ -243,7 +269,7 @@ export default function ContactForm({
                   required
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Your name"
+                  placeholder="Your full name"
                   autoComplete="name"
                 />
               </div>
@@ -303,7 +329,7 @@ export default function ContactForm({
                 rows="4"
                 value={formData.message}
                 onChange={handleInputChange}
-                placeholder="Type your message here..."
+                placeholder="Describe your project scope or requirements..."
               />
             </div>
 
@@ -322,7 +348,7 @@ export default function ContactForm({
               </div>
             )}
 
-            {/* Action Bar */}
+            {/* Action Buttons */}
             <div className={styles.actionFooter}>
               <div className={styles.buttonGroup}>
                 <button
@@ -372,8 +398,8 @@ export default function ContactForm({
           </form>
         </div>
 
-        {/* Right Column: Decorative Illustration Stage (Visible on Both Desktop & Mobile) */}
-        <div className={styles.artCol}>
+        {/* Right Column: Desktop Illustration Stage */}
+        <div className={styles.desktopArtCol}>
           <div className={styles.artWrapper}>
             <img
               src={contactArt}

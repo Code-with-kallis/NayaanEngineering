@@ -1,6 +1,6 @@
+// src/components/team/TeamSection.jsx
 import React, { useRef, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FaArrowUp } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import styles from "./TeamSection.module.css";
 
 // 1. TEAM CARD COMPONENT
@@ -10,48 +10,62 @@ export function TeamCard({ employee }) {
   const { employeeId, name, designation, image, bio } = employee;
 
   const shortBio = bio
-    ? bio.split(" ").slice(0, 12).join(" ") + "..."
+    ? bio.split(" ").slice(0, 11).join(" ") + "..."
     : "";
 
+  const handleCardClick = (e) => {
+    e.preventDefault();
+    // Update URL query params without triggering React Router's global ScrollToTop
+    const url = new URL(window.location.href);
+    url.searchParams.set("member", employeeId);
+    window.history.pushState({ member: employeeId }, "", url.toString());
+    
+    // Notify EmployeeModal to open
+    window.dispatchEvent(new Event("popstate"));
+  };
+
   return (
-    <Link
-      to={`?member=${employeeId}`}
+    <a
+      href={`?member=${employeeId}`}
+      onClick={handleCardClick}
       className={styles.card}
       aria-label={`View profile of ${name}, ${designation}`}
     >
-      {/* Circular Profile Avatar */}
-      <div className={styles.imageContainer}>
-        <img
-          src={image || "/images/team/placeholder.jpg"}
-          alt={name}
-          className={styles.image}
-          loading="lazy"
-        />
+      {/* Profile Image Avatar */}
+      <div className={styles.imageWrapper}>
+        <div className={styles.imageContainer}>
+          <img
+            src={image || "/images/team/placeholder.jpg"}
+            alt={name}
+            className={styles.image}
+            loading="lazy"
+          />
+        </div>
+        <span className={styles.statusDot} title="Active Member" aria-hidden="true" />
       </div>
 
+      {/* Card Content & Details */}
       <div className={styles.content}>
-        <div>
+        <div className={styles.headerInfo}>
+          <span className={styles.designationTag}>{designation}</span>
           <h3 className={styles.name}>{name}</h3>
-          <p className={styles.designation}>{designation}</p>
-          {shortBio && <p className={styles.bio}>{shortBio}</p>}
         </div>
 
-        <div className={styles.footer}>
-          <div className={styles.profileBadge}>
-            <span className={styles.badgeDot} />
-            <span>Profile</span>
-          </div>
+        {shortBio && <p className={styles.bio}>{shortBio}</p>}
 
-          <div className={styles.arrowCircle}>
-            <FaArrowUp className={styles.arrowIcon} />
+        {/* Tactile Action Footer */}
+        <div className={styles.cardFooter}>
+          <span className={styles.viewProfileLabel}>View Profile</span>
+          <div className={styles.actionIconBox} aria-hidden="true">
+            <FaArrowRight className={styles.actionArrow} />
           </div>
         </div>
       </div>
-    </Link>
+    </a>
   );
 }
 
-// 2. TEAM GRID COMPONENT
+// 2. TEAM GRID & MOBILE SLIDER COMPONENT
 export function TeamGrid({ members }) {
   const gridRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);

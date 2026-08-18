@@ -1,14 +1,14 @@
 /* src/components/team/TeamSection.module.css */
 
-/* ==========================================
-   1. SECTION CONTAINER STYLES
-   ========================================== */
+/* ==========================================================================
+   1. SECTION CONTAINER STYLES (Padding aligned to About container)
+   ========================================================================== */
 .section {
   position: relative;
   width: 100%;
   max-width: 100%;
-  padding-block: clamp(1.5rem, 3vw, 2.5rem);
-  padding-inline: var(--nei-container-pad, clamp(1.25rem, 5vw, 4rem));
+  padding-block: clamp(1rem, 2.5vw, 1.75rem);
+  padding-inline: 0;
   background: transparent;
   box-sizing: border-box;
   margin: 0;
@@ -27,60 +27,66 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .headerLeft {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
 .title {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
   font-weight: 700;
   color: #0F172A;
   letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
 }
 
 .pillBadge {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.65rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 9999px;
-  background: #F1F5F9;
-  border: 1px solid #E2E8F0;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
+  background: rgba(183, 65, 14, 0.08);
+  border: 1px solid rgba(183, 65, 14, 0.2);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: #475569;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #B7410E;
 }
 
 .emptyState {
-  padding: 2rem;
+  padding: 2.5rem;
   text-align: center;
   color: #64748B;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+  background: #F8FAFC;
+  border-radius: 12px;
+  border: 1px dashed #CBD5E1;
 }
 
-/* ==========================================
-   2. GRID & SLIDER STYLES
-   ========================================== */
+/* ==========================================================================
+   2. GRID & MOBILE SLIDER STYLES
+   ========================================================================== */
 .gridContainer {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .grid {
   width: 100%;
   max-width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -123,47 +129,63 @@
   transition: transform 100ms ease-out;
 }
 
-/* ==========================================
-   3. TEAM CARD STYLES
-   ========================================== */
+/* ==========================================================================
+   3. CLEAN CRISP TYPOGRAPHY TEAM CARD
+   ========================================================================== */
 .card {
+  position: relative;
   display: flex;
   flex-direction: column;
   text-decoration: none;
   color: #0F172A;
   background: #FFFFFF;
-  border-radius: 20px;
-  padding: 1.25rem 1rem 0.85rem;
+  border-radius: 16px;
+  padding: 1.5rem 1.25rem 1.25rem;
   border: 1px solid #E2E8F0;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 250ms cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 250ms ease;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 300ms ease;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   text-align: center;
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
   border-color: #B7410E;
-  box-shadow: 0 12px 28px rgba(183, 65, 14, 0.12);
+  box-shadow: 0 14px 32px rgba(183, 65, 14, 0.1);
+}
+
+/* Image Avatar Section */
+.imageWrapper {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 1.15rem auto;
+  flex-shrink: 0;
 }
 
 .imageContainer {
-  width: 100px;
-  height: 100px;
-  min-width: 100px;
-  min-height: 100px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   overflow: hidden;
   background: #F8FAFC;
   border: 3px solid #FFFFFF;
-  outline: 1px solid #E2E8F0;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
-  margin: 0 auto 0.75rem auto;
-  flex-shrink: 0;
+  outline: 1.5px solid #E2E8F0;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+  transition: outline-color 300ms ease, transform 300ms ease;
+}
+
+.card:hover .imageContainer {
+  outline-color: #B7410E;
+  transform: scale(1.03);
 }
 
 .image {
@@ -179,130 +201,170 @@
   transform: scale(1.08);
 }
 
+.statusDot {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+}
+
+/* Content Body */
 .content {
   display: flex;
   flex-direction: column;
   flex: 1;
   justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0;
   width: 100%;
 }
 
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+}
+
+/* Role Badge */
+.designationTag {
+  display: inline-block;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #B7410E;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(183, 65, 14, 0.07);
+  padding: 3px 10px;
+  border-radius: 6px;
+  line-height: 1.35;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Name */
 .name {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #0F172A;
-  line-height: 1.25;
-}
-
-.designation {
-  margin: 0.2rem 0 0 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.7rem;
-  color: #B7410E;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.05rem;
   font-weight: 600;
-  line-height: 1.25;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  min-height: 1.85rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  color: #0F172A;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  transition: color 200ms ease;
 }
 
+.card:hover .name {
+  color: #B7410E;
+}
+
+/* Bio Text */
 .bio {
-  margin: 0.45rem 0 0 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.725rem;
+  margin: 0 0 1rem 0;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.82rem;
   color: #64748B;
-  line-height: 1.35;
+  line-height: 1.55;
   font-weight: 400;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 2rem;
+  min-height: 2.48em;
 }
 
-.footer {
+/* Card Footer Action */
+.cardFooter {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 0.65rem;
-  padding-top: 0.65rem;
-  border-top: 1px solid #F8FAFC;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid #F1F5F9;
 }
 
-.profileBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.68rem;
+.viewProfileLabel {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
   font-weight: 600;
   color: #475569;
-  text-transform: capitalize;
+  letter-spacing: 0.01em;
+  transition: color 200ms ease;
 }
 
-.badgeDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #0F172A;
+.card:hover .viewProfileLabel {
+  color: #0F172A;
 }
 
-.arrowCircle {
-  width: 26px;
-  height: 26px;
+.actionIconBox {
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: #B7410E;
-  color: #FFFFFF;
+  background: #F1F5F9;
+  color: #475569;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 200ms ease, background-color 200ms ease;
-  box-shadow: 0 2px 8px rgba(183, 65, 14, 0.3);
+  transition: background-color 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.arrowIcon {
-  font-size: 0.65rem;
-  transform: rotate(45deg);
+.actionArrow {
+  font-size: 0.7rem;
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card:hover .arrowCircle {
-  transform: scale(1.1) rotate(5deg);
+.card:hover .actionIconBox {
+  background: #B7410E;
+  color: #FFFFFF;
+  box-shadow: 0 3px 10px rgba(183, 65, 14, 0.35);
 }
 
-/* ==========================================
+.card:hover .actionArrow {
+  transform: translateX(2px);
+}
+
+/* ==========================================================================
    4. RESPONSIVE BREAKPOINTS
-   ========================================== */
-@media (max-width: 1100px) {
+   ========================================================================== */
+@media (max-width: 1200px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 820px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.85rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    padding: 1.25rem 1rem 1rem;
+  }
+
+  .imageWrapper {
+    width: 86px;
+    height: 86px;
   }
 }
 
 @media (max-width: 640px) {
   .section {
-    padding-block: 1rem;
-    padding-left: var(--nei-container-pad, 1.25rem) !important;
-    padding-right: 0 !important;
-    overflow: visible !important;
+    padding-block: 0.75rem 1.25rem;
+    padding-inline: 0;
+    overflow: visible;
   }
 
   .header {
-    padding-left: 0 !important;
-    padding-right: var(--nei-container-pad, 1.25rem) !important;
+    margin-bottom: 1rem;
   }
 
   .title {
@@ -318,8 +380,7 @@
     -webkit-overflow-scrolling: touch;
     gap: 0.85rem;
     padding-block: 0.25rem 0.5rem;
-    padding-left: 0 !important;
-    padding-right: var(--nei-container-pad, 1.25rem) !important;
+    padding-inline: 0;
     margin: 0;
     width: 100%;
     box-sizing: border-box;
@@ -332,8 +393,8 @@
   }
 
   .gridItem {
-    flex: 0 0 72%;
-    max-width: 220px;
+    flex: 0 0 76%;
+    max-width: 240px;
     scroll-snap-align: start;
   }
 }

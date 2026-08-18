@@ -175,8 +175,6 @@ export default function Home() {
 
       {/* 10. CONTACT FORM - Final Conversion Point */}
       <ContactForm
-        title="Let's talk"
-        subtitle="To request a quote or meet for coffee at our Baramulla office, contact us directly or fill out the form below."
       />
 
       {/* 11. MODAL DRAWER - Overlay */}

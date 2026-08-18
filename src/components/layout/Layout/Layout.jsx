@@ -1,3 +1,4 @@
+// src/components/layout/Layout.jsx
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
@@ -6,7 +7,7 @@ export default function Layout() {
   const location = useLocation();
 
   // Pages where Navbar and Footer should not appear
-  const hideNavbarAndFooter = ["/admin", "/terms", "/privacy"].some(
+  const hideNavbarAndFooter = ["/admin", "/terms", "/privacy", "/team", ].some(
     (path) => location.pathname === path || location.pathname.startsWith(`${path}/`)
   );
 

@@ -1,30 +1,25 @@
-/* ==========================================================================
-   NAYAAB ENGINEERING — REFINED RESPONSIVE CONTACT FORM MODULE
-   Desktop: 1340px Container (Form on Left, Illustration on Right)
-   Mobile/Tablet: Image positioned cleanly ABOVE the Form
-   Eyebrow: Clean uppercase text only (No background pill)
-   ========================================================================== */
+/* src/components/common/ContactForm/ContactForm.module.css */
 
 .sectionOuter {
   width: 100%;
-  padding-block: clamp(2.5rem, 5vw, 4.5rem);
-  padding-inline: clamp(1.25rem, 5vw, 4rem);
+  padding-block: clamp(3rem, 5vw, 4.5rem);
+  padding-inline: var(--nei-container-pad, clamp(1.25rem, 5vw, 4rem));
   background: #ffffff;
   box-sizing: border-box;
 }
 
 .formCardContainer {
   width: 100%;
-  max-width: 1340px;
-  margin: 0 auto;
+  max-width: 1440px;
+  margin-inline: auto;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
-  gap: clamp(2rem, 3.5vw, 4rem);
+  grid-template-columns: minmax(0, 1.22fr) minmax(320px, 0.78fr);
+  gap: clamp(2rem, 3.5vw, 3.5rem);
   background: #ffffff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
   border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.04);
-  padding: clamp(2rem, 3.5vw, 3.5rem);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+  padding: clamp(2rem, 3.5vw, 3rem);
   align-items: center;
   box-sizing: border-box;
 }
@@ -34,48 +29,86 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  order: 1;
 }
 
+/* 1. Stack header elements into a clean vertical column */
 .headerArea {
-  margin-bottom: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
 }
 
-/* Plain Uppercase Eyebrow Text (No Background Pill) */
+/* 2. Top Eyebrow: Standalone top line in deep black/navy */
 .pillBadge {
-  display: inline-block;
-  font-size: 0.8rem;
+  display: block;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #b7410e;
+  color: #0f172a;
   background: transparent;
   padding: 0;
-  margin-bottom: 8px;
+  margin: 0 0 0.5rem 0;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* 3. Title: Accent color (#B7410E) with inline icon centered vertically */
 .title {
-  margin: 0 0 8px;
-  font-size: clamp(1.6rem, 2.4vw, 2.15rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0 0 0.5rem 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: clamp(1.45rem, 2.2vw, 1.85rem);
   font-weight: 700;
   line-height: 1.2;
-  letter-spacing: -0.015em;
-  color: #0f172a;
+  letter-spacing: -0.02em;
+  color: #b7410e;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* 4. Perfectly proportioned Call Icon Badge */
+.titleIconBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 8px;
+  background: rgba(183, 65, 14, 0.08);
+  border: 1px solid rgba(183, 65, 14, 0.22);
+  color: #b7410e;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* 5. Subtitle below title */
 .subtitle {
+  display: block;
   margin: 0;
-  font-size: 0.925rem;
-  line-height: 1.55;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.6;
   color: #64748b;
-  max-width: 54ch;
+  max-width: 58ch;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== MOBILE ART BANNER ===== */
+.mobileArtCol {
+  display: none;
 }
 
 /* ===== INPUTS & CONTROLS ===== */
 .contactForm {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.15rem;
   width: 100%;
 }
 
@@ -86,7 +119,7 @@
 .formRow {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.25rem;
+  gap: 1.15rem;
 }
 
 .field {
@@ -97,27 +130,30 @@
 }
 
 .field label {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 0.825rem;
-  font-weight: 600;
-  color: #1e293b;
+  font-weight: 500;
+  color: #334155;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 16px font size prevents mobile iOS Safari auto-zoom */
 .field input,
 .field select,
 .field textarea {
   width: 100%;
-  padding: 12px 14px;
-  font-family: inherit;
-  font-size: 0.95rem;
+  padding: 11px 14px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.925rem;
+  font-weight: 400;
   color: #0f172a;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  border-radius: 8px;
   outline: none;
   box-sizing: border-box;
   -webkit-appearance: none;
   appearance: none;
+  -webkit-font-smoothing: antialiased;
   transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
 }
 
@@ -139,12 +175,13 @@
 .field textarea:focus {
   background: #ffffff;
   border-color: #b7410e;
-  box-shadow: 0 0 0 3px rgba(183, 65, 14, 0.1);
+  box-shadow: 0 0 0 3px rgba(183, 65, 14, 0.08);
 }
 
 .field input::placeholder,
 .field textarea::placeholder {
   color: #94a3b8;
+  font-weight: 400;
 }
 
 /* ===== NOTIFICATION BANNERS ===== */
@@ -153,22 +190,18 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 16px;
-  border-radius: 10px;
+  padding: 11px 15px;
+  border-radius: 8px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 0.85rem;
   font-weight: 500;
+  -webkit-font-smoothing: antialiased;
   animation: fadeIn 200ms ease;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .statusIcon {
@@ -188,20 +221,20 @@
   color: #991b1b;
 }
 
-/* ===== BUTTONS & FOOTER ===== */
+/* ===== BUTTONS & ACTIONS ===== */
 .actionFooter {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-top: 6px;
+  margin-top: 4px;
   flex-wrap: wrap;
 }
 
 .buttonGroup {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
@@ -210,23 +243,25 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 46px;
-  padding: 0 22px;
+  min-height: 44px;
+  padding: 0 20px;
   background: #b7410e;
   color: #ffffff;
   border: none;
-  border-radius: 10px;
-  font-size: 0.875rem;
+  border-radius: 8px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(183, 65, 14, 0.18);
+  box-shadow: 0 3px 10px rgba(183, 65, 14, 0.16);
+  -webkit-font-smoothing: antialiased;
   transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
 .submitBtn:hover:not(:disabled) {
   background: #9e370c;
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(183, 65, 14, 0.25);
+  box-shadow: 0 5px 14px rgba(183, 65, 14, 0.22);
 }
 
 .btnIcon {
@@ -238,15 +273,17 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 46px;
-  padding: 0 18px;
+  min-height: 44px;
+  padding: 0 16px;
   background: #f0fdf4;
   color: #16a34a;
   border: 1px solid rgba(22, 163, 74, 0.25);
-  border-radius: 10px;
-  font-size: 0.875rem;
+  border-radius: 8px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+  -webkit-font-smoothing: antialiased;
   transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
 }
 
@@ -276,9 +313,11 @@
 }
 
 .socialFollow span {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 0.775rem;
   font-weight: 500;
   color: #94a3b8;
+  -webkit-font-smoothing: antialiased;
 }
 
 .socialIcons {
@@ -287,8 +326,8 @@
 }
 
 .socialIcons a {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: #f1f5f9;
   color: #475569;
@@ -305,8 +344,8 @@
   color: #ffffff;
 }
 
-/* ===== RIGHT ART COLUMN ===== */
-.artCol {
+/* ===== DESKTOP RIGHT ART COLUMN ===== */
+.desktopArtCol {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -315,7 +354,6 @@
   border: 1px solid #e2e8f0;
   padding: 24px;
   height: 100%;
-  order: 2;
   box-sizing: border-box;
 }
 
@@ -330,60 +368,91 @@
 .artImg {
   width: 100%;
   height: auto;
-  max-height: 330px;
+  max-height: 320px;
   object-fit: contain;
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .artCardFooter strong {
   display: block;
-  font-size: 0.875rem;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: #0f172a;
   margin-bottom: 2px;
+  -webkit-font-smoothing: antialiased;
 }
 
 .artCardFooter p {
   margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 0.775rem;
+  font-weight: 400;
   line-height: 1.45;
   color: #64748b;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ==========================================================================
-   RESPONSIVE MEDIA QUERIES (IMAGE POSITIONED ON TOP WHEN STACKED)
+   RESPONSIVE BREAKPOINTS
    ========================================================================== */
 
-@media (max-width: 1120px) {
+/* Tablets & Small Laptops (<= 1024px) */
+@media (max-width: 1024px) {
   .formCardContainer {
     grid-template-columns: 1fr;
-    gap: 2rem;
     padding: clamp(1.75rem, 3.5vw, 2.5rem);
   }
 
-  .artCol {
-    order: 0;
+  .desktopArtCol {
+    display: none !important;
+  }
+
+  .mobileArtCol {
     display: flex;
-    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     background: #f8fafc;
-    border-radius: 12px;
     border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  .formCol {
-    order: 1;
+  .mobileArtImg {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 8px;
   }
 
-  .artImg {
-    max-height: 240px;
+  .mobileArtFooter strong {
+    display: block;
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 2px;
+  }
+
+  .mobileArtFooter p {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.45;
+    color: #64748b;
   }
 }
 
-/* Mobile Screens (Under 768px) */
+/* Mobile Screens (<= 768px) */
 @media (max-width: 768px) {
   .sectionOuter {
     padding-inline: 1.25rem;
-    padding-block: 2rem;
+    padding-block: 2.25rem;
   }
 
   .formCardContainer {
@@ -392,34 +461,6 @@
     padding: 0;
     background: transparent;
     border-radius: 0;
-    gap: 1.75rem;
-  }
-
-  .artCol {
-    order: 0;
-    display: flex;
-    padding: 16px;
-    margin-bottom: 0.5rem;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-  }
-
-  .formCol {
-    order: 1;
-  }
-
-  .artImg {
-    max-height: 180px;
-    margin-bottom: 8px;
-  }
-
-  .artCardFooter strong {
-    font-size: 0.825rem;
-  }
-
-  .artCardFooter p {
-    font-size: 0.75rem;
   }
 
   .formRow {
@@ -431,13 +472,13 @@
   .field select,
   .field textarea {
     font-size: 16px;
-    padding: 12px;
+    padding: 11px 13px;
   }
 
   .actionFooter {
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 14px;
   }
 
   .buttonGroup {
@@ -449,7 +490,7 @@
   .submitBtn,
   .whatsappBtn {
     width: 100%;
-    min-height: 48px;
+    min-height: 46px;
   }
 
   .socialFollow {

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+// src/pages/About/About.jsx
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   FaBuilding, 
@@ -10,13 +11,15 @@ import {
   FaArrowRight, 
   FaShieldAlt, 
   FaMapMarkerAlt,
-  FaCube,
-  FaLayerGroup,
+  FaCheckCircle
 } from "react-icons/fa";
 import AboutHero from "../../components/about/AboutHero";
 import TeamSection from "../../components/team/TeamSection";
 import EmployeeModal from "../../components/team/EmployeeModal";
 import styles from "./About.module.css";
+
+// 1. Direct asset import for Vite
+import showcaseImage from "../../assets/images/about/Seismic-Safety-&-Structural-Design.webp";
 
 const SECTION_CONTENT = [
   {
@@ -42,12 +45,8 @@ const SECTION_CONTENT = [
   },
 ];
 
-const HOUSE_3D_IMAGE = "assets/about/3d-house.png";
-
 function About() {
-  const splitSectionRef = useRef(null);
   const [sections, setSections] = useState([]);
-  const [totalMembersCount, setTotalMembersCount] = useState(0);
   const [loadingTeam, setLoadingTeam] = useState(true);
 
   // 1. Asynchronously load the team data on mount
@@ -55,14 +54,13 @@ function About() {
     let isMounted = true;
 
     import("../../data/team")
-      .then(({ getMembersBySection, teamMembers }) => {
+      .then(({ getMembersBySection }) => {
         if (!isMounted) return;
         const populatedSections = SECTION_CONTENT.map((section) => ({
           ...section,
           members: getMembersBySection ? getMembersBySection(section.id) : [],
         }));
         setSections(populatedSections);
-        setTotalMembersCount(teamMembers?.length || 0);
       })
       .catch((err) => {
         console.error("Error loading team data:", err);
@@ -96,10 +94,7 @@ function About() {
       }
     );
 
-    // Observe all static sections immediately
-    const animatedElements = document.querySelectorAll(
-      `.${styles.revealOnScroll}, .${styles.fullBleedSplitSection}`
-    );
+    const animatedElements = document.querySelectorAll(`.${styles.revealOnScroll}`);
     animatedElements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
@@ -107,101 +102,24 @@ function About() {
 
   return (
     <main id="main" className={styles.aboutPage}>
-      {/* 1. Hero Section */}
+      {/* 1. Hero Section (Twin of Projects Hero) */}
       <section className={styles.heroWrapper}>
         <AboutHero
-          eyebrow="ABOUT NAYAAB ENGINEERING"
-          title="Engineering What Comes Next in J&K"
+          titleDark="Engineering What Comes "
+          titleMuted={
+            <>
+              Next in
+              <br />
+              Jammu &amp; Kashmir:
+            </>
+          }
           subtitle="Nayaab Engineering Innovations Pvt. Ltd. combines formal corporate standards with startup agility to deliver civil construction, structural engineering, and technical design across Jammu & Kashmir."
-          stats={[
-            { value: "2022", label: "Founded in Baramulla" },
-            { value: "DPIIT", label: "Recognized Startup" },
-            { 
-              value: totalMembersCount ? `${totalMembersCount}` : "10+", 
-              label: "In-House Specialists" 
-            },
-          ]}
           primaryAction={{ href: "/contact", label: "Start a Project" }}
           secondaryAction={{ href: "#corporate-profile", label: "Company Profile" }}
         />
       </section>
 
-      {/* 2. 50/50 Split Showcase */}
-      <section 
-        ref={splitSectionRef}
-        className={styles.fullBleedSplitSection} 
-        aria-label="3D Architectural Visualization and Engineering Scope"
-      >
-        <div className={styles.splitHalfLeft}>
-          <div 
-            className={styles.splitBackground} 
-            style={{ backgroundImage: `url(${HOUSE_3D_IMAGE})` }}
-          />
-          <div className={styles.ambientGlowLeft} />
-        </div>
-
-        <div className={styles.splitHalfRight}>
-          <div className={styles.typographyContentWrapper}>
-            <div className={styles.typoEyebrowBadge}>
-              <FaCube className={styles.badgeIcon} />
-              <span>3D MODELING &amp; ARCHITECTURAL DESIGN</span>
-            </div>
-
-            <h2 className={styles.typoMainHeading}>
-              From 3D Concept Modeling <br />
-              <span>To Built Reality</span>
-            </h2>
-
-            <p className={styles.typoDescription}>
-              We transform architectural concepts into buildable CAD blueprints and photorealistic 3D models with structural precision tailored for Jammu &amp; Kashmir’s terrain.
-            </p>
-
-            <div className={styles.typoFeatureList}>
-              <div className={styles.typoFeatureItem}>
-                <div className={styles.featureBullet}>
-                  <FaLayerGroup />
-                </div>
-                <div className={styles.featureText}>
-                  <h4>3D Architectural CAD &amp; BIM Modeling</h4>
-                  <p>Comprehensive 2D blueprints, elevation renders, and structural layouts.</p>
-                </div>
-              </div>
-
-              <div className={styles.typoFeatureItem}>
-                <div className={styles.featureBullet}>
-                  <FaDraftingCompass />
-                </div>
-                <div className={styles.featureText}>
-                  <h4>Structural Load &amp; Seismic Design</h4>
-                  <p>Engineered to meet Indian Standard (IS) codes for Zone-V seismic safety.</p>
-                </div>
-              </div>
-
-              <div className={styles.typoFeatureItem}>
-                <div className={styles.featureBullet}>
-                  <FaHardHat />
-                </div>
-                <div className={styles.featureText}>
-                  <h4>Turnkey On-Site Execution</h4>
-                  <p>Direct supervision and execution from foundation to final fit-out.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.typoBottomBar}>
-              <span className={styles.typoLocationTag}>
-                <FaMapMarkerAlt /> Central Design Studio • Baramulla, J&amp;K
-              </span>
-              <Link to="/contact" className={styles.typoActionLink}>
-                <span>Explore Technical Scope</span>
-                <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Corporate Profile */}
+      {/* 2. Corporate Profile */}
       <section id="corporate-profile" className={styles.overviewSection}>
         <div className={styles.container}>
           <div className={styles.overviewGrid}>
@@ -214,7 +132,7 @@ function About() {
                 Fostering Regional Infrastructure with Engineering Precision
               </h2>
               <p className={styles.bodyParagraph}>
-                <strong>Nayaab Engineering Innovations Private Limited</strong> is a Baramulla, Jammu & Kashmir-based civil engineering and construction company incorporated in May 2024. We bring together structural integrity, practical design thinking, and modern technical planning for regional development.
+                <strong>Nayaab Engineering Innovations Private Limited</strong> is a Baramulla, Jammu &amp; Kashmir-based civil engineering and construction company incorporated in May 2024. We bring together structural integrity, practical design thinking, and modern technical planning for regional development.
               </p>
               <p className={styles.bodyParagraph}>
                 As an active private limited enterprise and a government-recognized DPIIT startup, we provide structured project execution, civil design coordination, and turnkey solutions with corporate transparency.
@@ -230,7 +148,7 @@ function About() {
                 </div>
               </div>
               <p className={styles.dpiitText}>
-                Officially acknowledged under Startup India Scheme in the <strong>Construction & Engineering Sector</strong>.
+                Officially acknowledged under Startup India Scheme in the <strong>Construction &amp; Engineering Sector</strong>.
               </p>
               <div className={styles.dpiitMetaGrid}>
                 <div className={styles.dpiitMetaItem}>
@@ -239,7 +157,7 @@ function About() {
                 </div>
                 <div className={styles.dpiitMetaItem}>
                   <span className={styles.metaLabel}>Sector</span>
-                  <span className={styles.metaValue}>Construction & Engineering</span>
+                  <span className={styles.metaValue}>Construction &amp; Engineering</span>
                 </div>
                 <div className={styles.dpiitMetaItem}>
                   <span className={styles.metaLabel}>Recognition Date</span>
@@ -255,13 +173,62 @@ function About() {
         </div>
       </section>
 
+      {/* 3. Architectural & Structural Showcase Section (Local WebP Asset) */}
+      <section className={styles.visionSection}>
+        <div className={styles.container}>
+          <div className={styles.visionGrid}>
+            <div className={`${styles.visionImageWrapper} ${styles.revealOnScroll}`}>
+              <img 
+                src={showcaseImage} 
+                alt="Seismic Safety and Structural Design Showcase" 
+                loading="lazy" 
+                decoding="async" 
+              />
+              <div className={styles.visionFloatingBadge}>
+                <span className={styles.badgeNumber}>Zone-V</span>
+                <span className={styles.badgeText}>Seismic Safety &amp; Structural Design</span>
+              </div>
+            </div>
+
+            <div className={`${styles.visionContent} ${styles.revealOnScroll} ${styles.revealDelay1}`}>
+              <div className={styles.sectionEyebrow}>
+                <span className={styles.eyebrowSquare} />
+                <span>ENGINEERING PHILOSOPHY</span>
+              </div>
+              <h2 className={styles.sectionTitle}>
+                Built for Resilience, Engineered for Kashmir’s Terrain
+              </h2>
+              <p className={styles.bodyParagraph}>
+                Every blueprint and structural calculation developed at Nayaab Engineering Innovations is customized for high-altitude topography, seismic safety standards (IS 1893), and local weather resilience.
+              </p>
+              <div className={styles.visionPillars}>
+                <div className={styles.pillarItem}>
+                  <FaCheckCircle className={styles.pillarIcon} />
+                  <div>
+                    <strong>Parametric 3D Modeling &amp; CAD Blueprints</strong>
+                    <p>Photorealistic elevations and integrated structural drafts before site mobilization.</p>
+                  </div>
+                </div>
+                <div className={styles.pillarItem}>
+                  <FaCheckCircle className={styles.pillarIcon} />
+                  <div>
+                    <strong>End-to-End Turnkey Execution</strong>
+                    <p>From foundation pile-testing to structural reinforcement and final architectural handover.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 4. Company Fact Sheet */}
       <section className={styles.factSheetSection}>
         <div className={styles.container}>
           <div className={`${styles.sectionHeaderCentered} ${styles.revealOnScroll}`}>
             <div className={styles.sectionEyebrowCenter}>
               <span className={styles.eyebrowSquare} />
-              <span>TRANSPARENCY & CREDENTIALS</span>
+              <span>TRANSPARENCY &amp; CREDENTIALS</span>
             </div>
             <h2 className={styles.sectionTitle}>Company Fact Sheet</h2>
             <p className={styles.sectionDesc}>
@@ -285,7 +252,7 @@ function About() {
               </div>
               <span className={styles.bentoLabel}>Corporate ID (CIN)</span>
               <h3 className={styles.bentoValueCIN}>U42900JK2024PTC015987</h3>
-              <p className={styles.bentoSubtext}>Active e-Filing & Compliance Status</p>
+              <p className={styles.bentoSubtext}>Active e-Filing &amp; Compliance Status</p>
             </div>
 
             <div className={`${styles.bentoCard} ${styles.revealOnScroll} ${styles.revealDelay3}`}>
@@ -293,8 +260,8 @@ function About() {
                 <FaMapMarkerAlt />
               </div>
               <span className={styles.bentoLabel}>Headquarters</span>
-              <h3 className={styles.bentoValue}>Baramulla, J&K</h3>
-              <p className={styles.bentoSubtext}>Qutub Complex, Opposite J&K Bank (TP), Bramulla Jammu and Kashmir, 193101. </p>
+              <h3 className={styles.bentoValue}>Baramulla, J&amp;K</h3>
+              <p className={styles.bentoSubtext}>Qutub Complex, Opposite J&amp;K Bank (TP), Baramulla, Jammu &amp; Kashmir - 193101.</p>
             </div>
 
             <div className={`${styles.bentoCard} ${styles.revealOnScroll} ${styles.revealDelay4}`}>
@@ -303,7 +270,7 @@ function About() {
               </div>
               <span className={styles.bentoLabel}>Core Industry</span>
               <h3 className={styles.bentoValue}>Civil Engineering</h3>
-              <p className={styles.bentoSubtext}>NIC Code 42 — Civil Construction & Design</p>
+              <p className={styles.bentoSubtext}>NIC Code 42 — Civil Construction &amp; Design</p>
             </div>
           </div>
         </div>
@@ -324,7 +291,7 @@ function About() {
             <div className={`${styles.capabilityCard} ${styles.revealOnScroll} ${styles.revealDelay1}`}>
               <div className={styles.capHeader}>
                 <FaHardHat className={styles.capIcon} />
-                <h3>Civil & Structural Engineering</h3>
+                <h3>Civil &amp; Structural Engineering</h3>
               </div>
               <p>
                 Comprehensive structural analysis, technical planning, and execution management for residential, commercial, and public infrastructure projects.
@@ -334,7 +301,7 @@ function About() {
             <div className={`${styles.capabilityCard} ${styles.revealOnScroll} ${styles.revealDelay2}`}>
               <div className={styles.capHeader}>
                 <FaDraftingCompass className={styles.capIcon} />
-                <h3>Architectural & CAD Planning</h3>
+                <h3>Architectural &amp; CAD Planning</h3>
               </div>
               <p>
                 Computer-Aided Design (CAD) drafting, 2D/3D building modeling, structural layout blueprints, and pre-construction technical documentation.
@@ -354,7 +321,7 @@ function About() {
             <div className={`${styles.capabilityCard} ${styles.revealOnScroll} ${styles.revealDelay4}`}>
               <div className={styles.capHeader}>
                 <FaShieldAlt className={styles.capIcon} />
-                <h3>Turnkey Execution & Interiors</h3>
+                <h3>Turnkey Execution &amp; Interiors</h3>
               </div>
               <p>
                 End-to-end site development, institutional spatial planning, commercial fit-outs, and turnkey building solutions.
@@ -370,11 +337,11 @@ function About() {
           <div className={`${styles.sectionHeaderCentered} ${styles.revealOnScroll}`}>
             <div className={styles.sectionEyebrowCenter}>
               <span className={styles.eyebrowSquare} />
-              <span>IN-HOUSE LEADERSHIP & TALENT</span>
+              <span>IN-HOUSE LEADERSHIP &amp; TALENT</span>
             </div>
-            <h2 className={styles.sectionTitle}>Meet Our Engineering & Design Team</h2>
+            <h2 className={styles.sectionTitle}>Meet Our Engineering &amp; Design Team</h2>
             <p className={styles.sectionDesc}>
-              A multidisciplinary collective of certified civil engineers, CAD architects, and site supervisors executing projects across Jammu & Kashmir.
+              A multidisciplinary collective of certified civil engineers, CAD architects, and site supervisors executing projects across Jammu &amp; Kashmir.
             </p>
           </div>
 

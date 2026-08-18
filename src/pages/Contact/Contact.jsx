@@ -161,8 +161,6 @@ export default function Contact() {
       {/* 3. CONTACT FORM INTEGRATION */}
       <section className={styles.formSection}>
         <ContactForm
-          eyebrow="Direct Inquiry"
-          title="Send a Project Brief"
           subtitle="Fill out the details below and an engineer from our team will get back to you promptly."
         />
       </section>

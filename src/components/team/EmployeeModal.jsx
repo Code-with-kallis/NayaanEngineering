@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+// src/components/team/EmployeeModal.jsx
+import React, { useEffect, useState, useCallback } from "react";
 import { 
   FaTimes, 
   FaEnvelope, 
@@ -12,18 +12,12 @@ import { teamMembers, getEmployeeById } from "../../data/team";
 import styles from "./EmployeeModal.module.css";
 
 function EmployeeModal() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
   const [activeEmployee, setActiveEmployee] = useState(null);
 
-  useEffect(() => {
-    // 1. Check Query Params (?member=neipl-0101 or ?id=neipl-0101)
-    const paramId = searchParams.get("member") || searchParams.get("id");
-
-    // 2. Fallback to URL Hash (#neipl-0101)
-    const hashId = location.hash ? location.hash.replace("#", "").trim() : "";
-
+  const checkActiveEmployee = useCallback(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paramId = params.get("member") || params.get("id");
+    const hashId = window.location.hash ? window.location.hash.replace("#", "").trim() : "";
     const targetId = (paramId || hashId || "").toLowerCase();
 
     if (targetId) {
@@ -38,26 +32,57 @@ function EmployeeModal() {
     } else {
       setActiveEmployee(null);
     }
-  }, [location, searchParams]);
+  }, []);
 
-  // Lock background scroll when modal is active
+  // Sync with browser history and direct link mounts
   useEffect(() => {
-    if (activeEmployee) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    checkActiveEmployee();
+
+    const handleUrlChange = () => {
+      checkActiveEmployee();
+    };
+
+    window.addEventListener("popstate", handleUrlChange);
+    window.addEventListener("hashchange", handleUrlChange);
 
     return () => {
-      document.body.style.overflow = "";
+      window.removeEventListener("popstate", handleUrlChange);
+      window.removeEventListener("hashchange", handleUrlChange);
     };
+  }, [checkActiveEmployee]);
+
+  // Lock background scroll without resetting scroll position
+  useEffect(() => {
+    if (activeEmployee) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
   }, [activeEmployee]);
 
   const handleClose = () => {
     setActiveEmployee(null);
-    // Clear query params & hash cleanly from URL
-    navigate(location.pathname, { replace: true });
+    
+    // Cleanly strip query params without triggering route navigation
+    const url = new URL(window.location.href);
+    url.searchParams.delete("member");
+    url.searchParams.delete("id");
+    url.hash = "";
+    window.history.pushState({}, "", url.pathname + (url.search ? url.search : ""));
   };
+
+  // Keyboard Escape listener
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && activeEmployee) {
+        handleClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeEmployee]);
 
   if (!activeEmployee) return null;
 
@@ -141,7 +166,7 @@ function EmployeeModal() {
           {/* Core Competencies */}
           {skills.length > 0 && (
             <div className={styles.sectionBlock}>
-              <h3 className={styles.blockTitle}>Core Competencies & Skills</h3>
+              <h3 className={styles.blockTitle}>Core Competencies &amp; Skills</h3>
               <div className={styles.skillsGrid}>
                 {skills.map((skill) => (
                   <span key={skill} className={styles.skillChip}>

@@ -22,6 +22,7 @@ html {
   background: var(--about-surface);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .heroWrapper {
@@ -30,243 +31,14 @@ html {
 }
 
 /* =========================================================================
-   FULL-BLEED 50/50 SPLIT SECTION — 3D MODEL (LEFT) + TYPOGRAPHY (RIGHT)
+   CONTAINER: Locked to 1440px max-width & centered for 1920px, 2K & 4K
    ========================================================================= */
-.fullBleedSplitSection {
-  position: relative;
+.container {
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  min-height: 560px;
-  display: flex;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #0B192C; /* Studio Navy */
-  z-index: 5;
-}
-
-/* LEFT HALF: 50% Desktop — 3D House Scene */
-.splitHalfLeft {
-  position: relative;
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateX(-100%);
-  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
-  will-change: transform, opacity;
-  border-right: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.splitBackground {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: scale(1);
-}
-
-.splitBackground img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-}
-
-.splitHalfLeft:hover .splitBackground {
-  transform: scale(1.04); /* Subtle zoom effect preserved */
-}
-
-.ambientGlowLeft {
-  position: absolute;
-  width: clamp(300px, 35vw, 500px);
-  height: clamp(300px, 35vw, 500px);
-  background: radial-gradient(circle, rgba(29, 78, 137, 0.35) 0%, rgba(11, 25, 44, 0) 70%);
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(40px);
-  z-index: 1;
-}
-
-/* RIGHT HALF: 50% Desktop — Typography & Scope Showcase */
-.splitHalfRight {
-  position: relative;
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(2.5rem, 5vw, 4.5rem);
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--nei-container-pad, clamp(1.25rem, 5vw, 4rem));
   box-sizing: border-box;
-  background: radial-gradient(circle at 75% 50%, #132742 0%, #0B192C 85%);
-  opacity: 0;
-  transform: translateX(100%);
-  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
-  will-change: transform, opacity;
-}
-
-/* GLIDE IN ON SCROLL */
-.fullBleedSplitSection.isVisible .splitHalfLeft,
-.fullBleedSplitSection.isVisible .splitHalfRight {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* =========================================================================
-   TYPOGRAPHY CONTENT STYLES
-   ========================================================================= */
-.typographyContentWrapper {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  width: 100%;
-  max-width: 560px;
-}
-
-.typoEyebrowBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(183, 65, 14, 0.15);
-  border: 1px solid rgba(183, 65, 14, 0.4);
-  color: #FF7A45;
-  font-size: 0.725rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  padding: 6px 14px;
-  border-radius: 4px;
-  width: fit-content;
-  text-transform: uppercase;
-}
-
-.badgeIcon {
-  font-size: 0.85rem;
-}
-
-.typoMainHeading {
-  margin: 0;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(2.2rem, 3.4vw, 3.2rem);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  color: #FFFFFF;
-}
-
-.typoMainHeading span {
-  color: #FF7A45;
-}
-
-.typoDescription {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.65;
-  color: #94A3B8;
-}
-
-/* FEATURE LIST ROWS */
-.typoFeatureList {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.typoFeatureItem {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.featureBullet {
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #FF7A45;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  flex-shrink: 0;
-  border-radius: 4px;
-  margin-top: 2px;
-}
-
-.featureText h4 {
-  margin: 0 0 2px 0;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #F1F5F9;
-  letter-spacing: 0.02em;
-}
-
-.featureText p {
-  margin: 0;
-  font-size: 0.825rem;
-  color: #94A3B8;
-  line-height: 1.45;
-}
-
-/* BOTTOM META & ACTION */
-.typoBottomBar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  flex-wrap: wrap;
-}
-
-.typoLocationTag {
-  font-size: 0.775rem;
-  font-weight: 600;
-  color: #64748B;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.typoLocationTag svg {
-  color: var(--about-accent);
-}
-
-.typoActionLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #FFFFFF;
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  text-decoration: none;
-  transition: all 200ms ease;
-}
-
-.typoActionLink:hover {
-  color: #FF7A45;
-  transform: translateX(3px);
 }
 
 /* =========================================================================
@@ -274,7 +46,7 @@ html {
    ========================================================================= */
 .revealOnScroll {
   opacity: 0;
-  transform: translateY(32px);
+  transform: translateY(28px);
   transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
@@ -288,15 +60,6 @@ html {
 .revealDelay2 { transition-delay: 200ms; }
 .revealDelay3 { transition-delay: 300ms; }
 .revealDelay4 { transition-delay: 400ms; }
-
-/* CONTAINER */
-.container {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding-inline: var(--nei-container-pad, clamp(1.25rem, 5vw, 4rem));
-  box-sizing: border-box;
-}
 
 /* ===== COMMON HEADINGS & EYEBROW ===== */
 .sectionEyebrow,
@@ -354,6 +117,7 @@ html {
 
 /* ===== 1. OVERVIEW & DPIIT SECTION ===== */
 .overviewSection {
+  width: 100%;
   padding-block: clamp(3.5rem, 5vw, 5.5rem);
   background: var(--about-surface);
   border-bottom: 1px solid var(--about-border);
@@ -361,10 +125,14 @@ html {
 
 .overviewGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-  gap: clamp(32px, 5vw, 56px);
+  grid-template-columns: 1.25fr 0.85fr;
+  gap: clamp(28px, 4.5vw, 56px);
   align-items: center;
   width: 100%;
+}
+
+.overviewTextContent {
+  min-width: 0;
 }
 
 .bodyParagraph {
@@ -383,10 +151,11 @@ html {
   background: var(--about-surface-alt);
   border: 1px solid var(--about-border);
   border-left: 4px solid var(--about-accent);
-  padding: 32px 28px;
+  padding: clamp(24px, 3vw, 32px) clamp(20px, 2.5vw, 28px);
   border-radius: 0;
   box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
   transition: transform 300ms ease, box-shadow 300ms ease;
+  min-width: 0;
 }
 
 .dpiitCard:hover {
@@ -443,6 +212,7 @@ html {
 .dpiitMetaItem {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .metaLabel {
@@ -457,12 +227,133 @@ html {
   font-weight: 700;
   color: var(--about-navy);
   margin-top: 2px;
+  word-break: break-word;
 }
 
-/* ===== 2. FACT SHEET BENTO GRID ===== */
-.factSheetSection {
-  padding-block: clamp(3.5rem, 5vw, 5.5rem);
+/* =========================================================================
+   2. ARCHITECTURAL SHOWCASE SECTION (UNSPLASH VISUAL WITH FLOATING BADGE)
+   ========================================================================= */
+.visionSection {
+  width: 100%;
+  padding-block: clamp(3.5rem, 5.5vw, 5.5rem);
   background: var(--about-surface-alt);
+  border-bottom: 1px solid var(--about-border);
+}
+
+.visionGrid {
+  display: grid;
+  grid-template-columns: 1.08fr 1fr;
+  gap: clamp(28px, 4.5vw, 56px);
+  align-items: center;
+  width: 100%;
+}
+
+.visionImageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+  clip-path: polygon(32px 0, 100% 0, 100% calc(100% - 32px), calc(100% - 32px) 100%, 0 100%, 0 32px);
+  -webkit-clip-path: polygon(32px 0, 100% 0, 100% calc(100% - 32px), calc(100% - 32px) 100%, 0 100%, 0 32px);
+  border-radius: 16px;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+  background: #0E1218;
+  transform: translateZ(0);
+}
+
+.visionImageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.visionImageWrapper:hover img {
+  transform: scale(1.05);
+}
+
+.visionFloatingBadge {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(183, 65, 14, 0.4);
+  padding: 0.75rem 1.15rem;
+  border-radius: 10px;
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+}
+
+.badgeNumber {
+  font-family: var(--nei-font-primary, 'Inter', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #FF7A45;
+  letter-spacing: 0.02em;
+}
+
+.badgeText {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #CBD5E1;
+  letter-spacing: 0.02em;
+}
+
+.visionContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.visionPillars {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-top: 0.5rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--about-border);
+}
+
+.pillarItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pillarIcon {
+  color: var(--about-accent);
+  font-size: 1.1rem;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+.pillarItem strong {
+  display: block;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--about-navy);
+  margin-bottom: 2px;
+}
+
+.pillarItem p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--about-text-muted);
+}
+
+/* ===== 3. FACT SHEET BENTO GRID ===== */
+.factSheetSection {
+  width: 100%;
+  padding-block: clamp(3.5rem, 5vw, 5.5rem);
+  background: var(--about-surface);
   border-bottom: 1px solid var(--about-border);
 }
 
@@ -474,11 +365,12 @@ html {
 }
 
 .bentoCard {
-  background: var(--about-surface);
+  background: var(--about-surface-alt);
   border: 1px solid var(--about-border);
   padding: 28px 24px;
   border-radius: 0;
   transition: transform 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+  min-width: 0;
 }
 
 .bentoCard:hover {
@@ -533,10 +425,11 @@ html {
   margin: 0;
 }
 
-/* ===== 3. CORE CAPABILITIES SECTION ===== */
+/* ===== 4. CORE CAPABILITIES SECTION ===== */
 .capabilitiesSection {
+  width: 100%;
   padding-block: clamp(3.5rem, 5vw, 5.5rem);
-  background: var(--about-surface);
+  background: var(--about-surface-alt);
   border-bottom: 1px solid var(--about-border);
 }
 
@@ -548,11 +441,12 @@ html {
 }
 
 .capabilityCard {
-  background: var(--about-surface-alt);
+  background: var(--about-surface);
   border: 1px solid var(--about-border);
   padding: 28px;
   border-radius: 0;
   transition: all 250ms ease;
+  min-width: 0;
 }
 
 .capabilityCard:hover {
@@ -589,8 +483,9 @@ html {
   color: var(--about-text-muted);
 }
 
-/* ===== 4. TEAM ROSTER INTEGRATION ===== */
+/* ===== 5. TEAM ROSTER INTEGRATION ===== */
 .teamRosterSection {
+  width: 100%;
   padding-block: clamp(3.5rem, 5vw, 5.5rem);
   background: var(--about-surface);
 }
@@ -601,8 +496,9 @@ html {
   gap: clamp(2.5rem, 4vw, 4.5rem);
 }
 
-/* ===== 5. CTA SECTION ===== */
+/* ===== 6. CTA SECTION ===== */
 .ctaSection {
+  width: 100%;
   padding-block: clamp(4rem, 6vw, 6rem);
   background: var(--about-surface-alt);
   border-top: 1px solid var(--about-border);
@@ -651,6 +547,7 @@ html {
   text-decoration: none;
   border-radius: 0;
   transition: all 200ms ease;
+  white-space: nowrap;
 }
 
 .ctaPrimaryBtn {
@@ -679,94 +576,70 @@ html {
 }
 
 /* =========================================================================
-   RESPONSIVE BREAKPOINTS (MOBILE & TABLET)
+   RESPONSIVE BREAKPOINTS (LAPTOPS, TABLETS & MOBILE)
    ========================================================================= */
-@media (max-width: 1024px) {
-  .fullBleedSplitSection {
-    flex-direction: column;
-    height: auto;
-    min-height: 100vh;
-    min-height: 100dvh;
+
+/* Laptops (1025px to 1280px) */
+@media (max-width: 1280px) and (min-width: 1025px) {
+  .overviewGrid,
+  .visionGrid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 2.25rem;
   }
 
-  /* TOP HALF: 3D MODEL */
-  .splitHalfLeft {
-    width: 100%;
-    height: 44vh;
-    height: 44dvh;
-    min-height: 280px;
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    transform: translateX(-100%);
-  }
-
-  .splitBackground {
-    transform: scale(1);
-  }
-
-  /* BOTTOM HALF: TYPOGRAPHY PANEL (NO OVERLAY, FULL READABILITY) */
-  .splitHalfRight {
-    width: 100%;
-    height: auto;
-    padding: 2rem 1.25rem 2.5rem;
-    transform: translateX(100%);
-    align-items: flex-start;
-  }
-
-  .typographyContentWrapper {
+  .bentoGrid {
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-    max-width: 100%;
   }
 
-  .typoEyebrowBadge {
-    font-size: 0.65rem;
-    padding: 5px 10px;
+  .bentoCard {
+    padding: 22px 18px;
   }
 
-  .typoMainHeading {
-    font-size: clamp(1.85rem, 6.5vw, 2.35rem);
-    line-height: 1.1;
-  }
-
-  .typoDescription {
-    font-size: 0.875rem;
-    line-height: 1.55;
-  }
-
-  .typoFeatureList {
-    gap: 0.75rem;
-    padding-top: 0.75rem;
-  }
-
-  .featureText h4 {
-    font-size: 1rem;
-  }
-
-  .featureText p {
-    font-size: 0.775rem;
-  }
-
-  .typoBottomBar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    padding-top: 0.75rem;
-  }
-
-  .typoActionLink {
-    font-size: 0.75rem;
-  }
-
-  .overviewGrid {
-    grid-template-columns: 1fr;
-    gap: 36px;
+  .bentoValue {
+    font-size: 1.4rem;
   }
 }
 
-@media (max-width: 768px) {
-  .capabilitiesGrid,
-  .dpiitMetaGrid {
+/* Tablets & Small Laptops (769px to 1024px) */
+@media (max-width: 1024px) {
+  .overviewGrid,
+  .visionGrid {
     grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .bentoGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .sectionHeaderCentered {
+    margin-bottom: 2.5rem;
+  }
+}
+
+/* Mobile Devices & Small Tablets (<= 768px) */
+@media (max-width: 768px) {
+  .overviewSection,
+  .visionSection,
+  .factSheetSection,
+  .capabilitiesSection,
+  .teamRosterSection,
+  .ctaSection {
+    padding-block: 3.5rem;
+  }
+
+  .visionImageWrapper {
+    aspect-ratio: 16 / 10;
+    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    -webkit-clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+    border-radius: 12px;
+  }
+
+  .capabilitiesGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .ctaActions {
@@ -781,12 +654,38 @@ html {
   }
 }
 
-@media (max-width: 520px) {
+/* Small Mobile Phones (<= 480px) */
+@media (max-width: 480px) {
   .bentoGrid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .dpiitMetaGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .dpiitCard {
-    padding: 24px 20px;
+    padding: 22px 18px;
+  }
+
+  .bentoCard,
+  .capabilityCard {
+    padding: 22px 18px;
+  }
+
+  .sectionTitle {
+    font-size: clamp(1.85rem, 8vw, 2.4rem);
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  .revealOnScroll {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    transition: none !important;
   }
 }

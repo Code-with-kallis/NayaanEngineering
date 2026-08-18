@@ -1,9 +1,9 @@
+// src/pages/Services/Services.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { 
   FaHome,
-  FaSquare, 
   FaDraftingCompass, 
   FaBuilding, 
   FaHardHat, 
@@ -82,7 +82,6 @@ export default function Services() {
       handlePrevSlide();
     }
 
-    // Reset touch coordinates
     touchStartX.current = 0;
     touchEndX.current = 0;
   };
@@ -90,7 +89,7 @@ export default function Services() {
   return (
     <main className={styles.pageWrapper}>
       <Helmet>
-        <title>Engineering & Architectural Services | Nayaab Engineering Innovations</title>
+        <title>Engineering &amp; Architectural Services | Nayaab Engineering Innovations</title>
         <meta
           name="description"
           content="Explore civil engineering, 3D architectural modeling, structural analysis, turnkey construction, and interior design services by Nayaab Engineering in Kashmir."
@@ -100,7 +99,7 @@ export default function Services() {
 
       {/* ================= HERO SECTION ================= */}
       <section className={styles.heroSection} aria-labelledby="services-hero-title">
-        {/* DESKTOP BACKGROUND FULL-SCREEN SLIDER & OVERLAY */}
+        {/* DESKTOP & TABLET BACKGROUND FULL-SCREEN SLIDER */}
         <div className={styles.desktopHeroSlider} aria-hidden="true">
           {HERO_SLIDES.map((slide, idx) => (
             <div
@@ -114,7 +113,7 @@ export default function Services() {
           <div className={styles.desktopOverlay} />
         </div>
 
-        {/* MOBILE TOP HALF MEDIA SLIDER (TOUCH SWIPE SUPPORT) */}
+        {/* MOBILE TOP HALF MEDIA SLIDER (STRICTLY MOBILE PHONES <= 768px) */}
         <div 
           className={styles.mobileHeroMedia}
           onTouchStart={onTouchStart}
@@ -150,7 +149,7 @@ export default function Services() {
         {/* HERO CONTENT CONTAINER */}
         <div className={styles.heroContainer}>
           <div className={styles.heroContentLeft}>
-            {/* Breadcrumb Navigation */}
+            {/* Breadcrumb */}
             <nav className={`${styles.breadcrumb} ${styles.animateSlideLeft} ${styles.delay1}`} aria-label="Breadcrumb">
               <FaHome className={styles.homeIcon} aria-hidden="true" />
               <Link to="/" className={styles.breadcrumbLink}>Home</Link>
@@ -158,36 +157,36 @@ export default function Services() {
               <strong className={styles.activeBreadcrumb} aria-current="page">Services</strong>
             </nav>
 
+            {/* Eyebrow */}
             <div className={`${styles.sectionTagRow} ${styles.animateSlideLeft} ${styles.delay2}`}>
-              <FaSquare className={styles.tagSquareIcon} aria-hidden="true" />
-              <span>WHAT WE DO</span>
+              <span className={styles.eyebrowDot} />
+              <span className={styles.eyebrowText}>SERVICES &amp; DISCIPLINES</span>
             </div>
 
-            {/* Dual-Color Hero Title */}
+            {/* Title */}
             <h1 id="services-hero-title" className={`${styles.heroTitle} ${styles.animateSlideLeft} ${styles.delay3}`}>
-              <span className={styles.titleDark}>Civil &amp; </span>
-              <span className={styles.titleMuted}>
-                Architectural
-                <br />
-                Solutions:
-              </span>
+              Civil &amp; Architectural
+              <br />
+              Engineering Solutions
             </h1>
 
-            {/* Hero Description */}
+            {/* Subtitle */}
             <p className={`${styles.heroText} ${styles.animateSlideLeft} ${styles.delay4}`}>
-              From initial 3D architectural modeling and structural load calculations to full turnkey site execution, luxury interior fit-outs, and municipal permissions across Jammu &amp; Kashmir.
+              From 3D architectural modeling and structural calculations to turnkey execution across Jammu &amp; Kashmir.
             </p>
 
-            {/* Desktop Quick Action */}
-            <div className={`${styles.heroCtaRow} ${styles.animateSlideLeft} ${styles.delay4}`}>
-              <Link to="/contact" className={styles.primaryHeroBtn}>
+            {/* Dual Action Buttons */}
+            <div className={`${styles.ctaGroup} ${styles.animateSlideLeft} ${styles.delay4}`}>
+              <Link to="/contact" className={`${styles.btn} ${styles.btnPrimary}`}>
                 <span>Discuss Your Project</span>
-                <FaArrowRight className={styles.heroBtnArrow} />
+              </Link>
+              <Link to="/projects" className={`${styles.btn} ${styles.btnOutline}`}>
+                <span>Our Projects</span>
               </Link>
             </div>
           </div>
 
-          {/* CLEAN FLOATING SLIDER CONTROLS */}
+          {/* FLOATING SLIDER CONTROLS */}
           <div className={`${styles.desktopSliderControls} ${styles.animateSlideLeft} ${styles.delay4}`}>
             <div className={styles.sliderControlHeader}>
               <span className={styles.sliderTrackLabel}>Featured Discipline</span>
@@ -237,8 +236,8 @@ export default function Services() {
         <div className={styles.gridContainer}>
           <div className={styles.sectionHeader}>
             <div className={styles.gridTagRow}>
-              <FaSquare className={styles.gridTagIcon} aria-hidden="true" />
-              <span>Full Capabilities</span>
+              <span className={styles.eyebrowDot} />
+              <span className={styles.eyebrowTextDark}>Full Capabilities</span>
             </div>
             <h2 className={styles.gridSectionTitle}>Explore Engineering Disciplines</h2>
           </div>
@@ -252,7 +251,6 @@ export default function Services() {
                   className={styles.serviceCard}
                   aria-label={`Explore details for ${service.title}`}
                 >
-                  {/* Chamfered Image Stage */}
                   <div className={styles.cardImageWrapper}>
                     <img 
                       src={service.coverImage} 
@@ -265,13 +263,11 @@ export default function Services() {
                     </div>
                   </div>
 
-                  {/* Equalized Content Body */}
                   <div className={styles.cardBody}>
                     <span className={styles.serviceTag}>Engineering Discipline</span>
                     <h3 className={styles.cardTitle}>{service.title}</h3>
                     <p className={styles.cardDesc}>{service.shortDesc}</p>
 
-                    {/* Features List */}
                     {service.features && service.features.length > 0 && (
                       <ul className={styles.featuresList}>
                         {service.features.slice(0, 3).map((feat, idx) => (
@@ -283,7 +279,6 @@ export default function Services() {
                       </ul>
                     )}
 
-                    {/* Interactive Action Link */}
                     <div className={styles.detailsBtn}>
                       <span>Explore Service</span>
                       <FaArrowRight className={styles.btnArrow} aria-hidden="true" />
@@ -293,7 +288,7 @@ export default function Services() {
               </article>
             ))}
 
-            {/* Distinct Interactive CTA Card */}
+            {/* High-Impact 6th CTA Card */}
             <article className={`${styles.cardItem} ${styles.specialCtaItem}`}>
               <Link 
                 to="/contact" 
