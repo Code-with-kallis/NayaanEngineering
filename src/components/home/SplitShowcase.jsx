@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -41,7 +42,7 @@ export default function SplitShowcase() {
     <section
       ref={sectionRef}
       className={styles.fullBleedSection}
-      aria-label="Core Engineering Services and Architectural Visualization"
+      aria-label="Architectural design, structural engineering and turnkey construction services"
       style={{
         "--bg-desktop": `url(${house3dDesktop})`,
         "--bg-mobile": `url(${house3dMobile})`,
@@ -56,16 +57,20 @@ export default function SplitShowcase() {
         <div className={styles.clippedCard}>
           <div className={styles.eyebrowWrapper}>
             <FaCube className={styles.eyebrowIcon} />
-            <span className={styles.eyebrowText}>CORE ENGINEERING &amp; DESIGN</span>
+            <span className={styles.eyebrowText}>OUR SERVICES</span>
           </div>
 
           <h2 className={styles.mainTitle}>
-            End-To-End Engineering <br />
-            <span className={styles.titleGrey}>&amp; Modern Architecture</span>
+            Complete Engineering <br />
+            <span className={styles.titleGrey}>
+              &amp; Construction Services
+            </span>
           </h2>
 
           <p className={styles.description}>
-            Delivering integrated civil engineering solutions with structural precision and high-fidelity 3D modeling tailored for regional terrain demands.
+            From architectural planning and structural engineering to complete
+            construction, we deliver practical and reliable solutions for
+            residential and commercial projects across Kashmir.
           </p>
 
           <div className={styles.featureList}>
@@ -73,9 +78,13 @@ export default function SplitShowcase() {
               <div className={styles.featureBullet}>
                 <FaLayerGroup />
               </div>
+
               <div className={styles.featureText}>
-                <h4>1. Architectural &amp; 3D BIM Design</h4>
-                <p>Comprehensive 2D blueprints, realistic 3D exterior renders, and complete spatial planning.</p>
+                <h4>1. Architectural Design</h4>
+                <p>
+                  Thoughtful 2D plans, 3D designs, and building layouts tailored
+                  to your site, needs, and vision.
+                </p>
               </div>
             </div>
 
@@ -83,9 +92,14 @@ export default function SplitShowcase() {
               <div className={styles.featureBullet}>
                 <FaDraftingCompass />
               </div>
+
               <div className={styles.featureText}>
-                <h4>2. Structural Engineering &amp; Seismic Safety</h4>
-                <p>Load calculation, foundation design, and compliance with Zone-V seismic safety standards.</p>
+                <h4>2. Structural Engineering</h4>
+                <p>
+                  Safe and reliable structural designs engineered for seismic
+                  conditions, snow loads, soil conditions, and long-term
+                  durability.
+                </p>
               </div>
             </div>
 
@@ -93,20 +107,25 @@ export default function SplitShowcase() {
               <div className={styles.featureBullet}>
                 <FaHardHat />
               </div>
+
               <div className={styles.featureText}>
-                <h4>3. Turnkey Execution &amp; Site Supervision</h4>
-                <p>On-site quality monitoring, material standard testing, and full project lifecycle execution.</p>
+                <h4>3. Turnkey Construction</h4>
+                <p>
+                  Complete construction management from site preparation and
+                  structural work to finishing and final handover.
+                </p>
               </div>
             </div>
           </div>
 
           <div className={styles.bottomBar}>
             <span className={styles.locationTag}>
-              <FaShieldAlt /> DPIIT Recognized • IS Code Compliant
+              <FaShieldAlt /> KASHMIR, INDIA
             </span>
 
             <Link to="/services" className={styles.exploreBtn}>
               <span>Explore All Services</span>
+
               <span className={styles.exploreBtnArrow}>
                 <FaArrowRight />
               </span>
@@ -117,3 +136,4 @@ export default function SplitShowcase() {
     </section>
   );
 }
+

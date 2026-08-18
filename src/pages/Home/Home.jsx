@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import Hero from "../../components/home/Hero";
 import BrandMarquee from "../../components/home/BrandMarquee";
+import StatsCounter from "../../components/home/StatsCounter";
 import AboutBento from "../../components/home/AboutBento";
 import SplitShowcase from "../../components/home/SplitShowcase";
 import FeaturedProjects from "../../components/home/FeaturedProjects";
@@ -148,36 +149,38 @@ export default function Home() {
       {/* 2. LOGO MARQUEE - Instant Social Proof */}
       <BrandMarquee />
 
-      {/* 3. ABOUT BENTO - Identity & Core Values */}
+      {/* 3. BOLD STATS COUNTER - Animated Proof Numbers */}
+      <StatsCounter />
+
+      {/* 4. ABOUT BENTO - Identity & Core Values */}
       <AboutBento />
 
-      {/* 4. SPLIT SHOWCASE - Visual Highlights / Core Service Focus */}
+      {/* 5. SPLIT SHOWCASE - Visual Highlights / Core Service Focus */}
       <SplitShowcase />
 
-      {/* 5. FEATURED WORK - Proof of Execution & Portfolio */}
+      {/* 6. FEATURED WORK - Proof of Execution & Portfolio */}
       <FeaturedProjects
         projects={projects}
         loading={loadingProjects}
         onOpenModal={openProjectModal}
       />
 
-      {/* 6. OUR PROCESS - How We Work */}
+      {/* 7. OUR PROCESS - How We Work */}
       <ProcessSection />
 
-      {/* 7. WHY TRUST US - Value Props & Risk Reversal */}
+      {/* 8. WHY TRUST US - Value Props & Risk Reversal */}
       <WhyTrustUs />
 
-      {/* 8. GOOGLE REVIEWS - Live Social Proof */}
+      {/* 9. GOOGLE REVIEWS - Live Social Proof */}
       <GoogleReviews />
 
-      {/* 9. TICKER - High Energy Transition into CTA */}
+      {/* 10. TICKER - High Energy Transition into CTA */}
       <TickerBanner />
 
-      {/* 10. CONTACT FORM - Final Conversion Point */}
-      <ContactForm
-      />
+      {/* 11. CONTACT FORM - Final Conversion Point */}
+      <ContactForm />
 
-      {/* 11. MODAL DRAWER - Overlay */}
+      {/* 12. MODAL DRAWER - Overlay */}
       <ProjectDrawer
         isOpen={!!selectedProject}
         project={selectedProject}

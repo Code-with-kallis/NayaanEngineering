@@ -1,29 +1,36 @@
-// src/components/home/BrandMarquee.jsx
 import React from "react";
-import { FaAward, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import styles from "./BrandMarquee.module.css";
 
 const BRAND_PLATFORMS = [
   {
-    name: "DPIIT",
-    sub: "#startupindia",
-    icon: (
-      <span className={`${styles.brandBadge} ${styles.bgDpiit}`} aria-hidden="true">
-        <FaAward className={styles.badgeSvgIcon} />
-      </span>
+    name: "Startup India",
+    sub: "DPIIT Recognized",
+    logo: (
+      <img
+        src="https://www.google.com/s2/favicons?domain=startupindia.gov.in&sz=128"
+        alt="Startup India Logo"
+        className={styles.brandImg}
+        loading="lazy"
+      />
     ),
   },
   {
-    name: "StartupJK",
+    name: "Startup JK",
     sub: "Govt. of J&K",
-    icon: (
-      <span className={`${styles.brandBadge} ${styles.bgJk}`} aria-hidden="true">JK</span>
+    logo: (
+      <img
+        src="https://www.google.com/s2/favicons?domain=jkindustriescommerce.nic.in&sz=128"
+        alt="Startup JK Logo"
+        className={styles.brandImg}
+        loading="lazy"
+      />
     ),
   },
   {
     name: "Google",
     sub: "Verified Business",
-    icon: (
+    logo: (
       <svg viewBox="0 0 24 24" className={styles.brandSvg} aria-hidden="true">
         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -36,43 +43,73 @@ const BRAND_PLATFORMS = [
     name: "Justdial",
     sub: "4.7 ★ Rated",
     isRating: true,
-    icon: (
-      <span className={`${styles.brandBadge} ${styles.bgJustdial}`} aria-hidden="true">JD</span>
+    logo: (
+      <img
+        src="https://www.google.com/s2/favicons?domain=justdial.com&sz=128"
+        alt="Justdial Logo"
+        className={styles.brandImg}
+        loading="lazy"
+      />
     ),
   },
   {
     name: "Dun & Bradstreet",
     sub: "Global Registry",
-    icon: (
-      <span className={`${styles.brandBadge} ${styles.bgDnb}`} aria-hidden="true">d&amp;b</span>
+    logo: (
+      <img
+        src="https://www.google.com/s2/favicons?domain=dnb.com&sz=128"
+        alt="Dun & Bradstreet Logo"
+        className={styles.brandImg}
+        loading="lazy"
+      />
     ),
   },
   {
     name: "Zauba Corp",
     sub: "MCA / RoC Listed",
-    icon: (
-      <span className={`${styles.brandBadge} ${styles.bgZauba}`} aria-hidden="true">Z</span>
+    logo: (
+      <img
+        src="https://www.google.com/s2/favicons?domain=zaubacorp.com&sz=128"
+        alt="Zauba Corp Logo"
+        className={styles.brandImg}
+        loading="lazy"
+      />
     ),
   },
   {
     name: "Tofler",
     sub: "Corporate Profile",
-    icon: (
-      <span className={`${styles.brandBadge} ${styles.bgTofler}`} aria-hidden="true">T</span>
+    logo: (
+      <img
+        src="https://www.google.com/s2/favicons?domain=tofler.in&sz=128"
+        alt="Tofler Logo"
+        className={styles.brandImg}
+        loading="lazy"
+      />
     ),
   },
   {
     name: "The Company Check",
     sub: "Verified Registry",
-    icon: (
-      <span className={`${styles.brandBadge} ${styles.bgTcc}`} aria-hidden="true">✓</span>
+    logo: (
+      <img
+        src="https://www.google.com/s2/favicons?domain=thecompanycheck.com&sz=128"
+        alt="The Company Check Logo"
+        className={styles.brandImg}
+        loading="lazy"
+      />
     ),
   },
   {
     name: "Neusource",
     sub: "Civil Classified",
-    icon: (
-      <span className={`${styles.brandBadge} ${styles.bgNeu}`} aria-hidden="true">N</span>
+    logo: (
+      <img
+        src="https://www.google.com/s2/favicons?domain=neusourcestartup.com&sz=128"
+        alt="Neusource Logo"
+        className={styles.brandImg}
+        loading="lazy"
+      />
     ),
   },
 ];
@@ -88,10 +125,10 @@ export default function BrandMarquee() {
 
       <div className={styles.brandMarqueeViewport}>
         <div className={styles.brandMarqueeTrack}>
-          {/* Primary List */}
+          {/* Primary Loop */}
           {BRAND_PLATFORMS.map((item, idx) => (
             <div key={`brand-primary-${idx}`} className={styles.brandItem}>
-              {item.icon}
+              <div className={styles.logoHolder}>{item.logo}</div>
               <div className={styles.brandTextLockup}>
                 <span className={styles.brandPrimary}>{item.name}</span>
                 {item.isRating ? (
@@ -105,10 +142,10 @@ export default function BrandMarquee() {
             </div>
           ))}
 
-          {/* Duplicate List for Continuous Infinite Loop */}
+          {/* Duplicate Loop for Continuous Scroll */}
           {BRAND_PLATFORMS.map((item, idx) => (
             <div key={`brand-duplicate-${idx}`} className={styles.brandItem} aria-hidden="true">
-              {item.icon}
+              <div className={styles.logoHolder}>{item.logo}</div>
               <div className={styles.brandTextLockup}>
                 <span className={styles.brandPrimary}>{item.name}</span>
                 {item.isRating ? (
@@ -124,7 +161,6 @@ export default function BrandMarquee() {
         </div>
       </div>
 
-      {/* Thin Bottom Slider Line */}
       <div className={styles.bottomLineContainer} aria-hidden="true">
         <div className={styles.thinBottomSliderLine} />
       </div>

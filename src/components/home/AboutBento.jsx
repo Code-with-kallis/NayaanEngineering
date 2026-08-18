@@ -1,12 +1,13 @@
-// src/components/home/AboutBento.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaSquare,
   FaMicrochip,
   FaAward,
-  FaCheckCircle,
-  FaUsers,
+  FaArrowRight,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
+import officeImage from "../../assets/images/about/office.webp";
 import styles from "./AboutBento.module.css";
 
 export default function AboutBento() {
@@ -18,10 +19,10 @@ export default function AboutBento() {
           <div className={styles.splitHeaderLeft}>
             <div className={styles.sectionTagRow}>
               <FaSquare className={styles.tagSquareIcon} aria-hidden="true" />
-              <span>About Our Company</span>
+              <span>About Us</span>
             </div>
             <h2 id="about-bento-title" className={styles.splitTitle}>
-              Driven by Quality
+              Driven by Quality &amp; Precision
             </h2>
           </div>
 
@@ -33,9 +34,25 @@ export default function AboutBento() {
           </div>
         </div>
 
-        {/* Bento Grid Layout */}
+        {/* Bento Grid Layout (Left: Office Image, Center: 2024 Card, Right: Tech Stack) */}
         <div className={styles.bentoGrid}>
-          {/* Main Large Card */}
+          {/* 1. Left Side: Top-Right Clipped Rectangle Office Image */}
+          <div className={styles.imageCard}>
+            <img
+              src={officeImage}
+              alt="Nayaab Engineering Head Office &amp; Design Studio"
+              className={styles.officeImg}
+              loading="lazy"
+              decoding="async"
+            />
+            <div className={styles.imageOverlay} />
+            <div className={styles.imageBadge}>
+              <FaMapMarkerAlt className={styles.pinIcon} />
+              <span>Headquarters • Baramulla</span>
+            </div>
+          </div>
+
+          {/* 2. Center: 2024 Incorporation & Leadership Stack */}
           <div className={`${styles.bentoCard} ${styles.cardLarge}`}>
             <img
               src="/logo.png"
@@ -50,7 +67,7 @@ export default function AboutBento() {
               </div>
               <div className={styles.bigStatNum}>2024</div>
               <p className={styles.bentoText}>
-                Incorporated as a Private Limited Engineering Company (CIN: U42900JK2024PTC015987 ) under RoC Jammu.
+                Incorporated as a Private Limited Engineering Company (CIN: U42900JK2024PTC015987) under RoC Jammu.
               </p>
               <div className={styles.avatarStack} aria-label="Leadership team avatars">
                 <div className={styles.avatar} title="Junaid Bilal Sheikh">J</div>
@@ -61,7 +78,7 @@ export default function AboutBento() {
             </div>
           </div>
 
-          {/* Secondary Stack 1 */}
+          {/* 3. Right: Modern Technology & DPIIT Stack */}
           <div className={styles.bentoStack}>
             <div className={styles.bentoCard}>
               <div className={styles.cardIconBox} aria-hidden="true">
@@ -83,29 +100,16 @@ export default function AboutBento() {
               </p>
             </div>
           </div>
+        </div>
 
-          {/* Secondary Stack 2 */}
-          <div className={styles.bentoStack}>
-            <div className={styles.bentoCard}>
-              <div className={styles.cardIconBox} aria-hidden="true">
-                <FaCheckCircle />
-              </div>
-              <div className={styles.mediumStatNum}>100%</div>
-              <p className={styles.cardSmallDesc}>
-                Commitment to structural safety, material standards, and compliance.
-              </p>
-            </div>
-
-            <div className={styles.bentoCard}>
-              <div className={styles.cardIconBox} aria-hidden="true">
-                <FaUsers />
-              </div>
-              <h3 className={styles.cardSmallTitle}>Experienced Leadership</h3>
-              <p className={styles.cardSmallDesc}>
-                Led by a board of three directors dedicated to advancing infrastructure and residential builds in J&amp;K.
-              </p>
-            </div>
-          </div>
+        {/* Bottom Right CTA */}
+        <div className={styles.sectionFooter}>
+          <Link to="/about" className={styles.aboutBtn}>
+            <span>Learn More About Us</span>
+            <span className={styles.aboutBtnArrow}>
+              <FaArrowRight />
+            </span>
+          </Link>
         </div>
       </div>
     </section>

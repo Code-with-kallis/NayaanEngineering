@@ -129,6 +129,7 @@ export default function ProjectDrawer({
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 32, stiffness: 300, mass: 0.8 }}
             className={styles.drawerPanel}
+            data-lenis-prevent="true"
           >
             <header className={styles.topBar}>
               <div className={styles.badge}>
@@ -182,7 +183,11 @@ export default function ProjectDrawer({
               </div>
             </header>
 
-            <div className={styles.scrollContent}>
+            {/* Scrollable container with mobile touch-scrolling enabled */}
+            <div 
+              className={styles.scrollContent}
+              data-lenis-prevent="true"
+            >
               <header className={styles.contentHeader}>
                 <h1 className={styles.title}>{project.title}</h1>
 
