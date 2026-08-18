@@ -15,10 +15,11 @@ import styles from "./Contact.module.css";
 const officeAddress =
   "3rd Floor, Qutub Complex, Opp. JK Bank (TP), Main Bazar, Baramulla, Jammu & Kashmir - 193101";
 
-const officeMapLink = "https://maps.app.goo.gl/2eVktdmG7WoQGscE6";
+const officeMapLink =
+  "https://www.google.com/maps/dir/?api=1&destination=34.20626599688759,74.34252733418458&destination_place_id=ChIJG4sCqrcH4TkRbRVG75QG8mI";
 
 const officeMapEmbed =
-  "https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d13199.385365087526!2d74.35188535!3d34.20140225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x38e107b7aa028b1b%3A0x62f20694ef46156d!2sNayaab%20Engineering%20Innovations%20Private%20Limited%2C%203rd%20Floor%2C%20Qutub%20Complex%2C%20opp.%20JKBank%2C%20Baramulla%2C%20Jammu%20and%20Kashmir%20193101!3m2!1d34.2062866!2d74.3427435!5e0!3m2!1sen!2sin!4v1785871591762!5m2!1sen!2sin";
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1166.6045492359476!2d74.34252733418458!3d34.20626599688759!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38e107b7aa028b1b%3A0x62f20694ef46156d!2sNayaab%20Engineering%20Innovations%20Private%20Limited!5e0!3m2!1sen!2sin!4v1787066586885!5m2!1sen!2sin";
 
 const faqList = [
   {
@@ -127,7 +128,7 @@ export default function Contact() {
             <div className={styles.mapFrameWrapper}>
               <iframe
                 src={officeMapEmbed}
-                title="Nayaab Engineering Studio Map"
+                title="Nayaab Engineering Innovations Location"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />
@@ -139,7 +140,7 @@ export default function Contact() {
                   <FaMapMarkerAlt />
                 </div>
                 <div className={styles.addressText}>
-                  <strong>Baramulla Headquarters</strong>
+                  <strong>Nayaab Engineering Innovations</strong>
                   <p>{officeAddress}</p>
                 </div>
               </div>
@@ -150,7 +151,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className={styles.mapActionBtn}
               >
-                <span>Open in Google Maps</span>
+                <span>Get Direction</span>
                 <FaExternalLinkAlt className={styles.btnIcon} />
               </a>
             </div>
