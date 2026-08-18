@@ -48,7 +48,6 @@ export default function AboutBento() {
             <div className={styles.imageOverlay} />
             <div className={styles.imageBadge}>
               <FaMapMarkerAlt className={styles.pinIcon} />
-              <span>Headquarters • Baramulla</span>
             </div>
           </div>
 
