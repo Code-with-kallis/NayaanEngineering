@@ -40,6 +40,8 @@ export default function App() {
               <Route path="terms" element={<Terms />} />
               <Route path="privacy" element={<Privacy />} />
               <Route path="admin" element={<Admin />} />
+              
+              {/* 404 Catch-All */}
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
