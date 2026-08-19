@@ -9,7 +9,7 @@ const leadershipData = [
   {
     id: "ceo",
     name: "Junaid Bilal Sheikh",
-    role: "Chief Executive Officer (CEO)",
+    role: "Managing Director",
     image: ceoImg,
     instagramUrl: "https://www.instagram.com/_junaid99/?hl=en",
     badge: "Executive Vision",
