@@ -48,9 +48,10 @@ main#main {
   flex-direction: column;
 }
 
-/* Modal Open Scroll Locking */
+/* Modal Open Scroll Locking — Maintains scroll position without snapping to top */
 html.nav-menu-open,
 body.nav-menu-open {
-  overflow: hidden;
+  overflow: hidden !important;
+  touch-action: pan-y;
   overscroll-behavior: none;
 }

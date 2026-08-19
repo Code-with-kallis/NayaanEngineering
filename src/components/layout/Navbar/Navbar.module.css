@@ -41,7 +41,7 @@
   box-sizing: border-box;
 }
 
-/* ===== TRANSPARENT LIGHT HERO MODE (Includes /services) ===== */
+/* ===== TRANSPARENT LIGHT HERO MODE ===== */
 .navbarLightHero:not(.navbarScrolled) {
   background: transparent !important;
   backdrop-filter: none !important;
@@ -60,7 +60,7 @@
 }
 
 .navbarLightHero:not(.navbarScrolled) .navItem.activeLink::after {
-  background: rgb(255, 187, 15);
+  background: #FFBB0F;
 }
 
 .navbarLightHero:not(.navbarScrolled) .menuToggleBtn {
@@ -93,11 +93,11 @@
   transform: scale(1.02);
 }
 
-/* ===== DESKTOP NAV LINKS ===== */
+/* ===== DESKTOP NAV LINKS WITH MUSTARD ACCENT UNDERLINE ===== */
 .navbarLinksDesktop {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
 }
 
 .navItem {
@@ -119,13 +119,14 @@
 .navIcon {
   font-size: 0.85rem;
   opacity: 0.75;
+  color: #0A0A0A;
   transition: transform 150ms ease, opacity 150ms ease, color 150ms ease;
 }
 
 .navItem:hover .navIcon,
 .navItem.activeLink .navIcon {
   opacity: 1;
-  color: rgb(255, 187, 15);
+  color: #FFBB0F;
   transform: translateY(-1px);
 }
 
@@ -134,6 +135,7 @@
   color: #0A0A0A;
 }
 
+/* Mustard Underline Indicator */
 .navbarLinksDesktop a.activeLink::after {
   content: "";
   position: absolute;
@@ -141,7 +143,7 @@
   right: 0;
   bottom: 0;
   height: 2.5px;
-  background: rgb(255, 187, 15);
+  background: #FFBB0F;
   border-radius: 2px;
 }
 
@@ -205,10 +207,10 @@
   color: #0A0A0A;
   background: #F4F4F5;
   font-weight: 700;
-  border-left: 3px solid rgb(255, 187, 15);
+  border-left: 3px solid #FFBB0F;
 }
 
-/* ===== DESKTOP CONTACT BUTTON ===== */
+/* ===== DESKTOP BUTTON ===== */
 .navbarActions {
   display: flex;
   align-items: center;
@@ -219,40 +221,37 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 38px;
+  height: 40px;
   padding: 0 20px;
-  background: rgb(255, 187, 15);
-  color: #0A0A0A;
-  border-radius: 10px;
-  border: 1px solid rgb(255, 187, 15);
-  text-decoration: none;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #0A0A0A;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-size: 0.8rem;
   font-weight: 750;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  box-shadow: 0 4px 14px rgba(255, 187, 15, 0.28);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .navbarContactBtn svg {
-  font-size: 0.85rem;
-  color: #0A0A0A;
+  font-size: 0.8rem;
+  color: #FFFFFF;
+  transition: transform 150ms ease;
 }
 
 .navbarContactBtn:hover {
-  background: #0A0A0A;
-  border-color: #0A0A0A;
-  color: rgb(255, 187, 15);
+  background: #27272A;
+  border-color: #27272A;
+  color: #FFFFFF;
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-.navbarContactBtn:hover svg {
-  color: rgb(255, 187, 15);
-}
-
-/* ===== TOGGLE BUTTON ===== */
+/* ===== MOBILE TOGGLE BUTTON ===== */
 .menuToggleBtn {
   display: none;
   align-items: center;
@@ -283,7 +282,7 @@
 }
 
 /* ==========================================================================
-   DARK LUXURY MOBILE DRAWER PANEL (BLACK THEME)
+   DARK LUXURY MOBILE DRAWER PANEL
    ========================================================================== */
 .navbarMobilePanel {
   position: fixed;
@@ -296,8 +295,7 @@
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 24px 20px 28px;
+  padding: 20px 18px 28px;
   background: #0A0A0A;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: -20px 0 50px rgba(0, 0, 0, 0.6);
@@ -307,6 +305,7 @@
   pointer-events: none;
   overflow-y: auto;
   z-index: 1040;
+  box-sizing: border-box;
   transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms ease;
 }
 
@@ -321,7 +320,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 18px;
+  padding-bottom: 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -344,12 +343,74 @@
   justify-content: center;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .mobileCloseBtn:hover {
   background: rgba(255, 255, 255, 0.16);
-  color: rgb(255, 187, 15);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   TOP MOBILE CTA BUTTON
+   ========================================================================== */
+.mobileTopCtaWrapper {
+  margin-top: 14px;
+  width: 100%;
+}
+
+.mobileTopCtaBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: #FFFFFF;
+  border: 1px solid #FFFFFF;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+  text-align: left;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.mobileTopCtaBtn:active {
+  transform: scale(0.98);
+}
+
+.mobileTopCtaText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ctaBadge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #52525B;
+}
+
+.ctaTitle {
+  font-size: 0.92rem;
+  font-weight: 850;
+  color: #0A0A0A;
+  letter-spacing: -0.01em;
+}
+
+.ctaIconCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
 }
 
 /* Mobile Links Group */
@@ -358,7 +419,7 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 .navbarMobileLinks .navItem {
@@ -378,18 +439,23 @@
 }
 
 .navbarMobileLinks .navItem .navIcon {
-  color: rgb(255, 187, 15);
+  color: #A1A1AA;
   font-size: 0.95rem;
 }
 
 .navbarMobileLinks .navItem:hover,
 .navbarMobileLinks .navItem.activeLink {
-  background: rgba(255, 187, 15, 0.12);
-  color: rgb(255, 187, 15);
-  border-color: rgba(255, 187, 15, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.25);
 }
 
-/* Mobile Services Submenu Accordion */
+.navbarMobileLinks .navItem:hover .navIcon,
+.navbarMobileLinks .navItem.activeLink .navIcon {
+  color: #FFFFFF;
+}
+
+/* Mobile Services Submenu Accordion (Closed by default) */
 .mobileServicesWrapper {
   display: flex;
   flex-direction: column;
@@ -424,7 +490,7 @@
 
 .mobileExpandBtn:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: rgb(255, 187, 15);
+  color: #FFFFFF;
 }
 
 .mobileSubMenu {
@@ -457,41 +523,10 @@
 
 .mobileSubItem:hover,
 .mobileSubActive {
-  background: rgba(255, 187, 15, 0.08);
-  color: rgb(255, 187, 15);
-  border-left-color: rgb(255, 187, 15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border-left-color: #FFFFFF;
   padding-left: 18px;
-}
-
-/* Mobile Footer Button */
-.mobileFooterArea {
-  margin-top: auto;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.navbarContactMobile {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  height: 48px;
-  background: rgb(255, 187, 15);
-  color: #0A0A0A;
-  border-radius: 12px;
-  font-size: 0.86rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  text-decoration: none;
-  box-shadow: 0 4px 16px rgba(255, 187, 15, 0.35);
-  transition: transform 180ms ease, background-color 180ms ease;
-}
-
-.navbarContactMobile:hover {
-  background: #E5A80D;
-  transform: translateY(-1px);
 }
 
 /* ===== OVERLAY BACKDROP ===== */
@@ -553,6 +588,6 @@
 
   .navbarMobilePanel {
     width: 290px;
-    padding: 20px 16px 24px;
+    padding: 18px 16px 24px;
   }
 }

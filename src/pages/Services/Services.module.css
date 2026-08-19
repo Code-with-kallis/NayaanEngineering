@@ -1,27 +1,27 @@
 /* src/pages/Services/Services.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* ===== GLOBAL PAGE WRAPPER (SMOOTH FADE-IN TRANSITION) ===== */
+/* ===== GLOBAL PAGE WRAPPER (CINEMATIC SMOOTH FADE-IN ENTRANCE) ===== */
 .pageWrapper {
   width: 100%;
   background: #FFFFFF;
   color: #0A0A0A;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   box-sizing: border-box;
-  overflow-x: hidden;
-  text-rendering: geometricPrecision;
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 
-  /* Smooth page entrance transition */
+  /* Perfectly visible, smooth 0.85s cinematic entrance */
   opacity: 0;
-  animation: pageSmoothFade 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pageSmoothEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
   will-change: opacity, transform;
 }
 
-@keyframes pageSmoothFade {
+@keyframes pageSmoothEntrance {
   0% {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(18px);
   }
   100% {
     opacity: 1;
@@ -96,27 +96,6 @@
   gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
   width: 100%;
-  
-  /* Staggered smooth fade-up on page load */
-  animation: serviceRowFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: opacity, transform;
-}
-
-.serviceRow:nth-child(1) { animation-delay: 0.08s; }
-.serviceRow:nth-child(2) { animation-delay: 0.18s; }
-.serviceRow:nth-child(3) { animation-delay: 0.28s; }
-.serviceRow:nth-child(4) { animation-delay: 0.38s; }
-.serviceRow:nth-child(5) { animation-delay: 0.48s; }
-
-@keyframes serviceRowFade {
-  0% {
-    opacity: 0;
-    transform: translateY(22px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Zigzag alternating order */
@@ -231,75 +210,156 @@
   flex-shrink: 0;
 }
 
-/* Action Buttons */
+/* ==========================================================================
+   SUBTLE-RADIUS ACTION BUTTONS (HERO SLIDE-FILL ANIMATION)
+   ========================================================================== */
 .actionGroup {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.85rem;
   flex-wrap: wrap;
 }
 
-.exploreBtn {
+.exploreBtn,
+.consultBtn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  background: #FFBB0F;
-  color: #0A0A0A;
-  font-size: 0.88rem;
+  height: 48px;
+  padding: 0 1.85rem;
+  font-family: inherit;
+  font-size: 0.85rem;
   font-weight: 750;
-  letter-spacing: 0.02em;
-  padding: 0.85rem 1.85rem;
-  border-radius: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
   text-decoration: none;
-  border: 1px solid #FFBB0F;
-  box-shadow: 0 4px 14px rgba(255, 187, 15, 0.3);
-  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 6px;
+  z-index: 1;
+  box-sizing: border-box;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exploreBtn span,
+.consultBtn span {
+  position: relative;
+  z-index: 2;
+  transition: color 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exploreBtn::before,
+.consultBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.exploreBtn:hover::before,
+.consultBtn:hover::before {
+  transform: scaleX(1);
+}
+
+.exploreBtn:hover,
+.consultBtn:hover {
+  transform: translateY(-2px);
+}
+
+/* 1. Explore Service -> Solid Black with Mustard Slide-Fill */
+.exploreBtn {
+  background: #0A0A0A;
+  color: #FFFFFF;
+  border: 1px solid #0A0A0A;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.exploreBtn::before {
+  background: #FFBB0F;
+}
+
+.exploreBtn:hover span {
+  color: #0A0A0A;
 }
 
 .exploreBtn:hover {
-  background: #E5A80D;
-  border-color: #E5A80D;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 187, 15, 0.45);
+  border-color: #FFBB0F;
+  box-shadow: 0 6px 20px rgba(255, 187, 15, 0.35);
 }
 
+/* Straight Arrow */
 .btnArrow {
+  position: relative;
+  z-index: 2;
   font-size: 0.75rem;
-  transition: transform 0.25s ease;
+  color: #FFFFFF;
+  transition: transform 0.25s ease, color 350ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .exploreBtn:hover .btnArrow {
   transform: translateX(3px);
+  color: #0A0A0A;
 }
 
+/* 2. Get Started -> Solid Mustard with Black Slide-Fill */
 .consultBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: #FFFFFF;
+  background: #FFBB0F;
   color: #0A0A0A;
-  font-size: 0.88rem;
-  font-weight: 750;
-  letter-spacing: 0.02em;
-  padding: 0.85rem 1.85rem;
-  border-radius: 12px;
-  text-decoration: none;
-  border: 1px solid #E4E4E7;
-  transition: transform 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+  border: 1px solid #FFBB0F;
+  box-shadow: 0 4px 14px rgba(255, 187, 15, 0.3);
+}
+
+.consultBtn::before {
+  background: #0A0A0A;
+}
+
+.consultBtn:hover span {
+  color: #FFBB0F;
 }
 
 .consultBtn:hover {
-  background: #FAFAFA;
   border-color: #0A0A0A;
-  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Diagonal Arrow Aimed at Top-Right Corner */
+.consultArrow {
+  position: relative;
+  z-index: 2;
+  font-size: 0.75rem;
+  color: #0A0A0A;
+  transform: rotate(-45deg);
+  transition: transform 0.25s ease, color 350ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.consultBtn:hover .consultArrow {
+  transform: rotate(-45deg) translate(2px, -2px);
+  color: #FFBB0F;
 }
 
 /* ==========================================================================
-   3. DIRECTIONAL CHAMFERED / SLOPED IMAGE FRAMES
+   3. CLICKABLE DIRECTIONAL CHAMFERED IMAGE
    ========================================================================== */
 .imageCol {
   width: 100%;
+}
+
+.imageLink {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
 }
 
 .imageFrame {
@@ -326,6 +386,7 @@
     0 100%
   );
   transform: translateZ(0);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .serviceRow.rowReverse .imageFrame {
@@ -353,7 +414,12 @@
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.imageFrame:hover .serviceImage {
+.imageLink:hover .imageFrame {
+  border-color: #0A0A0A;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+.imageLink:hover .serviceImage {
   transform: scale(1.04);
 }
 
@@ -468,8 +534,10 @@
   .consultBtn {
     flex: 1;
     width: auto;
-    padding: 0.75rem 0.65rem;
+    height: 44px;
+    padding: 0 0.75rem;
     font-size: 0.82rem;
+    border-radius: 6px;
     text-align: center;
   }
 }

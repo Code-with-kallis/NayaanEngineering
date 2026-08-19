@@ -8,19 +8,22 @@ import styles from "./LeadershipMessages.module.css";
 const leadershipData = [
   {
     id: "ceo",
-    name: "Junaid Bilal Sheikh",
+    name: "Er. Junaid Bilal Sheikh",
     role: "Managing Director",
     image: ceoImg,
     instagramUrl: "https://www.instagram.com/_junaid99/?hl=en",
     badge: "Executive Vision",
-    salutation: "Dear Valued Clients, Partners, and Stakeholders,",
+    salutation: "Dear Valued Clients and Partners,",
     excerpt:
-      "At Nayaab Engineering Innovations Pvt. Ltd., our vision is to build an organization recognized for excellence, innovation, and integrity. We are committed to delivering engineering, construction, and architectural solutions that create lasting value while meeting the highest standards of quality and professionalism.",
+      "At Nayaab, we believe that every successful project begins with a clear vision, careful planning, and unwavering commitment. Since our inception, our goal has been to provide innovative, reliable, and high-quality engineering, architectural, construction, and interior solutions that exceed expectations.",
     fullMessage: [
-      "At Nayaab Engineering Innovations Pvt. Ltd., our vision is to build an organization recognized for excellence, innovation, and integrity. We are committed to delivering engineering, construction, and architectural solutions that create lasting value while meeting the highest standards of quality and professionalism.",
-      "Our success is driven by a dedicated team of professionals who share a passion for innovation, collaboration, and continuous improvement. By combining technical expertise with modern technologies and efficient project management, we ensure that every project is executed with precision, transparency, and accountability.",
-      "As we continue to grow, our focus remains on building long-term relationships based on trust, delivering exceptional client experiences, and contributing to sustainable development. We view every project as an opportunity to exceed expectations and make a meaningful impact on the communities we serve.",
-      "On behalf of the entire Nayaab Engineering Innovations family, I thank our clients, partners, and stakeholders for their continued confidence and support. We look forward to working with you and building a future defined by excellence, innovation, and shared success.",
+      "It is my pleasure to welcome you to Nayaab Engineering Innovations Pvt. Ltd.",
+      "At Nayaab, we believe that every successful project begins with a clear vision, careful planning, and unwavering commitment. Since our inception, our goal has been to provide innovative, reliable, and high-quality engineering, architectural, construction, and interior solutions that exceed expectations.",
+      "We understand that every project is unique. Whether it is a residential home, commercial development, institutional building, or infrastructure project, we approach every assignment with professionalism, technical expertise, creativity, and attention to detail. Our experienced team works closely with clients at every stage—from concept and design to execution and completion—ensuring transparency, quality, and timely delivery.",
+      "Our success is built on trust, integrity, and long-term relationships. We continuously embrace modern technologies, sustainable practices, and innovative design approaches to deliver solutions that are functional, aesthetically pleasing, and economically viable.",
+      "To our clients, thank you for your confidence in us. To our partners and stakeholders, thank you for your continued support. Your trust motivates us to strive for excellence and raise the standards of engineering and construction with every project we undertake.",
+      "As we move forward, we remain committed to innovation, quality craftsmanship, customer satisfaction, and creating lasting value for the communities we serve.",
+      "We look forward to building your vision—together.",
     ],
   },
   {

@@ -6,10 +6,13 @@ import {
   FaBuilding,
   FaUsers,
   FaEnvelope,
+  FaPhoneAlt,
   FaArrowRight,
   FaChevronDown,
+  FaTimes,
 } from "react-icons/fa";
 import useScrollLock from "../../../hooks/useScrollLock";
+import ContactModal from "../../common/ContactModal/ContactModal";
 import menuBarIcon from "../../../assets/images/navbar/menu-bar.png";
 import styles from "./Navbar.module.css";
 import logo from "/logo-original.png";
@@ -28,44 +31,73 @@ const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(true);
+  
+  // Mobile dropdown closed by default
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  
+  // 1. Initialize modal state directly from URL hash
+  const [modalOpen, setModalOpen] = useState(
+    () => typeof window !== "undefined" && window.location.hash === "#contact-form"
+  );
   
   const lastScrollY = useRef(0);
   const dropdownRef = useRef(null);
 
-  // Unified scroll locking hook for mobile menu drawer
+  // Lock scrolling when mobile drawer is open
   useScrollLock(isOpen);
 
-  // Dark Full-Screen Hero pages (Transparent Header with White Text)
-  const isDarkHero = pathname === "/services";
-  
-  // Light Hero pages (Transparent Header with Dark Text)
+  // 2. Global Hash Listener for direct URL visits and hash changes
+  useEffect(() => {
+    const handleHashSync = () => {
+      if (window.location.hash === "#contact-form") {
+        setModalOpen(true);
+      } else {
+        setModalOpen(false);
+      }
+    };
+
+    // Check on initial load/route mount
+    if (window.location.hash === "#contact-form") {
+      setModalOpen(true);
+    }
+
+    window.addEventListener("hashchange", handleHashSync);
+    window.addEventListener("popstate", handleHashSync);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashSync);
+      window.removeEventListener("popstate", handleHashSync);
+    };
+  }, []);
+
   const isLightHero =
     pathname === "/" ||
+    pathname === "/services" ||
     pathname === "/about" ||
     pathname === "/projects" ||
     pathname === "/contact" ||
-    (pathname.startsWith("/services/") && pathname !== "/services");
+    pathname.startsWith("/services/");
 
   const toggleMenu = () => {
-    setIsOpen((prev) => {
-      const nextState = !prev;
-      if (nextState) {
-        setMobileServicesOpen(true);
-      }
-      return nextState;
-    });
+    setIsOpen((prev) => !prev);
   };
 
   const closeMenu = () => {
     setIsOpen(false);
     setServicesDropdownOpen(false);
+    setMobileServicesOpen(false);
   };
 
+  const openConsultModal = () => {
+    closeMenu();
+    setModalOpen(true);
+  };
+
+  // Close drawer and reset mobile dropdown on route change
   useEffect(() => {
     setIsOpen(false);
     setServicesDropdownOpen(false);
-    setMobileServicesOpen(true);
+    setMobileServicesOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -119,16 +151,17 @@ const Navbar = () => {
     <>
       <header
         className={`${styles.navbar} ${
-          isDarkHero ? styles.navbarDarkHero : ""
-        } ${isLightHero ? styles.navbarLightHero : ""} ${
-          !isVisible ? styles.navbarHidden : ""
-        } ${scrolled ? styles.navbarScrolled : ""}`.trim()}
+          isLightHero ? styles.navbarLightHero : ""
+        } ${!isVisible ? styles.navbarHidden : ""} ${
+          scrolled ? styles.navbarScrolled : ""
+        }`.trim()}
       >
         <div className={styles.navbarContainer}>
           <NavLink to="/" className={styles.navbarLogo} onClick={closeMenu}>
             <img src={logo} alt="Nayaab Engineering Logo" />
           </NavLink>
 
+          {/* ================= DESKTOP NAV TABS ================= */}
           <nav
             className={styles.navbarLinksDesktop}
             aria-label="Primary navigation"
@@ -210,19 +243,31 @@ const Navbar = () => {
               <FaUsers className={styles.navIcon} aria-hidden="true" />
               <span>About</span>
             </NavLink>
-          </nav>
 
-          <div className={styles.navbarActions}>
             <NavLink
               to="/contact"
-              className={`${styles.navbarContactBtn} ${styles.navbarContactDesktop}`}
+              className={({ isActive }) =>
+                `${styles.navItem} ${isActive ? styles.activeLink : ""}`.trim()
+              }
               onClick={closeMenu}
             >
-              <FaEnvelope aria-hidden="true" />
+              <FaEnvelope className={styles.navIcon} aria-hidden="true" />
               <span>Contact</span>
             </NavLink>
+          </nav>
 
-            {/* Custom PNG Menu Button */}
+          {/* ================= DESKTOP ACTION ================= */}
+          <div className={styles.navbarActions}>
+            <button
+              type="button"
+              className={`${styles.navbarContactBtn} ${styles.navbarContactDesktop}`}
+              onClick={openConsultModal}
+            >
+              <FaPhoneAlt aria-hidden="true" />
+              <span>Get a Quote</span>
+            </button>
+
+            {/* Mobile Toggle Button */}
             <button
               className={`${styles.menuToggleBtn} ${isOpen ? styles.menuOpen : ""}`}
               onClick={toggleMenu}
@@ -240,6 +285,7 @@ const Navbar = () => {
         </div>
       </header>
 
+      {/* ================= DARK LUXURY MOBILE DRAWER PANEL ================= */}
       <nav
         id="navbar-mobile-panel"
         className={`${styles.navbarMobilePanel} ${
@@ -253,8 +299,33 @@ const Navbar = () => {
             alt="Nayaab Engineering Logo"
             className={styles.mobileLogo}
           />
+          <button
+            className={styles.mobileCloseBtn}
+            onClick={closeMenu}
+            aria-label="Close navigation menu"
+          >
+            <FaTimes />
+          </button>
         </div>
 
+        {/* Top Quick CTA */}
+        <div className={styles.mobileTopCtaWrapper}>
+          <button
+            type="button"
+            className={styles.mobileTopCtaBtn}
+            onClick={openConsultModal}
+          >
+            <div className={styles.mobileTopCtaText}>
+              <span className={styles.ctaBadge}>Quick Inquiry</span>
+              <span className={styles.ctaTitle}>Get a Quote</span>
+            </div>
+            <div className={styles.ctaIconCircle}>
+              <FaArrowRight aria-hidden="true" />
+            </div>
+          </button>
+        </div>
+
+        {/* Mobile Navigation Links */}
         <div className={styles.navbarMobileLinks}>
           <NavLink
             to="/"
@@ -268,6 +339,7 @@ const Navbar = () => {
             <span>Home</span>
           </NavLink>
 
+          {/* Accordion (Closed by default) */}
           <div className={styles.mobileServicesWrapper}>
             <div className={styles.mobileServicesHeader}>
               <NavLink
@@ -281,9 +353,11 @@ const Navbar = () => {
                 <span>Services</span>
               </NavLink>
               <button
+                type="button"
                 className={styles.mobileExpandBtn}
                 onClick={() => setMobileServicesOpen((prev) => !prev)}
-                aria-label="Toggle services list"
+                aria-label="Toggle services submenu"
+                aria-expanded={mobileServicesOpen}
               >
                 <FaChevronDown
                   className={`${styles.chevronIcon} ${
@@ -336,23 +410,30 @@ const Navbar = () => {
             <FaUsers className={styles.navIcon} aria-hidden="true" />
             <span>About</span>
           </NavLink>
-        </div>
 
-        <div className={styles.mobileFooterArea}>
           <NavLink
             to="/contact"
-            className={styles.navbarContactMobile}
+            className={({ isActive }) =>
+              `${styles.navItem} ${isActive ? styles.activeLink : ""}`.trim()
+            }
             onClick={closeMenu}
           >
-            <span>Get in Touch</span>
-            <FaArrowRight aria-hidden="true" />
+            <FaEnvelope className={styles.navIcon} aria-hidden="true" />
+            <span>Contact</span>
           </NavLink>
         </div>
       </nav>
 
+      {/* Backdrop */}
       <div
         className={`${styles.navbarOverlay} ${isOpen ? styles.active : ""}`}
         onClick={closeMenu}
+      />
+
+      {/* Global Consultation Modal */}
+      <ContactModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
       />
     </>
   );

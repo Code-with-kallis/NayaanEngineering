@@ -1,4 +1,4 @@
-// src/hooks/useScrollLock.js — Unified Scroll Locking Hook
+// src/hooks/useScrollLock.js
 import { useEffect } from "react";
 
 export default function useScrollLock(isLocked) {
@@ -11,7 +11,7 @@ export default function useScrollLock(isLocked) {
     html.classList.add("nav-menu-open");
     body.classList.add("nav-menu-open");
 
-    // Pause Lenis smooth scrolling while locked
+    // Pause Lenis smooth scroll in-place
     if (window.lenis) {
       window.lenis.stop();
     }
@@ -20,7 +20,7 @@ export default function useScrollLock(isLocked) {
       html.classList.remove("nav-menu-open");
       body.classList.remove("nav-menu-open");
 
-      // Resume Lenis smooth scrolling when unlocked
+      // Resume Lenis smooth scroll
       if (window.lenis) {
         window.lenis.start();
       }

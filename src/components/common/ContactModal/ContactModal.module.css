@@ -1,0 +1,463 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ===== BACKDROP ===== */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  animation: backdropFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.dragHandle {
+  display: none;
+}
+
+/* ===== UNIFIED SCROLLABLE MODAL CARD (NO PINNED TOPBAR) ===== */
+.modalCard {
+  width: 100%;
+  max-width: 680px;
+  background: #FFFFFF;
+  border: 1px solid #E4E4E7;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  padding: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  position: relative;
+  animation: modalScaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Custom Scrollbar */
+.modalCard::-webkit-scrollbar {
+  width: 6px;
+}
+.modalCard::-webkit-scrollbar-track {
+  background: #FAFAFA;
+  border-radius: 8px;
+}
+.modalCard::-webkit-scrollbar-thumb {
+  background: #D4D4D8;
+  border-radius: 8px;
+}
+
+/* ===== HEADER ===== */
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.headerTextGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pillBadge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0A0A0A;
+  background: rgba(255, 187, 15, 0.2);
+  border: 1px solid rgba(255, 187, 15, 0.4);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0 0 0.4rem 0;
+  font-size: clamp(1.35rem, 2.5vw, 1.65rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0A0A0A;
+}
+
+.iconBox {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #0A0A0A;
+  color: #FFBB0F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #71717A;
+  line-height: 1.55;
+  max-width: 52ch;
+}
+
+.closeBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #E4E4E7;
+  background: #FAFAFA;
+  color: #71717A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: #0A0A0A;
+  border-color: #0A0A0A;
+  color: #FFFFFF;
+  transform: rotate(90deg);
+}
+
+/* ===== FORM BODY ===== */
+.formBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.honeypot {
+  display: none !important;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.15rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.field label {
+  font-size: 0.8rem;
+  font-weight: 750;
+  color: #0A0A0A;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 11px 14px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: #0A0A0A;
+  background: #FFFFFF;
+  border: 1.5px solid #D4D4D8;
+  border-radius: 10px;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: #0A0A0A;
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.08);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+/* ===== DROPDOWN SELECT ===== */
+.customSelectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.selectTrigger {
+  width: 100%;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border: 1.5px solid #D4D4D8;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0A0A0A;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.selectActive {
+  border-color: #0A0A0A;
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.08);
+}
+
+.chevron {
+  font-size: 0.72rem;
+  color: #71717A;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.selectMenu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  border: 1.5px solid #0A0A0A;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  padding: 5px;
+  margin: 0;
+  list-style: none;
+  z-index: 50;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.selectOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  font-weight: 550;
+  color: #27272A;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.selectOption:hover {
+  background: #F4F4F5;
+}
+
+.optionActive {
+  background: #0A0A0A;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+.checkIcon {
+  color: #FFBB0F;
+  font-size: 0.75rem;
+}
+
+/* ===== NOTIFICATIONS ===== */
+.successBanner,
+.errorBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 650;
+}
+
+.successBanner {
+  background: #F4F4F5;
+  border: 1px solid #E4E4E7;
+  color: #0A0A0A;
+}
+
+.errorBanner {
+  background: #18181B;
+  border: 1px solid #27272A;
+  color: #FFFFFF;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+.submitBtn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  background: #FFBB0F;
+  color: #0A0A0A;
+  border: 1px solid #FFBB0F;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 187, 15, 0.3);
+  transition: all 0.2s ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #E5A80D;
+  transform: translateY(-1px);
+}
+
+.whatsappBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 16px;
+  background: #FAFAFA;
+  color: #0A0A0A;
+  border: 1.5px solid #D4D4D8;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.whatsappBtn:hover:not(:disabled) {
+  background: #FFFFFF;
+  border-color: #25d366;
+  color: #25d366;
+}
+
+.waIcon {
+  font-size: 1rem;
+}
+
+.submitBtn:disabled,
+.whatsappBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   MOBILE BOTTOM SHEET (FULL CARD SCROLLS NATURAL AS ONE ELEMENT)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .modalBackdrop {
+    align-items: flex-end;
+    padding: 0;
+    touch-action: pan-y;
+  }
+
+  .modalCard {
+    max-width: 100%;
+    width: 100%;
+    /* Space at top from viewport */
+    height: calc(100dvh - 3.5rem);
+    max-height: calc(100dvh - 3.5rem);
+    border-bottom: none;
+    border-radius: 24px 24px 0 0;
+    padding: 0.85rem 1.25rem 3.5rem;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.4);
+    animation: bottomSheetSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    
+    /* Native, unbroken vertical touch scrolling for the entire modal */
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: contain !important;
+    touch-action: pan-y !important;
+  }
+
+  @keyframes bottomSheetSlideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .dragHandle {
+    display: block;
+    width: 44px;
+    height: 5px;
+    background: #D4D4D8;
+    border-radius: 999px;
+    margin: 0.25rem auto 1rem;
+    flex-shrink: 0;
+  }
+
+  .modalHeader {
+    margin-bottom: 1.25rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+  }
+
+  .field input,
+  .field textarea,
+  .selectTrigger {
+    font-size: 16px; /* Prevents auto-zoom on iOS */
+  }
+
+  .actionRow {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 0.75rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .submitBtn,
+  .whatsappBtn {
+    width: 100%;
+    min-height: 48px;
+  }
+}
