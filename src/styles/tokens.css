@@ -1,48 +1,50 @@
 /* src/styles/tokens.css — Unified Design System Tokens */
 :root {
-  /* ===== BRAND COLOR SYSTEM ===== */
-  --nei-brand-primary: #B7410E;       /* Active Primary Rust Accent */
-  --nei-brand-hover:   #9E370C;       /* Accent Hover State */
-  --nei-brand-soft:    rgba(183, 65, 14, 0.08); /* Badge & Soft Fill */
+  /* ===== BRAND COLOR SYSTEM (MUSTARD ACCENT) ===== */
+  --nei-brand-primary: #FFBB0F;
+  --nei-brand-hover:   #E5A70D;
+  --nei-brand-soft:    rgba(255, 187, 15, 0.12);
 
   /* ===== NEUTRAL SURFACES & CANVAS ===== */
   --nei-bg-page:       #FFFFFF;
   --nei-bg-surface:    #F8FAFC;
   --nei-bg-card:       #FFFFFF;
-  --nei-bg-dark:       #0F172A;       /* Dark Hero & Contrast Panels */
+  --nei-bg-dark:       #0A0A0A;
 
-  /* ===== TYPOGRAPHY COLOR SCALE ===== */
-  --nei-text-title:    #0F172A;       /* Primary Dark Titles */
-  --nei-text-body:     #334155;       /* Primary Body Text */
-  --nei-text-muted:    #64748B;       /* Secondary / Subtext */
-  --nei-text-light:    #CBD5E1;       /* Dark Surface Text */
+  /* ===== HIGH-CONTRAST READABLE TYPOGRAPHY SCALE ===== */
+  --nei-text-title:    #09090B;       /* Pure solid dark for all titles & headings */
+  --nei-text-body:     #18181B;       /* High-contrast dark charcoal for descriptions */
+  --nei-text-muted:    #27272A;       /* Crisp, readable dark gray for metadata & locations */
+  --nei-text-subtle:   #52525B;       /* Secondary details & timestamps */
+  --nei-text-light:    #F4F4F5;
   --nei-text-white:    #FFFFFF;
 
   /* ===== BORDERS & GLASS ===== */
-  --nei-border-subtle: #E2E8F0;
-  --nei-border-active: #B7410E;
+  --nei-border-subtle: #E4E4E7;
+  --nei-border-active: #FFBB0F;
   --nei-glass-border:  rgba(255, 255, 255, 0.15);
 
   /* ===== SHADOWS ===== */
-  --nei-shadow-sm:     0 2px 8px rgba(15, 23, 42, 0.04);
-  --nei-shadow-md:     0 4px 16px rgba(15, 23, 42, 0.08);
-  --nei-shadow-lg:     0 12px 28px rgba(183, 65, 14, 0.12);
+  --nei-shadow-sm:     0 2px 8px rgba(0, 0, 0, 0.04);
+  --nei-shadow-md:     0 4px 16px rgba(0, 0, 0, 0.08);
+  --nei-shadow-lg:     0 12px 28px rgba(0, 0, 0, 0.12);
 
   /* ===== LAYOUT & CONTAINER CONSTRAINTS ===== */
   --nei-container-max: 1280px;
   --nei-container-pad: clamp(1.25rem, 4vw, 3rem);
   --nei-section-pad-y: clamp(3.5rem, 6vw, 6rem);
 
-  /* ===== TYPOGRAPHY FLUID SCALE ===== */
-  --nei-font-primary:   "Barlow Condensed", -apple-system, sans-serif;
-  --nei-font-secondary: "Inter", -apple-system, sans-serif;
+  /* ===== TYPOGRAPHY SCALE (PLUS JAKARTA SANS) ===== */
+  --nei-font-family:    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --nei-font-primary:   'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --nei-font-secondary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --nei-font-display: clamp(2.25rem, 5vw, 3.5rem);
   --nei-font-h1:      clamp(1.85rem, 3.5vw, 2.75rem);
   --nei-font-h2:      clamp(1.35rem, 2.2vw, 1.85rem);
   --nei-font-h3:      clamp(1.1rem, 1.5vw, 1.35rem);
-  --nei-font-body:    0.95rem;
-  --nei-font-small:   0.825rem;
+  --nei-font-body:    1rem;
+  --nei-font-small:   0.875rem;
 
   /* ===== RADII & TRANSITIONS ===== */
   --nei-radius-sm:     6px;

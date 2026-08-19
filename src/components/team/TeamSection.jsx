@@ -3,6 +3,29 @@ import React, { useRef, useState, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import styles from "./TeamSection.module.css";
 
+// Automatically index all team images from assets/images/team/
+const teamImages = import.meta.glob("../../assets/images/team/*", {
+  eager: true,
+  import: "default",
+});
+
+function resolveTeamImage(img) {
+  if (!img) return "/images/team/placeholder.jpg";
+  if (typeof img !== "string") return img;
+  if (img.startsWith("http") || img.startsWith("data:") || img.startsWith("blob:")) {
+    return img;
+  }
+
+  // Match filename against bundled assets
+  const filename = img.split("/").pop();
+  for (const path in teamImages) {
+    if (path.endsWith(`/${filename}`)) {
+      return teamImages[path];
+    }
+  }
+  return img;
+}
+
 // 1. TEAM CARD COMPONENT
 export function TeamCard({ employee }) {
   if (!employee) return null;
@@ -15,14 +38,13 @@ export function TeamCard({ employee }) {
 
   const handleCardClick = (e) => {
     e.preventDefault();
-    // Update URL query params without triggering React Router's global ScrollToTop
     const url = new URL(window.location.href);
     url.searchParams.set("member", employeeId);
     window.history.pushState({ member: employeeId }, "", url.toString());
-    
-    // Notify EmployeeModal to open
     window.dispatchEvent(new Event("popstate"));
   };
+
+  const imageSrc = resolveTeamImage(image);
 
   return (
     <a
@@ -35,7 +57,7 @@ export function TeamCard({ employee }) {
       <div className={styles.imageWrapper}>
         <div className={styles.imageContainer}>
           <img
-            src={image || "/images/team/placeholder.jpg"}
+            src={imageSrc}
             alt={name}
             className={styles.image}
             loading="lazy"

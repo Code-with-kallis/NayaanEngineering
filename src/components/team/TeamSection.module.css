@@ -1,7 +1,8 @@
 /* src/components/team/TeamSection.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 /* ==========================================================================
-   1. SECTION CONTAINER STYLES (Padding aligned to About container)
+   1. SECTION CONTAINER STYLES
    ========================================================================== */
 .section {
   position: relative;
@@ -12,6 +13,10 @@
   background: transparent;
   box-sizing: border-box;
   margin: 0;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .inner {
@@ -38,12 +43,10 @@
 
 .title {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
-  font-weight: 700;
-  color: #0F172A;
-  letter-spacing: -0.02em;
-  -webkit-font-smoothing: antialiased;
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  font-weight: 800;
+  color: #0A0A0A;
+  letter-spacing: -0.025em;
 }
 
 .pillBadge {
@@ -51,24 +54,23 @@
   align-items: center;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
-  background: rgba(183, 65, 14, 0.08);
-  border: 1px solid rgba(183, 65, 14, 0.2);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  background: #F4F4F5;
+  border: 1px solid #E4E4E7;
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #B7410E;
+  color: #0A0A0A;
 }
 
 .emptyState {
   padding: 2.5rem;
   text-align: center;
-  color: #64748B;
+  color: #71717A;
   font-size: 0.9rem;
-  background: #F8FAFC;
-  border-radius: 12px;
-  border: 1px dashed #CBD5E1;
+  background: #FAFAFA;
+  border-radius: 14px;
+  border: 1px dashed #E4E4E7;
 }
 
 /* ==========================================================================
@@ -113,7 +115,7 @@
   position: relative;
   width: 90px;
   height: 4px;
-  background: #E2E8F0;
+  background: #E4E4E7;
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -124,45 +126,51 @@
   left: 0;
   width: 30px;
   height: 100%;
-  background: #B7410E;
+  background: #0A0A0A;
   border-radius: 9999px;
   transition: transform 100ms ease-out;
 }
 
 /* ==========================================================================
-   3. CLEAN CRISP TYPOGRAPHY TEAM CARD
+   3. ARCHITECTURAL HIGH-CONTRAST CARD
    ========================================================================== */
 .card {
   position: relative;
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  color: #0F172A;
-  background: #FFFFFF;
+  color: #0A0A0A;
+  background: #FAFAFA;
   border-radius: 16px;
   padding: 1.5rem 1.25rem 1.25rem;
-  border: 1px solid #E2E8F0;
-  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
-  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 300ms ease;
+  border: 1px solid #E4E4E7;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   text-align: center;
   overflow: hidden;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 20px) 0,
+    100% 20px,
+    100% 100%,
+    0 100%
+  );
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  border-color: #B7410E;
-  box-shadow: 0 14px 32px rgba(183, 65, 14, 0.1);
+  transform: translateY(-4px);
+  border-color: #0A0A0A;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
 }
 
-/* Image Avatar Section */
+/* ==========================================================================
+   STUDIO AVATAR BACKDROP (Optimized for Transparent PNGs)
+   ========================================================================== */
 .imageWrapper {
   position: relative;
   width: 96px;
@@ -176,44 +184,53 @@
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  background: #F8FAFC;
+  /* Studio light backdrop: bright spotlight center falling off to soft architectural grey */
+  background: radial-gradient(circle at 50% 28%, #FFFFFF 0%, #F1F5F9 58%, #E2E8F0 100%);
   border: 3px solid #FFFFFF;
-  outline: 1.5px solid #E2E8F0;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
-  transition: outline-color 300ms ease, transform 300ms ease;
+  outline: 1.5px solid #E4E4E7;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04), 0 4px 14px rgba(0, 0, 0, 0.07);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: outline-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover .imageContainer {
-  outline-color: #B7410E;
-  transform: scale(1.03);
+  outline-color: #0A0A0A;
+  transform: scale(1.04);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06), 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
-  border-radius: 50%;
-  transition: transform 400ms ease;
+  object-position: top center;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 }
 
 .card:hover .image {
   transform: scale(1.08);
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.18));
 }
 
 .statusDot {
   position: absolute;
-  bottom: 4px;
-  right: 4px;
-  width: 12px;
-  height: 12px;
+  bottom: 2px;
+  right: 2px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background: #10B981;
   border: 2px solid #FFFFFF;
-  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+  z-index: 2;
 }
 
-/* Content Body */
+/* ==========================================================================
+   CONTENT & FOOTER
+   ========================================================================== */
 .content {
   display: flex;
   flex-direction: column;
@@ -233,15 +250,15 @@
 /* Role Badge */
 .designationTag {
   display: inline-block;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.7rem;
-  font-weight: 600;
-  color: #B7410E;
+  font-weight: 750;
+  color: #0A0A0A;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: rgba(183, 65, 14, 0.07);
+  letter-spacing: 0.06em;
+  background: #FFFFFF;
+  border: 1px solid #E4E4E7;
   padding: 3px 10px;
-  border-radius: 6px;
+  border-radius: 999px;
   line-height: 1.35;
   max-width: 100%;
   white-space: nowrap;
@@ -252,27 +269,21 @@
 /* Name */
 .name {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: #0F172A;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-  transition: color 200ms ease;
-}
-
-.card:hover .name {
-  color: #B7410E;
+  font-size: 1rem;
+  font-weight: 750;
+  color: #0A0A0A;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  transition: color 0.2s ease;
 }
 
 /* Bio Text */
 .bio {
   margin: 0 0 1rem 0;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.82rem;
-  color: #64748B;
+  color: #52525B;
   line-height: 1.55;
-  font-weight: 400;
+  font-weight: 450;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -287,43 +298,44 @@
   justify-content: space-between;
   margin-top: auto;
   padding-top: 0.75rem;
-  border-top: 1px solid #F1F5F9;
+  border-top: 1px solid #E4E4E7;
 }
 
 .viewProfileLabel {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: #475569;
-  letter-spacing: 0.01em;
-  transition: color 200ms ease;
+  font-size: 0.76rem;
+  font-weight: 750;
+  color: #71717A;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
 }
 
 .card:hover .viewProfileLabel {
-  color: #0F172A;
+  color: #0A0A0A;
 }
 
 .actionIconBox {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #F1F5F9;
-  color: #475569;
+  background: #FFFFFF;
+  border: 1px solid #E4E4E7;
+  color: #71717A;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .actionArrow {
-  font-size: 0.7rem;
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 0.68rem;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card:hover .actionIconBox {
-  background: #B7410E;
-  color: #FFFFFF;
-  box-shadow: 0 3px 10px rgba(183, 65, 14, 0.35);
+  background: #0A0A0A;
+  border-color: #0A0A0A;
+  color: rgb(255, 187, 15);
 }
 
 .card:hover .actionArrow {
@@ -348,11 +360,19 @@
 
   .card {
     padding: 1.25rem 1rem 1rem;
+    border-radius: 14px;
+    clip-path: polygon(
+      0 0,
+      calc(100% - 16px) 0,
+      100% 16px,
+      100% 100%,
+      0 100%
+    );
   }
 
   .imageWrapper {
-    width: 86px;
-    height: 86px;
+    width: 88px;
+    height: 88px;
   }
 }
 

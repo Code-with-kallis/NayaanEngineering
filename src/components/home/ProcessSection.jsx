@@ -40,7 +40,7 @@ export default function ProcessSection() {
             <span>Our Process</span>
           </div>
           <h2 className={styles.splitTitle}>
-            Our 4-Step Process to a<br />Successful Build
+            Our 4-Step Process 
           </h2>
         </div>
 

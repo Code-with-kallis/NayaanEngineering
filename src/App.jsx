@@ -1,13 +1,13 @@
+// src/App.jsx
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Layout from "./components/layout/Layout/Layout";
-import ScrollToTop from "./components/ScrollToTop";
-import SmoothScroll from "./components/SmoothScroll";
+import ScrollManager from "./components/common/ScrollManager";
 import PageLoader from "./components/common/PageLoader";
 import ErrorBoundary from "./components/ErrorBoundary";
 
-// Lazy-loaded routes
+// Application Routes
 const Home = lazy(() => import("./pages/Home/Home"));
 const Contact = lazy(() => import("./pages/Contact/Contact"));
 const About = lazy(() => import("./pages/About/About"));
@@ -25,8 +25,7 @@ export default function App() {
   return (
     <HelmetProvider>
       <ErrorBoundary>
-        <SmoothScroll />
-        <ScrollToTop />
+        <ScrollManager />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Layout />}>
@@ -42,8 +41,6 @@ export default function App() {
               <Route path="terms" element={<Terms />} />
               <Route path="privacy" element={<Privacy />} />
               <Route path="admin" element={<Admin />} />
-              
-              {/* 404 Catch-All */}
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

@@ -1,3 +1,4 @@
+// src/components/projects/ProjectDrawer.jsx
 import React, { useEffect, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -22,17 +23,17 @@ const DEFAULT_DELIVERABLES = [
   "High-durability structural material selection."
 ];
 
-// Clean Case Study Renderer
+// Clean text renderer (No card boxes, preserves numbers like "3D")
 const renderSmartCaseStudy = (content) => {
   if (!content) return null;
 
   const lines = content.split("\n").map((l) => l.trim()).filter(Boolean);
 
   return lines.map((line, idx) => {
-    const cleanLine = line.replace(/^[•\-\*\d+\.]\s*/, "").trim();
+    const cleanLine = line.replace(/^([0-9]+\s*[\.\)-]\s*|[-•*]\s*)/, "").trim();
     const colonIndex = cleanLine.indexOf(":");
 
-    if (colonIndex !== -1 && colonIndex < 35 && !cleanLine.includes("http")) {
+    if (colonIndex !== -1 && colonIndex < 40 && !cleanLine.includes("http")) {
       const label = cleanLine.slice(0, colonIndex).trim();
       const value = cleanLine.slice(colonIndex + 1).trim();
       return (
@@ -63,13 +64,17 @@ export default function ProjectDrawer({
 
   useEffect(() => {
     if (isOpen) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
       document.body.style.overflow = "hidden";
       if (window.lenis) window.lenis.stop();
     } else {
+      document.body.style.paddingRight = "";
       document.body.style.overflow = "";
       if (window.lenis) window.lenis.start();
     }
     return () => {
+      document.body.style.paddingRight = "";
       document.body.style.overflow = "";
       if (window.lenis) window.lenis.start();
     };
@@ -88,13 +93,12 @@ export default function ProjectDrawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose, onNext, onPrev]);
 
-  // Native Web Share API with Clipboard Fallback
   const handleShare = useCallback(async () => {
     if (!project) return;
     const shareUrl = `${window.location.origin}${window.location.pathname}#${project.slug || project.id}`;
     const shareData = {
       title: `${project.title} | Nayaab Engineering Innovations`,
-      text: project.summary || `Discover the architectural and structural engineering specifications for ${project.title}.`,
+      text: project.summary || `Discover architectural and structural specifications for ${project.title}.`,
       url: shareUrl,
     };
 
@@ -137,7 +141,6 @@ export default function ProjectDrawer({
     ? `${window.location.origin}/projects#${project.slug || project.id}`
     : `${window.location.origin}/projects`;
 
-  // Google Image & Rich Result Schema (JSON-LD)
   const imageSchemaData = project ? {
     "@context": "https://schema.org",
     "@type": "VisualArtwork",
@@ -159,13 +162,11 @@ export default function ProjectDrawer({
     <AnimatePresence>
       {isOpen && project && (
         <div className={styles.portalWrapper} role="dialog" aria-modal="true" aria-labelledby="modal-project-title">
-          {/* Dynamic Image & OpenGraph SEO for Project Indexing */}
           <Helmet>
             <title>{`${project.title} | Nayaab Engineering Innovations Portfolio`}</title>
             <meta name="description" content={shortOverview || `Structural engineering and turnkey architectural design for ${project.title} by Nayaab Engineering Innovations.`} />
             <link rel="canonical" href={projectCanonicalUrl} />
             
-            {/* OpenGraph & Social Image Indexing */}
             <meta property="og:title" content={`${project.title} | Nayaab Engineering Innovations`} />
             <meta property="og:description" content={shortOverview} />
             <meta property="og:type" content="article" />
@@ -176,7 +177,6 @@ export default function ProjectDrawer({
             <meta name="twitter:description" content={shortOverview} />
             {coverImageUrl && <meta name="twitter:image" content={coverImageUrl} />}
 
-            {/* Structured Schema for Google Images */}
             {imageSchemaData && (
               <script type="application/ld+json">
                 {JSON.stringify(imageSchemaData)}
@@ -188,21 +188,28 @@ export default function ProjectDrawer({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className={styles.backdrop}
             onClick={onClose}
           />
 
-          {/* Centered Desktop Modal with Controlled Width */}
           <motion.aside
-            initial={{ opacity: 0, scale: 0.96, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 16 }}
-            transition={{ type: "spring", damping: 30, stiffness: 320, mass: 0.7 }}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ 
+              type: "spring", 
+              damping: 32, 
+              stiffness: 300, 
+              mass: 0.8 
+            }}
             className={styles.modalPanel}
             data-lenis-prevent="true"
           >
-            {/* Topbar with Public Logo */}
+            <div className={styles.dragHandleBar} onClick={onClose}>
+              <div className={styles.dragPill} />
+            </div>
+
             <header className={styles.topBar}>
               <div className={styles.topBarLeft}>
                 <Link to="/" className={styles.logoLink} title="Nayaab Engineering Innovations">
@@ -220,10 +227,10 @@ export default function ProjectDrawer({
               <div className={styles.actionsGroup}>
                 <button
                   onClick={handleShare}
-                  title="Share project specification link"
+                  title="Share project link"
                   className={`${styles.iconBtn} ${copied ? styles.copiedActive : ""}`}
                   type="button"
-                  aria-label="Share project specification link"
+                  aria-label="Share project link"
                 >
                   {copied ? (
                     <>
@@ -263,7 +270,7 @@ export default function ProjectDrawer({
 
                 <button
                   onClick={onClose}
-                  aria-label="Close modal window"
+                  aria-label="Close drawer"
                   className={styles.closeBtn}
                   type="button"
                 >
@@ -272,7 +279,6 @@ export default function ProjectDrawer({
               </div>
             </header>
 
-            {/* Scrollable Modal Content */}
             <div className={styles.scrollContent} data-lenis-prevent="true">
               <header className={styles.contentHeader}>
                 <h1 id="modal-project-title" className={styles.title}>{project.title}</h1>
@@ -293,17 +299,17 @@ export default function ProjectDrawer({
                 </div>
               </header>
 
-              {/* 1. Project Overview */}
+              {/* 1. Overview */}
               <section className={styles.section}>
                 <h2 className={styles.sectionTitle}>Project Overview</h2>
                 <p className={styles.description}>{shortOverview}</p>
               </section>
 
-              {/* 2. SEO-Optimized Project Gallery */}
+              {/* 2. Gallery */}
               {galleryList.length > 0 && (
                 <section className={styles.section}>
                   <h2 className={styles.sectionTitle}>
-                    High-Resolution Gallery ({galleryList.length} Photographs)
+                    Project Gallery ({galleryList.length} Photographs)
                   </h2>
                   <ProjectGallery 
                     gallery={galleryList} 
@@ -314,7 +320,7 @@ export default function ProjectDrawer({
                 </section>
               )}
 
-              {/* 3. Architectural & Engineering Scope */}
+              {/* 3. Scope */}
               {detailedDescription && (
                 <section className={styles.section}>
                   <h2 className={styles.sectionTitle}>Architectural &amp; Engineering Scope</h2>

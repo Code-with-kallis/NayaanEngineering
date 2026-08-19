@@ -1,11 +1,9 @@
+// src/components/home/GoogleReviews.jsx
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import styles from "./GoogleReviews.module.css";
 
-// 100% environment-driven API endpoint
 const API_URL = import.meta.env.VITE_FEATURABLE_API_URL;
 
-// Official Google Place ID Deep-Links
-// These trigger the actual review modal / reviews tab on all mobile and desktop browsers
 const GOOGLE_WRITE_REVIEW_URL =
   "https://search.google.com/local/writereview?placeid=ChIJG4sCqrcH4TkRbRVG75QG8mI";
 
@@ -20,7 +18,73 @@ const AVATAR_GRADIENTS = [
   "linear-gradient(135deg, #db2777, #be185d)",
 ];
 
-// Helper to extract review photo URLs across API variants
+// 1. Extract Google's actual relative date
+function getReviewDate(r) {
+  if (!r) return "Recently";
+
+  const officialRelativeString =
+    r.relative_publish_time_description ||
+    r.relativePublishTimeDescription ||
+    r.relative_time_description ||
+    r.relativeTimeDescription ||
+    r.time_description ||
+    r.timeDescription ||
+    r.relative_time ||
+    r.relativeTime ||
+    r.timeAgo ||
+    r.time_ago ||
+    r.time_ago_text;
+
+  if (typeof officialRelativeString === "string" && officialRelativeString.trim().length > 0) {
+    return officialRelativeString.trim();
+  }
+
+  const rawDate =
+    r.published_at ||
+    r.publishedAt ||
+    r.created_at ||
+    r.createdAt ||
+    r.date ||
+    r.datetime ||
+    r.time ||
+    r.timestamp;
+
+  if (!rawDate) return "Recently";
+
+  if (typeof rawDate === "string" && (rawDate.includes("ago") || rawDate.toLowerCase() === "yesterday")) {
+    return rawDate.trim();
+  }
+
+  let date;
+  if (typeof rawDate === "number") {
+    date = new Date(rawDate < 1e11 ? rawDate * 1000 : rawDate);
+  } else {
+    date = new Date(rawDate);
+  }
+
+  if (isNaN(date.getTime())) {
+    return typeof rawDate === "string" ? rawDate : "Recently";
+  }
+
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) return "Just now";
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) return `${diffInHours}h ago`;
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays === 1) return "Yesterday";
+  if (diffInDays < 7) return `${diffInDays} days ago`;
+  const diffInWeeks = Math.floor(diffInDays / 7);
+  if (diffInWeeks < 4) return `${diffInWeeks} week${diffInWeeks > 1 ? "s" : ""} ago`;
+  const diffInMonths = Math.floor(diffInDays / 30.4375);
+  if (diffInMonths < 12) return `${diffInMonths} month${diffInMonths > 1 ? "s" : ""} ago`;
+  const diffInYears = Math.floor(diffInDays / 365.25);
+  return `${diffInYears} year${diffInYears > 1 ? "s" : ""} ago`;
+}
+
 function getReviewPhotoUrl(r) {
   if (!r) return null;
   let url =
@@ -77,7 +141,6 @@ function getReviewPhotoUrl(r) {
   return null;
 }
 
-// Avatar sub-component with letter fallback
 function ReviewAvatar({ photoUrl, name, index }) {
   const [imgFailed, setImgFailed] = useState(false);
   const letter = (name || "G").charAt(0).toUpperCase();
@@ -107,20 +170,18 @@ export default function GoogleReviews() {
   const [reviews, setReviews] = useState([]);
   const [summary, setSummary] = useState({
     rating: 4.8,
-    count: 17,
+    count: 23,
     label: "Excellent",
   });
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
 
-  // Drag & Swipe State
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const trackRef = useRef(null);
 
-  // Fetch and Parse Reviews & Place Stats
   useEffect(() => {
     if (!API_URL) {
       console.error("VITE_FEATURABLE_API_URL is missing in your .env file");
@@ -134,64 +195,13 @@ export default function GoogleReviews() {
         return res.json();
       })
       .then((data) => {
-        // 1. Rating extraction
-        const rawApiRating =
-          data?.business?.rating ||
-          data?.place?.rating ||
-          data?.widget?.business?.rating ||
-          data?.stats?.rating ||
-          data?.rating ||
-          data?.averageRating ||
-          data?.average_rating ||
-          data?.widget?.rating ||
-          data?.widget?.average_rating;
-
-        const parsedRating =
-          rawApiRating !== undefined && !isNaN(Number(rawApiRating)) && Number(rawApiRating) > 0
-            ? Math.max(1, Math.min(5, Number(rawApiRating)))
-            : 4.8;
-
-        // 2. Review count extraction
-        const rawApiCount =
-          data?.business?.reviews_count ||
-          data?.business?.review_count ||
-          data?.business?.total_reviews ||
-          data?.place?.user_ratings_total ||
-          data?.place?.reviews_count ||
-          data?.stats?.total_reviews ||
-          data?.stats?.reviews_count ||
-          data?.stats?.count ||
-          data?.totalReviews ||
-          data?.reviewsCount ||
-          data?.total_reviews ||
-          data?.widget?.total_reviews ||
-          data?.widget?.totalReviews ||
-          data?.total_count;
-
-        const parsedCount =
-          rawApiCount !== undefined && !isNaN(Number(rawApiCount)) && Number(rawApiCount) > 0
-            ? Number(rawApiCount)
-            : 17;
-
-        const getRatingLabel = (score) => {
-          if (score >= 4.5) return "Excellent";
-          if (score >= 4.0) return "Very Good";
-          if (score >= 3.5) return "Good";
-          return "Average";
-        };
-
-        setSummary({
-          rating: Number(parsedRating.toFixed(1)),
-          count: parsedCount,
-          label: getRatingLabel(parsedRating),
-        });
-
-        // 3. Review list extraction
+        // 1. Extract reviews array
         const rawList =
           data?.reviews ||
           data?.data?.reviews ||
           data?.widget?.reviews ||
           data?.items ||
+          data?.data ||
           (Array.isArray(data) ? data : []);
 
         const parsedReviews = rawList.map((r) => {
@@ -206,16 +216,7 @@ export default function GoogleReviews() {
             "Google User";
 
           const photo = getReviewPhotoUrl(r);
-
-          const time =
-            r.relativePublishTimeDescription ||
-            r.relative_time_description ||
-            r.relative_publish_time_description ||
-            r.timeAgo ||
-            r.date ||
-            r.published_at ||
-            "Google Review";
-
+          const time = getReviewDate(r);
           const text =
             r.text || r.comment || r.review_text || r.content || r.body || "";
 
@@ -234,16 +235,81 @@ export default function GoogleReviews() {
           };
         });
 
+        // 2. Comprehensive deep extraction for Place Rating
+        const rawApiRating =
+          data?.business?.rating ||
+          data?.place?.rating ||
+          data?.place?.rating_star ||
+          data?.overview?.rating ||
+          data?.feed?.rating ||
+          data?.widget?.business?.rating ||
+          data?.stats?.rating ||
+          data?.rating ||
+          data?.averageRating ||
+          data?.average_rating ||
+          data?.widget?.rating ||
+          data?.widget?.average_rating;
+
+        const parsedRating =
+          rawApiRating !== undefined && !isNaN(Number(rawApiRating)) && Number(rawApiRating) > 0
+            ? Math.max(1, Math.min(5, Number(rawApiRating)))
+            : 4.8;
+
+        // 3. Comprehensive deep extraction for Total Place Review Count
+        const rawApiCount =
+          data?.business?.user_ratings_total ||
+          data?.business?.reviews_count ||
+          data?.business?.review_count ||
+          data?.business?.total_reviews ||
+          data?.place?.user_ratings_total ||
+          data?.place?.reviews_count ||
+          data?.place?.total_reviews ||
+          data?.overview?.total_reviews ||
+          data?.overview?.reviews_count ||
+          data?.feed?.total_reviews ||
+          data?.feed?.user_ratings_total ||
+          data?.stats?.total_reviews ||
+          data?.stats?.reviews_count ||
+          data?.stats?.user_ratings_total ||
+          data?.stats?.count ||
+          data?.totalReviews ||
+          data?.reviewsCount ||
+          data?.total_reviews ||
+          data?.widget?.total_reviews ||
+          data?.widget?.totalReviews ||
+          data?.user_ratings_total ||
+          data?.total_count ||
+          data?.total;
+
+        const parsedCount =
+          rawApiCount !== undefined && !isNaN(Number(rawApiCount)) && Number(rawApiCount) > 0
+            ? Number(rawApiCount)
+            : parsedReviews.length > 23
+            ? parsedReviews.length
+            : 23;
+
+        const getRatingLabel = (score) => {
+          if (score >= 4.5) return "Excellent";
+          if (score >= 4.0) return "Very Good";
+          if (score >= 3.5) return "Good";
+          return "Average";
+        };
+
+        setSummary({
+          rating: Number(parsedRating.toFixed(1)),
+          count: parsedCount,
+          label: getRatingLabel(parsedRating),
+        });
+
         setReviews(parsedReviews);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Featurable reviews load failed:", err);
+        console.error("Google reviews load failed:", err);
         setLoading(false);
       });
   }, []);
 
-  // Fluid responsive cards per view calculation
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -279,7 +345,6 @@ export default function GoogleReviews() {
     setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
   };
 
-  // Pointer Handlers for Unified Mouse Drag & Touch Swipe
   const handlePointerDown = (e) => {
     if (reviews.length <= cardsPerView) return;
     setIsDragging(true);
@@ -314,7 +379,6 @@ export default function GoogleReviews() {
 
   const totalPages = Math.max(1, maxIndex + 1);
 
-  // Star Rating Breakdown
   const displayRating = summary.rating || 4.8;
   const fullStarsCount = Math.floor(displayRating);
   const decimalPart = Number((displayRating % 1).toFixed(1));
@@ -325,25 +389,23 @@ export default function GoogleReviews() {
   return (
     <section className={styles.reviewSection} aria-labelledby="google-reviews-title">
       <div className={styles.container}>
-        {/* Section Header */}
         <div className={styles.header}>
-        <h2 id="google-reviews-title" className={styles.googleBrandTitle}>
-  <span className={styles.googleBrandText}>
-    <span style={{ color: "#4285F4" }}>G</span>
-    <span style={{ color: "#EA4335" }}>o</span>
-    <span style={{ color: "#FBBC05" }}>o</span>
-    <span style={{ color: "#4285F4" }}>g</span>
-    <span style={{ color: "#34A853" }}>l</span>
-    <span style={{ color: "#EA4335" }}>e</span>
-  </span>
-  <span className={styles.reviewsWord}>Reviews</span>
-</h2>
+          <h2 id="google-reviews-title" className={styles.googleBrandTitle}>
+            <span className={styles.googleBrandText}>
+              <span style={{ color: "#4285F4" }}>G</span>
+              <span style={{ color: "#EA4335" }}>o</span>
+              <span style={{ color: "#FBBC05" }}>o</span>
+              <span style={{ color: "#4285F4" }}>g</span>
+              <span style={{ color: "#34A853" }}>l</span>
+              <span style={{ color: "#EA4335" }}>e</span>
+            </span>
+            <span className={styles.reviewsWord}>Reviews</span>
+          </h2>
           <p className={styles.subtitle}>
             Verified feedback and ratings directly from our Google Business profile.
           </p>
         </div>
 
-        {/* Rating Summary Card */}
         <div className={styles.summaryCard}>
           <div className={styles.leftSummaryGroup}>
             <div className={styles.googleBadge}>
@@ -375,7 +437,6 @@ export default function GoogleReviews() {
                   className={styles.starCluster}
                   aria-label={`${displayRating} out of 5 stars`}
                 >
-                  {/* Full Stars */}
                   {Array.from({ length: fullStarsCount }).map((_, i) => (
                     <svg
                       key={`full-${i}`}
@@ -389,7 +450,6 @@ export default function GoogleReviews() {
                     </svg>
                   ))}
 
-                  {/* Partial Star */}
                   {hasPartialStar && (
                     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
                       <defs>
@@ -405,7 +465,6 @@ export default function GoogleReviews() {
                     </svg>
                   )}
 
-                  {/* Empty Stars */}
                   {Array.from({ length: emptyStarsCount }).map((_, i) => (
                     <svg
                       key={`empty-${i}`}
@@ -496,7 +555,6 @@ export default function GoogleReviews() {
           </div>
         </div>
 
-        {/* Carousel Viewport */}
         {loading ? (
           <div className={styles.statusBox}>
             Loading Google reviews...
@@ -507,7 +565,6 @@ export default function GoogleReviews() {
           </div>
         ) : (
           <div className={styles.carouselWrapper}>
-            {/* Desktop Left Button */}
             <button
               type="button"
               className={`${styles.navBtn} ${styles.prevBtn}`}
@@ -519,7 +576,6 @@ export default function GoogleReviews() {
               </svg>
             </button>
 
-            {/* Slider Track */}
             <div
               className={`${styles.trackViewport} ${isDragging ? styles.grabbing : ""}`}
               ref={trackRef}
@@ -546,7 +602,6 @@ export default function GoogleReviews() {
                     style={{ flex: `0 0 ${100 / cardsPerView}%` }}
                   >
                     <div className={styles.reviewCard}>
-                      {/* Author Header */}
                       <div className={styles.authorRow}>
                         <ReviewAvatar
                           photoUrl={review.authorPhotoUrl}
@@ -589,7 +644,6 @@ export default function GoogleReviews() {
                         </svg>
                       </div>
 
-                      {/* Rating Stars */}
                       <div className={styles.cardStarsRow}>
                         {Array.from({ length: review.rating || 5 }).map((_, starIndex) => (
                           <svg
@@ -605,10 +659,8 @@ export default function GoogleReviews() {
                         ))}
                       </div>
 
-                      {/* Review Text */}
                       <p className={styles.reviewText}>"{review.text}"</p>
 
-                      {/* Footer */}
                       <div className={styles.cardFooter}>
                         <span className={styles.verifiedTextSmall}>
                           <svg
@@ -634,7 +686,6 @@ export default function GoogleReviews() {
               </div>
             </div>
 
-            {/* Desktop Right Button */}
             <button
               type="button"
               className={`${styles.navBtn} ${styles.nextBtn}`}
@@ -646,7 +697,6 @@ export default function GoogleReviews() {
               </svg>
             </button>
 
-            {/* Mobile / Tablet Controls */}
             <div className={styles.bottomControls}>
               <button
                 type="button"

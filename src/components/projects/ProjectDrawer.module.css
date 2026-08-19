@@ -1,46 +1,65 @@
+/* src/components/projects/ProjectDrawer.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-/* ================= PORTAL WRAPPER & CENTERED BACKDROP ================= */
+/* ================= PORTAL WRAPPER ================= */
 .portalWrapper {
   position: fixed;
   inset: 0;
   z-index: 9999;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: flex-end;
   box-sizing: border-box;
   height: 100vh;
   height: 100dvh;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
 }
 
 .backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(10, 10, 10, 0.82);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(0, 0, 0, 0.75);
 }
 
-/* ================= REFINED DESKTOP MODAL PROPORTIONS ================= */
+/* ================= BOTTOM PANEL ================= */
 .modalPanel {
   position: relative;
-  width: min(94vw, 1020px);
-  max-height: min(90vh, 880px);
-  height: 100%;
+  width: min(94vw, 1040px);
+  height: 90vh;
+  height: 90dvh;
+  max-height: 90dvh;
   background: #FFFFFF;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   border: 1px solid #E4E4E7;
-  border-radius: 20px;
-  color: #0A0A0A;
+  border-bottom: none;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 32px 90px -15px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.35);
   z-index: 10;
   overflow: hidden;
+  will-change: transform;
 }
 
-/* ================= STICKY TOP BAR ================= */
+.dragHandleBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0 6px 0;
+  background: #FFFFFF;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.dragPill {
+  width: 44px;
+  height: 4px;
+  background: #D4D4D8;
+  border-radius: 999px;
+}
+
+/* ================= TOP BAR ================= */
 .topBar {
   position: sticky;
   top: 0;
@@ -48,18 +67,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.85rem 1.75rem;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid #F4F4F5;
+  padding: 0.75rem 2rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid #E4E4E7;
   flex-shrink: 0;
 }
 
 .topBarLeft {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .logoLink {
@@ -69,7 +86,7 @@
 }
 
 .brandLogo {
-  height: 32px;
+  height: 28px;
   width: auto;
   object-fit: contain;
   display: block;
@@ -78,21 +95,21 @@
 .categoryBadge {
   display: inline-flex;
   align-items: center;
-  padding: 0.3rem 0.8rem;
+  padding: 0.3rem 0.85rem;
   border-radius: 999px;
   background: #F4F4F5;
   border: 1px solid #E4E4E7;
-  color: #0A0A0A;
-  font-size: 0.725rem;
+  color: #000000;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
 .actionsGroup {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
 }
 
 .iconBtn {
@@ -100,21 +117,19 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
-  color: #71717A;
+  color: #000000;
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  font-size: 0.85rem;
+  font-size: 1rem;
 }
 
 .iconBtn:hover {
   background: #F4F4F5;
   border-color: #E4E4E7;
-  color: #0A0A0A;
 }
 
 .copiedActive {
@@ -126,41 +141,31 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  background: #0A0A0A;
+  background: #000000;
   color: #FFFFFF;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 700;
   padding: 4px 8px;
   border-radius: 6px;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  pointer-events: none;
-  animation: tooltipFade 0.2s ease;
-}
-
-@keyframes tooltipFade {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .closeBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 8px;
-  color: #0A0A0A;
+  color: #000000;
   background: #F4F4F5;
   border: 1px solid #E4E4E7;
   cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 1rem;
 }
 
 .closeBtn:hover {
-  background: #0A0A0A;
-  border-color: #0A0A0A;
+  background: #000000;
   color: #FFFFFF;
 }
 
@@ -174,15 +179,14 @@
 .navControls {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.25rem;
 }
 
 .counter {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: #71717A;
-  padding: 0 0.35rem;
-  letter-spacing: 0.04em;
+  color: #000000;
+  padding: 0 0.4rem;
 }
 
 .successIcon {
@@ -197,104 +201,110 @@
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
   overscroll-behavior-y: contain;
-  padding: 2rem 2.5rem 3.5rem 2.5rem;
+  padding: 2.25rem 3rem 4rem 3rem;
   display: flex;
   flex-direction: column;
-  gap: 2.25rem;
+  gap: 2.5rem;
+
   scrollbar-width: thin;
-  scrollbar-color: #D4D4D8 transparent;
+  scrollbar-color: #FFBB0F #F4F4F5;
 }
 
 .scrollContent::-webkit-scrollbar {
-  width: 6px;
+  width: 7px;
+}
+
+.scrollContent::-webkit-scrollbar-track {
+  background: #F4F4F5;
 }
 
 .scrollContent::-webkit-scrollbar-thumb {
-  background-color: #D4D4D8;
-  border-radius: 4px;
+  background-color: #FFBB0F;
+  border-radius: 6px;
 }
 
+/* ================= READING MODE TYPOGRAPHY ================= */
 .contentHeader {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.75rem;
 }
 
 .title {
-  font-size: clamp(1.85rem, 2.4vw, 2.35rem);
+  font-size: clamp(2.1rem, 2.8vw, 2.75rem);
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.03em;
-  color: #0A0A0A;
+  color: #000000;
   margin: 0;
 }
 
 .metaGrid {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  font-size: 0.85rem;
+  gap: 2rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: #71717A;
+  color: #1A1A1A;
   margin-top: 0.25rem;
 }
 
 .metaItem {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
 }
 
 .accentIcon {
-  color: rgb(255, 187, 15);
-  font-size: 0.85rem;
+  color: #FFBB0F;
+  font-size: 1.05rem;
   flex-shrink: 0;
 }
 
-/* ================= SECTIONS & LISTS ================= */
 .section {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 1.25rem;
 }
 
 .sectionTitle {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #0A0A0A;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #000000;
   letter-spacing: -0.02em;
-  border-bottom: 1px solid #F4F4F5;
-  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #E4E4E7;
+  padding-bottom: 0.65rem;
   margin: 0;
 }
 
 .description {
-  color: #52525B;
-  font-size: 0.925rem;
-  line-height: 1.7;
+  color: #000000;
+  font-size: 1.125rem;
+  line-height: 1.85;
+  font-weight: 450;
   margin: 0;
   white-space: pre-line;
 }
 
-/* ================= CASE STUDY ================= */
 .caseStudyContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.25rem;
 }
 
 .caseStudyPara {
-  color: #52525B;
-  font-size: 0.925rem;
-  line-height: 1.7;
+  color: #000000;
+  font-size: 1.125rem;
+  line-height: 1.85;
+  font-weight: 450;
   margin: 0;
 }
 
 .keyHighlight {
-  color: #0A0A0A;
-  font-weight: 700;
+  color: #000000;
+  font-size: 1.125rem;
+  font-weight: 750;
 }
 
 .deliverablesList {
@@ -303,67 +313,109 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .deliverablesList li {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
-  font-size: 0.925rem;
-  color: #52525B;
-  line-height: 1.6;
+  gap: 0.85rem;
+  font-size: 1.125rem;
+  color: #000000;
+  line-height: 1.75;
+  font-weight: 450;
 }
 
 .checkIcon {
-  color: rgb(255, 187, 15);
-  margin-top: 0.2rem;
+  color: #FFBB0F;
+  margin-top: 0.25rem;
   flex-shrink: 0;
-  font-size: 1rem;
+  font-size: 1.15rem;
 }
 
-/* ================= MOBILE VIEWPORT (<= 768px) ================= */
+/* ================= CLEAN UNCLUTTERED MOBILE VIEWPORT (<= 768px) ================= */
 @media (max-width: 768px) {
-  .portalWrapper {
-    padding: 0;
-    align-items: flex-end;
-  }
-
   .modalPanel {
     width: 100vw;
-    min-width: 100vw;
-    max-width: 100vw;
-    height: 100vh;
-    height: 100dvh;
-    max-height: 100dvh;
-    border-radius: 0;
-    border: none;
+    height: 94vh;
+    height: 94dvh;
+    max-height: 94dvh;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
   }
 
+  /* Compact Clean Topbar */
   .topBar {
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .topBarLeft {
+    gap: 0;
   }
 
   .brandLogo {
-    height: 26px;
+    height: 22px;
   }
 
+  /* Hide Category Badge completely on mobile to remove jumble */
+  .categoryBadge {
+    display: none;
+  }
+
+  .actionsGroup {
+    gap: 0.25rem;
+  }
+
+  .divider {
+    height: 14px;
+    margin: 0 0.1rem;
+  }
+
+  .iconBtn,
+  .closeBtn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .counter {
+    font-size: 0.75rem;
+    padding: 0 0.2rem;
+  }
+
+  /* Optimized Reading Content */
   .scrollContent {
-    padding: 1.25rem 1rem 4rem 1rem;
+    padding: 1.25rem 1rem 3.5rem 1rem;
     gap: 1.5rem;
   }
 
   .title {
-    font-size: 1.75rem;
+    font-size: 1.55rem;
+    line-height: 1.2;
   }
 
   .sectionTitle {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+    padding-bottom: 0.45rem;
+  }
+
+  /* Perfectly Balanced Compact Text Sizes for Mobile */
+  .description,
+  .caseStudyPara,
+  .deliverablesList li {
+    font-size: 0.925rem;
+    line-height: 1.65;
+  }
+
+  .keyHighlight {
+    font-size: 0.925rem;
   }
 
   .metaGrid {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.35rem;
+    font-size: 0.85rem;
   }
 }

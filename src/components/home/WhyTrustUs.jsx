@@ -8,6 +8,29 @@ import {
 } from "react-icons/fa";
 import styles from "./WhyTrustUs.module.css";
 
+// Automatically bundle from src/assets/images/about/ or src/assets/images/team/
+const aboutImages = import.meta.glob("../../assets/images/about/*", {
+  eager: true,
+  import: "default",
+});
+const teamImages = import.meta.glob("../../assets/images/team/*", {
+  eager: true,
+  import: "default",
+});
+
+function resolveImage() {
+  const assets = { ...aboutImages, ...teamImages };
+  for (const [path, assetUrl] of Object.entries(assets)) {
+    const lower = path.toLowerCase();
+    if (lower.includes("sajid") || lower.includes("neipl-0102")) {
+      return assetUrl;
+    }
+  }
+  return "/assets/images/about/sajid.jpeg";
+}
+
+const siteSupervisionImg = resolveImage();
+
 export default function WhyTrustUs() {
   return (
     <section className={styles.whyTrustSection}>
@@ -32,7 +55,12 @@ export default function WhyTrustUs() {
 
       <div className={styles.splitContentGrid}>
         <div className={styles.splitImageCard}>
-          <img src="/assets/team/sajid.jpeg" alt="Site Supervision" />
+          <img 
+            src={siteSupervisionImg} 
+            alt="Site Supervision" 
+            loading="lazy"
+            decoding="async"
+          />
         </div>
 
         <div className={styles.featuresList}>

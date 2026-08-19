@@ -1,5 +1,4 @@
 /* src/components/about/AboutHero.module.css */
-
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600&display=swap');
 
 /* ===== HERO SECTION ===== */
@@ -63,35 +62,35 @@
   align-items: center;
   gap: 0.4rem;
   font-size: 0.85rem;
-  color: #777777;
+  color: #71717A;
   margin-bottom: 0.85rem;
 }
 
 .breadcrumbLink {
-  color: #777777;
+  color: #71717A;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .breadcrumbLink:hover {
-  color: #111111;
+  color: #0A0A0A;
 }
 
 .homeIcon {
   font-size: 0.85rem;
-  color: #888888;
+  color: #A1A1AA;
 }
 
 .slash {
-  color: #CCCCCC;
+  color: #E4E4E7;
 }
 
 .activeBreadcrumb {
-  color: #111111;
+  color: #0A0A0A;
   font-weight: 700;
 }
 
-/* Title Styles matching Projects Hero */
+/* Title Styles */
 .heroTitle {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: clamp(2.3rem, 3.3vw, 3.4rem);
@@ -102,16 +101,16 @@
 }
 
 .titleDark {
-  color: #111111;
+  color: #0A0A0A;
 }
 
 .titleMuted {
-  color: #C2B3A3;
+  color: #71717A;
   font-weight: 800;
 }
 
 .heroText {
-  color: #555555;
+  color: #52525B;
   font-size: 0.875rem;
   line-height: 1.6;
   margin: 0 0 1.35rem 0;
@@ -131,7 +130,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #B7410E;
+  background: #0A0A0A;
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -139,16 +138,16 @@
   padding: 0.8rem 2.1rem;
   border-radius: 14px;
   text-decoration: none;
-  border: none;
+  border: 1px solid #0A0A0A;
   cursor: pointer;
   transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(183, 65, 14, 0.22);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .heroBtn:hover {
-  background: #9E370C;
+  background: #27272A;
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(183, 65, 14, 0.32);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
 .heroBtnOutline {
@@ -156,22 +155,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #F4F6F8;
-  color: #111111;
+  background: #FAFAFA;
+  color: #0A0A0A;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
   padding: 0.8rem 2.1rem;
   border-radius: 14px;
   text-decoration: none;
-  border: 1px solid #E2E8F0;
+  border: 1px solid #E4E4E7;
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
 .heroBtnOutline:hover {
-  background: #EAEFF4;
-  border-color: #CBD5E1;
+  background: #F4F4F5;
+  border-color: #0A0A0A;
   transform: translateY(-2px);
 }
 

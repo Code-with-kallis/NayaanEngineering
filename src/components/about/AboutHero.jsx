@@ -4,11 +4,25 @@ import { Link } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import styles from "./AboutHero.module.css";
 
-const DEFAULT_GALLERY_IMAGES = [
-  "/assets/about/office.webp",
-  "/assets/team/sajid.jpeg",
-  "/assets/team/junaid.jpg",
-];
+// Automatically bundle images from src/assets/images/about/
+const aboutImages = import.meta.glob("../../assets/images/about/*", {
+  eager: true,
+  import: "default",
+});
+
+function resolveAsset(filename, pool, fallback) {
+  for (const path in pool) {
+    if (path.toLowerCase().endsWith(`/${filename.toLowerCase()}`)) {
+      return pool[path];
+    }
+  }
+  return fallback;
+}
+
+// Map exactly to the requested routes using the new assets/images/about directory
+const defaultOffice = resolveAsset("office.webp", aboutImages, "/assets/images/about/office.webp");
+const defaultTeam1 = resolveAsset("sajid.jpeg", aboutImages, "/assets/images/about/sajid.jpeg");
+const defaultTeam2 = resolveAsset("junaid.jpg", aboutImages, "/assets/images/about/junaid.jpg");
 
 const AboutHero = ({
   titleDark = "Engineering What Comes ",
@@ -20,18 +34,18 @@ const AboutHero = ({
     </>
   ),
   subtitle = "Nayaab Engineering Innovations Pvt. Ltd. combines formal corporate standards with startup agility to deliver civil construction, structural engineering, and technical design across Jammu & Kashmir.",
-  galleryImages = DEFAULT_GALLERY_IMAGES,
+  galleryImages = [],
   primaryAction = { href: "/contact", label: "Start a Project" },
   secondaryAction = { href: "#corporate-profile", label: "Company Profile" },
 }) => {
-  const img1 = galleryImages[0] || "/assets/about/office.webp";
-  const img2 = galleryImages[1] || "/assets/team/sajid.jpeg";
-  const img3 = galleryImages[2] || "/assets/team/junaid.jpg";
+  const img1 = galleryImages[0] || defaultOffice;
+  const img2 = galleryImages[1] || defaultTeam1;
+  const img3 = galleryImages[2] || defaultTeam2;
 
   return (
     <section className={styles.heroSection} aria-labelledby="about-hero-title">
       <div className={styles.heroContainer}>
-        {/* Left Column Text & Buttons */}
+        {/* Left Column Text & Actions */}
         <div className={styles.heroLeftCard}>
           <div className={`${styles.breadcrumb} ${styles.animateSlideLeft} ${styles.delay1}`}>
             <FaHome className={styles.homeIcon} aria-hidden="true" />
@@ -76,7 +90,7 @@ const AboutHero = ({
           </div>
         </div>
 
-        {/* Right Column: Projects Hero 3-Image Asymmetric Chamfered Grid */}
+        {/* Right Column: 3-Image Asymmetric Chamfered Grid */}
         <div className={styles.heroRightGrid}>
           <div className={styles.heroImageMain}>
             <img 

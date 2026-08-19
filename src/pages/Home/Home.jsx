@@ -6,6 +6,7 @@ import StatsCounter from "../../components/home/StatsCounter";
 import AboutBento from "../../components/home/AboutBento";
 import SplitShowcase from "../../components/home/SplitShowcase";
 import FeaturedProjects from "../../components/home/FeaturedProjects";
+import LeadershipMessages from "../../components/home/LeadershipMessages";
 import ProcessSection from "../../components/home/ProcessSection";
 import WhyTrustUs from "../../components/home/WhyTrustUs";
 import GoogleReviews from "../../components/home/GoogleReviews";
@@ -133,7 +134,7 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Nayaab Engineering | Premier Architectural & Structural Engineering</title>
+        <title>Nayaab Engineering | Premier Architectural &amp; Structural Engineering</title>
         <meta
           name="description"
           content="Nayaab Engineering provides turnkey construction, architectural design, and structural consultancy in Kashmir. View our featured projects and request a consultation."
@@ -165,22 +166,25 @@ export default function Home() {
         onOpenModal={openProjectModal}
       />
 
-      {/* 7. OUR PROCESS */}
+      {/* 7. LEADERSHIP PERSPECTIVE & MESSAGES */}
+      <LeadershipMessages />
+
+      {/* 8. OUR PROCESS */}
       <ProcessSection />
 
-      {/* 8. WHY TRUST US */}
+      {/* 9. WHY TRUST US */}
       <WhyTrustUs />
 
-      {/* 9. GOOGLE REVIEWS */}
+      {/* 10. GOOGLE REVIEWS */}
       <GoogleReviews />
 
-      {/* 10. TICKER */}
+      {/* 11. TICKER */}
       <TickerBanner />
 
-      {/* 11. CONTACT FORM */}
+      {/* 12. CONTACT FORM */}
       <ContactForm />
 
-      {/* 12. MODAL DRAWER */}
+      {/* 13. MODAL DRAWER */}
       <ProjectDrawer
         isOpen={!!selectedProject}
         project={selectedProject}

@@ -4,17 +4,35 @@
 // Single source of truth consumed by:
 //   - pages/Team/Team.jsx        (grid, grouped by section)
 //   - pages/Team/TeamProfile.jsx (dynamic /team/:employeeId route)
-//
-// Adding a new employee = add one object here. No other file changes.
 // ============================================================================
 
 /**
- * @typedef {"leadership" | "architecture" | "engineering" | "construction"} TeamSection
- *
- * teamSection  -> which homepage section the card renders in (authority/role-based)
- * department   -> actual operational department (descriptive, shown on card + profile)
- * designation  -> job title, exactly as issued by HR
+ * Automatically glob and bundle all image formats (.png, .webp, .jpg, .jpeg) 
+ * placed in `src/assets/images/team/`
  */
+const teamImageFiles = import.meta.glob(
+  "../assets/images/team/*.{png,webp,jpg,jpeg,PNG,WEBP,JPG,JPEG}",
+  { eager: true, import: "default" }
+);
+
+/**
+ * Dynamically resolves an employee's bundled image by matching their ID or alias.
+ */
+function resolveTeamImage(employeeId, fallbackAlias) {
+  const normalizedId = employeeId.toLowerCase();
+  const normalizedAlias = fallbackAlias ? fallbackAlias.toLowerCase() : "";
+
+  for (const [path, assetUrl] of Object.entries(teamImageFiles)) {
+    const filename = path.split("/").pop().toLowerCase();
+    if (
+      filename.includes(normalizedId) ||
+      (normalizedAlias && filename.includes(normalizedAlias))
+    ) {
+      return assetUrl;
+    }
+  }
+  return `/images/team/${employeeId}.png`;
+}
 
 export const TEAM_SECTIONS = [
   { id: "leadership", label: "Leadership Team" },
@@ -32,7 +50,7 @@ export const teamMembers = [
     department: "Board of Directors",
     teamSection: "leadership",
     contact: { email: "info@nayaabengineering.com" },
-    image: "/assets/team/waseemmanzoor.jpg",
+    image: resolveTeamImage("neipl-0101", "waseemmanzoor"),
     quote: "Our foundation is built on integrity, engineering rigor, and a sustainable vision. We build not just structures, but legacies.",
     bio: "Waseem Manzoor serves as Chairman of Nayaab Engineering Innovations, guiding corporate vision, governance, and long-term strategic expansion across major engineering and infrastructure sectors.",
     stats: [
@@ -53,16 +71,15 @@ export const teamMembers = [
       "Urban Redevelopment Review",
     ],
   },
-  
   {
     employeeId: "neipl-0102",
-    name: "Er. Saajid Rashid",
-    designation: "Director",
+    name: "Er. Saajid Rashid Malik",
+    designation: "Director – Construction & Site Operations",
     gender: "Male",
     department: "Construction & Site Operations",
     teamSection: "leadership",
     contact: { email: "info@nayaabengineering.com" },
-    image: "/assets/team/neipl-0102.png",
+    image: resolveTeamImage("neipl-0102", "saajid"),
     quote: "Precision in execution isn't just our goal—it's our standard. Every project we build reflects our uncompromised commitment to structural excellence.",
     bio: "Saajid Rashid leads Construction & Site Operations, bringing over a decade of hands-on leadership in structural execution, field safety compliance, and site team synchronization.",
     stats: [
@@ -85,13 +102,13 @@ export const teamMembers = [
   },
   {
     employeeId: "neipl-0103",
-    name: "Er. Aaqib Nazir",
-    designation: "Director",
+    name: "Er. Aaqib Nazir Tantary",
+    designation: "Director – Engineering & Technical Operations",
     gender: "Male",
     department: "Engineering & Technical Operations",
     teamSection: "leadership",
     contact: { email: "info@nayaabengineering.com" },
-    image: "/assets/team/neipl-0103.png",
+    image: resolveTeamImage("neipl-0103", "aaqib"),
     quote: "Engineering innovation is the bridge between ambitious design concepts and resilient, real-world infrastructure.",
     bio: "Aaqib Nazir heads Engineering & Technical Operations, driving structural dynamics analysis, MEP coordination, and BIM integration across complex engineering workflows.",
     stats: [
@@ -114,13 +131,13 @@ export const teamMembers = [
   },
   {
     employeeId: "neipl-0104",
-    name:  "Er. Junaid Bilal",
-    designation: "Managing Director",
+    name: "Er. Junaid Bilal Sheikh",
+    designation: "Chief Executive Officer (CEO)",
     gender: "Male",
     department: "Executive Leadership",
     teamSection: "leadership",
     contact: { email: "info@nayaabengineering.com" },
-    image: "/assets/team/neipl-0104.png",
+    image: resolveTeamImage("neipl-0104", "neipl-0104"),
     quote: "Fostering operational agility and technological adoption empowers our team to deliver exceptional value on every assignment.",
     bio: "Junaid Bilal oversees executive business operations, major client partnerships, and company-wide digital transformation across all department verticals.",
     stats: [
@@ -141,7 +158,6 @@ export const teamMembers = [
       "Institutional Facility Expansion",
     ],
   },
-  
   {
     employeeId: "neipl-0105",
     name: "Huma Gayas",
@@ -150,7 +166,7 @@ export const teamMembers = [
     department: "Architecture & Design",
     teamSection: "architecture",
     contact: { email: "info@nayaabengineering.com" },
-    image: "/assets/team/neipl-0105.png",
+    image: resolveTeamImage("neipl-0105", "huma"),
     quote: "Architecture should resonate with its natural surroundings while elevating the daily human experience within every space.",
     bio: "Huma Gayas combines spatial aesthetics with modern functional design, specializing in luxury interior architecture and sustainable building spaces.",
     stats: [
@@ -179,7 +195,7 @@ export const teamMembers = [
     department: "Architecture & Design",
     teamSection: "architecture",
     contact: { email: "info@nayaabengineering.com" },
-    image: "/assets/team/neipl-0106.jpeg",
+    image: resolveTeamImage("neipl-0106", "sameera"),
     quote: "Every line in architectural modeling must strike an exact balance between structural efficiency and aesthetic elegance.",
     bio: "Sameera Hassan focuses on contemporary facade design, spatial planning, and high-fidelity rendering for urban residential and commercial developments.",
     stats: [
@@ -208,7 +224,7 @@ export const teamMembers = [
     department: "Engineering & Technical Operations",
     teamSection: "architecture",
     contact: { email: "info@nayaabengineering.com" },
-    image: "/assets/team/neipl-0107.png",
+    image: resolveTeamImage("neipl-0107", "birgees"),
     quote: "Millimeter precision in CAD modeling is the invisible backbone of flawless, error-free site construction.",
     bio: "Birgees Anjum produces comprehensive technical CAD schematics, structural drawings, and blueprint documentation across civil and engineering projects.",
     stats: [
@@ -237,7 +253,7 @@ export const teamMembers = [
     department: "Construction & Site Operations",
     teamSection: "construction",
     contact: { email: null },
-    image: "/assets/team/neipl-0120.png",
+    image: resolveTeamImage("neipl-0120", "tariq"),
     quote: "Craftsmanship lies in turning raw timber into enduring architectural components through disciplined skill.",
     bio: "Tariq Ahmad Ganaie manages structural timber framing, custom millwork, and wood formwork across major residential and commercial field projects.",
     stats: [
@@ -266,7 +282,7 @@ export const teamMembers = [
     department: "Construction & Site Operations",
     teamSection: "construction",
     contact: { email: null },
-    image: "/assets/team/neipl-0121.png",
+    image: resolveTeamImage("neipl-0121", "showkat"),
     quote: "Masonry is civil durability incarnate. Building right means engineering structures that last generations.",
     bio: "Showkat Ahmad Khan is a veteran mason overseeing heavy brickwork, stone cladding, and reinforced concrete masonry across complex ground sites.",
     stats: [
@@ -295,7 +311,7 @@ export const teamMembers = [
     department: "Construction & Site Operations",
     teamSection: "construction",
     contact: { email: null },
-    image: "/assets/team/neipl-0122.png",
+    image: resolveTeamImage("neipl-0122", "abdul"),
     quote: "Level, plumb, and square—sticking to strict site geometry prevents future structural fatigue.",
     bio: "Abdul Qayoom War provides expert masonry and civil execution, ensuring high-tolerance concrete pours, blockwork, and foundational leveling.",
     stats: [
@@ -324,7 +340,7 @@ export const teamMembers = [
     department: "Engineering & Technical Operations",
     teamSection: "construction",
     contact: { email: null },
-    image: "/assets/team/neipl-0123.png",
+    image: resolveTeamImage("neipl-0123", "sajid"),
     quote: "Flawless electrical wiring guarantees safety, reliability, and energy efficiency for every square foot.",
     bio: "Sajid Hussain handles site electrical infrastructure, panel installations, circuit diagnostics, and smart lighting setups for commercial facilities.",
     stats: [
@@ -348,34 +364,22 @@ export const teamMembers = [
 ];
 
 // ----------------------------------------------------------------------------
-// DERIVED LOOKUPS — computed once at module load, O(1) access everywhere else
+// DERIVED LOOKUPS (Computed once at module load)
 // ----------------------------------------------------------------------------
 
 const employeeIndexById = new Map(
   teamMembers.map((member, index) => [member.employeeId.toLowerCase(), index])
 );
 
-/**
- * Returns a single employee by ID, or undefined if not found.
- * Used by TeamProfile.jsx to resolve the :employeeId route param.
- */
 export function getEmployeeById(employeeId) {
   const index = employeeIndexById.get(employeeId?.toLowerCase());
   return index === undefined ? undefined : teamMembers[index];
 }
 
-/**
- * Returns all employees belonging to a given section, in data-declaration order.
- * Used by Team.jsx to render each TeamSection + TeamGrid.
- */
 export function getMembersBySection(sectionId) {
   return teamMembers.filter((member) => member.teamSection === sectionId);
 }
 
-/**
- * Returns { previous, next } employees relative to the given ID, wrapping
- * around the full roster. Powers the Previous/Next navigation on TeamProfile.jsx.
- */
 export function getAdjacentEmployees(employeeId) {
   const index = employeeIndexById.get(employeeId?.toLowerCase());
   if (index === undefined) return { previous: null, next: null };

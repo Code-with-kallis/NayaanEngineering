@@ -22,21 +22,20 @@ export default function AboutBento() {
               <span>About Us</span>
             </div>
             <h2 id="about-bento-title" className={styles.splitTitle}>
-              Driven by Quality &amp; Precision
+              Driven by Quality <span className={styles.titleGrey}>&amp; Precision</span>
             </h2>
           </div>
 
           <div className={styles.splitHeaderRight}>
             <p className={styles.splitDesc}>
-              Bringing a hands-on, client-first approach to civil and architectural engineering.
-              Incorporated in 2024 and headquartered in Baramulla, we combine formal corporate standards with regional expertise.
+              Delivering client-first civil and architectural engineering by pairing corporate standards with deep regional expertise.
             </p>
           </div>
         </div>
 
-        {/* Bento Grid Layout (Left: Office Image, Center: 2024 Card, Right: Tech Stack) */}
+        {/* Bento Grid Layout */}
         <div className={styles.bentoGrid}>
-          {/* 1. Left Side: Top-Right Clipped Rectangle Office Image */}
+          {/* 1. Left Side: Office Image */}
           <div className={styles.imageCard}>
             <img
               src={officeImage}
@@ -51,7 +50,7 @@ export default function AboutBento() {
             </div>
           </div>
 
-          {/* 2. Center: 2024 Incorporation & Leadership Stack */}
+          {/* 2. Center: Incorporation & Leadership */}
           <div className={`${styles.bentoCard} ${styles.cardLarge}`}>
             <img
               src="/logo.png"
@@ -77,7 +76,7 @@ export default function AboutBento() {
             </div>
           </div>
 
-          {/* 3. Right: Modern Technology & DPIIT Stack */}
+          {/* 3. Right: Technology & DPIIT Stack */}
           <div className={styles.bentoStack}>
             <div className={styles.bentoCard}>
               <div className={styles.cardIconBox} aria-hidden="true">

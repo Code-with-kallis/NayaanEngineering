@@ -1,4 +1,5 @@
-/* src/styles/global.css — Core CSS Reset & Shared Foundations */
+/* src/styles/global.css — Vector-Grade Crisp Typography Reset */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 *,
 *::before,
@@ -6,53 +7,70 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
+  /* 1. Vector-precise glyph rendering */
+  text-rendering: geometricPrecision !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  font-optical-sizing: auto;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
 }
 
 html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
-  overflow-x: clip; /* Modern clean horizontal clip without breaking mobile touch momentum */
-  background-color: var(--nei-bg-page);
-  color: var(--nei-text-body);
-  font-family: var(--nei-font-secondary);
-  font-size: var(--nei-font-body);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background-color: var(--nei-bg-page, #FFFFFF);
+  color: #000000;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  font-weight: 500; /* Solid weight eliminates edge bleeding */
+  line-height: 1.65;
+  letter-spacing: -0.015em;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Base Headings */
+/* Headings — Ultra-Sharp Vector Contrast */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--nei-font-primary);
-  color: var(--nei-text-title);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #000000;
   font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.01em;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
 }
 
-h1 { font-size: var(--nei-font-display); }
-h2 { font-size: var(--nei-font-h1); }
-h3 { font-size: var(--nei-font-h2); }
+h1 { font-size: clamp(2.25rem, 4vw, 3.25rem); }
+h2 { font-size: clamp(1.75rem, 3vw, 2.35rem); }
+h3 { font-size: clamp(1.35rem, 2.2vw, 1.75rem); }
+h4 { font-size: clamp(1.15rem, 1.6vw, 1.35rem); font-weight: 700; }
+h5 { font-size: 1rem; font-weight: 700; }
+h6 { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
 
+/* Paragraphs & Descriptions — 100% Solid Black, No Faded Gray */
 p {
-  color: var(--nei-text-body);
-  font-family: var(--nei-font-secondary);
+  color: #000000;
+  font-weight: 500;
+  line-height: 1.65;
+  letter-spacing: -0.012em;
 }
 
+/* Interactive & Media Elements */
 a {
-  color: var(--nei-brand-primary);
+  color: #000000;
   text-decoration: none;
-  transition: color var(--nei-transition-fast);
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  color: var(--nei-brand-hover);
+  color: var(--nei-brand-primary, #FFBB0F);
 }
 
 img, svg, video {
@@ -74,29 +92,40 @@ button {
   background: none;
 }
 
-/* Shared Responsive Utility Container */
-.container {
-  width: 100%;
-  max-width: var(--nei-container-max);
-  margin: 0 auto;
-  padding-inline: var(--nei-container-pad);
+/* Text Selection Accent */
+::selection {
+  background-color: #FFBB0F;
+  color: #000000;
 }
 
-/* Custom Scrollbar */
+/* Shared Container */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3rem);
+}
+
+/* Global Mustard Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--nei-bg-page);
+  background: #F4F4F5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--nei-text-muted);
-  border-radius: var(--nei-radius-full);
+  background-color: #FFBB0F;
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--nei-brand-primary);
+  background-color: #E5A70D;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #FFBB0F #F4F4F5;
 }

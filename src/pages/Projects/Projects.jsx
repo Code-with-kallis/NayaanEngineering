@@ -266,9 +266,9 @@ export default function Projects() {
             <span style={{ color: "#FFFFFF", fontWeight: 700 }}>Projects</span>
           </div>
         }
-        title="From Vision to"
-        titleHighlight="Built Realities"
-        subtitle="Every project at Nayaab Engineering Innovations is thoughtfully planned."
+        title="From Concept to"
+        titleHighlight="Concrete Reality"
+        subtitle="Explore architectural and engineering projects crafted with precision."
         actions={
           <>
             <Link to="/contact" className={heroStyles.btnPrimary}>

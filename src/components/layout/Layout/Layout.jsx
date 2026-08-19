@@ -1,23 +1,24 @@
-// src/components/layout/Layout.jsx
+// src/components/layout/Layout/Layout.jsx
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 
-export default function Layout() {
-  const location = useLocation();
+const HIDDEN_ROUTES = ["/admin", "/terms", "/privacy", "/team"];
 
-  // Pages where Navbar and Footer should not appear
-  const hideNavbarAndFooter = ["/admin", "/terms", "/privacy", "/team", ].some(
-    (path) => location.pathname === path || location.pathname.startsWith(`${path}/`)
+export default function Layout() {
+  const { pathname } = useLocation();
+
+  const isHidden = HIDDEN_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
 
   return (
     <>
-      {!hideNavbarAndFooter && <Navbar />}
+      {!isHidden && <Navbar />}
       <main id="main">
         <Outlet />
       </main>
-      {!hideNavbarAndFooter && <Footer />}
+      {!isHidden && <Footer />}
     </>
   );
 }
