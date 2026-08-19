@@ -1,36 +1,39 @@
-/* src/components/home/Hero.module.css */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+/* src/components/common/PageHero/PageHero.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 .heroTrack {
   position: relative;
   width: 100%;
   height: auto;
   contain: paint;
+  font-family: 'Urbanist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .heroSection {
   position: relative;
-  z-index: var(--nei-z-card, 1);
+  z-index: 1;
   display: flex;
   flex-direction: column;
   height: 100vh;
   height: 100dvh;
   width: 100%;
-  padding: 6rem var(--nei-container-pad, 2rem) 2rem;
+  padding: 6rem clamp(1.5rem, 5vw, 4rem) 2rem;
   color: #0A0A0A;
-  font-family: 'Plus Jakarta Sans', sans-serif;
   box-sizing: border-box;
   overflow: hidden;
   background: #FFFFFF;
+  font-family: 'Urbanist', sans-serif !important;
 }
 
-/* IMAGE BACKGROUND & OVERLAY */
+/* BACKGROUND IMAGE STAGE */
 .imageContainer {
   position: absolute;
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  background: #FFFFFF;
+  background: #0A0A0A;
   transform: translateZ(0);
 }
 
@@ -43,31 +46,19 @@
   pointer-events: none;
 }
 
-.imageOverlay {
-  display: none;
-}
-
-/* OPENING ANIMATIONS */
+/* ANIMATION */
 .animateSlideLeft {
   opacity: 0;
   transform: translateX(-120px);
-  animation: slideInFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInFromLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
 }
-
-.delay1 { animation-delay: 0.15s; }
 
 @keyframes slideInFromLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-120px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  0% { opacity: 0; transform: translateX(-120px); }
+  100% { opacity: 1; transform: translateX(0); }
 }
 
-/* HERO CONTENT (DESKTOP UNCHANGED) */
+/* CONTENT STAGE (DESKTOP) */
 .heroContent {
   flex: 1;
   display: flex;
@@ -75,13 +66,14 @@
   padding: 2rem 0;
 }
 
-/* CLIPPED-CORNER BLACK CONTAINER */
+/* CLIPPED BLACK CARD */
 .textWrapper {
   width: fit-content;
-  max-width: 480px;
+  max-width: 490px;
   background: #0A0A0A;
   color: #FFFFFF;
   padding: 2.5rem 2.25rem;
+  font-family: 'Urbanist', sans-serif !important;
   clip-path: polygon(
     0 0,
     calc(100% - 24px) 0,
@@ -90,39 +82,24 @@
     24px 100%,
     0 calc(100% - 24px)
   );
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
-/* EYEBROW TAGLINE */
-.eyebrowWrapper {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
+.textWrapper * {
+  font-family: 'Urbanist', sans-serif !important;
+}
+
+.eyebrowContainer {
   margin-bottom: 1.25rem;
 }
 
-.eyebrowDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-}
-
-.eyebrowText {
-  font-size: 0.775rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  color: #D4D4D8;
-  text-transform: uppercase;
-}
-
-/* CLEAN TITLE & REFINED WEIGHT */
+/* TITLE & SUBTITLE */
 .mainTitle {
+  font-family: 'Urbanist', sans-serif !important;
   font-size: clamp(2rem, 2.75vw, 2.5rem);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.22;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
   color: #FFFFFF;
   margin: 0 0 0.85rem 0;
 }
@@ -133,48 +110,57 @@
 }
 
 .subTitle {
-  font-size: 1.05rem;
+  font-family: 'Urbanist', sans-serif !important;
+  font-size: 0.95rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.55;
   margin: 0 0 1.75rem 0;
-  color: #A1A1AA;
+  color: #D4D4D8;
+  letter-spacing: 0.01em;
 }
 
+/* CTA ACTIONS */
 .ctaGroup {
   display: flex;
   align-items: center;
   gap: 0.85rem;
 }
 
-/* MONOCHROME BUTTONS */
-.btn {
+/* BASE BUTTON STRUCTURE WITH SLIDE-FILL HOVER */
+.btnPrimary,
+.btnOutline {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   padding: 0.8rem 1.8rem;
-  border-radius: 0px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-family: 'Urbanist', sans-serif !important;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
+  border-radius: 0;
   z-index: 1;
-  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), 
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
               border-color 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn span {
+.btnPrimary span,
+.btnOutline span {
   position: relative;
   z-index: 2;
+  font-family: 'Urbanist', sans-serif !important;
   transition: color 350ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn::before {
+.btnPrimary::before,
+.btnOutline::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -186,14 +172,17 @@
   z-index: 1;
 }
 
-.btn:hover::before {
+.btnPrimary:hover::before,
+.btnOutline:hover::before {
   transform: scaleX(1);
 }
 
-.btn:hover {
+.btnPrimary:hover,
+.btnOutline:hover {
   transform: translateY(-2px);
 }
 
+/* PRIMARY MUSTARD BUTTON */
 .btnPrimary {
   background: rgb(255, 187, 15);
   color: #0A0A0A;
@@ -214,6 +203,7 @@
   box-shadow: 0 6px 20px rgba(255, 187, 15, 0.45);
 }
 
+/* OUTLINE BUTTON */
 .btnOutline {
   background: transparent;
   color: #FFFFFF;
@@ -233,19 +223,13 @@
   box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
 }
 
-/* FOOTER */
+/* FOOTER & SOCIALS */
 .heroFooter {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.footerLeft {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
 }
 
 .socialLinks {
@@ -260,23 +244,23 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid #0A0A0A;
+  background: #0A0A0A;
   transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
   font-size: 1rem;
-  color: #0A0A0A;
+  color: #FFFFFF;
   text-decoration: none;
 }
 
 .socialLinks a:hover {
-  background: #0A0A0A;
+  background: #FFFFFF;
   border-color: #0A0A0A;
-  color: #FFFFFF;
+  color: #0A0A0A;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 }
 
-/* CENTERED BOTTOM SCROLL INDICATOR */
+/* SCROLL MOUSE INDICATOR */
 .scrollIndicator {
   position: absolute;
   left: 50%;
@@ -305,7 +289,6 @@
   height: 6px;
   background: #0A0A0A;
   border-radius: 2px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
   animation: scrollWheel 2s infinite;
 }
 
@@ -315,16 +298,28 @@
 }
 
 /* =========================================================================
-   MOBILE RESPONSIVENESS (< 768px)
+   MOBILE RESPONSIVENESS (<= 768px)
    ========================================================================= */
 @media (max-width: 768px) {
+  /* Projects Section Hero (Top-Aligned) */
   .heroSection {
+    padding: 4.5rem 1.25rem 1rem;
+  }
+
+  .heroContentProjects {
+    align-items: flex-start;
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+  }
+
+  /* Home Section Hero (Original Lower Spacing) */
+  .heroSectionHome {
     padding: 5.5rem 1.25rem 1.5rem;
   }
 
-  .heroContent {
+  .heroContentHome {
     align-items: flex-start;
-    padding-top: 6rem; /* Mobile padding of rectangle*/
+    padding-top: 6rem;
     padding-bottom: 1rem;
   }
 
@@ -340,14 +335,6 @@
       16px 100%,
       0 calc(100% - 16px)
     );
-  }
-
-  .eyebrowWrapper {
-    margin-bottom: 0.75rem;
-  }
-
-  .eyebrowText {
-    font-size: 0.75rem;
   }
 
   .mainTitle {
@@ -366,13 +353,13 @@
     gap: 0.65rem;
   }
 
-  .btn {
+  .btnPrimary,
+  .btnOutline {
     flex: 1;
     width: auto;
     padding: 0.75rem 0.65rem;
     font-size: 0.85rem;
     text-align: center;
-    border-radius: 0px;
   }
 
   .heroFooter {

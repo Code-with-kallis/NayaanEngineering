@@ -6,17 +6,18 @@ import {
   FaMapMarkerAlt, 
   FaClock, 
   FaArrowRight, 
-  FaSquare,
-  FaSearch,
-  FaSlidersH,
-  FaChevronDown,
-  FaTimes
+  FaSquare, 
+  FaSearch, 
+  FaSlidersH, 
+  FaChevronDown, 
+  FaTimes 
 } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
+import PageHero from "../../components/common/PageHero/PageHero";
+import heroStyles from "../../components/common/PageHero/PageHero.module.css";
 import styles from "./Projects.module.css";
 
-// Full-Bleed Hero Image Assets
 import heroDesktop from "../../assets/images/projects/project-hero-desktop.webp";
 import heroMobile from "../../assets/images/projects/project-hero-mobile.webp";
 
@@ -56,7 +57,7 @@ export default function Projects() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Fetch Live Projects directly from Supabase with unmount guard
+  // Fetch Live Projects directly from Supabase
   useEffect(() => {
     let isMounted = true;
 
@@ -127,14 +128,14 @@ export default function Projects() {
   const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
   const paginatedProjects = filteredProjects.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
-  // Sync state with URL Hash (#project-slug) and browser history navigation
+  // Sync state with URL Hash (#project-slug)
   useEffect(() => {
     if (projects.length === 0) return;
 
     const handleHashChange = () => {
       const hash = window.location.hash.replace("#", "");
       if (hash) {
-        const found = projects.find(p => p.slug === hash || String(p.id) === hash);
+        const found = projects.find((p) => p.slug === hash || String(p.id) === hash);
         if (found) setSelectedProject(found);
       } else {
         setSelectedProject(null);
@@ -213,7 +214,7 @@ export default function Projects() {
 
   // Drawer Navigation
   const currentModalIndex = selectedProject 
-    ? filteredProjects.findIndex(p => (p.slug || p.id) === (selectedProject.slug || selectedProject.id))
+    ? filteredProjects.findIndex((p) => (p.slug || p.id) === (selectedProject.slug || selectedProject.id))
     : 0;
 
   const handleNextProject = useCallback(() => {
@@ -239,58 +240,50 @@ export default function Projects() {
         <link rel="canonical" href="https://www.nayaabengineering.com/projects" />
       </Helmet>
 
-      {/* HERO TRACK & SECTION */}
-      <div className={styles.heroTrack}>
-        <section className={styles.heroSection} aria-label="Projects Hero">
-          <div className={styles.imageContainer}>
-            <picture>
-              <source media="(max-width: 768px)" srcSet={heroMobile} />
-              <img
-                src={heroDesktop}
-                alt="Nayaab Engineering Portfolio"
-                className={styles.imageElement}
-                fetchPriority="high"
-                loading="eager"
-              />
-            </picture>
-            <div className={styles.imageOverlay} />
+      {/* UNIFIED PAGE HERO */}
+      <PageHero
+        desktopImage={heroDesktop}
+        mobileImage={heroMobile}
+        imageAlt="Nayaab Engineering Portfolio"
+        variant="standard"
+        eyebrow={
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              fontSize: "0.75rem",
+              fontWeight: 600,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+            }}
+          >
+            <FaHome style={{ color: "#FFFFFF", fontSize: "0.8rem" }} />
+            <Link to="/" style={{ color: "#A1A1AA", textDecoration: "none" }}>
+              Home
+            </Link>
+            <span style={{ color: "#71717A" }}>/</span>
+            <span style={{ color: "#FFFFFF", fontWeight: 700 }}>Projects</span>
           </div>
-
-          <div className={styles.heroContent}>
-            <div className={`${styles.textWrapper} ${styles.animateSlideLeft} ${styles.delay1}`}>
-              <div className={styles.breadcrumbWrapper}>
-                <FaHome className={styles.homeIcon} aria-hidden="true" />
-                <Link to="/" className={styles.breadcrumbLink}>Home</Link>
-                <span className={styles.slash}>/</span>
-                <span className={styles.activeBreadcrumb}>Projects</span>
-              </div>
-
-              <h1 className={styles.mainTitle}>
-                From Vision to
-                <br />
-                <span className={styles.titleGrey}>Built Realities</span>
-              </h1>
-
-              <p className={styles.subTitle}>
-                Every project at Nayaab Engineering Innovations is thoughtfully planned.
-              </p>
-
-              <div className={styles.ctaGroup}>
-                <Link to="/contact" className={`${styles.btn} ${styles.btnPrimary}`}>
-                  <span>Contact Us</span>
-                </Link>
-                <button 
-                  type="button" 
-                  onClick={scrollToProjectsTop} 
-                  className={`${styles.btn} ${styles.btnOutline}`}
-                >
-                  <span>Explore Work</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
+        }
+        title="From Vision to"
+        titleHighlight="Built Realities"
+        subtitle="Every project at Nayaab Engineering Innovations is thoughtfully planned."
+        actions={
+          <>
+            <Link to="/contact" className={heroStyles.btnPrimary}>
+              <span>Contact Us</span>
+            </Link>
+            <button
+              type="button"
+              onClick={scrollToProjectsTop}
+              className={heroStyles.btnOutline}
+            >
+              <span>Explore Work</span>
+            </button>
+          </>
+        }
+      />
 
       {/* PROJECTS ARCHIVE SECTION */}
       <section className={styles.projectsSection} ref={projectsSectionRef} aria-labelledby="section-title">
@@ -309,9 +302,8 @@ export default function Projects() {
             </p>
           </div>
 
-          {/* CONTROLS BAR: ENTERPRISE SEARCH & FLOATING FILTER */}
+          {/* CONTROLS BAR: SEARCH & FLOATING FILTER */}
           <div className={styles.controlsBar}>
-            {/* Live Search Field */}
             <div className={styles.searchWrapper}>
               <FaSearch className={styles.searchIcon} aria-hidden="true" />
               <input
@@ -338,7 +330,9 @@ export default function Projects() {
             <div className={styles.filterDropdownWrapper} ref={filterDropdownRef}>
               <button
                 type="button"
-                className={`${styles.filterTriggerBtn} ${isFilterOpen ? styles.filterTriggerActive : ""} ${activeCategory !== "All" ? styles.filterHasValue : ""}`}
+                className={`${styles.filterTriggerBtn} ${
+                  isFilterOpen ? styles.filterTriggerActive : ""
+                } ${activeCategory !== "All" ? styles.filterHasValue : ""}`}
                 onClick={() => setIsFilterOpen((prev) => !prev)}
                 aria-expanded={isFilterOpen}
                 aria-haspopup="listbox"
@@ -349,7 +343,12 @@ export default function Projects() {
                     {activeCategory === "All" ? "Filter" : activeCategory}
                   </span>
                 </div>
-                <FaChevronDown className={`${styles.filterChevron} ${isFilterOpen ? styles.chevronRotated : ""}`} aria-hidden="true" />
+                <FaChevronDown
+                  className={`${styles.filterChevron} ${
+                    isFilterOpen ? styles.chevronRotated : ""
+                  }`}
+                  aria-hidden="true"
+                />
               </button>
 
               {/* Floating Menu */}
@@ -374,7 +373,9 @@ export default function Projects() {
                         type="button"
                         role="option"
                         aria-selected={activeCategory === cat}
-                        className={`${styles.filterOption} ${activeCategory === cat ? styles.filterOptionActive : ""}`}
+                        className={`${styles.filterOption} ${
+                          activeCategory === cat ? styles.filterOptionActive : ""
+                        }`}
                         onClick={() => handleFilter(cat)}
                       >
                         <span>{cat}</span>
@@ -391,7 +392,8 @@ export default function Projects() {
           {(activeCategory !== "All" || searchQuery) && (
             <div className={styles.filterFeedbackRow}>
               <span className={styles.feedbackText}>
-                Showing <strong>{filteredProjects.length}</strong> {filteredProjects.length === 1 ? "project" : "projects"}
+                Showing <strong>{filteredProjects.length}</strong>{" "}
+                {filteredProjects.length === 1 ? "project" : "projects"}
                 {activeCategory !== "All" && <> in <em>"{activeCategory}"</em></>}
                 {searchQuery && <> matching <em>"{searchQuery}"</em></>}
               </span>
@@ -403,12 +405,10 @@ export default function Projects() {
 
           {/* Project Grid */}
           {loading ? (
-            <div className={styles.statusBox}>
-              Loading live portfolio archive  ...
-            </div>
+            <div className={styles.statusBox}>Loading live portfolio archive...</div>
           ) : filteredProjects.length === 0 ? (
             <div className={styles.statusBox}>
-              <p>No projects match your current filter or search criteri.</p>
+              <p>No projects match your current filter or search criteria.</p>
               <button type="button" className={styles.emptyResetBtn} onClick={handleResetAll}>
                 Reset Search &amp; Filters
               </button>
@@ -420,8 +420,8 @@ export default function Projects() {
                 const projectId = project.id || project.slug;
 
                 return (
-                  <article 
-                    key={projectId} 
+                  <article
+                    key={projectId}
                     className={styles.projectCard}
                     onClick={() => openProjectModal(project)}
                     onKeyDown={(e) => {
@@ -435,12 +435,7 @@ export default function Projects() {
                     aria-label={`View details for ${project.title}`}
                   >
                     <div className={styles.cardImageWrapper}>
-                      <img 
-                        src={cover} 
-                        alt={project.title} 
-                        loading="lazy" 
-                        decoding="async"
-                      />
+                      <img src={cover} alt={project.title} loading="lazy" decoding="async" />
                       <div className={styles.cardImageOverlay} />
                     </div>
 
@@ -483,9 +478,9 @@ export default function Projects() {
           {/* Pagination Controls */}
           {filteredProjects.length > ITEMS_PER_PAGE && (
             <nav className={styles.pagination} aria-label="Portfolio pagination">
-              <button 
+              <button
                 type="button"
-                className={styles.pageBtn} 
+                className={styles.pageBtn}
                 disabled={activePage === 1}
                 onClick={() => handlePageChange(activePage - 1)}
               >
@@ -502,9 +497,9 @@ export default function Projects() {
                   {num}
                 </button>
               ))}
-              <button 
+              <button
                 type="button"
-                className={styles.pageBtn} 
+                className={styles.pageBtn}
                 disabled={activePage === totalPages}
                 onClick={() => handlePageChange(activePage + 1)}
               >
@@ -516,7 +511,7 @@ export default function Projects() {
       </section>
 
       {/* MODULAR POPUP DRAWER */}
-      <ProjectDrawer 
+      <ProjectDrawer
         isOpen={!!selectedProject}
         project={selectedProject}
         onClose={closeProjectModal}

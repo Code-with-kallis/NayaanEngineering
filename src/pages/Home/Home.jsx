@@ -141,46 +141,46 @@ export default function Home() {
         <link rel="canonical" href="https://www.nayaabengineering.com/" />
       </Helmet>
 
-      {/* 1. HERO - Hook & Main Headline */}
+      {/* 1. HERO */}
       <section className={styles.heroWrapper}>
         <Hero />
       </section>
 
-      {/* 2. LOGO MARQUEE - Instant Social Proof */}
+      {/* 2. LOGO MARQUEE */}
       <BrandMarquee />
 
-      {/* 3. BOLD STATS COUNTER - Animated Proof Numbers */}
+      {/* 3. BOLD STATS COUNTER */}
       <StatsCounter />
 
-      {/* 4. ABOUT BENTO - Identity & Core Values */}
+      {/* 4. ABOUT BENTO */}
       <AboutBento />
 
-      {/* 5. SPLIT SHOWCASE - Visual Highlights / Core Service Focus */}
+      {/* 5. SPLIT SHOWCASE */}
       <SplitShowcase />
 
-      {/* 6. FEATURED WORK - Proof of Execution & Portfolio */}
+      {/* 6. FEATURED WORK */}
       <FeaturedProjects
         projects={projects}
         loading={loadingProjects}
         onOpenModal={openProjectModal}
       />
 
-      {/* 7. OUR PROCESS - How We Work */}
+      {/* 7. OUR PROCESS */}
       <ProcessSection />
 
-      {/* 8. WHY TRUST US - Value Props & Risk Reversal */}
+      {/* 8. WHY TRUST US */}
       <WhyTrustUs />
 
-      {/* 9. GOOGLE REVIEWS - Live Social Proof */}
+      {/* 9. GOOGLE REVIEWS */}
       <GoogleReviews />
 
-      {/* 10. TICKER - High Energy Transition into CTA */}
+      {/* 10. TICKER */}
       <TickerBanner />
 
-      {/* 11. CONTACT FORM - Final Conversion Point */}
+      {/* 11. CONTACT FORM */}
       <ContactForm />
 
-      {/* 12. MODAL DRAWER - Overlay */}
+      {/* 12. MODAL DRAWER */}
       <ProjectDrawer
         isOpen={!!selectedProject}
         project={selectedProject}
