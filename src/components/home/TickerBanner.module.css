@@ -1,14 +1,15 @@
 /* src/components/home/TickerBanner.module.css */
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 .tickerSection {
   width: 100%;
-  background: #111111;
+  background: #0A0A0A;
   color: #FFFFFF;
-  padding-block: 2rem;
+  padding-block: 1.75rem;
   overflow: hidden;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .tickerContainer {
@@ -38,10 +39,14 @@
   white-space: nowrap;
 }
 
+/* ICONS SET TO WHITE */
 .highlightIcon {
-  font-size: 2rem;
-  color: #B7410E;
+  font-size: 1.65rem;
+  color: #FFFFFF;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tickerContent {
@@ -51,27 +56,26 @@
 }
 
 .tickerContent h3 {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 1.6rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: #FFFFFF;
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 .tickerContent p {
-  font-size: 0.95rem;
-  color: #CCCCCC;
+  font-size: 0.875rem;
+  color: #A1A1AA;
   margin: 0;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
 }
 
+/* SEPARATOR DOT SET TO WHITE */
 .tickerDot {
-  color: #B7410E;
-  font-size: 1.5rem;
+  color: #FFFFFF;
+  font-size: 1.25rem;
   margin-left: 2rem;
-  opacity: 0.8;
+  opacity: 0.4;
 }
 
 @keyframes marquee {

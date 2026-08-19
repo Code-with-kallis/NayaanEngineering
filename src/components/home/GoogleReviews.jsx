@@ -327,15 +327,17 @@ export default function GoogleReviews() {
       <div className={styles.container}>
         {/* Section Header */}
         <div className={styles.header}>
-          <h2 id="google-reviews-title" className={styles.googleBrandTitle}>
-            <span style={{ color: "#4285F4" }}>G</span>
-            <span style={{ color: "#EA4335" }}>o</span>
-            <span style={{ color: "#FBBC05" }}>o</span>
-            <span style={{ color: "#4285F4" }}>g</span>
-            <span style={{ color: "#34A853" }}>l</span>
-            <span style={{ color: "#EA4335" }}>e</span>
-            <span className={styles.reviewsWord}>Reviews</span>
-          </h2>
+        <h2 id="google-reviews-title" className={styles.googleBrandTitle}>
+  <span className={styles.googleBrandText}>
+    <span style={{ color: "#4285F4" }}>G</span>
+    <span style={{ color: "#EA4335" }}>o</span>
+    <span style={{ color: "#FBBC05" }}>o</span>
+    <span style={{ color: "#4285F4" }}>g</span>
+    <span style={{ color: "#34A853" }}>l</span>
+    <span style={{ color: "#EA4335" }}>e</span>
+  </span>
+  <span className={styles.reviewsWord}>Reviews</span>
+</h2>
           <p className={styles.subtitle}>
             Verified feedback and ratings directly from our Google Business profile.
           </p>

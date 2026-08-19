@@ -1,11 +1,13 @@
 /* src/components/common/ContactForm/ContactForm.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 .sectionOuter {
   width: 100%;
-  padding-block: clamp(3rem, 5vw, 4.5rem);
+  padding-block: clamp(3.5rem, 5vw, 5rem);
   padding-inline: var(--nei-container-pad, clamp(1.25rem, 5vw, 4rem));
-  background: #ffffff;
+  background: #FFFFFF;
   box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .formCardContainer {
@@ -15,10 +17,10 @@
   display: grid;
   grid-template-columns: minmax(0, 1.22fr) minmax(320px, 0.78fr);
   gap: clamp(2rem, 3.5vw, 3.5rem);
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: #FFFFFF;
+  border: 1px solid #D4D4D8;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   padding: clamp(2rem, 3.5vw, 3rem);
   align-items: center;
   box-sizing: border-box;
@@ -31,72 +33,56 @@
   width: 100%;
 }
 
-/* 1. Stack header elements into a clean vertical column */
 .headerArea {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
-/* 2. Top Eyebrow: Standalone top line in deep black/navy */
 .pillBadge {
   display: block;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #0f172a;
-  background: transparent;
-  padding: 0;
+  color: #0A0A0A;
   margin: 0 0 0.5rem 0;
-  -webkit-font-smoothing: antialiased;
 }
 
-/* 3. Title: Accent color (#B7410E) with inline icon centered vertically */
 .title {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.75rem;
   margin: 0 0 0.5rem 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: clamp(1.45rem, 2.2vw, 1.85rem);
-  font-weight: 700;
+  font-size: clamp(1.5rem, 2.2vw, 1.95rem);
+  font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  color: #b7410e;
-  -webkit-font-smoothing: antialiased;
+  color: #0A0A0A;
 }
 
-/* 4. Perfectly proportioned Call Icon Badge */
 .titleIconBox {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 8px;
-  background: rgba(183, 65, 14, 0.08);
-  border: 1px solid rgba(183, 65, 14, 0.22);
-  color: #b7410e;
+  background: #0A0A0A;
+  color: #FFFFFF;
   font-size: 0.85rem;
   flex-shrink: 0;
 }
 
-/* 5. Subtitle below title */
 .subtitle {
   display: block;
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.6;
-  color: #64748b;
+  color: #71717A;
   max-width: 58ch;
-  -webkit-font-smoothing: antialiased;
 }
 
 /* ===== MOBILE ART BANNER ===== */
@@ -108,7 +94,7 @@
 .contactForm {
   display: flex;
   flex-direction: column;
-  gap: 1.15rem;
+  gap: 1.25rem;
   width: 100%;
 }
 
@@ -119,69 +105,190 @@
 .formRow {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.15rem;
+  gap: 1.25rem;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
   width: 100%;
+  position: relative;
 }
 
 .field label {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 0.825rem;
-  font-weight: 500;
-  color: #334155;
-  -webkit-font-smoothing: antialiased;
+  font-weight: 700;
+  color: #0A0A0A;
 }
 
+/* PROMINENT VISIBLE INPUT BORDERS */
 .field input,
-.field select,
 .field textarea {
   width: 100%;
-  padding: 11px 14px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.925rem;
-  font-weight: 400;
-  color: #0f172a;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  padding: 12px 15px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #0A0A0A;
+  background: #FFFFFF;
+  border: 1.5px solid #A1A1AA;
+  border-radius: 10px;
   outline: none;
   box-sizing: border-box;
   -webkit-appearance: none;
   appearance: none;
-  -webkit-font-smoothing: antialiased;
-  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  transition: all 0.2s ease;
 }
 
-.field select {
-  cursor: pointer;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
+.field input:hover,
+.field textarea:hover {
+  border-color: #52525B;
+  background: #FAFAFA;
+}
+
+.field input:focus,
+.field textarea:focus {
+  background: #FFFFFF;
+  border-color: #0A0A0A;
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.12);
 }
 
 .field textarea {
   resize: vertical;
-  min-height: 105px;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  background: #ffffff;
-  border-color: #b7410e;
-  box-shadow: 0 0 0 3px rgba(183, 65, 14, 0.08);
+  min-height: 110px;
 }
 
 .field input::placeholder,
 .field textarea::placeholder {
-  color: #94a3b8;
+  color: #71717A;
   font-weight: 400;
+}
+
+/* ===== CUSTOM SERVICE DROPDOWN ===== */
+.customSelectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.selectTrigger {
+  width: 100%;
+  min-height: 47px;
+  padding: 12px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFFFFF;
+  border: 1.5px solid #A1A1AA;
+  border-radius: 10px;
+  cursor: pointer;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.selectTrigger:hover {
+  border-color: #52525B;
+  background: #FAFAFA;
+}
+
+.selectTriggerActive {
+  background: #FFFFFF;
+  border-color: #0A0A0A;
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.12);
+}
+
+.selectedOptionText {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #0A0A0A;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chevronIcon {
+  font-size: 0.75rem;
+  color: #52525B;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.selectTriggerActive .chevronIcon {
+  color: #0A0A0A;
+}
+
+.chevronRotated {
+  transform: rotate(180deg);
+}
+
+/* FLOATING MENU */
+.selectMenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  border: 1.5px solid #0A0A0A;
+  border-radius: 12px;
+  box-shadow: 0 14px 32px -4px rgba(0, 0, 0, 0.12),
+              0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  z-index: 50;
+  max-height: 250px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  animation: selectSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes selectSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.selectOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #27272A;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.selectOption:hover {
+  background: #F4F4F5;
+  color: #0A0A0A;
+}
+
+.selectOptionActive {
+  background: #0A0A0A;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.selectOptionActive:hover {
+  background: #18181B;
+  color: #FFFFFF;
+}
+
+.optionCheck {
+  font-size: 0.75rem;
+  color: rgb(255, 187, 15);
+  flex-shrink: 0;
 }
 
 /* ===== NOTIFICATION BANNERS ===== */
@@ -190,13 +297,11 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 11px 15px;
+  padding: 12px 16px;
   border-radius: 8px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 0.85rem;
-  font-weight: 500;
-  -webkit-font-smoothing: antialiased;
-  animation: fadeIn 200ms ease;
+  font-weight: 600;
+  animation: fadeIn 0.2s ease;
 }
 
 @keyframes fadeIn {
@@ -210,15 +315,15 @@
 }
 
 .successBanner {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  color: #166534;
+  background: #F4F4F5;
+  border: 1px solid #E4E4E7;
+  color: #0A0A0A;
 }
 
 .errorBanner {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
+  background: #18181B;
+  border: 1px solid #27272A;
+  color: #FFFFFF;
 }
 
 /* ===== BUTTONS & ACTIONS ===== */
@@ -227,7 +332,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-top: 4px;
+  margin-top: 6px;
   flex-wrap: wrap;
 }
 
@@ -244,24 +349,26 @@
   justify-content: center;
   gap: 8px;
   min-height: 44px;
-  padding: 0 20px;
-  background: #b7410e;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
+  padding: 0 22px;
+  background: #0A0A0A;
+  color: #FFFFFF;
+  border: 1px solid #0A0A0A;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.825rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 3px 10px rgba(183, 65, 14, 0.16);
-  -webkit-font-smoothing: antialiased;
-  transition: background-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .submitBtn:hover:not(:disabled) {
-  background: #9e370c;
+  background: #27272A;
+  border-color: #27272A;
   transform: translateY(-1px);
-  box-shadow: 0 5px 14px rgba(183, 65, 14, 0.22);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
 .btnIcon {
@@ -274,32 +381,34 @@
   justify-content: center;
   gap: 8px;
   min-height: 44px;
-  padding: 0 16px;
-  background: #f0fdf4;
-  color: #16a34a;
-  border: 1px solid rgba(22, 163, 74, 0.25);
-  border-radius: 8px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
+  padding: 0 18px;
+  background: #FFFFFF;
+  color: #0A0A0A;
+  border: 1.5px solid #A1A1AA;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 0.825rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   cursor: pointer;
-  -webkit-font-smoothing: antialiased;
-  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .whatsappBtn:hover:not(:disabled) {
-  background: #25d366;
-  border-color: #25d366;
-  color: #ffffff;
+  background: #FAFAFA;
+  border-color: #0A0A0A;
+  color: #0A0A0A;
+  transform: translateY(-1px);
 }
 
 .waIcon {
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 .submitBtn:disabled,
 .whatsappBtn:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -313,11 +422,11 @@
 }
 
 .socialFollow span {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 0.775rem;
-  font-weight: 500;
-  color: #94a3b8;
-  -webkit-font-smoothing: antialiased;
+  font-weight: 600;
+  color: #71717A;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .socialIcons {
@@ -329,32 +438,36 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #f1f5f9;
-  color: #475569;
+  background: #FFFFFF;
+  border: 1.5px solid #A1A1AA;
+  color: #0A0A0A;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.85rem;
   text-decoration: none;
-  transition: background-color 160ms ease, color 160ms ease;
+  transition: all 0.2s ease;
 }
 
 .socialIcons a:hover {
-  background: #b7410e;
-  color: #ffffff;
+  background: #0A0A0A;
+  border-color: #0A0A0A;
+  color: #FFFFFF;
+  transform: translateY(-1px);
 }
 
-/* ===== DESKTOP RIGHT ART COLUMN ===== */
+/* ===== RIGHT ART COLUMN ===== */
 .desktopArtCol {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8fafc;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  padding: 24px;
+  background: #0A0A0A;
+  border-radius: 14px;
+  border: 1px solid #18181B;
+  padding: 32px 24px;
   height: 100%;
   box-sizing: border-box;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 .artWrapper {
@@ -368,30 +481,27 @@
 .artImg {
   width: 100%;
   height: auto;
-  max-height: 320px;
+  max-height: 300px;
   object-fit: contain;
   display: block;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .artCardFooter strong {
   display: block;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 2px;
-  -webkit-font-smoothing: antialiased;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
 }
 
 .artCardFooter p {
   margin: 0;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-size: 0.775rem;
+  font-size: 0.8rem;
   font-weight: 400;
-  line-height: 1.45;
-  color: #64748b;
-  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  color: #A1A1AA;
 }
 
 /* ==========================================================================
@@ -414,11 +524,11 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 1.25rem;
+    background: #0A0A0A;
+    border: 1px solid #18181B;
+    border-radius: 14px;
+    padding: 20px 16px;
+    margin-bottom: 1.5rem;
     width: 100%;
     box-sizing: border-box;
   }
@@ -428,31 +538,31 @@
     max-height: 180px;
     object-fit: contain;
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
 
   .mobileArtFooter strong {
     display: block;
-    font-size: 0.825rem;
-    font-weight: 600;
-    color: #0f172a;
-    margin-bottom: 2px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 4px;
   }
 
   .mobileArtFooter p {
     margin: 0;
-    font-size: 0.75rem;
+    font-size: 0.775rem;
     font-weight: 400;
     line-height: 1.45;
-    color: #64748b;
+    color: #A1A1AA;
   }
 }
 
 /* Mobile Screens (<= 768px) */
 @media (max-width: 768px) {
   .sectionOuter {
-    padding-inline: 1.25rem;
-    padding-block: 2.25rem;
+    padding-inline: 1rem;
+    padding-block: 2.5rem;
   }
 
   .formCardContainer {
@@ -469,10 +579,9 @@
   }
 
   .field input,
-  .field select,
   .field textarea {
     font-size: 16px;
-    padding: 11px 13px;
+    padding: 12px 14px;
   }
 
   .actionFooter {
@@ -496,7 +605,7 @@
   .socialFollow {
     justify-content: space-between;
     width: 100%;
-    padding-top: 10px;
-    border-top: 1px solid #f1f5f9;
+    padding-top: 12px;
+    border-top: 1px solid #E4E4E7;
   }
 }

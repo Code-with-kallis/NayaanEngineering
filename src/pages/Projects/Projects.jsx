@@ -272,7 +272,7 @@ export default function Projects() {
               </h1>
 
               <p className={styles.subTitle}>
-                Every project at Nayaab Engineering Innovations is thoughtfully planned, precisely executed, and built to stand the test of time.
+                Every project at Nayaab Engineering Innovations is thoughtfully planned.
               </p>
 
               <div className={styles.ctaGroup}>

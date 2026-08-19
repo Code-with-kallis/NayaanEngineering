@@ -97,6 +97,11 @@ const Footer = () => {
 
   return (
     <footer className={styles.footer}>
+      {/* Bold Architectural Watermark */}
+      <div className={styles.bgWatermarkText} aria-hidden="true">
+        NAYAAB
+      </div>
+
       {/* Main Footer 4-Column Grid Container */}
       <div className={styles.footerContainer}>
         {/* Column 1: Company Profile */}
@@ -110,10 +115,9 @@ const Footer = () => {
           </div>
 
           <p className={styles.companyDescription}>
-            Nayaab Engineering Innovations Pvt. Ltd. is committed to delivering
-            innovative engineering, architectural planning, interior design, and
-            turnkey construction solutions across residential and commercial
-            developments.
+            Nayaab Engineering Innovations Pvt. Ltd. delivers innovative
+            structural engineering, architectural planning, interior design,
+            and turnkey construction solutions across Kashmir.
           </p>
 
           <div className={styles.socialIcons}>
@@ -226,7 +230,7 @@ const Footer = () => {
           {alreadySubscribed ? (
             <div className={styles.subscribedBadgeBox}>
               <FaCheckCircle className={styles.subscribedCheckIcon} />
-              <span>Subscribed</span>
+              <span>Subscribed Successfully</span>
             </div>
           ) : (
             <form className={styles.subscribeForm} onSubmit={handleSubscribe}>
@@ -269,14 +273,13 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Solid Black Bottom Bar */}
+      {/* Solid Bottom Bar */}
       <div className={styles.footerBottomBar}>
         <div className={styles.bottomContent}>
           <p className={styles.copyrightText}>
             &copy; {year} Nayaab Engineering Innovations Pvt. Ltd. All rights reserved.
           </p>
 
-          {/* Clean Legal Links (No onClick scroll triggers) */}
           <div className={styles.legalLinks}>
             <Link to="/privacy" className={styles.legalLink}>
               Privacy Policy

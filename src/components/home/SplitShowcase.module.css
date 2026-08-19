@@ -12,12 +12,47 @@
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
-  background: #FFFFFF;
+  background: #FAFAFA;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   z-index: 5;
+}
+
+/* TOP EDGE BLEND */
+.fullBleedSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: linear-gradient(
+    180deg,
+    #FAFAFA 0%,
+    rgba(250, 250, 250, 0) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* BOTTOM EDGE BLEND (Slim 45px feathered line so the house remains fully visible) */
+.fullBleedSection::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 45px;
+  background: linear-gradient(
+    0deg,
+    #FFFFFF 0%,
+    rgba(255, 255, 255, 0.6) 40%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* FULL-COVER BACKGROUND IMAGE */
@@ -28,7 +63,7 @@
   height: 100%;
   background-image: var(--bg-desktop);
   background-size: cover;
-  background-position: center;
+  background-position: left 36%;
   background-repeat: no-repeat;
   z-index: 1;
   pointer-events: none;
@@ -37,7 +72,7 @@
 /* RIGHT-ALIGNED CONTENT WRAPPER (DESKTOP) */
 .contentContainer {
   position: relative;
-  z-index: 3;
+  z-index: 4;
   width: 100%;
   height: 100%;
   display: flex;
@@ -282,20 +317,31 @@
 }
 
 /* =========================================================================
-   MOBILE VIEW (<= 768px): HALF OVERLAP TOP EDGE LAYOUT
+   MOBILE VIEW (<= 768px): SEAMLESS OVERLAP & BLEND
    ========================================================================= */
 @media (max-width: 768px) {
   .fullBleedSection {
     height: auto;
     min-height: auto;
-    background: #FFFFFF;
+    background: #FAFAFA;
     display: flex;
     flex-direction: column;
     overflow: visible;
     padding: 0;
   }
 
-  /* Image pinned below with space above for the card's top half */
+  /* Fade the mobile top cut */
+  .fullBleedSection::before {
+    height: 70px;
+    background: linear-gradient(180deg, #FAFAFA 0%, rgba(250, 250, 250, 0) 100%);
+  }
+
+  /* Fade the mobile bottom cut directly into white section */
+  .fullBleedSection::after {
+    height: 90px;
+    background: linear-gradient(0deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+  }
+
   .bgImage {
     position: absolute;
     top: clamp(230px, 30vh, 270px);
@@ -318,7 +364,6 @@
     height: auto;
   }
 
-  /* Center point sits directly on the top horizon line of the image */
   .clippedCard {
     width: 100%;
     max-width: 420px;
@@ -468,4 +513,4 @@
     font-size: 0.72rem;
     line-height: 1.4;
   }
-}
+} 

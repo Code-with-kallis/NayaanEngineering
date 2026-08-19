@@ -1,5 +1,5 @@
 // src/components/common/ContactForm/ContactForm.jsx
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   FaPhoneAlt,
   FaWhatsapp,
@@ -8,6 +8,8 @@ import {
   FaCheckCircle,
   FaExclamationCircle,
   FaPaperPlane,
+  FaChevronDown,
+  FaCheck,
 } from "react-icons/fa";
 import styles from "./ContactForm.module.css";
 import contactArt from "../../../assets/images/contact/form.png";
@@ -41,12 +43,35 @@ export default function ContactForm({
     botcheck: false,
   });
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
   const [status, setStatus] = useState({
     submitting: false,
     success: false,
     error: false,
     message: "",
   });
+
+  // Handle outside clicks to auto-close dropdown
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setIsDropdownOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const getRecentSubmissions = () => {
     try {
@@ -76,6 +101,11 @@ export default function ContactForm({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+  };
+
+  const handleServiceSelect = (service) => {
+    setFormData((prev) => ({ ...prev, service }));
+    setIsDropdownOpen(false);
   };
 
   const validateForm = () => {
@@ -227,7 +257,7 @@ export default function ContactForm({
             {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
           </div>
 
-          {/* Mobile & Tablet Image Banner (Between Header Text & Form) */}
+          {/* Mobile & Tablet Image Banner */}
           <div className={styles.mobileArtCol}>
             <img
               src={contactArt}
@@ -303,20 +333,58 @@ export default function ContactForm({
                 />
               </div>
 
-              <div className={styles.field}>
-                <label htmlFor="form-service">Topic / Service</label>
-                <select
-                  id="form-service"
-                  name="service"
-                  value={formData.service}
-                  onChange={handleInputChange}
-                >
-                  {serviceOptions.map((service) => (
-                    <option key={service} value={service}>
-                      {service}
-                    </option>
-                  ))}
-                </select>
+              {/* Custom Animated Service Dropdown */}
+              <div className={styles.field} ref={dropdownRef}>
+                <label id="service-label">Topic / Service</label>
+                <div className={styles.customSelectWrapper}>
+                  <button
+                    type="button"
+                    className={`${styles.selectTrigger} ${
+                      isDropdownOpen ? styles.selectTriggerActive : ""
+                    }`}
+                    onClick={() => setIsDropdownOpen((prev) => !prev)}
+                    aria-haspopup="listbox"
+                    aria-expanded={isDropdownOpen}
+                    aria-labelledby="service-label"
+                  >
+                    <span className={styles.selectedOptionText}>
+                      {formData.service}
+                    </span>
+                    <FaChevronDown
+                      className={`${styles.chevronIcon} ${
+                        isDropdownOpen ? styles.chevronRotated : ""
+                      }`}
+                    />
+                  </button>
+
+                  {isDropdownOpen && (
+                    <ul
+                      className={styles.selectMenu}
+                      role="listbox"
+                      aria-labelledby="service-label"
+                    >
+                      {serviceOptions.map((service) => {
+                        const isSelected = formData.service === service;
+                        return (
+                          <li
+                            key={service}
+                            role="option"
+                            aria-selected={isSelected}
+                            className={`${styles.selectOption} ${
+                              isSelected ? styles.selectOptionActive : ""
+                            }`}
+                            onClick={() => handleServiceSelect(service)}
+                          >
+                            <span>{service}</span>
+                            {isSelected && (
+                              <FaCheck className={styles.optionCheck} />
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
               </div>
             </div>
 
