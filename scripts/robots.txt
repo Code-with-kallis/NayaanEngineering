@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Direct Googlebot to the generated sitemap
+Sitemap: https://www.nayaabengineering.com/sitemap.xml

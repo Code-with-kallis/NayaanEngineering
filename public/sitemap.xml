@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        
+  <!-- Core Static Pages -->
+  <url>
+    <loc>https://www.nayaabengineering.com/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+  </url>
+
+  <url>
+    <loc>https://www.nayaabengineering.com/projects</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <url>
+    <loc>https://www.nayaabengineering.com/services</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://www.nayaabengineering.com/contact</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Dynamic Live Portfolio Projects & Visual Assets -->
+  <!-- Project: Residential House Construction at Baramulla -->
+  <url>
+    <loc>https://www.nayaabengineering.com/projects#residential-house-design-construction-in-baramulla-j-k-0547</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/residential-house-design-construction-in-baramulla-j-k-cover-0547.webp</image:loc>
+      <image:title>Residential House Construction at Baramulla - Residential | Baramulla , Jammu and Kashmir</image:title>
+      <image:caption>Residential house design and construction project in Baramulla, Jammu &amp; Kashmir, covering architectural planning, structural engineering, masonry construction, roof framework, and complete on-site execution. The project combines functional residential planning with durable construction and detailed architectural elements.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Project: Architectural 3D design of residential house -->
+  <url>
+    <loc>https://www.nayaabengineering.com/projects#residential-house-at-baramulla-3902</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/residential-house-at-baramulla-cover-3902.webp</image:loc>
+      <image:title>Architectural 3D design of residential house - Residential | Baramulla, Jammu and Kashmir </image:title>
+      <image:caption>Modern 3D residential house design developed for a project in Baramulla, Jammu &amp; Kashmir, featuring architectural planning, exterior visualization, façade development, and detailed residential design concepts.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Project: Cozy Modern Kitchen Interior -->
+  <url>
+    <loc>https://www.nayaabengineering.com/projects#cozy-modern-kitchen-interior-baramulla-4243</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/cozy-modern-kitchen-interior-baramulla-cover-4243.jpg</image:loc>
+      <image:title>Cozy Modern Kitchen Interior - Residential | Sopore, Jammu &amp; Kashmir </image:title>
+      <image:caption>A compact modern kitchen designed with warm ambient lighting and a clutter-free layout. The space focuses on comfort, functionality, and clean aesthetics, creating a calm and efficient cooking environment.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/cozy-modern-kitchen-interior-baramulla-gallery-1-4243.jpg</image:loc>
+      <image:title>Cozy Modern Kitchen Interior - Residential | Sopore, Jammu &amp; Kashmir </image:title>
+      <image:caption>A compact modern kitchen designed with warm ambient lighting and a clutter-free layout. The space focuses on comfort, functionality, and clean aesthetics, creating a calm and efficient cooking environment.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/cozy-modern-kitchen-interior-baramulla-gallery-2-4243.jpg</image:loc>
+      <image:title>Cozy Modern Kitchen Interior - Residential | Sopore, Jammu &amp; Kashmir </image:title>
+      <image:caption>A compact modern kitchen designed with warm ambient lighting and a clutter-free layout. The space focuses on comfort, functionality, and clean aesthetics, creating a calm and efficient cooking environment.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Project: Modern Kitchen Interior  -->
+  <url>
+    <loc>https://www.nayaabengineering.com/projects#modern-design-0506</loc>
+    <lastmod>2026-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/modern-design-cover-0506.jpg</image:loc>
+      <image:title>Modern Kitchen Interior  - Residential | Baramulla J &amp; K</image:title>
+      <image:caption>A modern residential kitchen designed with a focus on functionality and aesthetics. The space features modular cabinetry, warm ambient lighting, and premium finishes, creating a clean, efficient, and visually refined environment for everyday use.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/modern-design-gallery-1-0506.jpg</image:loc>
+      <image:title>Modern Kitchen Interior  - Residential | Baramulla J &amp; K</image:title>
+      <image:caption>A modern residential kitchen designed with a focus on functionality and aesthetics. The space features modular cabinetry, warm ambient lighting, and premium finishes, creating a clean, efficient, and visually refined environment for everyday use.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/modern-design-gallery-2-0506.jpg</image:loc>
+      <image:title>Modern Kitchen Interior  - Residential | Baramulla J &amp; K</image:title>
+      <image:caption>A modern residential kitchen designed with a focus on functionality and aesthetics. The space features modular cabinetry, warm ambient lighting, and premium finishes, creating a clean, efficient, and visually refined environment for everyday use.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/modern-design-gallery-3-0506.jpg</image:loc>
+      <image:title>Modern Kitchen Interior  - Residential | Baramulla J &amp; K</image:title>
+      <image:caption>A modern residential kitchen designed with a focus on functionality and aesthetics. The space features modular cabinetry, warm ambient lighting, and premium finishes, creating a clean, efficient, and visually refined environment for everyday use.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Project: Architectural design of Residential House   -->
+  <url>
+    <loc>https://www.nayaabengineering.com/projects#residential-house-at-jammu-kashmir-3028</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/residential-house-at-jammu-kashmir-cover-4366.webp</image:loc>
+      <image:title>Architectural design of Residential House   - Residential | Jammu &amp; Kashmir</image:title>
+      <image:caption>Modern multi-story residential project featuring complete architectural planning, structural design, and site supervision.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Project: Residential House for  Mr. Shahid Iqbal -->
+  <url>
+    <loc>https://www.nayaabengineering.com/projects#residential-house-at-baramulla-6969</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/residential-house-for-mr-shahid-iqbal-cover-7086.webp</image:loc>
+      <image:title>Residential House for  Mr. Shahid Iqbal - Residential | Baramulla, Jammu &amp; Kashmir</image:title>
+      <image:caption>Comprehensive multi-story residential project featuring custom architectural planning, structural design, and end-to-end site supervision.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Project: Residential House for Mr.  Arfat Nazir -->
+  <url>
+    <loc>https://www.nayaabengineering.com/projects#residential-house-for-mr-arfat-nazir-0140</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/residential-house-for-mr-arfat-nazir-cover-4494.webp</image:loc>
+      <image:title>Residential House for Mr.  Arfat Nazir - Residential | Dangiwacha, Jammu &amp; Kashmir</image:title>
+      <image:caption>Comprehensive multi-story residential project featuring custom architectural design, structural engineering, and site execution oversight.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Project: Residential House for Mr. Ghulam Hassan -->
+  <url>
+    <loc>https://www.nayaabengineering.com/projects#residential-house-for-ghulam-hassan-9199</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/residential-house-for-mr-ghulam-hassan-cover-8479.webp</image:loc>
+      <image:title>Residential House for Mr. Ghulam Hassan - Residential | Parry Mohalla,  Baramulla, Jammu &amp; Kashmir</image:title>
+      <image:caption>Premium multi-story red-brick exterior villa featuring intricate dormer gables, white accent trims, and arched window styling.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Project: Residential House for Mr. Bilal Ahmad -->
+  <url>
+    <loc>https://www.nayaabengineering.com/projects#residential-house-for-mr-bilal-ahmad-3849</loc>
+    <lastmod>2026-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/residential-house-for-mr-bilal-ahmad-cover-9855.webp</image:loc>
+      <image:title>Residential House for Mr. Bilal Ahmad - Residential | Chinnad, Jammu &amp; Kashmir</image:title>
+      <image:caption>Multi-story residential villa combining modern alpine gabled roof styling with stone-clad exterior finish.</image:caption>
+    </image:image>
+  </url>
+</urlset>

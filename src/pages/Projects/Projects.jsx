@@ -6,16 +6,19 @@ import {
   FaMapMarkerAlt, 
   FaClock, 
   FaArrowRight, 
-  FaSquare
+  FaSquare,
+  FaSearch,
+  FaSlidersH,
+  FaChevronDown,
+  FaTimes
 } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
 import styles from "./Projects.module.css";
 
-// Bundler asset imports
-import heroImage1 from "../../assets/images/projects/projects-hero-01.webp";
-import heroImage2 from "../../assets/images/projects/projects-hero-02.webp";
-import heroImage3 from "../../assets/images/projects/projects-hero-03.webp";
+// Full-Bleed Hero Image Assets
+import heroDesktop from "../../assets/images/projects/project-hero-desktop.webp";
+import heroMobile from "../../assets/images/projects/project-hero-mobile.webp";
 
 const CATEGORIES = [
   "All",
@@ -34,10 +37,24 @@ export default function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [activePage, setActivePage] = useState(1);
   const [selectedProject, setSelectedProject] = useState(null);
   
   const projectsSectionRef = useRef(null);
+  const filterDropdownRef = useRef(null);
+
+  // Close filter dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target)) {
+        setIsFilterOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Fetch Live Projects directly from Supabase with unmount guard
   useEffect(() => {
@@ -87,10 +104,23 @@ export default function Projects() {
     };
   }, []);
 
-  // Category filter
-  const filteredProjects = activeCategory === "All"
-    ? projects
-    : projects.filter(p => p.category?.toLowerCase() === activeCategory.toLowerCase());
+  // Filter & Search Logic
+  const filteredProjects = projects.filter((p) => {
+    const matchesCategory =
+      activeCategory === "All" ||
+      p.category?.toLowerCase() === activeCategory.toLowerCase();
+
+    const cleanQuery = searchQuery.trim().toLowerCase();
+    const matchesSearch =
+      !cleanQuery ||
+      p.title?.toLowerCase().includes(cleanQuery) ||
+      p.location?.toLowerCase().includes(cleanQuery) ||
+      p.summary?.toLowerCase().includes(cleanQuery) ||
+      p.description?.toLowerCase().includes(cleanQuery) ||
+      p.category?.toLowerCase().includes(cleanQuery);
+
+    return matchesCategory && matchesSearch;
+  });
 
   // Pagination calculation
   const totalPages = Math.max(1, Math.ceil(filteredProjects.length / ITEMS_PER_PAGE));
@@ -154,7 +184,24 @@ export default function Projects() {
   const handleFilter = (category) => {
     setActiveCategory(category);
     setActivePage(1);
+    setIsFilterOpen(false);
     scrollToProjectsTop();
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setActivePage(1);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery("");
+    setActivePage(1);
+  };
+
+  const handleResetAll = () => {
+    setActiveCategory("All");
+    setSearchQuery("");
+    setActivePage(1);
   };
 
   const handlePageChange = (page) => {
@@ -192,106 +239,179 @@ export default function Projects() {
         <link rel="canonical" href="https://www.nayaabengineering.com/projects" />
       </Helmet>
 
-      {/* HERO SECTION */}
-      <section className={styles.heroSection} aria-labelledby="hero-title">
-        <div className={styles.heroContainer}>
-          <div className={styles.heroLeftCard}>
-            <div className={`${styles.breadcrumb} ${styles.animateSlideLeft} ${styles.delay1}`}>
-              <FaHome className={styles.homeIcon} aria-hidden="true" />
-              <Link to="/" className={styles.breadcrumbLink}>Home</Link>
-              <span className={styles.slash}>/</span>
-              <strong className={styles.activeBreadcrumb}>Project</strong>
-            </div>
-
-            <h1 id="hero-title" className={`${styles.heroTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
-              <span className={styles.titleDark}>From Vision to  </span>
-              <span className={styles.titleMuted}>
-                Exceptional
-                <br />
-                Built Realities:
-              </span>
-            </h1>
-
-            <p className={`${styles.heroText} ${styles.animateSlideLeft} ${styles.delay3}`}>
-              Every project at Nayaab Engineering Innovations is thoughtfully planned, precisely executed, and built around the unique needs of our clients. From the initial concept to the final execution, we combine engineering expertise, attention to detail, and uncompromising quality to turn ambitious ideas into spaces that are functional, refined, and built to stand the test of time.
-            </p>
-
-            <Link to="/contact" className={`${styles.heroBtn} ${styles.animateSlideLeft} ${styles.delay4}`}>
-              Contact Us
-            </Link>
-          </div>
-
-          <div className={styles.heroRightGrid}>
-            <div className={styles.heroImageMain}>
-              <img 
-                src={heroImage1} 
-                alt="Comprehensive multi-story residential project" 
+      {/* HERO TRACK & SECTION */}
+      <div className={styles.heroTrack}>
+        <section className={styles.heroSection} aria-label="Projects Hero">
+          <div className={styles.imageContainer}>
+            <picture>
+              <source media="(max-width: 768px)" srcSet={heroMobile} />
+              <img
+                src={heroDesktop}
+                alt="Nayaab Engineering Portfolio"
+                className={styles.imageElement}
+                fetchPriority="high"
                 loading="eager"
-                decoding="async"
               />
-            </div>
-            <div className={styles.heroSubGrid}>
-              <div className={styles.heroImageSub1}>
-                <img 
-                  src={heroImage2} 
-                  alt="Residential House" 
-                  loading="lazy"
-                  decoding="async"
-                />
+            </picture>
+            <div className={styles.imageOverlay} />
+          </div>
+
+          <div className={styles.heroContent}>
+            <div className={`${styles.textWrapper} ${styles.animateSlideLeft} ${styles.delay1}`}>
+              <div className={styles.breadcrumbWrapper}>
+                <FaHome className={styles.homeIcon} aria-hidden="true" />
+                <Link to="/" className={styles.breadcrumbLink}>Home</Link>
+                <span className={styles.slash}>/</span>
+                <span className={styles.activeBreadcrumb}>Projects</span>
               </div>
-              <div className={styles.heroImageSub2}>
-                <img 
-                  src={heroImage3} 
-                  alt="Modern Kitchen Interior" 
-                  loading="lazy"
-                  decoding="async"
-                />
+
+              <h1 className={styles.mainTitle}>
+                From Vision to
+                <br />
+                <span className={styles.titleGrey}>Built Realities</span>
+              </h1>
+
+              <p className={styles.subTitle}>
+                Every project at Nayaab Engineering Innovations is thoughtfully planned, precisely executed, and built to stand the test of time.
+              </p>
+
+              <div className={styles.ctaGroup}>
+                <Link to="/contact" className={`${styles.btn} ${styles.btnPrimary}`}>
+                  <span>Contact Us</span>
+                </Link>
+                <button 
+                  type="button" 
+                  onClick={scrollToProjectsTop} 
+                  className={`${styles.btn} ${styles.btnOutline}`}
+                >
+                  <span>Explore Work</span>
+                </button>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
-      {/* PROJECTS GRID SECTION */}
+      {/* PROJECTS ARCHIVE SECTION */}
       <section className={styles.projectsSection} ref={projectsSectionRef} aria-labelledby="section-title">
         <div className={styles.projectsContainer}>
           <div className={styles.sectionTagRow}>
             <FaSquare className={styles.tagSquareIcon} aria-hidden="true" />
-            <span>See all Projects</span>
+            <span>Complete Archive</span>
           </div>
 
           <div className={styles.sectionHeader}>
             <h2 id="section-title" className={styles.sectionTitle}>
-              Discover Our Completed<br />Projects
+              Discover Our Completed Projects
             </h2>
             <p className={styles.sectionDescription}>
-              Browse through our portfolio of engineering, structural design, and turnkey construction developments.
+              Browse through our portfolio of engineering, structural design, and turnkey construction developments across Kashmir.
             </p>
           </div>
 
-          {/* Category Filter Bar */}
-          <div className={styles.filterBar} role="tablist" aria-label="Filter projects by category">
-            {CATEGORIES.map((cat) => (
+          {/* CONTROLS BAR: ENTERPRISE SEARCH & FLOATING FILTER */}
+          <div className={styles.controlsBar}>
+            {/* Live Search Field */}
+            <div className={styles.searchWrapper}>
+              <FaSearch className={styles.searchIcon} aria-hidden="true" />
+              <input
+                type="text"
+                className={styles.searchInput}
+                placeholder="Search by title, location, or discipline..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                aria-label="Search projects"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  className={styles.clearSearchBtn}
+                  onClick={handleClearSearch}
+                  aria-label="Clear search query"
+                >
+                  <FaTimes />
+                </button>
+              )}
+            </div>
+
+            {/* Filter Dropdown */}
+            <div className={styles.filterDropdownWrapper} ref={filterDropdownRef}>
               <button
-                key={cat}
-                role="tab"
-                aria-selected={activeCategory === cat}
-                className={`${styles.filterTab} ${activeCategory === cat ? styles.activeFilterTab : ""}`}
-                onClick={() => handleFilter(cat)}
+                type="button"
+                className={`${styles.filterTriggerBtn} ${isFilterOpen ? styles.filterTriggerActive : ""} ${activeCategory !== "All" ? styles.filterHasValue : ""}`}
+                onClick={() => setIsFilterOpen((prev) => !prev)}
+                aria-expanded={isFilterOpen}
+                aria-haspopup="listbox"
               >
-                {cat}
+                <div className={styles.filterTriggerLeft}>
+                  <FaSlidersH className={styles.filterSlidersIcon} aria-hidden="true" />
+                  <span className={styles.filterBtnLabel}>
+                    {activeCategory === "All" ? "Filter" : activeCategory}
+                  </span>
+                </div>
+                <FaChevronDown className={`${styles.filterChevron} ${isFilterOpen ? styles.chevronRotated : ""}`} aria-hidden="true" />
               </button>
-            ))}
+
+              {/* Floating Menu */}
+              {isFilterOpen && (
+                <div className={styles.filterMenu} role="listbox" aria-label="Select discipline filter">
+                  <div className={styles.filterMenuHeader}>
+                    <span className={styles.menuHeaderTitle}>Select Discipline</span>
+                    {activeCategory !== "All" && (
+                      <button
+                        type="button"
+                        className={styles.resetFilterBtn}
+                        onClick={() => handleFilter("All")}
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                  <div className={styles.filterOptionsGrid}>
+                    {CATEGORIES.map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        role="option"
+                        aria-selected={activeCategory === cat}
+                        className={`${styles.filterOption} ${activeCategory === cat ? styles.filterOptionActive : ""}`}
+                        onClick={() => handleFilter(cat)}
+                      >
+                        <span>{cat}</span>
+                        {activeCategory === cat && <span className={styles.activeCheckDot} />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Equalized Grid Cards with GPU Hover Animations */}
+          {/* Active Status & Results Counter */}
+          {(activeCategory !== "All" || searchQuery) && (
+            <div className={styles.filterFeedbackRow}>
+              <span className={styles.feedbackText}>
+                Showing <strong>{filteredProjects.length}</strong> {filteredProjects.length === 1 ? "project" : "projects"}
+                {activeCategory !== "All" && <> in <em>"{activeCategory}"</em></>}
+                {searchQuery && <> matching <em>"{searchQuery}"</em></>}
+              </span>
+              <button type="button" className={styles.resetFeedbackBtn} onClick={handleResetAll}>
+                Clear all filters
+              </button>
+            </div>
+          )}
+
+          {/* Project Grid */}
           {loading ? (
             <div className={styles.statusBox}>
-              Loading live portfolio...
+              Loading live portfolio archive  ...
             </div>
           ) : filteredProjects.length === 0 ? (
             <div className={styles.statusBox}>
-              No projects found in this category.
+              <p>No projects match your current filter or search criteri.</p>
+              <button type="button" className={styles.emptyResetBtn} onClick={handleResetAll}>
+                Reset Search &amp; Filters
+              </button>
             </div>
           ) : (
             <div className={styles.grid}>
@@ -321,6 +441,7 @@ export default function Projects() {
                         loading="lazy" 
                         decoding="async"
                       />
+                      <div className={styles.cardImageOverlay} />
                     </div>
 
                     <div className={styles.cardBody}>
@@ -332,7 +453,6 @@ export default function Projects() {
                         {project.summary || project.description}
                       </p>
 
-                      {/* Single-Row Grid on Desktop, Stacked on Mobile */}
                       <div className={styles.cardMeta}>
                         <div className={styles.metaItem} title={project.location || ""}>
                           <FaMapMarkerAlt className={styles.metaIcon} aria-hidden="true" />
@@ -348,8 +468,10 @@ export default function Projects() {
                       </div>
 
                       <div className={styles.viewDetailBtn}>
-                        <span>View More</span>
-                        <FaArrowRight className={styles.linkArrow} aria-hidden="true" />
+                        <span>Explore Project</span>
+                        <div className={styles.arrowCircle}>
+                          <FaArrowRight className={styles.linkArrow} aria-hidden="true" />
+                        </div>
                       </div>
                     </div>
                   </article>

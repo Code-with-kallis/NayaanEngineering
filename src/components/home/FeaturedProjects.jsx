@@ -1,4 +1,3 @@
-// src/components/home/FeaturedProjects.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -14,26 +13,26 @@ export default function FeaturedProjects({
   loading = false,
   onOpenModal,
 }) {
-  const featured = projects.slice(0, 3);
+  const featured = projects.slice(0, 6);
 
   return (
     <section className={styles.projectsPreview} aria-labelledby="featured-projects-title">
       <div className={styles.container}>
-        {/* Header Block with Exact Original Typography Styles */}
+        {/* Header Lockup */}
         <div className={styles.splitHeaderContainer}>
           <div className={styles.splitHeaderLeft}>
             <div className={styles.sectionTagRow}>
               <FaSquare className={styles.tagSquareIcon} aria-hidden="true" />
-              <span>Featured Work</span>
+              <span>Featured Portfolio</span>
             </div>
             <h2 id="featured-projects-title" className={styles.splitTitle}>
-              Our Completed Projects
+              Completed Projects
             </h2>
           </div>
 
           <div className={styles.splitHeaderRight}>
             <p className={styles.splitDesc}>
-              Explore a selection of our architectural planning, 3D visualization, and structural engineering developments.
+              A curated selection of our architectural planning, structural engineering, and precision construction developments.
             </p>
           </div>
         </div>
@@ -41,7 +40,7 @@ export default function FeaturedProjects({
         {/* Content Grid & State Handlers */}
         {loading ? (
           <div className={styles.statusBox} role="status">
-            Loading featured work...
+            Loading featured portfolio...
           </div>
         ) : featured.length === 0 ? (
           <div className={styles.statusBox}>
@@ -68,7 +67,7 @@ export default function FeaturedProjects({
                   tabIndex={0}
                   aria-label={`View project details for ${project.title}`}
                 >
-                  {/* GPU-Accelerated Chamfered Image Stage */}
+                  {/* Geometric Clipped Image Stage */}
                   <div className={styles.cardImageWrapper}>
                     <img
                       src={cover}
@@ -76,9 +75,10 @@ export default function FeaturedProjects({
                       loading="lazy"
                       decoding="async"
                     />
+                    <div className={styles.imageOverlay} />
                   </div>
 
-                  {/* Equalized Content Body */}
+                  {/* Content Body */}
                   <div className={styles.cardBody}>
                     <h3 className={styles.cardTitle} title={project.title}>
                       {project.title}
@@ -88,7 +88,7 @@ export default function FeaturedProjects({
                       {project.summary || project.description}
                     </p>
 
-                    {/* Single-Row Grid on Desktop, Stacked on Mobile */}
+                    {/* Metadata Lockup */}
                     <div className={styles.cardMeta}>
                       <div className={styles.metaItem} title={project.location || ""}>
                         <FaMapMarkerAlt className={styles.metaIcon} aria-hidden="true" />
@@ -103,10 +103,12 @@ export default function FeaturedProjects({
                       )}
                     </div>
 
-                    {/* Interactive Action Link */}
+                    {/* Action Footer */}
                     <div className={styles.viewDetailBtn}>
-                      <span>View More</span>
-                      <FaArrowRight className={styles.linkArrow} aria-hidden="true" />
+                      <span>Explore Project</span>
+                      <div className={styles.arrowCircle}>
+                        <FaArrowRight className={styles.linkArrow} aria-hidden="true" />
+                      </div>
                     </div>
                   </div>
                 </article>
@@ -115,11 +117,13 @@ export default function FeaturedProjects({
           </div>
         )}
 
-        {/* View All Projects Action */}
+        {/* Section Footer / View All CTA */}
         <div className={styles.viewAllWrapper}>
           <Link to="/projects" className={styles.viewAllBtn} aria-label="View All Projects Portfolio">
             <span>View All Projects</span>
-            <FaArrowRight className={styles.btnArrow} aria-hidden="true" />
+            <span className={styles.btnArrow}>
+              <FaArrowRight />
+            </span>
           </Link>
         </div>
       </div>

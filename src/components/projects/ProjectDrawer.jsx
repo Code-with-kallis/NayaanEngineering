@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import { 
   FaTimes, 
   FaChevronLeft, 
@@ -86,12 +88,33 @@ export default function ProjectDrawer({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose, onNext, onPrev]);
 
-  const handleCopyLink = useCallback(() => {
+  // Native Web Share API with Clipboard Fallback
+  const handleShare = useCallback(async () => {
     if (!project) return;
-    const shareableUrl = `${window.location.origin}${window.location.pathname}#${project.slug || project.id}`;
-    navigator.clipboard.writeText(shareableUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const shareUrl = `${window.location.origin}${window.location.pathname}#${project.slug || project.id}`;
+    const shareData = {
+      title: `${project.title} | Nayaab Engineering Innovations`,
+      text: project.summary || `Discover the architectural and structural engineering specifications for ${project.title}.`,
+      url: shareUrl,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2200);
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          await navigator.clipboard.writeText(shareUrl);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2200);
+        }
+      }
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2200);
+    }
   }, [project]);
 
   const coverImageUrl = project?.coverImage || project?.cover_image || project?.image;
@@ -110,40 +133,106 @@ export default function ProjectDrawer({
     ? project.description 
     : null;
 
+  const projectCanonicalUrl = project 
+    ? `${window.location.origin}/projects#${project.slug || project.id}`
+    : `${window.location.origin}/projects`;
+
+  // Google Image & Rich Result Schema (JSON-LD)
+  const imageSchemaData = project ? {
+    "@context": "https://schema.org",
+    "@type": "VisualArtwork",
+    "name": project.title,
+    "description": shortOverview,
+    "image": galleryList.map((img) => (typeof img === "string" ? img : img.url || img.src)),
+    "creator": {
+      "@type": "Organization",
+      "name": "Nayaab Engineering Innovations",
+      "url": "https://www.nayaabengineering.com"
+    },
+    "locationCreated": {
+      "@type": "Place",
+      "name": project.location || "Kashmir, India"
+    }
+  } : null;
+
   return createPortal(
     <AnimatePresence>
       {isOpen && project && (
-        <div className={styles.portalWrapper} role="dialog" aria-modal="true">
+        <div className={styles.portalWrapper} role="dialog" aria-modal="true" aria-labelledby="modal-project-title">
+          {/* Dynamic Image & OpenGraph SEO for Project Indexing */}
+          <Helmet>
+            <title>{`${project.title} | Nayaab Engineering Innovations Portfolio`}</title>
+            <meta name="description" content={shortOverview || `Structural engineering and turnkey architectural design for ${project.title} by Nayaab Engineering Innovations.`} />
+            <link rel="canonical" href={projectCanonicalUrl} />
+            
+            {/* OpenGraph & Social Image Indexing */}
+            <meta property="og:title" content={`${project.title} | Nayaab Engineering Innovations`} />
+            <meta property="og:description" content={shortOverview} />
+            <meta property="og:type" content="article" />
+            <meta property="og:url" content={projectCanonicalUrl} />
+            {coverImageUrl && <meta property="og:image" content={coverImageUrl} />}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={`${project.title} | Nayaab Engineering Innovations`} />
+            <meta name="twitter:description" content={shortOverview} />
+            {coverImageUrl && <meta name="twitter:image" content={coverImageUrl} />}
+
+            {/* Structured Schema for Google Images */}
+            {imageSchemaData && (
+              <script type="application/ld+json">
+                {JSON.stringify(imageSchemaData)}
+              </script>
+            )}
+          </Helmet>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.22 }}
             className={styles.backdrop}
             onClick={onClose}
           />
 
+          {/* Centered Desktop Modal with Controlled Width */}
           <motion.aside
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 32, stiffness: 300, mass: 0.8 }}
-            className={styles.drawerPanel}
+            initial={{ opacity: 0, scale: 0.96, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 16 }}
+            transition={{ type: "spring", damping: 30, stiffness: 320, mass: 0.7 }}
+            className={styles.modalPanel}
             data-lenis-prevent="true"
           >
+            {/* Topbar with Public Logo */}
             <header className={styles.topBar}>
-              <div className={styles.badge}>
-                <span>{project.category || "Engineering"}</span>
+              <div className={styles.topBarLeft}>
+                <Link to="/" className={styles.logoLink} title="Nayaab Engineering Innovations">
+                  <img 
+                    src="/logo.png" 
+                    alt="Nayaab Engineering Innovations" 
+                    className={styles.brandLogo} 
+                  />
+                </Link>
+                <div className={styles.categoryBadge}>
+                  <span>{project.category || "Engineering"}</span>
+                </div>
               </div>
 
               <div className={styles.actionsGroup}>
                 <button
-                  onClick={handleCopyLink}
-                  title="Copy direct project link"
-                  className={styles.iconBtn}
+                  onClick={handleShare}
+                  title="Share project specification link"
+                  className={`${styles.iconBtn} ${copied ? styles.copiedActive : ""}`}
                   type="button"
+                  aria-label="Share project specification link"
                 >
-                  {copied ? <FaCheck className={styles.successIcon} /> : <FaShareAlt />}
+                  {copied ? (
+                    <>
+                      <FaCheck className={styles.successIcon} />
+                      <span className={styles.copiedTooltip}>Link Copied!</span>
+                    </>
+                  ) : (
+                    <FaShareAlt />
+                  )}
                 </button>
 
                 <div className={styles.divider} />
@@ -174,7 +263,7 @@ export default function ProjectDrawer({
 
                 <button
                   onClick={onClose}
-                  aria-label="Close modal"
+                  aria-label="Close modal window"
                   className={styles.closeBtn}
                   type="button"
                 >
@@ -183,63 +272,65 @@ export default function ProjectDrawer({
               </div>
             </header>
 
-            {/* Scrollable container with mobile touch-scrolling enabled */}
-            <div 
-              className={styles.scrollContent}
-              data-lenis-prevent="true"
-            >
+            {/* Scrollable Modal Content */}
+            <div className={styles.scrollContent} data-lenis-prevent="true">
               <header className={styles.contentHeader}>
-                <h1 className={styles.title}>{project.title}</h1>
+                <h1 id="modal-project-title" className={styles.title}>{project.title}</h1>
 
                 <div className={styles.metaGrid}>
                   {project.location && (
                     <div className={styles.metaItem}>
-                      <FaMapMarkerAlt className={styles.accentIcon} />
+                      <FaMapMarkerAlt className={styles.accentIcon} aria-hidden="true" />
                       <span>{project.location}</span>
                     </div>
                   )}
                   {project.duration && (
                     <div className={styles.metaItem}>
-                      <FaClock className={styles.accentIcon} />
+                      <FaClock className={styles.accentIcon} aria-hidden="true" />
                       <span>{project.duration}</span>
                     </div>
                   )}
                 </div>
               </header>
 
-              {/* 1. PROJECT OVERVIEW */}
+              {/* 1. Project Overview */}
               <section className={styles.section}>
-                <h3 className={styles.sectionTitle}>Project Overview</h3>
+                <h2 className={styles.sectionTitle}>Project Overview</h2>
                 <p className={styles.description}>{shortOverview}</p>
               </section>
 
-              {/* 2. GALLERY */}
+              {/* 2. SEO-Optimized Project Gallery */}
               {galleryList.length > 0 && (
                 <section className={styles.section}>
-                  <h3 className={styles.sectionTitle}>
-                    Project Gallery ({galleryList.length} Photos)
-                  </h3>
-                  <ProjectGallery gallery={galleryList} title={project.title} />
+                  <h2 className={styles.sectionTitle}>
+                    High-Resolution Gallery ({galleryList.length} Photographs)
+                  </h2>
+                  <ProjectGallery 
+                    gallery={galleryList} 
+                    title={project.title} 
+                    category={project.category}
+                    location={project.location}
+                  />
                 </section>
               )}
 
-              {/* 3. CLEAN CASE STUDY */}
+              {/* 3. Architectural & Engineering Scope */}
               {detailedDescription && (
                 <section className={styles.section}>
-                  <h3 className={styles.sectionTitle}>Architectural & Engineering Scope</h3>
+                  <h2 className={styles.sectionTitle}>Architectural &amp; Engineering Scope</h2>
                   <div className={styles.caseStudyContainer}>
                     {renderSmartCaseStudy(detailedDescription)}
                   </div>
                 </section>
               )}
 
-              {/* 4. KEY DELIVERABLES */}
+              {/* 4. Deliverables */}
               <section className={styles.section}>
-                <h3 className={styles.sectionTitle}>Key Deliverables</h3>
+                <h2 className={styles.sectionTitle}>Key Deliverables &amp; Structural Milestones</h2>
                 <ul className={styles.deliverablesList}>
                   {projectDeliverables.map((item, idx) => (
                     <li key={idx}>
-                      <FaCheckCircle className={styles.checkIcon} />
+                      <FaCheckCircle className={styles.checkIcon} aria-hidden="true" />
                       <span>{item}</span>
                     </li>
                   ))}

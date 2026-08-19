@@ -7,35 +7,36 @@ import {
 } from "react-icons/fa";
 import styles from "./ProjectGallery.module.css";
 
-export default function ProjectGallery({ gallery = [], title = "" }) {
+export default function ProjectGallery({ 
+  gallery = [], 
+  title = "",
+  category = "Engineering",
+  location = "Kashmir"
+}) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
-  // Normalize image sources (local asset imports, Supabase URLs, or objects)
+  // SEO-Rich Image Metadata Formatting for Google Images Indexing
   const normalizedGallery = gallery.map((item, idx) => {
-    if (typeof item === "string") {
-      return {
-        url: item,
-        alt: `${title || "Project Specification"} — View ${idx + 1}`,
-        caption: "",
-      };
-    }
+    const rawUrl = typeof item === "string" ? item : item.url || item.src || item.image || "";
+    const descriptiveAlt = `${title} - ${category} Architectural Elevation & Structural Engineering View ${idx + 1} | ${location} by Nayaab Engineering Innovations`;
+    const imageTitle = `${title} (${category}) - Inspection View ${idx + 1}`;
+
     return {
-      url: item.url || item.src || item.image || "",
-      alt: item.alt || `${title || "Project Specification"} — View ${idx + 1}`,
-      caption: item.caption || "",
+      url: rawUrl,
+      alt: descriptiveAlt,
+      title: imageTitle,
+      caption: item.caption || `${title} - Perspective View ${idx + 1}`,
     };
   });
 
   const totalImages = normalizedGallery.length;
   const currentImage = normalizedGallery[selectedIndex] || normalizedGallery[0];
 
-  // Reset index when active project changes
   useEffect(() => {
     setSelectedIndex(0);
   }, [gallery]);
 
-  // Next / Previous navigation handlers
   const handlePrev = useCallback(
     (e) => {
       e?.stopPropagation();
@@ -52,11 +53,9 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
     [totalImages]
   );
 
-  // Keyboard navigation & body scroll-lock
   useEffect(() => {
     if (!isLightboxOpen) return;
 
-    // Lock body scrolling behind modal
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     if (window.lenis) window.lenis.stop();
@@ -83,8 +82,12 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
   if (!gallery || totalImages === 0) return null;
 
   return (
-    <div className={styles.galleryWrapper}>
-      {/* Main Interactive Stage */}
+    <figure 
+      className={styles.galleryWrapper}
+      itemScope
+      itemType="https://schema.org/ImageGallery"
+    >
+      {/* Main Interactive Stage with Schema Microdata */}
       <div
         className={styles.mainDisplay}
         onClick={() => setIsLightboxOpen(true)}
@@ -96,14 +99,23 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
         }}
         role="button"
         tabIndex={0}
-        aria-label={`Open fullscreen view of image ${selectedIndex + 1} of ${totalImages}`}
+        aria-label={`Open full resolution photograph ${selectedIndex + 1} of ${totalImages} for ${title}`}
+        itemProp="associatedMedia"
+        itemScope
+        itemType="https://schema.org/ImageObject"
       >
+        <meta itemProp="name" content={currentImage.title} />
+        <meta itemProp="caption" content={currentImage.alt} />
+        <link itemProp="contentUrl" href={currentImage.url} />
+
         <img
           src={currentImage.url}
           alt={currentImage.alt}
-          loading="lazy"
+          title={currentImage.title}
+          loading="eager"
           decoding="async"
           className={styles.mainImage}
+          itemProp="thumbnail"
         />
         <div className={styles.zoomOverlay} aria-hidden="true">
           <FaExpandArrowsAlt className={styles.zoomIcon} />
@@ -114,15 +126,16 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
       </div>
 
       {currentImage.caption && (
-        <p className={styles.caption}>{currentImage.caption}</p>
+        <figcaption className={styles.caption} itemProp="description">
+          {currentImage.caption}
+        </figcaption>
       )}
 
       {/* Responsive Thumbnail Strip */}
       {totalImages > 1 && (
-        <div
+        <nav
           className={styles.thumbnailGrid}
-          role="region"
-          aria-label="Image thumbnail selectors"
+          aria-label="Selectable project photo thumbnails"
         >
           {normalizedGallery.map((img, idx) => (
             <button
@@ -132,36 +145,35 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
                 idx === selectedIndex ? styles.activeThumb : ""
               }`}
               onClick={() => setSelectedIndex(idx)}
-              aria-label={`Select photo ${idx + 1} of ${totalImages}`}
+              aria-label={`Select photograph ${idx + 1}: ${img.title}`}
               aria-current={idx === selectedIndex ? "true" : undefined}
             >
               <img
                 src={img.url}
-                alt=""
-                aria-hidden="true"
+                alt={img.alt}
+                title={img.title}
                 loading="lazy"
                 decoding="async"
               />
             </button>
           ))}
-        </div>
+        </nav>
       )}
 
-      {/* Fullscreen Lightbox Modal */}
+      {/* Fullscreen High-Resolution Lightbox Modal */}
       {isLightboxOpen && (
         <div
           className={styles.lightbox}
           onClick={() => setIsLightboxOpen(false)}
           role="dialog"
           aria-modal="true"
-          aria-label="High-resolution project gallery preview"
+          aria-label={`High-resolution preview of ${currentImage.title}`}
         >
-          {/* Controls Bar */}
           <button
             type="button"
             className={styles.closeBtn}
             onClick={() => setIsLightboxOpen(false)}
-            aria-label="Close fullscreen modal"
+            aria-label="Close high-resolution photo viewer"
           >
             <FaTimes />
           </button>
@@ -172,7 +184,7 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
                 type="button"
                 className={`${styles.navBtn} ${styles.prevBtn}`}
                 onClick={handlePrev}
-                aria-label="Previous image"
+                aria-label="Previous photograph"
               >
                 <FaChevronLeft />
               </button>
@@ -181,14 +193,13 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
                 type="button"
                 className={`${styles.navBtn} ${styles.nextBtn}`}
                 onClick={handleNext}
-                aria-label="Next image"
+                aria-label="Next photograph"
               >
                 <FaChevronRight />
               </button>
             </>
           )}
 
-          {/* Modal Center Stage */}
           <div
             className={styles.lightboxContent}
             onClick={(e) => e.stopPropagation()}
@@ -196,6 +207,7 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
             <img
               src={currentImage.url}
               alt={currentImage.alt}
+              title={currentImage.title}
               className={styles.lightboxImage}
             />
 
@@ -210,6 +222,6 @@ export default function ProjectGallery({ gallery = [], title = "" }) {
           </div>
         </div>
       )}
-    </div>
+    </figure>
   );
 }
