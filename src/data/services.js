@@ -5,15 +5,19 @@ export const SERVICES_DATA = [
     id: "architectural-design",
     slug: "architectural-design",
     title: "Architectural Design",
-    shortDesc: "Custom 3D modeling, modern and traditional building layouts, and specialized Islamic architectural planning.",
-    fullDesc: "Our architectural practice bridges classical regional heritage with modern technical design. We deliver complete 2D floor planning, 3D exterior visualization, elevation modeling, and custom layout drafting tailored to high-altitude terrain, sunlight orientation, and valley climate demands.",
+    shortDesc: "Custom 3D modeling, modern and traditional building layouts, and specialized Islamic architectural planning in Kashmir.",
+    fullDesc: "Our architectural practice bridges classical Kashmiri heritage with modern technical design. We deliver complete 2D floor planning, 3D exterior visualization, elevation modeling, and custom layout drafting tailored to high-altitude terrain, sunlight orientation, and valley climate demands.",
     icon: "FaDraftingCompass",
     coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/architectural-design.webp",
+    imageAlt: "3D architectural floor plans, residential blueprints, and elevation modeling in Kashmir",
+    seoTitle: "Architectural Design & 3D House Modeling Services in Kashmir | NEIPL",
+    metaDescription: "Professional 2D floor planning, photorealistic 3D exterior elevation rendering, and traditional Kashmiri & Islamic architectural drafting by Nayaab Engineering.",
+    keywords: ["architectural design Kashmir", "3D house elevation Baramulla", "floor plans Srinagar", "Islamic architecture Kashmir"],
     features: [
-      "2D Master Floor Plans & Spatial Allocation",
-      "Photorealistic 3D Exterior & Interior Renders",
-      "Traditional Kashmiri & Islamic Architectural Details",
-      "Topography Mapping & Climate-Responsive Elevation"
+      "2D Floor Plans & Space Layouts",
+      "3D Exterior & Interior Renders",
+      "Vernacular & Islamic Architecture",
+      "Site Topography & Elevations"
     ],
     specs: [
       { label: "Design Software", value: "AutoCAD, Revit, SketchUp, V-Ray" },
@@ -40,15 +44,19 @@ export const SERVICES_DATA = [
     id: "structural-engineering",
     slug: "structural-engineering",
     title: "Structural Engineering",
-    shortDesc: "Safe load calculations, structural integrity planning, and complete technical soundness verification.",
+    shortDesc: "Safe load calculations, seismic analysis, and BIS-compliant technical integrity verification across J&K.",
     fullDesc: "Engineering safety is the core foundation of every build. We perform comprehensive structural load analysis, design reinforced concrete (RCC) frames, steel trusses, and foundation systems specifically engineered to withstand seismic risk, heavy snow loads, and varied soil bearing capacities.",
     icon: "FaBuilding",
     coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/structural-engineering.webp",
+    imageAlt: "Seismic structural analysis, RCC frame design, and STAAD Pro modeling in Jammu and Kashmir",
+    seoTitle: "Structural Engineering & Seismic Load Analysis in Kashmir | NEIPL",
+    metaDescription: "Certified structural engineering, IS Code-compliant RCC rebar detailing, steel truss load calculations, and seismic Zone IV/V defense verification.",
+    keywords: ["structural engineer Kashmir", "seismic design Zone V J&K", "RCC frame analysis Baramulla", "ETABS STAAD structural consultant"],
     features: [
-      "Seismic Zone IV/V Resistance Load Calculations",
-      "Reinforced Concrete (RCC) & Foundation Design",
-      "Steel Roof Truss & Column Load Analysis",
-      "Material Estimation & Bill of Quantities (BOQ)"
+      "Seismic Zone IV/V Calculations",
+      "RCC & Foundation Structural Design",
+      "Steel Roof Truss & Column Analysis",
+      "BOQ & Material Cost Estimation"
     ],
     specs: [
       { label: "Codes Followed", value: "IS 456, IS 1893, IS 800" },
@@ -75,15 +83,19 @@ export const SERVICES_DATA = [
     id: "turnkey-construction",
     slug: "turnkey-construction",
     title: "Turnkey Construction",
-    shortDesc: "End-to-end site execution and management for commercial spaces, residential villas, and guesthouses.",
+    shortDesc: "End-to-end site execution, civil procurement, and project management for commercial spaces, villas, and guesthouses.",
     fullDesc: "From ground excavation to final key handover, our turnkey construction service manages site procurement, labor supervision, timeline scheduling, and quality assurance. We eliminate client coordination stress by handling all construction phases with disciplined site engineering.",
     icon: "FaHardHat",
     coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/turnkey-construction.webp",
+    imageAlt: "Turnkey building construction, civil engineering contractors, and site execution in Kashmir",
+    seoTitle: "Turnkey Construction Contractors & Civil Execution in Kashmir | NEIPL",
+    metaDescription: "Full-service EPC turnkey construction contractors in Baramulla & Srinagar. Professional site supervision, RCC masonry, MEP rough-ins, and milestone schedules.",
+    keywords: ["turnkey construction Kashmir", "building contractor Baramulla", "civil construction Srinagar", "EPC contractor J&K"],
     features: [
-      "Complete Site Management & Excavation",
-      "RCC Frame Construction & Masonry Build",
-      "Electrical, Plumbing & HVAC Rough-Ins",
-      "Final Quality Inspection & Key Handover"
+      "End-to-End Site Management",
+      "RCC Structure & Brick Masonry",
+      "Complete MEP & Utility Rough-Ins",
+      "Quality Audit & Key Handover"
     ],
     specs: [
       { label: "Execution Model", value: "Full EPC / Turnkey Handover" },
@@ -110,15 +122,19 @@ export const SERVICES_DATA = [
     id: "interior-modular-design",
     slug: "interior-modular-design",
     title: "Interior & Modular Design",
-    shortDesc: "Custom-made luxury interior layouts and intelligent modular kitchen and wardrobe solutions.",
+    shortDesc: "Custom luxury interior layouts, bespoke woodwork, and moisture-resistant modular kitchen and wardrobe solutions.",
     fullDesc: "Transforming indoor environments through functional elegance and fine craftsmanship. We design bespoke residential and commercial interiors, including space-saving modular kitchens, custom wardrobes, wall paneling, false ceilings, and ambient lighting concepts.",
     icon: "FaPalette",
     coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/interior-modular-design.webp",
+    imageAlt: "Modern interior design, modular kitchen cabinets, and luxury woodwork in Kashmir",
+    seoTitle: "Modern Interior Design & Modular Kitchen Solutions in Kashmir | NEIPL",
+    metaDescription: "Bespoke interior design, custom modular kitchens, BWP cabinetry, false ceilings, and ambient architectural lighting customized for Kashmir homes.",
+    keywords: ["modular kitchen Kashmir", "interior designers Srinagar", "luxury interior design Baramulla", "custom wardrobes Kashmir"],
     features: [
-      "Bespoke Modular Kitchens & Wardrobes",
-      "FALSE Ceiling & Architectural Lighting",
-      "Wall Paneling & Acoustic Woodwork",
-      "3D Interior Renders & Material Selection"
+      "Modular Kitchens & Wardrobes",
+      "False Ceiling & Ambient Lighting",
+      "Acoustic Wood & Wall Paneling",
+      "3D Visuals & Material Palettes"
     ],
     specs: [
       { label: "Primary Materials", value: "HDMR, Boiling Water Proof (BWP) Ply" },
@@ -145,14 +161,18 @@ export const SERVICES_DATA = [
     id: "regulatory-approvals",
     slug: "regulatory-approvals",
     title: "Regulatory Approvals",
-    shortDesc: "Professional advisory and technical assistance with official municipal building permission documentation.",
+    shortDesc: "Certified civil engineering consultation and municipal building permission sanction file documentation.",
     fullDesc: "Navigating local municipal compliance and building permits can be time-consuming. We assist clients by preparing municipal sanction drawings, setback clearance reports, floor area ratio (FAR) calculations, and certified engineering documentation needed for municipal approval.",
     icon: "FaClipboardCheck",
     coverImage: "https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/services/regulatory-approvals.webp",
+    imageAlt: "Municipal building permission sanction drawings and civil approval dossiers in Jammu and Kashmir",
+    seoTitle: "Municipal Building Permission & Sanction Plan Services in J&K | NEIPL",
+    metaDescription: "Hassle-free municipal building clearance files, certified FAR calculations, setback reports, and municipal authority liaison across Jammu & Kashmir.",
+    keywords: ["building permission Kashmir", "municipal sanction drawings Baramulla", "FAR setback clearance Srinagar", "certified civil engineer sanction"],
     features: [
-      "Municipal Sanction & Site Plan Drawings",
-      "Setback, Height & FAR Bylaw Compliance",
-      "Commercial & Residential Permission Files",
+      "Municipal Sanction Drawings",
+      "FAR & Setback Bylaw Compliance",
+      "Building Permission Dossiers",
       "Certified Structural Safety Sign-Offs"
     ],
     specs: [

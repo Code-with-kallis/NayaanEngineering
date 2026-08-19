@@ -41,41 +41,7 @@
   box-sizing: border-box;
 }
 
-/* ===== TRANSPARENT DARK HERO MODE (Services Slider & Dark Heros) ===== */
-.navbarDarkHero:not(.navbarScrolled) {
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-bottom-color: transparent !important;
-  box-shadow: none !important;
-}
-
-.navbarDarkHero:not(.navbarScrolled) .navItem {
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
-}
-
-.navbarDarkHero:not(.navbarScrolled) .navItem:hover,
-.navbarDarkHero:not(.navbarScrolled) .navItem.activeLink {
-  color: rgb(255, 187, 15);
-}
-
-.navbarDarkHero:not(.navbarScrolled) .navItem.activeLink::after {
-  background: rgb(255, 187, 15);
-  box-shadow: 0 0 12px rgba(255, 187, 15, 0.75);
-}
-
-.navbarDarkHero:not(.navbarScrolled) .menuToggleBtn {
-  background: rgba(10, 10, 10, 0.75) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45) !important;
-}
-
-.navbarDarkHero:not(.navbarScrolled) .menuIconImg {
-  filter: invert(1) brightness(2) !important;
-}
-
-/* ===== TRANSPARENT LIGHT HERO MODE ===== */
+/* ===== TRANSPARENT LIGHT HERO MODE (Includes /services) ===== */
 .navbarLightHero:not(.navbarScrolled) {
   background: transparent !important;
   backdrop-filter: none !important;
@@ -98,7 +64,7 @@
 }
 
 .navbarLightHero:not(.navbarScrolled) .menuToggleBtn {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   border-color: #E4E4E7;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
@@ -138,7 +104,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-size: 0.825rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -186,7 +152,7 @@
 
 .chevronIcon {
   font-size: 0.65rem;
-  margin-left: 2px;
+  margin-left: 4px;
   transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -220,7 +186,7 @@
 .dropdownItem {
   display: block;
   padding: 10px 18px;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-size: 0.825rem;
   font-weight: 600;
   color: #52525B;
@@ -242,7 +208,7 @@
   border-left: 3px solid rgb(255, 187, 15);
 }
 
-/* ===== ACTIONS & BUTTONS ===== */
+/* ===== DESKTOP CONTACT BUTTON ===== */
 .navbarActions {
   display: flex;
   align-items: center;
@@ -257,13 +223,13 @@
   padding: 0 20px;
   background: rgb(255, 187, 15);
   color: #0A0A0A;
-  border-radius: 0;
+  border-radius: 10px;
   border: 1px solid rgb(255, 187, 15);
   text-decoration: none;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: 750;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   box-shadow: 0 4px 14px rgba(255, 187, 15, 0.28);
   transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
@@ -286,13 +252,7 @@
   color: rgb(255, 187, 15);
 }
 
-.navbarDarkHero:not(.navbarScrolled) .navbarContactBtn {
-  background: rgb(255, 187, 15);
-  border-color: rgb(255, 187, 15);
-  color: #0A0A0A;
-}
-
-/* ===== BASE MOBILE MENU BUTTON ===== */
+/* ===== TOGGLE BUTTON ===== */
 .menuToggleBtn {
   display: none;
   align-items: center;
@@ -300,11 +260,9 @@
   width: 40px;
   height: 40px;
   background: #F4F4F5;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
   border: 1px solid #E4E4E7;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   cursor: pointer;
   padding: 8px;
   z-index: 1030;
@@ -317,55 +275,39 @@
   transform: translateY(-1px);
 }
 
-.menuToggleBtn:active {
-  transform: scale(0.93);
-}
-
 .menuIconImg {
   width: 22px;
   height: 22px;
   object-fit: contain;
   display: block;
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease;
 }
 
-.menuOpen .menuIconImg {
-  opacity: 0.65;
-}
-
-.navbarScrolled .menuToggleBtn {
-  background: #F4F4F5 !important;
-  border-color: #E4E4E7 !important;
-}
-
-.navbarScrolled .menuIconImg {
-  filter: none !important;
-}
-
-/* ===== MOBILE DRAWER PANEL ===== */
+/* ==========================================================================
+   DARK LUXURY MOBILE DRAWER PANEL (BLACK THEME)
+   ========================================================================== */
 .navbarMobilePanel {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
-  width: 300px;
-  max-width: 85vw;
+  width: 320px;
+  max-width: 88vw;
   height: 100vh;
   height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 20px 20px 28px;
-  background: #FFFFFF;
-  border-left: 1px solid #E4E4E7;
-  box-shadow: -15px 0 40px rgba(0, 0, 0, 0.18);
+  padding: 24px 20px 28px;
+  background: #0A0A0A;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: -20px 0 50px rgba(0, 0, 0, 0.6);
   transform: translateX(100%);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   overflow-y: auto;
-  z-index: 1020;
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms ease;
+  z-index: 1040;
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 250ms ease;
 }
 
 .navbarMobilePanel.active {
@@ -378,57 +320,76 @@
 .navbarMobileHeader {
   display: flex;
   align-items: center;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #F4F4F5;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .mobileLogo {
-  height: 30px;
+  height: 28px;
   width: auto;
   object-fit: contain;
+  filter: brightness(1.2);
 }
 
+.mobileCloseBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.mobileCloseBtn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  color: rgb(255, 187, 15);
+}
+
+/* Mobile Links Group */
 .navbarMobileLinks {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .navbarMobileLinks .navItem {
   width: 100%;
-  padding: 12px 14px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 700;
+  padding: 13px 16px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 750;
   letter-spacing: 0.06em;
   text-decoration: none;
-  color: #0A0A0A;
+  color: #E4E4E7;
   text-transform: uppercase;
-  background: #F4F4F5;
-  border: 1px solid #E4E4E7;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-sizing: border-box;
-  transition: all 150ms ease;
+  transition: all 180ms ease;
 }
 
 .navbarMobileLinks .navItem .navIcon {
   color: rgb(255, 187, 15);
+  font-size: 0.95rem;
 }
 
 .navbarMobileLinks .navItem:hover,
 .navbarMobileLinks .navItem.activeLink {
-  background: #0A0A0A;
-  color: #FFFFFF;
-  border-color: #0A0A0A;
-}
-
-.navbarMobileLinks .navItem:hover .navIcon,
-.navbarMobileLinks .navItem.activeLink .navIcon {
+  background: rgba(255, 187, 15, 0.12);
   color: rgb(255, 187, 15);
+  border-color: rgba(255, 187, 15, 0.4);
 }
 
-/* Mobile Services Accordion */
+/* Mobile Services Submenu Accordion */
 .mobileServicesWrapper {
   display: flex;
   flex-direction: column;
@@ -439,7 +400,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 4px;
+  gap: 6px;
 }
 
 .mobileServicesHeader .navItem {
@@ -447,61 +408,66 @@
 }
 
 .mobileExpandBtn {
-  width: 44px;
-  height: 44px;
-  background: #F4F4F5;
-  border: 1px solid #E4E4E7;
-  border-radius: 6px;
-  color: #0A0A0A;
+  width: 46px;
+  height: 46px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #E4E4E7;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  transition: background 150ms ease;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 .mobileExpandBtn:hover {
-  background: #E4E4E7;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgb(255, 187, 15);
 }
 
 .mobileSubMenu {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 250ms ease, padding 250ms ease;
-  padding-left: 12px;
+  transition: max-height 280ms cubic-bezier(0.16, 1, 0.3, 1), padding 200ms ease;
+  padding-left: 8px;
 }
 
 .mobileSubMenuOpen {
-  max-height: 350px;
-  padding-top: 6px;
+  max-height: 380px;
+  padding-top: 8px;
   padding-bottom: 6px;
 }
 
 .mobileSubItem {
-  padding: 10px 12px;
-  font-size: 0.8rem;
+  padding: 10px 14px;
+  font-size: 0.82rem;
   font-weight: 600;
-  color: #52525B;
+  color: #A1A1AA;
   text-decoration: none;
-  background: #FAFAFA;
-  border-left: 2px solid #E4E4E7;
-  transition: all 150ms ease;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border-left: 2.5px solid rgba(255, 255, 255, 0.15);
+  transition: all 180ms ease;
 }
 
 .mobileSubItem:hover,
 .mobileSubActive {
-  background: #0A0A0A;
-  color: #FFFFFF;
+  background: rgba(255, 187, 15, 0.08);
+  color: rgb(255, 187, 15);
   border-left-color: rgb(255, 187, 15);
+  padding-left: 18px;
 }
 
+/* Mobile Footer Button */
 .mobileFooterArea {
   margin-top: auto;
-  padding-top: 20px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .navbarContactMobile {
@@ -510,32 +476,32 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  height: 46px;
+  height: 48px;
   background: rgb(255, 187, 15);
   color: #0A0A0A;
-  border-radius: 0;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  border-radius: 12px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   text-decoration: none;
-  box-shadow: 0 4px 14px rgba(255, 187, 15, 0.3);
-  transition: background 150ms ease, color 150ms ease;
+  box-shadow: 0 4px 16px rgba(255, 187, 15, 0.35);
+  transition: transform 180ms ease, background-color 180ms ease;
 }
 
 .navbarContactMobile:hover {
-  background: #0A0A0A;
-  color: rgb(255, 187, 15);
+  background: #E5A80D;
+  transform: translateY(-1px);
 }
 
 /* ===== OVERLAY BACKDROP ===== */
 .navbarOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 10, 10, 0.6);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 1015;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1035;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -572,7 +538,7 @@
 
 @media (max-width: 768px) {
   .navbarContainer {
-    padding-inline: 1.5rem;
+    padding-inline: 1.25rem;
   }
 }
 
@@ -581,16 +547,12 @@
     height: 54px;
   }
 
-  .navbarContainer {
-    padding-inline: 1rem;
-  }
-
   .navbarLogo img {
     height: 28px;
   }
 
   .navbarMobilePanel {
-    width: 280px;
-    padding: 18px 16px 20px;
+    width: 290px;
+    padding: 20px 16px 24px;
   }
 }

@@ -130,7 +130,9 @@ export default function Contact() {
                 src={officeMapEmbed}
                 title="Nayaab Engineering Innovations Location"
                 loading="lazy"
+                allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"
+                className={styles.mapIframe}
               />
             </div>
 
@@ -151,7 +153,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className={styles.mapActionBtn}
               >
-                <span>Get Direction</span>
+                <span>Get Directions</span>
                 <FaExternalLinkAlt className={styles.btnIcon} />
               </a>
             </div>

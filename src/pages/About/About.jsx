@@ -16,10 +16,8 @@ import {
 import AboutHero from "../../components/about/AboutHero";
 import TeamSection from "../../components/team/TeamSection";
 import EmployeeModal from "../../components/team/EmployeeModal";
-import styles from "./About.module.css";
-
-// 1. Direct asset import for Vite
 import showcaseImage from "../../assets/images/about/Seismic-Safety-&-Structural-Design.webp";
+import styles from "./About.module.css";
 
 const SECTION_CONTENT = [
   {
@@ -49,7 +47,7 @@ function About() {
   const [sections, setSections] = useState([]);
   const [loadingTeam, setLoadingTeam] = useState(true);
 
-  // 1. Asynchronously load the team data on mount
+  // Asynchronously load team data on mount
   useEffect(() => {
     let isMounted = true;
 
@@ -74,7 +72,7 @@ function About() {
     };
   }, []);
 
-  // 2. Entrance Observer for Scroll Animations
+  // Entrance Observer for Scroll Animations
   useEffect(() => {
     document.title = "About Us & Corporate Profile | Nayaab Engineering Innovations";
 
@@ -101,7 +99,7 @@ function About() {
 
   return (
     <main id="main" className={styles.aboutPage}>
-      {/* 1. Hero Section (Twin of Projects Hero) */}
+      {/* 1. Hero Section */}
       <section className={styles.heroWrapper}>
         <AboutHero
           titleDark="Engineering What Comes "
@@ -172,7 +170,7 @@ function About() {
         </div>
       </section>
 
-      {/* 3. Architectural & Structural Showcase Section (Local WebP Asset) */}
+      {/* 3. Architectural & Structural Showcase Section */}
       <section className={styles.visionSection}>
         <div className={styles.container}>
           <div className={styles.visionGrid}>
@@ -184,7 +182,6 @@ function About() {
                 decoding="async" 
               />
               <div className={styles.visionFloatingBadge}>
-                <span className={styles.badgeNumber}>Zone-V</span>
                 <span className={styles.badgeText}>Seismic Safety &amp; Structural Design</span>
               </div>
             </div>
@@ -346,7 +343,7 @@ function About() {
 
           <div className={styles.sectionsWrapper}>
             {loadingTeam ? (
-              <div style={{ textAlign: "center", padding: "3rem", color: "#64748B" }}>
+              <div style={{ textAlign: "center", padding: "3rem", color: "#71717A" }}>
                 Loading team members...
               </div>
             ) : (

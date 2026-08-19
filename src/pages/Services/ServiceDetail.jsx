@@ -1,7 +1,8 @@
+// src/pages/ServiceDetail/ServiceDetail.jsx
 import React from "react";
 import { useParams, Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { 
-  FaSquare, 
   FaCheckCircle, 
   FaArrowLeft, 
   FaPhoneAlt, 
@@ -9,10 +10,10 @@ import {
   FaBuilding, 
   FaDraftingCompass, 
   FaHardHat, 
-  FaChevronRight,
-  FaPalette,
-  FaClipboardCheck,
-  FaHome
+  FaChevronRight, 
+  FaPalette, 
+  FaClipboardCheck, 
+  FaHome 
 } from "react-icons/fa";
 import { SERVICES_DATA } from "../../data/services";
 import styles from "./ServiceDetail.module.css";
@@ -28,8 +29,6 @@ const SERVICE_ICONS = {
 export default function ServiceDetail() {
   const { slug } = useParams();
   const service = SERVICES_DATA.find((s) => s.slug === slug);
-
-  // Filter other services for quick sidebar routing
   const otherServices = SERVICES_DATA.filter((s) => s.slug !== slug);
 
   if (!service) {
@@ -38,7 +37,7 @@ export default function ServiceDetail() {
         <div className={styles.notFoundCard}>
           <FaBuilding className={styles.notFoundIcon} />
           <h2>Service Not Found</h2>
-          <p>The requested engineering or architectural service detail page could not be located.</p>
+          <p>The requested engineering or architectural discipline could not be located.</p>
           <Link to="/services" className={styles.backBtn}>
             <FaArrowLeft /> <span>Back to All Services</span>
           </Link>
@@ -48,7 +47,19 @@ export default function ServiceDetail() {
   }
 
   return (
-    <main className={styles.pageWrapper}>
+    <main className={styles.pageWrapper} key={slug}>
+      <Helmet>
+        <title>{service.seoTitle || `${service.title} | Nayaab Engineering Innovations`}</title>
+        <meta
+          name="description"
+          content={service.metaDescription || service.shortDesc || service.fullDesc}
+        />
+        {service.keywords && (
+          <meta name="keywords" content={service.keywords.join(", ")} />
+        )}
+        <link rel="canonical" href={`https://www.nayaabengineering.com/services/${service.slug}`} />
+      </Helmet>
+
       {/* ================= BREADCRUMB & HEADER ================= */}
       <section className={styles.headerSection} aria-labelledby="service-detail-title">
         <div className={styles.headerContainer}>
@@ -66,13 +77,14 @@ export default function ServiceDetail() {
           </nav>
 
           <div className={`${styles.sectionTagRow} ${styles.animateSlideLeft} ${styles.delay2}`}>
-            <FaSquare className={styles.tagSquareIcon} aria-hidden="true" />
+            <span className={styles.tagSquare} aria-hidden="true" />
             <span>CIVIL &amp; ARCHITECTURAL DISCIPLINE</span>
           </div>
 
           <h1 id="service-detail-title" className={`${styles.serviceTitle} ${styles.animateSlideLeft} ${styles.delay3}`}>
             {service.title}
           </h1>
+          
           <p className={`${styles.serviceSubtitle} ${styles.animateSlideLeft} ${styles.delay4}`}>
             {service.shortDesc}
           </p>
@@ -87,11 +99,11 @@ export default function ServiceDetail() {
             {/* LEFT MAIN CONTENT */}
             <div className={styles.mainContent}>
               
-              {/* GPU-Accelerated Chamfered Hero Image Stage */}
-              <div className={`${styles.imageWrapper} ${styles.animateSlideLeft} ${styles.delay2}`}>
+              {/* Hero Image Stage */}
+              <div className={`${styles.imageWrapper} ${styles.animateSlideLeft} ${styles.delay3}`}>
                 <img 
                   src={service.coverImage} 
-                  alt={service.title} 
+                  alt={service.imageAlt || service.title} 
                   loading="eager" 
                   decoding="async" 
                 />
@@ -101,13 +113,13 @@ export default function ServiceDetail() {
               </div>
 
               {/* Scope of Work */}
-              <div className={styles.detailBlock}>
+              <div className={`${styles.detailBlock} ${styles.animateSlideLeft} ${styles.delay4}`}>
                 <h2 className={styles.subHeading}>Scope of Work &amp; Technical Approach</h2>
                 <p className={styles.fullDesc}>{service.fullDesc}</p>
               </div>
 
-              {/* Key Capabilities Grid */}
-              <div className={styles.detailBlock}>
+              {/* Key Capabilities */}
+              <div className={`${styles.detailBlock} ${styles.animateSlideLeft} ${styles.delay5}`}>
                 <h2 className={styles.subHeading}>Key Capabilities &amp; Deliverables</h2>
                 <div className={styles.featuresGrid}>
                   {service.features && service.features.map((feature, idx) => (
@@ -119,11 +131,13 @@ export default function ServiceDetail() {
                 </div>
               </div>
 
-              {/* Service-Specific Regional Compliance Box */}
+              {/* Regional Compliance Box */}
               {service.complianceInfo && (
-                <div className={styles.complianceBox}>
+                <div className={`${styles.complianceBox} ${styles.animateSlideLeft} ${styles.delay5}`}>
                   <div className={styles.complianceHeader}>
-                    <FaShieldAlt className={styles.complianceIcon} aria-hidden="true" />
+                    <div className={styles.complianceIconBox}>
+                      <FaShieldAlt className={styles.complianceIcon} aria-hidden="true" />
+                    </div>
                     <div>
                       <h3>{service.complianceInfo.title}</h3>
                       <p>{service.complianceInfo.subtitle}</p>
@@ -137,9 +151,9 @@ export default function ServiceDetail() {
                 </div>
               )}
 
-              {/* Structured Execution Workflow */}
+              {/* Service Execution Workflow */}
               {service.workflow && service.workflow.length > 0 && (
-                <div className={styles.detailBlock}>
+                <div className={`${styles.detailBlock} ${styles.animateSlideLeft} ${styles.delay6}`}>
                   <h2 className={styles.subHeading}>Service Execution Workflow</h2>
                   <div className={styles.workflowGrid}>
                     {service.workflow.map((item) => (
@@ -156,9 +170,9 @@ export default function ServiceDetail() {
             </div>
 
             {/* RIGHT SIDEBAR */}
-            <aside className={styles.sidebar} aria-label="Technical Specifications & Actions">
+            <aside className={`${styles.sidebar} ${styles.animateSlideLeft} ${styles.delay4}`} aria-label="Technical Specifications & Actions">
               
-              {/* Dynamic Specs Card */}
+              {/* Technical Specs Card */}
               {service.specs && (
                 <div className={styles.specsCard}>
                   <h3 className={styles.sidebarTitle}>Technical Specs</h3>
@@ -181,7 +195,7 @@ export default function ServiceDetail() {
                 </div>
               )}
 
-              {/* Sticky Contact Consultation CTA */}
+              {/* Consultation CTA */}
               <div className={styles.ctaCard}>
                 <div className={styles.ctaBadge}>GET STARTED</div>
                 <h3>Need {service.title}?</h3>
@@ -191,7 +205,7 @@ export default function ServiceDetail() {
                 </Link>
               </div>
 
-              {/* Other Services Navigation List */}
+              {/* Other Disciplines List */}
               <div className={styles.otherServicesCard}>
                 <h3 className={styles.sidebarTitle}>Other Core Disciplines</h3>
                 <div className={styles.otherServicesList}>

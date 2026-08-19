@@ -3,15 +3,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 .aboutPage {
-  --about-navy: #0F172A;
-  --about-text: #1E293B;
-  --about-text-muted: #64748B;
-  --about-border: #E2E8F0;
+  --about-navy: #0A0A0A;
+  --about-text: #0A0A0A;
+  --about-text-muted: #52525B;
+  --about-border: #E4E4E7;
   --about-surface: #FFFFFF;
-  --about-surface-alt: #F8FAFC;
-  --about-accent: #B7410E;
-  --about-accent-hover: #9E370C;
-  --about-accent-soft: rgba(183, 65, 14, 0.08);
+  --about-surface-alt: #FAFAFA;
+  --about-accent: #0A0A0A;
+  --about-accent-hover: #27272A;
+  --about-mustard: rgb(255, 187, 15);
 
   width: 100%;
   color: var(--about-text);
@@ -27,7 +27,7 @@
 }
 
 /* =========================================================================
-   CONTAINER: Locked to 1440px max-width & centered for 1920px, 2K & 4K
+   CONTAINER: Locked to 1440px max-width & centered
    ========================================================================= */
 .container {
   width: 100%;
@@ -68,7 +68,7 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--about-accent);
+  color: var(--about-navy);
 }
 
 .sectionEyebrowCenter {
@@ -78,7 +78,7 @@
 .eyebrowSquare {
   width: 7px;
   height: 7px;
-  background-color: var(--about-accent);
+  background-color: var(--about-mustard);
   border-radius: 0;
   flex-shrink: 0;
 }
@@ -146,17 +146,17 @@
 .dpiitCard {
   background: var(--about-surface-alt);
   border: 1px solid var(--about-border);
-  border-left: 4px solid var(--about-accent);
+  border-left: 4px solid var(--about-mustard);
   padding: clamp(24px, 3vw, 32px) clamp(20px, 2.5vw, 28px);
   border-radius: 0;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
-  transition: transform 300ms ease, box-shadow 300ms ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  transition: transform 300ms ease, box-shadow 300ms ease, border-color 300ms ease;
   min-width: 0;
 }
 
 .dpiitCard:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .dpiitHeader {
@@ -168,7 +168,7 @@
 
 .dpiitIcon {
   font-size: 2.2rem;
-  color: var(--about-accent);
+  color: var(--about-mustard);
   flex-shrink: 0;
 }
 
@@ -177,7 +177,7 @@
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--about-accent);
+  color: var(--about-navy);
   text-transform: uppercase;
   margin-bottom: 4px;
 }
@@ -227,7 +227,7 @@
 }
 
 /* =========================================================================
-   2. ARCHITECTURAL SHOWCASE SECTION (UNSPLASH VISUAL WITH FLOATING BADGE)
+   2. ARCHITECTURAL SHOWCASE SECTION
    ========================================================================= */
 .visionSection {
   width: 100%;
@@ -252,8 +252,8 @@
   clip-path: polygon(32px 0, 100% 0, 100% calc(100% - 32px), calc(100% - 32px) 100%, 0 100%, 0 32px);
   -webkit-clip-path: polygon(32px 0, 100% 0, 100% calc(100% - 32px), calc(100% - 32px) 100%, 0 100%, 0 32px);
   border-radius: 16px;
-  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
-  background: #0E1218;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+  background: #0A0A0A;
   transform: translateZ(0);
 }
 
@@ -273,10 +273,10 @@
   position: absolute;
   bottom: 1.25rem;
   left: 1.25rem;
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(10, 10, 10, 0.9);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(183, 65, 14, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 0.75rem 1.15rem;
   border-radius: 10px;
   color: #FFFFFF;
@@ -291,14 +291,14 @@
   font-family: var(--nei-font-primary, 'Inter', sans-serif);
   font-size: 1.1rem;
   font-weight: 800;
-  color: #FF7A45;
+  color: var(--about-mustard);
   letter-spacing: 0.02em;
 }
 
 .badgeText {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #CBD5E1;
+  color: #E4E4E7;
   letter-spacing: 0.02em;
 }
 
@@ -324,7 +324,7 @@
 }
 
 .pillarIcon {
-  color: var(--about-accent);
+  color: var(--about-mustard);
   font-size: 1.1rem;
   margin-top: 3px;
   flex-shrink: 0;
@@ -371,15 +371,16 @@
 
 .bentoCard:hover {
   transform: translateY(-4px);
-  border-color: var(--about-accent);
-  box-shadow: 0 10px 25px rgba(183, 65, 14, 0.08);
+  border-color: var(--about-navy);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
 }
 
 .bentoIconBox {
   width: 44px;
   height: 44px;
-  background: var(--about-accent-soft);
-  color: var(--about-accent);
+  background: #FFFFFF;
+  border: 1px solid var(--about-border);
+  color: var(--about-mustard);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -446,9 +447,9 @@
 }
 
 .capabilityCard:hover {
-  border-color: var(--about-accent);
+  border-color: var(--about-navy);
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
 .capHeader {
@@ -460,7 +461,7 @@
 
 .capIcon {
   font-size: 1.4rem;
-  color: var(--about-accent);
+  color: var(--about-mustard);
   flex-shrink: 0;
 }
 
@@ -548,15 +549,18 @@
 
 .ctaPrimaryBtn {
   gap: 10px;
-  background: var(--about-accent);
+  background: var(--about-navy);
   color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(183, 65, 14, 0.25);
+  border: 1px solid var(--about-navy);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
 }
 
 .ctaPrimaryBtn:hover {
   background: var(--about-accent-hover);
+  border-color: var(--about-accent-hover);
+  color: var(--about-mustard);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(183, 65, 14, 0.35);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
 }
 
 .ctaSecondaryBtn {
@@ -566,13 +570,13 @@
 }
 
 .ctaSecondaryBtn:hover {
-  border-color: var(--about-accent);
-  color: var(--about-accent);
+  border-color: var(--about-navy);
+  background: #F4F4F5;
   transform: translateY(-2px);
 }
 
 /* =========================================================================
-   RESPONSIVE BREAKPOINTS (LAPTOPS, TABLETS & MOBILE)
+   RESPONSIVE BREAKPOINTS
    ========================================================================= */
 
 /* Laptops (1025px to 1280px) */
