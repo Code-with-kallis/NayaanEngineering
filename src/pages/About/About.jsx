@@ -1,6 +1,7 @@
 // src/pages/About/About.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { 
   FaBuilding, 
   FaAward, 
@@ -18,6 +19,18 @@ import TeamSection from "../../components/team/TeamSection";
 import EmployeeModal from "../../components/team/EmployeeModal";
 import showcaseImage from "../../assets/images/about/Seismic-Safety-&-Structural-Design.webp";
 import styles from "./About.module.css";
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Us & Corporate Profile | Nayaab Engineering Innovations",
+  "description": "Learn about Nayaab Engineering Innovations Pvt. Ltd., DPIIT recognized corporate engineering firm in Jammu & Kashmir. Explore our leadership, architecture team, and project history.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Nayaab Engineering Innovations Private Limited",
+    "url": "https://www.nayaabengineering.com"
+  }
+};
 
 const SECTION_CONTENT = [
   {
@@ -116,7 +129,7 @@ export default function About() {
         <script type="application/ld+json">{JSON.stringify(aboutSchema)}</script>
       </Helmet>
 
-      {/* 1. Hero Section (Clean call using component defaults) */}
+      {/* 1. Hero Section */}
       <section className={styles.heroWrapper}>
         <AboutHero />
       </section>
@@ -332,7 +345,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* 6. Team Roster (Targeted by Hero Smooth Scroll) */}
+      {/* 6. Team Roster */}
       <section id="team-roster" className={styles.teamRosterSection}>
         <div className={styles.container}>
           <div className={`${styles.sectionHeaderCentered} ${styles.revealOnScroll}`}>
