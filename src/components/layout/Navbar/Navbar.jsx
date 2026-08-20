@@ -122,21 +122,30 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      if (ticking) return;
+      ticking = true;
 
-      setScrolled(currentScrollY > 20);
+      requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        const isScrolledNow = currentScrollY > 20;
 
-      if (isOpen || currentScrollY <= 20) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY.current + 6) {
-        setIsVisible(false);
-        setServicesDropdownOpen(false);
-      } else if (currentScrollY < lastScrollY.current - 6) {
-        setIsVisible(true);
-      }
+        setScrolled((prev) => (prev !== isScrolledNow ? isScrolledNow : prev));
 
-      lastScrollY.current = currentScrollY;
+        if (isOpen || currentScrollY <= 20) {
+          setIsVisible(true);
+        } else if (currentScrollY > lastScrollY.current + 6) {
+          setIsVisible(false);
+          setServicesDropdownOpen(false);
+        } else if (currentScrollY < lastScrollY.current - 6) {
+          setIsVisible(true);
+        }
+
+        lastScrollY.current = currentScrollY;
+        ticking = false;
+      });
     };
 
     handleScroll();

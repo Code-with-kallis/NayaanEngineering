@@ -1,6 +1,7 @@
 // src/pages/legal/Privacy.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { FaUserShield, FaArrowLeft } from "react-icons/fa";
 import styles from "./Legal.module.css";
 import logo from "/logo.png";
@@ -18,6 +19,14 @@ const Privacy = () => {
 
   return (
     <main className={styles.legalPage}>
+      <Helmet>
+        <title>Privacy Policy | Nayaab Engineering Innovations</title>
+        <meta
+          name="description"
+          content="Privacy Policy for Nayaab Engineering Innovations Pvt. Ltd. Learn how we handle client documentation, data protection, and privacy compliance."
+        />
+        <link rel="canonical" href="https://www.nayaabengineering.com/privacy" />
+      </Helmet>
       {/* Floating Bottom Back Button */}
       <button
         onClick={handleGoBack}

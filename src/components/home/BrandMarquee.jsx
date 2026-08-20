@@ -11,6 +11,7 @@ const BRAND_PLATFORMS = [
         src="https://www.google.com/s2/favicons?domain=startupindia.gov.in&sz=128"
         alt="Startup India Logo"
         className={styles.brandImg}
+        decoding="async"
         loading="lazy"
       />
     ),
@@ -23,6 +24,7 @@ const BRAND_PLATFORMS = [
         src="https://www.google.com/s2/favicons?domain=jkindustriescommerce.nic.in&sz=128"
         alt="Startup JK Logo"
         className={styles.brandImg}
+        decoding="async"
         loading="lazy"
       />
     ),
@@ -48,6 +50,7 @@ const BRAND_PLATFORMS = [
         src="https://www.google.com/s2/favicons?domain=justdial.com&sz=128"
         alt="Justdial Logo"
         className={styles.brandImg}
+        decoding="async"
         loading="lazy"
       />
     ),
@@ -60,6 +63,7 @@ const BRAND_PLATFORMS = [
         src="https://www.google.com/s2/favicons?domain=dnb.com&sz=128"
         alt="Dun & Bradstreet Logo"
         className={styles.brandImg}
+        decoding="async"
         loading="lazy"
       />
     ),

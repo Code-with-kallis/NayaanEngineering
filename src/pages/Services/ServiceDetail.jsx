@@ -46,6 +46,19 @@ export default function ServiceDetail() {
     );
   }
 
+  const detailSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": service.title,
+    "description": service.shortDesc || service.metaDescription,
+    "provider": {
+      "@type": "Organization",
+      "name": "Nayaab Engineering Innovations Pvt. Ltd."
+    },
+    "areaServed": "Jammu & Kashmir",
+    "url": `https://www.nayaabengineering.com/services/${service.slug}`
+  };
+
   return (
     <main className={styles.pageWrapper} key={slug}>
       <Helmet>
@@ -58,6 +71,18 @@ export default function ServiceDetail() {
           <meta name="keywords" content={service.keywords.join(", ")} />
         )}
         <link rel="canonical" href={`https://www.nayaabengineering.com/services/${service.slug}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={service.seoTitle || `${service.title} | Nayaab Engineering`} />
+        <meta
+          property="og:description"
+          content={service.metaDescription || service.shortDesc}
+        />
+        <meta property="og:url" content={`https://www.nayaabengineering.com/services/${service.slug}`} />
+        <meta property="og:image" content="https://www.nayaabengineering.com/logo-full.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={service.title} />
+        <meta name="twitter:description" content={service.shortDesc} />
+        <script type="application/ld+json">{JSON.stringify(detailSchema)}</script>
       </Helmet>
 
       {/* ================= BREADCRUMB & HEADER ================= */}

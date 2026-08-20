@@ -376,16 +376,20 @@ export default function GoogleReviews() {
     hasDraggedRef.current = false;
     setDragStartX(e.clientX);
     setDragOffset(0);
-    if (trackRef.current) {
-      trackRef.current.setPointerCapture(e.pointerId);
-    }
   };
 
   const handlePointerMove = (e) => {
     if (!isDragging) return;
     const currentDiff = e.clientX - dragStartX;
-    if (Math.abs(currentDiff) > 6) {
+    if (Math.abs(currentDiff) > 8) {
       hasDraggedRef.current = true;
+      if (trackRef.current && !trackRef.current.hasPointerCapture(e.pointerId)) {
+        try {
+          trackRef.current.setPointerCapture(e.pointerId);
+        } catch {
+          // Fallback if capture fails
+        }
+      }
     }
     setDragOffset(currentDiff);
   };
@@ -403,7 +407,11 @@ export default function GoogleReviews() {
 
     setDragOffset(0);
     if (trackRef.current && trackRef.current.hasPointerCapture(e.pointerId)) {
-      trackRef.current.releasePointerCapture(e.pointerId);
+      try {
+        trackRef.current.releasePointerCapture(e.pointerId);
+      } catch {
+        // Fallback
+      }
     }
   };
 

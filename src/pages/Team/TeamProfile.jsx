@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Navigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { 
   FaShieldAlt, 
   FaCheckCircle, 
@@ -22,8 +23,6 @@ function TeamProfile() {
 
   useEffect(() => {
     if (employee) {
-      document.title = `${employee.name} | Official ID Verification | NEIPL`;
-
       const timer = setTimeout(() => {
         setIsVerifying(false);
       }, 1000);
@@ -48,10 +47,26 @@ function TeamProfile() {
     skills = [],
   } = employee;
 
+  const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": name,
+    "jobTitle": designation,
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Nayaab Engineering Innovations Pvt. Ltd."
+    },
+    "email": contact?.email,
+    "image": image
+  };
+
   /* 1. MATCHED BACKGROUND LOADING SCREEN */
   if (isVerifying) {
     return (
       <main className={styles.loadingPage}>
+        <Helmet>
+          <title>Verifying... | NEIPL</title>
+        </Helmet>
         <div className={styles.loadingCard}>
           <div className={styles.loadingBrand}>
             {/* Pure White Solid Circle for Clear Logo Visibility */}
@@ -78,6 +93,23 @@ function TeamProfile() {
   /* 2. VERIFIED PROFILE VIEW */
   return (
     <main id="main" className={styles.profilePage}>
+      <Helmet>
+        <title>{`${name} | ${designation} | Nayaab Engineering`}</title>
+        <meta
+          name="description"
+          content={`Official ID verification profile for ${name}, ${designation} at Nayaab Engineering Innovations Pvt. Ltd.`}
+        />
+        <link rel="canonical" href={`https://www.nayaabengineering.com/team/${id}`} />
+        <meta property="og:type" content="profile" />
+        <meta property="og:title" content={`${name} | Official ID Profile | Nayaab Engineering`} />
+        <meta
+          property="og:description"
+          content={`Verified profile of ${name}, ${designation} at Nayaab Engineering Innovations.`}
+        />
+        <meta property="og:url" content={`https://www.nayaabengineering.com/team/${id}`} />
+        {image && <meta property="og:image" content={image} />}
+        <script type="application/ld+json">{JSON.stringify(personSchema)}</script>
+      </Helmet>
       <div className={styles.container}>
         {/* Top Status Header */}
         <div className={styles.topNav}>

@@ -105,7 +105,6 @@ font-family: 'Manrope', sans-serif;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.3s ease;
-  will-change: transform;
 }
 
 .projectCard:hover {
@@ -139,7 +138,6 @@ font-family: 'Manrope', sans-serif;
   object-fit: cover;
   display: block;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
 }
 
 .projectCard:hover .cardImageWrapper img {

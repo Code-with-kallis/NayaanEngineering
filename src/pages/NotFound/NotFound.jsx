@@ -1,16 +1,16 @@
-import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import styles from "./NotFound.module.css";
 
 export default function NotFound() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    document.title = "404 - Page Not Found";
-  }, []);
-
   return (
     <section className={styles.container} aria-labelledby="not-found-title">
+      <Helmet>
+        <title>404 - Page Not Found | Nayaab Engineering</title>
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
       <div className={styles.content}>
         <span className={styles.errorCode} aria-hidden="true">
           404

@@ -16,7 +16,7 @@
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 4rem);
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
   box-sizing: border-box;
 }
 
@@ -696,6 +696,11 @@
   .headerSection {
     padding-top: 5rem;
     padding-bottom: 2rem;
+
+  }
+ .headerContainer,
+  .contentContainer {
+    padding-inline: 1rem;
   }
 
   .serviceTitle {
@@ -746,5 +751,11 @@
   .complianceHeader {
     flex-direction: column;
     gap: 0.5rem;
+  }
+}
+@media (max-width: 380px) {
+  .headerContainer,
+  .contentContainer {
+    padding-inline: 0.75rem;
   }
 }

@@ -1,6 +1,7 @@
 // src/pages/legal/Terms.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { FaFileContract, FaArrowLeft } from "react-icons/fa";
 import styles from "./Legal.module.css";
 import logo from "/logo.png";
@@ -18,6 +19,14 @@ const Terms = () => {
 
   return (
     <main className={styles.legalPage}>
+      <Helmet>
+        <title>Terms &amp; Conditions | Nayaab Engineering Innovations</title>
+        <meta
+          name="description"
+          content="Terms &amp; Conditions of service for Nayaab Engineering Innovations Pvt. Ltd. Read our contractual policies, architectural project terms, and legal disclaimers."
+        />
+        <link rel="canonical" href="https://www.nayaabengineering.com/terms" />
+      </Helmet>
       {/* Floating Bottom Back Button */}
       <button
         onClick={handleGoBack}

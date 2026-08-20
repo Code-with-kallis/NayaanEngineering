@@ -47,15 +47,41 @@ export default function Contact() {
     setOpenFaq(openFaq === index ? -1 : index);
   };
 
+  const contactSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contact Us | Nayaab Engineering Innovations",
+    "description": "Connect with our architectural and structural engineering team in Baramulla, Jammu & Kashmir.",
+    "url": "https://www.nayaabengineering.com/contact",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "Nayaab Engineering Innovations Pvt. Ltd.",
+      "telephone": "+91-1952-455465",
+      "email": "contact@nayaabengineering.com"
+    }
+  };
+
   return (
     <main className={styles.pageContainer}>
       <Helmet>
         <title>Contact Us | Nayaab Engineering Innovations</title>
         <meta
           name="description"
-          content="Get in touch with Nayaab Engineering Innovations. Connect with our architectural and structural engineering team in Baramulla, Jammu & Kashmir."
+          content="Get in touch with Nayaab Engineering Innovations. Connect with our architectural and structural engineering team in Baramulla, Jammu &amp; Kashmir."
         />
         <link rel="canonical" href="https://www.nayaabengineering.com/contact" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Contact Us | Nayaab Engineering Innovations" />
+        <meta
+          property="og:description"
+          content="Connect directly with our architectural and structural engineering team in Baramulla, Jammu &amp; Kashmir."
+        />
+        <meta property="og:url" content="https://www.nayaabengineering.com/contact" />
+        <meta property="og:image" content="https://www.nayaabengineering.com/logo-full.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Us | Nayaab Engineering" />
+        <meta name="twitter:description" content="Connect with our architectural and structural engineering team in Baramulla." />
+        <script type="application/ld+json">{JSON.stringify(contactSchema)}</script>
       </Helmet>
 
       {/* 1. HERO & DIRECT CONTACT CARDS */}

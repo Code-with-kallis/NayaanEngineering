@@ -8,6 +8,7 @@ import {
   FaSpinner,
   FaImages
 } from "react-icons/fa";
+import { Helmet } from "react-helmet-async";
 import { supabase } from "../../lib/supabaseClient";
 import styles from "./ProjectDetail.module.css";
 
@@ -111,8 +112,42 @@ export default function ProjectDetail() {
     ? project.description 
     : null;
 
+  const projectSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": project.title,
+    "description": shortOverview || `${project.title} - Architectural & Structural Engineering Project by Nayaab Engineering Innovations.`,
+    "url": `https://www.nayaabengineering.com/projects/${project.slug}`,
+    "image": cover || "https://www.nayaabengineering.com/logo-full.png",
+    "provider": {
+      "@type": "Organization",
+      "name": "Nayaab Engineering Innovations Pvt. Ltd."
+    }
+  };
+
   return (
     <article className={styles.container}>
+      <Helmet>
+        <title>{`${project.title} | Projects | Nayaab Engineering`}</title>
+        <meta
+          name="description"
+          content={shortOverview ? shortOverview.slice(0, 155) : `${project.title} project details by Nayaab Engineering Innovations in ${project.location || "Jammu & Kashmir"}.`}
+        />
+        <link rel="canonical" href={`https://www.nayaabengineering.com/projects/${project.slug}`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={`${project.title} | Nayaab Engineering`} />
+        <meta
+          property="og:description"
+          content={shortOverview ? shortOverview.slice(0, 155) : `${project.title} project details by Nayaab Engineering Innovations.`}
+        />
+        <meta property="og:url" content={`https://www.nayaabengineering.com/projects/${project.slug}`} />
+        {cover && <meta property="og:image" content={cover} />}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${project.title} | Nayaab Engineering`} />
+        <meta name="twitter:description" content={shortOverview ? shortOverview.slice(0, 155) : `${project.title} project details.`} />
+        <script type="application/ld+json">{JSON.stringify(projectSchema)}</script>
+      </Helmet>
+
       <Link to="/projects" className={styles.backBtn}>
         <FaArrowLeft /> <span>Back to Projects</span>
       </Link>

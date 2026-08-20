@@ -31,9 +31,9 @@
 
 .navbarContainer {
   width: 100%;
-  max-width: none;
+  max-width: 1440px;
   height: 100%;
-  margin: 0 auto;
+  margin-inline: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -612,3 +612,4 @@
     padding: 18px 16px 24px;
   }
 }
+```[cite: 10]

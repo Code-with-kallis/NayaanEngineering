@@ -12,13 +12,14 @@ export default function ScrollManager() {
   // 1. Initialize Lenis Smooth Scroll Engine
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
+      touchMultiplier: 1.5,
+      syncTouch: false,
       infinite: false,
       autoResize: true,
     });
@@ -68,9 +69,12 @@ export default function ScrollManager() {
     if (navType !== "POP") {
       if (lenisRef.current) {
         lenisRef.current.scrollTo(0, { immediate: true });
+        lenisRef.current.resize();
       } else {
         window.scrollTo(0, 0);
       }
+    } else if (lenisRef.current) {
+      lenisRef.current.resize();
     }
   }, [pathname, navType]);
 

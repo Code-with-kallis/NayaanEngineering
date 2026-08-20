@@ -72,8 +72,6 @@ export default function About() {
   }, []);
 
   useEffect(() => {
-    document.title = "About Us & Corporate Profile | Nayaab Engineering Innovations";
-
     const observer = new IntersectionObserver(
       (entries, obs) => {
         entries.forEach((entry) => {
@@ -97,6 +95,27 @@ export default function About() {
 
   return (
     <main id="main" className={styles.aboutPage}>
+      <Helmet>
+        <title>About Us &amp; Corporate Profile | Nayaab Engineering Innovations</title>
+        <meta
+          name="description"
+          content="Learn about Nayaab Engineering Innovations Pvt. Ltd., DPIIT recognized corporate engineering firm in Jammu &amp; Kashmir. Explore our leadership, architecture team, and project history."
+        />
+        <link rel="canonical" href="https://www.nayaabengineering.com/about" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="About Us &amp; Corporate Profile | Nayaab Engineering Innovations" />
+        <meta
+          property="og:description"
+          content="DPIIT recognized corporate engineering firm in Baramulla, Jammu &amp; Kashmir. Explore our leadership, design team, and engineering capabilities."
+        />
+        <meta property="og:url" content="https://www.nayaabengineering.com/about" />
+        <meta property="og:image" content="https://www.nayaabengineering.com/logo-full.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About Us | Nayaab Engineering Innovations" />
+        <meta name="twitter:description" content="DPIIT recognized corporate engineering firm in Jammu &amp; Kashmir." />
+        <script type="application/ld+json">{JSON.stringify(aboutSchema)}</script>
+      </Helmet>
+
       {/* 1. Hero Section (Clean call using component defaults) */}
       <section className={styles.heroWrapper}>
         <AboutHero />

@@ -230,15 +230,39 @@ export default function Projects() {
     openProjectModal(filteredProjects[prevIdx]);
   }, [currentModalIndex, filteredProjects, openProjectModal]);
 
+  const projectsSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Portfolio & Completed Projects | Nayaab Engineering Innovations",
+    "description": "Explore our portfolio of completed residential, commercial, and structural engineering projects across Kashmir.",
+    "url": "https://www.nayaabengineering.com/projects",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Nayaab Engineering Innovations Pvt. Ltd."
+    }
+  };
+
   return (
     <div className={styles.pageWrapper}>
       <Helmet>
-        <title>Portfolio & Completed Projects | Nayaab Engineering Innovations</title>
+        <title>Portfolio &amp; Completed Projects | Nayaab Engineering Innovations</title>
         <meta
           name="description"
           content="Explore our extensive portfolio of completed residential, commercial, and structural engineering projects across Kashmir by Nayaab Engineering Innovations."
         />
         <link rel="canonical" href="https://www.nayaabengineering.com/projects" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Portfolio &amp; Completed Projects | Nayaab Engineering" />
+        <meta
+          property="og:description"
+          content="Explore our portfolio of residential, commercial, and structural engineering projects across Kashmir."
+        />
+        <meta property="og:url" content="https://www.nayaabengineering.com/projects" />
+        <meta property="og:image" content="https://www.nayaabengineering.com/logo-full.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Completed Projects | Nayaab Engineering" />
+        <meta name="twitter:description" content="Portfolio of architectural and structural engineering projects." />
+        <script type="application/ld+json">{JSON.stringify(projectsSchema)}</script>
       </Helmet>
 
       {/* UNIFIED PAGE HERO */}

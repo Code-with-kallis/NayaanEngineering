@@ -23,7 +23,7 @@ const STATS_DATA = [
 ];
 
 function StatItem({ value, suffix, line1, line2, isVisible }) {
-  const [count, setCount] = useState(0);
+  const numberRef = useRef(null);
 
   useEffect(() => {
     if (!isVisible) return;
@@ -37,12 +37,16 @@ function StatItem({ value, suffix, line1, line2, isVisible }) {
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
       
       const easeProgress = 1 - Math.pow(1 - progress, 4);
-      setCount(Math.floor(easeProgress * value));
+      const currentCount = Math.floor(easeProgress * value);
+
+      if (numberRef.current) {
+        numberRef.current.textContent = currentCount;
+      }
 
       if (progress < 1) {
         animationFrameId = requestAnimationFrame(step);
-      } else {
-        setCount(value);
+      } else if (numberRef.current) {
+        numberRef.current.textContent = value;
       }
     };
 
@@ -53,7 +57,7 @@ function StatItem({ value, suffix, line1, line2, isVisible }) {
   return (
     <div className={styles.statItem}>
       <div className={styles.numberWrapper}>
-        <span className={styles.number}>{count}</span>
+        <span ref={numberRef} className={styles.number}>0</span>
         <span className={styles.suffix}>{suffix}</span>
       </div>
       <div className={styles.labelWrapper}>

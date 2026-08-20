@@ -46,6 +46,18 @@ export default function Services() {
     setModalOpen(true);
   };
 
+  const servicesSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Architectural Design & Structural Engineering",
+    "provider": {
+      "@type": "Organization",
+      "name": "Nayaab Engineering Innovations Pvt. Ltd."
+    },
+    "areaServed": "Jammu & Kashmir",
+    "url": "https://www.nayaabengineering.com/services"
+  };
+
   return (
     <main className={styles.pageWrapper}>
       <Helmet>
@@ -55,6 +67,18 @@ export default function Services() {
           content="Explore civil engineering, 3D architectural modeling, structural analysis, turnkey construction, and interior design services by Nayaab Engineering in Kashmir."
         />
         <link rel="canonical" href="https://www.nayaabengineering.com/services" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Services &amp; Engineering Disciplines | Nayaab Engineering" />
+        <meta
+          property="og:description"
+          content="Explore architectural modeling, structural analysis, turnkey construction, and engineering consultancy in Kashmir."
+        />
+        <meta property="og:url" content="https://www.nayaabengineering.com/services" />
+        <meta property="og:image" content="https://www.nayaabengineering.com/logo-full.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Services | Nayaab Engineering" />
+        <meta name="twitter:description" content="Architectural design, structural consultancy, and turnkey construction." />
+        <script type="application/ld+json">{JSON.stringify(servicesSchema)}</script>
       </Helmet>
 
       {/* ================= TOP BREADCRUMB ================= */}

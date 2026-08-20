@@ -134,6 +134,26 @@ export default function Home() {
     openProjectModal(projects[prevIdx]);
   }, [currentModalIndex, projects, openProjectModal]);
 
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Nayaab Engineering Innovations Pvt. Ltd.",
+    "url": "https://www.nayaabengineering.com/",
+    "logo": "https://www.nayaabengineering.com/logo-full.png",
+    "image": "https://www.nayaabengineering.com/logo-full.png",
+    "description": "Premier architectural design, structural consultancy, and turnkey construction services in Kashmir.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "3rd Floor, Qutub Complex, Opp. JK Bank (TP), Main Bazar",
+      "addressLocality": "Baramulla",
+      "addressRegion": "Jammu & Kashmir",
+      "postalCode": "193101",
+      "addressCountry": "IN"
+    },
+    "telephone": "+91-1952-455465",
+    "priceRange": "$$"
+  };
+
   return (
     <>
       <Helmet>
@@ -143,6 +163,18 @@ export default function Home() {
           content="Nayaab Engineering provides turnkey construction, architectural design, and structural consultancy in Kashmir. View our featured projects and request a consultation."
         />
         <link rel="canonical" href="https://www.nayaabengineering.com/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Nayaab Engineering | Premier Architectural &amp; Structural Engineering" />
+        <meta
+          property="og:description"
+          content="Turnkey construction, architectural design, and structural consultancy in Kashmir. View our featured projects and request a consultation."
+        />
+        <meta property="og:url" content="https://www.nayaabengineering.com/" />
+        <meta property="og:image" content="https://www.nayaabengineering.com/logo-full.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Nayaab Engineering Innovations" />
+        <meta name="twitter:description" content="Premier architectural and structural engineering in Kashmir." />
+        <script type="application/ld+json">{JSON.stringify(homeSchema)}</script>
       </Helmet>
 
       {/* 1. HERO */}
