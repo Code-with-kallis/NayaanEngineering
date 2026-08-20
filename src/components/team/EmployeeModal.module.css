@@ -35,7 +35,7 @@
   overflow-y: auto;
   box-sizing: border-box;
   color: #0F172A;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   animation: slideUp 250ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -84,8 +84,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.725rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #B7410E;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -98,8 +99,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.725rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   background: #F1F5F9;
   padding: 0.35rem 0.75rem;
@@ -161,8 +163,9 @@
 }
 
 .memberDesignation {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #B7410E;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -207,8 +210,10 @@
 }
 
 .quoteText {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.875rem;
   font-style: italic;
+  font-weight: 400;
   color: #334155;
   margin: 0;
   line-height: 1.55;
@@ -232,7 +237,9 @@
 }
 
 .blockBody {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.875rem;
+  font-weight: 400;
   line-height: 1.65;
   color: #475569;
   margin: 0;
@@ -251,8 +258,9 @@
   padding: 0.4rem 0.8rem;
   background: #F1F5F9;
   border: 1px solid #E2E8F0;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #0F172A;
 }
 

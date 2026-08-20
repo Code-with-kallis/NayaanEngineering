@@ -3,12 +3,10 @@
    NAYAAB ENGINEERING INNOVATIONS — READING MODE LIGHT THEME
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
-
 .legalPage {
   background-color: #FFFFFF;
   color: #1E293B;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   min-height: 100vh;
   width: 100%;
   padding-bottom: 7rem;
@@ -102,8 +100,9 @@
   border: 1px solid #FED7AA;
   border-radius: 9999px;
   color: #C2410C;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.725rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-bottom: 0.75rem;
@@ -120,7 +119,8 @@
 }
 
 .lastUpdated {
-  font-size: 0.85rem;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
+  font-size: 0.825rem;
   color: #64748B;
   margin: 0;
 }
@@ -165,12 +165,13 @@
 .tocNav a {
   color: #64748B;
   text-decoration: none;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.825rem;
   line-height: 1.4;
   padding: 0.4rem 0.75rem;
   margin-left: -2px;
   border-left: 2px solid transparent;
-  font-weight: 500;
+  font-weight: 400;
   transition: all 0.15s ease;
 }
 
@@ -211,13 +212,16 @@
 }
 
 .clauseNumber {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   color: #B7410E;
   font-size: 1.15rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .clause p {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.95rem;
+  font-weight: 400;
   line-height: 1.8;
   color: #334155;
   margin: 0 0 0.85rem 0;
@@ -240,7 +244,9 @@
 .clauseList li {
   position: relative;
   padding-left: 1.25rem;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.935rem;
+  font-weight: 400;
   line-height: 1.7;
   color: #334155;
 }
@@ -279,11 +285,15 @@
 }
 
 .factLabel {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
   color: #64748B;
   font-weight: 500;
 }
 
 .factValue {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
   color: #0F172A;
   font-weight: 600;
 }
@@ -294,7 +304,9 @@
   background: #FFF7ED;
   padding: 1rem 1.25rem;
   margin: 1.25rem 0;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.9rem;
+  font-weight: 400;
   line-height: 1.65;
   color: #7C2D12;
   border-radius: 0 4px 4px 0;
@@ -318,7 +330,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.925rem;
+  font-weight: 400;
   color: #334155;
   line-height: 1.6;
 }
@@ -337,6 +351,10 @@
    RESPONSIVE
    ========================================================================== */
 @media (max-width: 1024px) {
+  .container {
+    padding-inline: 2rem;
+  }
+
   .legalLayout {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -344,6 +362,11 @@
 
   .sidebar {
     display: none;
+  }
+
+  .floatingBackBtn {
+    bottom: 1.5rem;
+    right: 1.5rem;
   }
 }
 

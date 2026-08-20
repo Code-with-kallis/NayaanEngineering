@@ -1,7 +1,5 @@
 /* src/pages/About/About.module.css */
 
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
-
 .aboutPage {
   --about-navy: #0A0A0A;
   --about-text: #0A0A0A;
@@ -16,8 +14,8 @@
   width: 100%;
   color: var(--about-text);
   background: var(--about-surface);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  overflow-x: hidden;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
+  overflow-x: clip;
   box-sizing: border-box;
 }
 
@@ -64,8 +62,9 @@
   align-items: center;
   gap: 8px;
   margin-bottom: 12px;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--about-navy);
@@ -106,7 +105,9 @@
 
 .sectionDesc {
   color: var(--about-text-muted);
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.95rem;
+  font-weight: 400;
   line-height: 1.6;
   margin: 0;
 }
@@ -132,7 +133,9 @@
 }
 
 .bodyParagraph {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 1.025rem;
+  font-weight: 400;
   line-height: 1.7;
   color: var(--about-text-muted);
   margin: 0 0 1.25rem 0;
@@ -174,8 +177,9 @@
 
 .dpiitBadgeTag {
   display: inline-block;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.12em;
   color: var(--about-navy);
   text-transform: uppercase;
@@ -191,7 +195,9 @@
 }
 
 .dpiitText {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.9rem;
+  font-weight: 400;
   line-height: 1.6;
   color: var(--about-text-muted);
   margin: 0 0 20px 0;
@@ -212,15 +218,18 @@
 }
 
 .metaLabel {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.725rem;
+  font-weight: 500;
   color: var(--about-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .metaValue {
-  font-size: 0.875rem;
-  font-weight: 700;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--about-navy);
   margin-top: 2px;
   word-break: break-word;
@@ -296,8 +305,9 @@
 }
 
 .badgeText {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #E4E4E7;
   letter-spacing: 0.02em;
 }
@@ -340,7 +350,9 @@
 
 .pillarItem p {
   margin: 0;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.875rem;
+  font-weight: 400;
   line-height: 1.55;
   color: var(--about-text-muted);
 }
@@ -389,10 +401,11 @@
 }
 
 .bentoLabel {
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
+  font-size: 0.725rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--about-text-muted);
   display: block;
   margin-bottom: 6px;
@@ -407,16 +420,18 @@
 }
 
 .bentoValueCIN {
-  font-family: 'Inter', monospace;
-  font-size: 0.875rem;
-  font-weight: 700;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--about-navy);
   margin: 0 0 8px 0;
   word-break: break-all;
 }
 
 .bentoSubtext {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.8rem;
+  font-weight: 400;
   line-height: 1.5;
   color: var(--about-text-muted);
   margin: 0;
@@ -475,7 +490,9 @@
 
 .capabilityCard p {
   margin: 0;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.925rem;
+  font-weight: 400;
   line-height: 1.65;
   color: var(--about-text-muted);
 }
@@ -517,7 +534,9 @@
 }
 
 .ctaText {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 1rem;
+  font-weight: 400;
   line-height: 1.65;
   color: var(--about-text-muted);
   margin: 0 auto 32px auto;

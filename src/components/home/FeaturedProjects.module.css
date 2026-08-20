@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* src/components/projects/ProjectsPreview/ProjectsPreview.module.css */
 
 /* ===== GLOBAL SECTION WRAPPER (DESKTOP UNTOUCHED) ===== */
 .projectsPreview {
@@ -26,6 +26,7 @@
   align-items: center;
   gap: 0.45rem;
   color: #0A0A0A;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
   font-weight: 700;
   margin-bottom: 0.65rem;
@@ -70,8 +71,9 @@
 
 .splitDesc {
   color: #71717A;
+font-family: 'Manrope', sans-serif;
   font-size: clamp(0.9rem, 0.15vw + 0.875rem, 1rem);
-  font-weight: 450;
+  font-weight: 400;
   line-height: 1.65;
   margin: 0;
   max-width: 52ch;
@@ -179,7 +181,9 @@
 
 .cardSummary {
   color: #71717A;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.85rem;
+  font-weight: 400;
   line-height: 1.55;
   margin: 0 0 1.25rem 0;
   display: -webkit-box;
@@ -198,8 +202,9 @@
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
   align-items: center;
   gap: 0.75rem;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #71717A;
   margin-top: auto;
   margin-bottom: 1.15rem;
@@ -335,28 +340,71 @@
   transform: translateX(2px);
 }
 
-/* ===== TABLET (<= 1024px) ===== */
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+/* Tablet Landscape & Laptops (1024px – 901px) */
 @media (max-width: 1024px) {
-  .splitHeaderContainer {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
- .splitDesc {
-    width: min(100%, 44rem);
-    text-align: left;
+  .projectsPreview {
+    padding-inline: 2rem;
   }
 
-  .splitHeaderRight {
-    justify-content: flex-start;
+  .splitHeaderContainer {
+    grid-template-columns: 1.15fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .splitTitle {
+    font-size: 2.25rem;
+  }
+
+  .splitDesc {
+    font-size: 0.92rem;
+    max-width: 44ch;
+    text-align: right;
   }
 
   .projectGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.25rem;
   }
+
+  .projectCard {
+    padding: 1.15rem;
+  }
+
+  .cardTitle {
+    font-size: 1.05rem;
+  }
+
+  .cardMeta {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 0.5rem;
+    font-size: 0.72rem;
+  }
 }
 
-/* ===== MOBILE (<= 768px): REDUCED HORIZONTAL PADDING ONLY ===== */
+/* Tablet Portrait (900px – 769px) */
+@media (max-width: 900px) {
+  .splitHeaderContainer {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .splitHeaderRight {
+    justify-content: flex-start;
+  }
+
+  .splitDesc {
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+  }
+}
+
+/* Mobile (<= 768px) */
 @media (max-width: 768px) {
   .projectsPreview {
     padding-block: 3rem 2.25rem;
@@ -366,10 +414,12 @@
   .splitTitle {
     font-size: clamp(1.75rem, 6vw, 2.1rem);
   }
+
   .splitDesc {
     max-width: 100%;
     text-align: left;
   }
+
   .projectGrid {
     grid-template-columns: 1fr;
     gap: 1rem;

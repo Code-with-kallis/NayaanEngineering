@@ -249,23 +249,23 @@ export default function Projects() {
         variant="standard"
         eyebrow={
           <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              fontSize: "0.75rem",
-              fontWeight: 600,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-            }}
-          >
-            <FaHome style={{ color: "#FFFFFF", fontSize: "0.8rem" }} />
-            <Link to="/" style={{ color: "#A1A1AA", textDecoration: "none" }}>
-              Home
-            </Link>
-            <span style={{ color: "#71717A" }}>/</span>
-            <span style={{ color: "#FFFFFF", fontWeight: 700 }}>Projects</span>
-          </div>
+  style={{
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    fontFamily: "'Manrope', sans-serif",
+    fontSize: "0.85rem",
+    fontWeight: 500,
+    letterSpacing: "0.01em",
+  }}
+>
+  <FaHome style={{ color: "#FFFFFF", fontSize: "0.8rem" }} />
+  <Link to="/" style={{ color: "#A1A1AA", textDecoration: "none" }}>
+    Home
+  </Link>
+  <span style={{ color: "#71717A" }}>/</span>
+  <span style={{ color: "#FFFFFF", fontWeight: 700 }}>Projects</span>
+</div>
         }
         title="Work That"
         titleHighlight="Speaks for Itself"

@@ -1,5 +1,4 @@
 /* src/components/projects/ProjectDrawer.module.css */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 /* ================= PORTAL WRAPPER ================= */
 .portalWrapper {
@@ -100,8 +99,9 @@
   background: #F4F4F5;
   border: 1px solid #E4E4E7;
   color: #000000;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -244,8 +244,9 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  font-size: 1rem;
-  font-weight: 600;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
+  font-size: 0.95rem;
+  font-weight: 500;
   color: #1A1A1A;
   margin-top: 0.25rem;
 }
@@ -280,9 +281,10 @@
 
 .description {
   color: #000000;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 1.125rem;
   line-height: 1.85;
-  font-weight: 450;
+  font-weight: 400;
   margin: 0;
   white-space: pre-line;
 }
@@ -295,16 +297,17 @@
 
 .caseStudyPara {
   color: #000000;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 1.125rem;
   line-height: 1.85;
-  font-weight: 450;
+  font-weight: 400;
   margin: 0;
 }
 
 .keyHighlight {
   color: #000000;
   font-size: 1.125rem;
-  font-weight: 750;
+  font-weight: 700;
 }
 
 .deliverablesList {
@@ -320,10 +323,11 @@
   display: flex;
   align-items: flex-start;
   gap: 0.85rem;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 1.125rem;
   color: #000000;
   line-height: 1.75;
-  font-weight: 450;
+  font-weight: 400;
 }
 
 .checkIcon {
@@ -331,6 +335,21 @@
   margin-top: 0.25rem;
   flex-shrink: 0;
   font-size: 1.15rem;
+}
+
+@media (max-width: 1024px) {
+  .modalPanel {
+    width: min(94vw, 1100px);
+  }
+
+  .topBar {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .scrollContent {
+    padding: 1.75rem 2rem 3.5rem 2rem;
+    gap: 2rem;
+  }
 }
 
 /* ================= CLEAN UNCLUTTERED MOBILE VIEWPORT (<= 768px) ================= */

@@ -342,8 +342,10 @@ export default function GoogleReviews() {
     const handleResize = () => {
       if (window.innerWidth < 640) {
         setCardsPerView(1.15);
-      } else if (window.innerWidth < 1024) {
-        setCardsPerView(2.25);
+      } else if (window.innerWidth < 900) {
+        setCardsPerView(2.15);
+      } else if (window.innerWidth < 1200) {
+        setCardsPerView(2.65);
       } else {
         setCardsPerView(3.35);
       }

@@ -1,5 +1,4 @@
 /* src/components/home/TickerBanner.module.css */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 .tickerSection {
   width: 100%;
@@ -64,10 +63,11 @@
 }
 
 .tickerContent p {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.875rem;
   color: #A1A1AA;
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* SEPARATOR DOT SET TO WHITE */

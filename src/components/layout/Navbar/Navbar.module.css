@@ -229,7 +229,7 @@
   border: 1px solid #0A0A0A;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   font-size: 0.8rem;
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
@@ -427,7 +427,7 @@
   padding: 13px 16px;
   border-radius: 10px;
   font-size: 0.84rem;
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-decoration: none;
   color: #E4E4E7;
@@ -553,6 +553,27 @@
 @media (max-width: 1200px) {
   .navbarContainer {
     padding-inline: 2rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .navbarContainer {
+    padding-inline: 1.5rem;
+  }
+
+  .navbarLinksDesktop {
+    gap: 16px;
+  }
+
+  .navItem {
+    font-size: 0.78rem;
+    gap: 6px;
+  }
+
+  .navbarContactBtn {
+    padding: 0 14px;
+    font-size: 0.75rem;
+    height: 38px;
   }
 }
 

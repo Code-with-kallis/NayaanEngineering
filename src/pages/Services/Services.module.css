@@ -1,5 +1,4 @@
 /* src/pages/Services/Services.module.css */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 /* ===== GLOBAL PAGE WRAPPER (CINEMATIC SMOOTH FADE-IN ENTRANCE) ===== */
 .pageWrapper {
@@ -9,8 +8,6 @@
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   box-sizing: border-box;
   overflow-x: clip;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
 
   /* Perfectly visible, smooth 0.85s cinematic entrance */
   opacity: 0;
@@ -45,8 +42,10 @@
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-family: var(--nei-font-body, 'Manrope', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   color: #71717A;
   padding-top: clamp(5.5rem, 7.5vw, 7rem);
   padding-bottom: clamp(1.5rem, 2.5vw, 2.5rem);
@@ -73,7 +72,7 @@
 
 .activeBreadcrumb {
   color: #0A0A0A;
-  font-weight: 750;
+  font-weight: 600;
 }
 
 /* ==========================================================================
@@ -124,8 +123,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #0A0A0A;
@@ -134,7 +134,7 @@
 
 .serviceIndex {
   color: #0A0A0A;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .metaDivider {
@@ -156,7 +156,9 @@
 }
 
 .serviceDescription {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.96rem;
+  font-weight: 400;
   color: #52525B;
   line-height: 1.68;
   margin: 0 0 1.5rem 0;
@@ -174,8 +176,9 @@
 
 .deliverablesLabel {
   display: block;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.76rem;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #0A0A0A;
@@ -196,8 +199,9 @@
   display: flex;
   align-items: center;
   gap: 0.65rem;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.88rem;
-  font-weight: 550;
+  font-weight: 400;
   color: #27272A;
   white-space: nowrap;
   overflow: hidden;
@@ -231,7 +235,7 @@
   padding: 0 1.85rem;
   font-family: inherit;
   font-size: 0.85rem;
-  font-weight: 750;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   white-space: nowrap;
@@ -435,7 +439,53 @@
 /* ==========================================================================
    5. RESPONSIVE BREAKPOINTS
    ========================================================================== */
+
+/* Tablet Landscape & Laptops (1024px - 901px) */
 @media (max-width: 1024px) {
+   .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .serviceRow {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 2.25rem;
+  }
+
+  .contentCol {
+    padding-left: 1.25rem;
+  }
+
+  .serviceTitle {
+    font-size: 1.85rem;
+  }
+
+  .serviceDescription {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .deliverableItem {
+    white-space: normal;
+    word-break: break-word;
+    font-size: 0.85rem;
+  }
+
+  .actionGroup {
+    gap: 0.65rem;
+  }
+
+  .exploreBtn,
+  .consultBtn {
+    height: 44px;
+    padding: 0 1.25rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Tablet Portrait & Small Screens (<= 900px) */
+@media (max-width: 900px) {
   .serviceRow {
     grid-template-columns: 1fr;
     gap: 2.25rem;
@@ -450,11 +500,18 @@
   }
 }
 
+/* Mobile Screens (<= 768px) */
 @media (max-width: 768px) {
   .servicesList {
     gap: 3.5rem;
   }
+ .card {
+    padding-inline: 12px;
+  }
 
+  .cardContent {
+    padding-inline: 8px;
+  }
   .contentCol {
     padding-left: 1rem;
     border-left-width: 3.5px;
@@ -480,9 +537,9 @@
 
   .deliverableItem {
     font-size: clamp(0.75rem, 3.4vw, 0.85rem);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.4;
   }
 
   .checkIcon {

@@ -42,8 +42,9 @@
   background: rgba(10, 10, 10, 0.85);
   color: #FFFFFF;
   padding: 4px 10px;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   border-radius: 6px;
   display: inline-flex;
   align-items: center;
@@ -58,7 +59,9 @@
 }
 
 .caption {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.85rem;
+  font-weight: 400;
   color: #71717A;
   margin: 0;
   line-height: 1.5;
@@ -145,8 +148,9 @@
 }
 
 .lightboxCounter {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #FFFFFF;
   background: rgba(255, 255, 255, 0.12);
   padding: 3px 10px;
@@ -155,8 +159,10 @@
 }
 
 .lightboxCaption {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   color: #D4D4D8;
   font-size: 0.875rem;
+  font-weight: 400;
   margin: 0;
 }
 

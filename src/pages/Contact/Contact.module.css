@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
 /* ===== GLOBAL PAGE WRAPPER WITH GENTLE PAGE-LOAD FADE ===== */
 .pageContainer {
   --c-bg: #FFFFFF;
@@ -23,9 +21,7 @@
   background: var(--c-bg);
   color: var(--c-text-main);
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  overflow-x: hidden;
-  text-rendering: geometricPrecision;
-  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 
   /* Smooth page entrance transition */
   opacity: 0;
@@ -279,7 +275,9 @@
 
 .addressText p {
   margin: 0;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.88rem;
+  font-weight: 400;
   line-height: 1.5;
   color: var(--c-text-muted);
 }
@@ -294,7 +292,7 @@
   border-radius: var(--radius-full);
   color: #0A0A0A;
   font-size: 0.88rem;
-  font-weight: 750;
+  font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
   box-shadow: 0 4px 14px rgba(255, 187, 15, 0.3);
@@ -355,7 +353,9 @@
 
 .faqSubtitle {
   margin: 0 auto;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.95rem;
+  font-weight: 400;
   line-height: 1.6;
   color: var(--c-text-muted);
 }
@@ -401,7 +401,7 @@
   border: none;
   font-family: inherit;
   font-size: 0.95rem;
-  font-weight: 750;
+  font-weight: 700;
   color: var(--c-text-main);
   text-align: left;
   cursor: pointer;
@@ -437,7 +437,9 @@
 
 .faqAnswer p {
   margin: 0;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.9rem;
+  font-weight: 400;
   line-height: 1.65;
   color: #52525B;
 }
@@ -460,8 +462,15 @@
    RESPONSIVE BREAKPOINTS
    ========================================================================== */
 @media (max-width: 1024px) {
+  .contactHero,
+  .mapSection,
+  .faqSection {
+    padding-inline: 2rem;
+  }
+
   .channelsGrid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 }
 

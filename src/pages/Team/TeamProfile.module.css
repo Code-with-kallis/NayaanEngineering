@@ -16,7 +16,7 @@
   z-index: 9999;
   padding: 1.5rem;
   box-sizing: border-box;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
 }
 
 .loadingPage::before {
@@ -141,7 +141,7 @@
   min-height: 100vh;
   width: 100%;
   color: #0F172A;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   background: #CFECF3;
   display: flex;
   align-items: center;
@@ -187,8 +187,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #059669;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -281,8 +282,9 @@
   border: 1px solid #2563EB;
   color: #93C5FD;
   padding: 0.35rem 0.75rem;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.68rem;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -366,17 +368,18 @@
 
 .idMetaLabel {
   display: block;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.6rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #64748B;
   letter-spacing: 0.1em;
 }
 
 .idMetaValue {
   display: block;
-  font-family: monospace;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 1.05rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #2563EB;
   letter-spacing: 0.05em;
   margin-top: 1px;
@@ -399,16 +402,18 @@
 }
 
 .verMetaLabel {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.58rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #64748B;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .verMetaValue {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.725rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #0F172A;
   margin-top: 1px;
 }
@@ -465,8 +470,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #2563EB;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -488,8 +494,9 @@
 }
 
 .personDesignation {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.875rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #475569;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -515,8 +522,9 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.625rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #64748B;
   text-transform: uppercase;
 }
@@ -527,8 +535,9 @@
 }
 
 .credValue {
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.775rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #0F172A;
 }
 
@@ -549,7 +558,9 @@
 }
 
 .overviewText {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 0.85rem;
+  font-weight: 400;
   line-height: 1.55;
   color: #475569;
   margin: 0;
@@ -568,8 +579,9 @@
   padding: 0.3rem 0.7rem;
   background: #F1F5F9;
   border: 1px solid #E2E8F0;
+  font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
   font-size: 0.725rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #0F172A;
 }
 
