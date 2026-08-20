@@ -11,9 +11,9 @@ import {
 } from "react-icons/fa";
 import house3dDesktop from "../../assets/images/home/split-screen.webp";
 import house3dMobile from "../../assets/images/home/split-screen-mobile.webp";
-import styles from "./SplitShowcase.module.css";
+import styles from "./ServicesShowcase.module.css";
 
-export default function SplitShowcase() {
+export default function ServicesShowcase() {
   const sectionRef = useRef(null);
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import Hero from "../../components/home/Hero";
 import BrandMarquee from "../../components/home/BrandMarquee";
 import StatsCounter from "../../components/home/StatsCounter";
 import AboutBento from "../../components/home/AboutBento";
-import SplitShowcase from "../../components/home/SplitShowcase";
+import ServicesShowcase from "../../components/home/ServicesShowcase";
 import FeaturedProjects from "../../components/home/FeaturedProjects";
 import LeadershipMessages from "../../components/home/LeadershipMessages";
 import ProcessSection from "../../components/home/ProcessSection";
@@ -21,7 +21,7 @@ export default function Home() {
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [selectedProject, setSelectedProject] = useState(null);
 
-  // Fetch Live Featured Projects directly from Supabase
+  // Fetch Live Featured Projects directly from Supabase with is_featured prioritized
   useEffect(() => {
     let isMounted = true;
 
@@ -30,6 +30,7 @@ export default function Home() {
         const { data, error } = await supabase
           .from("projects")
           .select("*")
+          .order("is_featured", { ascending: false, nullsFirst: false })
           .order("created_at", { ascending: false });
 
         if (error) throw error;
@@ -48,6 +49,8 @@ export default function Home() {
               description: item.description,
               coverImage: item.cover_image,
               galleryImages: item.gallery_images || [],
+              is_featured: Boolean(item.is_featured),
+              isFeatured: Boolean(item.is_featured),
             }));
             setProjects(formatted);
           } else {
@@ -157,7 +160,7 @@ export default function Home() {
       <AboutBento />
 
       {/* 5. SPLIT SHOWCASE */}
-      <SplitShowcase />
+      <ServicesShowcase />
 
       {/* 6. FEATURED WORK */}
       <FeaturedProjects

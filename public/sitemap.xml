@@ -5,28 +5,28 @@
   <!-- Core Static Pages -->
   <url>
     <loc>https://www.nayaabengineering.com/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.00</priority>
   </url>
 
   <url>
     <loc>https://www.nayaabengineering.com/projects</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.95</priority>
   </url>
 
   <url>
     <loc>https://www.nayaabengineering.com/services</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
 
   <url>
     <loc>https://www.nayaabengineering.com/contact</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -135,7 +135,7 @@
     </image:image>
   </url>
 
-  <!-- Project: Residential House for Mr.  Arfat Nazir -->
+  <!-- Project: Residential House for Mr.  Arfat Nazira -->
   <url>
     <loc>https://www.nayaabengineering.com/projects#residential-house-for-mr-arfat-nazir-0140</loc>
     <lastmod>2026-08-11</lastmod>
@@ -143,7 +143,7 @@
     <priority>0.85</priority>
     <image:image>
       <image:loc>https://pub-f8277810f5c0469e9869821a16f1ea76.r2.dev/residential-house-for-mr-arfat-nazir-cover-4494.webp</image:loc>
-      <image:title>Residential House for Mr.  Arfat Nazir - Residential | Dangiwacha, Jammu &amp; Kashmir</image:title>
+      <image:title>Residential House for Mr.  Arfat Nazira - Residential | Dangiwacha, Jammu &amp; Kashmir</image:title>
       <image:caption>Comprehensive multi-story residential project featuring custom architectural design, structural engineering, and site execution oversight.</image:caption>
     </image:image>
   </url>

@@ -1,3 +1,4 @@
+// src/pages/Admin/Admin.jsx
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
@@ -8,7 +9,6 @@ import {
   FaTrash,
   FaEdit,
   FaPlus,
-  FaList,
   FaImages,
   FaTimes,
   FaHome,
@@ -20,16 +20,37 @@ import {
   FaEye,
   FaEyeSlash,
   FaCheckCircle,
+  FaStar,
+  FaRegStar,
+  FaSearch,
+  FaKey,
+  FaBars,
+  FaThLarge,
+  FaCog,
+  FaLayerGroup,
+  FaSave,
+  FaEnvelope,
+  FaPaperPlane,
 } from "react-icons/fa";
 import styles from "./Admin.module.css";
 
-const CATEGORIES = ["Building", "Commercial", "Residential", "Aviation", "Electrical", "Energy", "Stadium"];
+const CATEGORIES = [
+  "Building",
+  "Commercial",
+  "Residential",
+  "Aviation",
+  "Electrical",
+  "Energy",
+  "Stadium",
+];
 
-// Strict 350 KB Threshold for Auto-Compression to WEBP
+const MAX_FEATURED_LIMIT = 6;
 const COMPRESSION_THRESHOLD_BYTES = 350 * 1024; // 350 KB
+const INACTIVITY_TIMEOUT_MS = 10 * 60 * 1000; // 10 Minutes Auto-Logout
+const DRAFT_STORAGE_KEY = "neipl_admin_project_draft";
 
 const compressImageIfNeeded = (file, maxWidth = 1920, quality = 0.8) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (!file || !file.type.startsWith("image/")) {
       resolve(file);
       return;
@@ -66,7 +87,7 @@ const compressImageIfNeeded = (file, maxWidth = 1920, quality = 0.8) => {
         canvas.toBlob(
           (blob) => {
             if (!blob) {
-              resolve(file); // Fallback to original file if blob creation fails
+              resolve(file);
               return;
             }
             const fileNameWEBP = file.name.replace(/\.[^/.]+$/, "") + ".webp";
@@ -81,7 +102,7 @@ const compressImageIfNeeded = (file, maxWidth = 1920, quality = 0.8) => {
         );
       };
 
-      img.onerror = () => resolve(file); // Fallback to original on decode error
+      img.onerror = () => resolve(file);
     };
 
     reader.onerror = () => resolve(file);
@@ -92,16 +113,23 @@ export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
 
+  // Login form
   const [passcode, setPasscode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const [activeTab, setActiveTab] = useState("list");
+  // Sidebar and Tabs
+  const [activeTab, setActiveTab] = useState("projects");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Projects list and filtering
   const [projectsList, setProjectsList] = useState([]);
   const [fetchingProjects, setFetchingProjects] = useState(false);
-  const [editingId, setEditingId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("All");
+  const [filterFeaturedOnly, setFilterFeaturedOnly] = useState(false);
 
-  // Form states
+  // Project Form States
+  const [editingId, setEditingId] = useState(null);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Residential");
   const [location, setLocation] = useState("");
@@ -109,24 +137,37 @@ export default function Admin() {
   const [summary, setSummary] = useState("");
   const [deliverables, setDeliverables] = useState("");
   const [description, setDescription] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
 
-  // Single Cover Image state
+  // Draft indicator state
+  const [hasDraft, setHasDraft] = useState(false);
+  const [draftLastSaved, setDraftLastSaved] = useState(null);
+
+  // Cover Image state
   const [coverFile, setCoverFile] = useState(null);
   const [coverPreview, setCoverPreview] = useState(null);
   const [existingCoverUrl, setExistingCoverUrl] = useState("");
 
-  // Multiple Gallery Images state
+  // Gallery Images state
   const [galleryFiles, setGalleryFiles] = useState([]);
   const [galleryPreviews, setGalleryPreviews] = useState([]);
   const [existingGalleryUrls, setExistingGalleryUrls] = useState([]);
 
-  const [loading, setLoading] = useState(false);
+  // Change Password with Email OTP State
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [otpSending, setOtpSending] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [passwordLoading, setPasswordLoading] = useState(false);
 
-  // Custom Status Message & Color Type State ("success" | "danger")
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("success");
 
-  // Custom Modal State
+  // Reusable Popup Modal
   const [modal, setModal] = useState({
     isOpen: false,
     type: "alert",
@@ -171,7 +212,7 @@ export default function Admin() {
     setModal((prev) => ({ ...prev, isOpen: false }));
   };
 
-  // Restore session on mount and listen for auth changes
+  // Check auth session on mount
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setIsAuthenticated(!!session);
@@ -185,10 +226,144 @@ export default function Admin() {
     return () => listener.subscription.unsubscribe();
   }, []);
 
+  // 10-Minute Inactivity Auto Logout
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    let timeoutId;
+    let hiddenTime = null;
+
+    const handleInactivityLogout = async () => {
+      await supabase.auth.signOut();
+      setIsAuthenticated(false);
+      setPasscode("");
+      showAlert(
+        "Session Expired",
+        "Your session expired after 10 minutes of inactivity for security. Unsaved project drafts have been preserved."
+      );
+    };
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(handleInactivityLogout, INACTIVITY_TIMEOUT_MS);
+    };
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        hiddenTime = Date.now();
+      } else if (hiddenTime) {
+        const elapsed = Date.now() - hiddenTime;
+        if (elapsed >= INACTIVITY_TIMEOUT_MS) {
+          handleInactivityLogout();
+        } else {
+          resetTimer();
+        }
+        hiddenTime = null;
+      }
+    };
+
+    const trackedEvents = ["mousemove", "keydown", "mousedown", "touchstart", "scroll"];
+    trackedEvents.forEach((ev) => window.addEventListener(ev, resetTimer, { passive: true }));
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    resetTimer();
+
+    return () => {
+      clearTimeout(timeoutId);
+      trackedEvents.forEach((ev) => window.removeEventListener(ev, resetTimer));
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [isAuthenticated]);
+
+  // Project Form Draft Auto-Save
+  useEffect(() => {
+    if (!isAuthenticated || editingId) return;
+
+    const hasContent =
+      title.trim() ||
+      location.trim() ||
+      duration.trim() ||
+      summary.trim() ||
+      deliverables.trim() ||
+      description.trim() ||
+      isFeatured;
+
+    if (hasContent) {
+      const draftPayload = {
+        title,
+        category,
+        location,
+        duration,
+        summary,
+        deliverables,
+        description,
+        isFeatured,
+        savedAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      };
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftPayload));
+      setHasDraft(true);
+      setDraftLastSaved(draftPayload.savedAt);
+    }
+  }, [
+    title,
+    category,
+    location,
+    duration,
+    summary,
+    deliverables,
+    description,
+    isFeatured,
+    isAuthenticated,
+    editingId,
+  ]);
+
+  // Restore draft on mount
+  useEffect(() => {
+    if (editingId) return;
+
+    const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
+    if (savedDraft) {
+      try {
+        const parsed = JSON.parse(savedDraft);
+        setTitle(parsed.title || "");
+        setCategory(parsed.category || "Residential");
+        setLocation(parsed.location || "");
+        setDuration(parsed.duration || "");
+        setSummary(parsed.summary || "");
+        setDeliverables(parsed.deliverables || "");
+        setDescription(parsed.description || "");
+        setIsFeatured(Boolean(parsed.isFeatured));
+        setHasDraft(true);
+        setDraftLastSaved(parsed.savedAt || "Recently");
+      } catch (err) {
+        console.error("Draft parse error:", err);
+      }
+    }
+  }, [editingId]);
+
+  // Resend OTP Cooldown Timer
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCooldown((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
+
+  const clearDraft = () => {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    setHasDraft(false);
+    setDraftLastSaved(null);
+    resetForm();
+    setMessage("Draft has been cleared.");
+    setMessageType("success");
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    const cleanEmail = (import.meta.env.VITE_ADMIN_EMAIL || "").trim().toLowerCase();
     const { error } = await supabase.auth.signInWithPassword({
-      email: import.meta.env.VITE_ADMIN_EMAIL,
+      email: cleanEmail,
       password: passcode,
     });
 
@@ -228,6 +403,163 @@ export default function Admin() {
       loadAllProjects();
     }
   }, [isAuthenticated]);
+
+  const handleToggleFeatured = async (id, currentStatus, projectTitle) => {
+    const nextStatus = !currentStatus;
+
+    if (nextStatus) {
+      const currentlyFeatured = projectsList.filter((p) => p.is_featured).length;
+      if (currentlyFeatured >= MAX_FEATURED_LIMIT) {
+        showAlert(
+          "Maximum Limit Reached",
+          `You can select up to ${MAX_FEATURED_LIMIT} Featured Projects. Please unfeature another project first.`
+        );
+        return;
+      }
+    }
+
+    try {
+      setProjectsList((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, is_featured: nextStatus } : item))
+      );
+
+      const { error } = await supabase
+        .from("projects")
+        .update({ is_featured: nextStatus })
+        .eq("id", id);
+
+      if (error) throw error;
+
+      setMessage(
+        nextStatus
+          ? `"${projectTitle}" marked as Featured (${projectsList.filter((p) => p.is_featured).length + 1}/${MAX_FEATURED_LIMIT})`
+          : `"${projectTitle}" removed from Featured.`
+      );
+      setMessageType("success");
+    } catch (err) {
+      console.error("Featured update error:", err);
+      setProjectsList((prev) =>
+        prev.map((item) => (item.id === id ? { ...item, is_featured: currentStatus } : item))
+      );
+      showAlert("Update Error", "Failed to update featured status.");
+    }
+  };
+
+  const handleFeaturedCheckboxChange = (e) => {
+    const willBeFeatured = e.target.checked;
+    if (willBeFeatured) {
+      const currentlyFeatured = projectsList.filter(
+        (p) => p.is_featured && p.id !== editingId
+      ).length;
+
+      if (currentlyFeatured >= MAX_FEATURED_LIMIT) {
+        showAlert(
+          "Maximum Limit Reached",
+          `You can select up to ${MAX_FEATURED_LIMIT} Featured Projects. Please unfeature an existing project first.`
+        );
+        return;
+      }
+    }
+    setIsFeatured(willBeFeatured);
+  };
+
+  // STEP 1: SEND EMAIL OTP CODE
+  const handleSendEmailOtp = async () => {
+    setOtpSending(true);
+    try {
+      const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "").trim().toLowerCase();
+      const { error } = await supabase.auth.signInWithOtp({
+        email: adminEmail,
+      });
+
+      if (error) throw error;
+
+      setOtpSent(true);
+      setResendCooldown(60);
+      showAlert(
+        "Verification Code Sent",
+        `A security code has been sent to ${adminEmail}. Please check your inbox or spam folder.`
+      );
+    } catch (err) {
+      console.error("Send OTP Error:", err);
+      showAlert("OTP Error", err.message || "Failed to dispatch verification code.");
+    } finally {
+      setOtpSending(false);
+    }
+  };
+
+  // STEP 2: VERIFY OTP AND UPDATE PASSWORD (Supports both 6 and 8 digit tokens)
+  const handleVerifyOtpAndChangePassword = async (e) => {
+    e.preventDefault();
+
+    const cleanToken = otpCode.trim();
+    if (!cleanToken || cleanToken.length < 6) {
+      showAlert("Missing Code", "Please enter the complete verification code from your email.");
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      showAlert("Security Warning", "New password must be at least 6 characters long.");
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      showAlert("Password Mismatch", "New password and confirmation password do not match.");
+      return;
+    }
+
+    setPasswordLoading(true);
+    try {
+      const adminEmail = (import.meta.env.VITE_ADMIN_EMAIL || "").trim().toLowerCase();
+
+      // Attempt verification with "email" type first, then "magiclink"
+      let { error: verifyError } = await supabase.auth.verifyOtp({
+        email: adminEmail,
+        token: cleanToken,
+        type: "email",
+      });
+
+      if (verifyError) {
+        const retry = await supabase.auth.verifyOtp({
+          email: adminEmail,
+          token: cleanToken,
+          type: "magiclink",
+        });
+        verifyError = retry.error;
+      }
+
+      if (verifyError) {
+        showAlert(
+          "Invalid Verification Code",
+          "The code is invalid or expired. Please make sure you are using the code from the most recent email."
+        );
+        return;
+      }
+
+      // Update password once OTP is verified
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (updateError) throw updateError;
+
+      showAlert(
+        "Password Updated",
+        "Your master admin security passcode was updated successfully."
+      );
+
+      // Reset form
+      setOtpSent(false);
+      setOtpCode("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      console.error("Password Update Error:", err);
+      showAlert("Update Error", err.message || "Failed to update password.");
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
 
   const handleCoverChange = async (e) => {
     const file = e.target.files?.[0];
@@ -269,28 +601,12 @@ export default function Admin() {
   };
 
   const removeGalleryFile = (index) => {
-    showConfirm({
-      title: "Remove Image",
-      message: "Are you sure you want to remove this newly selected photo?",
-      confirmText: "Remove Image",
-      isDanger: true,
-      onConfirm: () => {
-        setGalleryFiles((prev) => prev.filter((_, i) => i !== index));
-        setGalleryPreviews((prev) => prev.filter((_, i) => i !== index));
-      },
-    });
+    setGalleryFiles((prev) => prev.filter((_, i) => i !== index));
+    setGalleryPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const removeExistingGalleryUrl = (urlToRemove) => {
-    showConfirm({
-      title: "Remove Saved Image",
-      message: "Are you sure you want to remove this saved photo from the project?",
-      confirmText: "Remove Image",
-      isDanger: true,
-      onConfirm: () => {
-        setExistingGalleryUrls((prev) => prev.filter((url) => url !== urlToRemove));
-      },
-    });
+    setExistingGalleryUrls((prev) => prev.filter((url) => url !== urlToRemove));
   };
 
   const resetForm = () => {
@@ -302,6 +618,7 @@ export default function Admin() {
     setSummary("");
     setDeliverables("");
     setDescription("");
+    setIsFeatured(false);
     setCoverFile(null);
     setCoverPreview(null);
     setExistingCoverUrl("");
@@ -311,13 +628,9 @@ export default function Admin() {
   };
 
   const openCreateForm = () => {
-    resetForm();
+    if (editingId) resetForm();
     setActiveTab("form");
-    if (window.lenis) {
-      window.lenis.scrollTo(0);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    setSidebarOpen(false);
   };
 
   const startEditing = (project) => {
@@ -329,17 +642,14 @@ export default function Admin() {
     setSummary(project.summary || "");
     setDeliverables(Array.isArray(project.deliverables) ? project.deliverables.join("\n") : "");
     setDescription(project.description || "");
+    setIsFeatured(Boolean(project.is_featured));
     setExistingCoverUrl(project.cover_image || "");
     setCoverPreview(project.cover_image || null);
     setExistingGalleryUrls(project.gallery_images || []);
     setGalleryFiles([]);
     setGalleryPreviews([]);
     setActiveTab("form");
-    if (window.lenis) {
-      window.lenis.scrollTo(0);
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    setSidebarOpen(false);
   };
 
   const handleDelete = (id, projectTitle) => {
@@ -364,7 +674,7 @@ export default function Admin() {
           }
 
           setProjectsList((prev) => prev.filter((item) => item.id !== id));
-          setMessage(`Project "${projectTitle}" deleted successfully!`);
+          setMessage(`Project "${projectTitle}" deleted successfully.`);
           setMessageType("danger");
         } catch (err) {
           console.error("Delete Error:", err);
@@ -379,6 +689,19 @@ export default function Admin() {
     if (!coverFile && !existingCoverUrl) {
       showAlert("Missing Cover Photo", "Please select a main cover photo for the project.");
       return;
+    }
+
+    if (isFeatured) {
+      const currentlyFeatured = projectsList.filter(
+        (p) => p.is_featured && p.id !== editingId
+      ).length;
+      if (currentlyFeatured >= MAX_FEATURED_LIMIT) {
+        showAlert(
+          "Maximum Limit Reached",
+          `Cannot save as featured. You already have ${MAX_FEATURED_LIMIT} featured projects selected.`
+        );
+        return;
+      }
     }
 
     setLoading(true);
@@ -436,6 +759,7 @@ export default function Admin() {
             summary,
             deliverables: deliverablesArray,
             description,
+            is_featured: isFeatured,
             cover_image: finalCoverUrl,
             gallery_images: finalGalleryUrls,
           })
@@ -443,7 +767,7 @@ export default function Admin() {
 
         if (updateError) throw updateError;
 
-        setMessage("Project edited successfully!");
+        setMessage("Project updated successfully!");
         setMessageType("success");
       } else {
         const { error: insertError } = await supabase.from("projects").insert([
@@ -456,12 +780,16 @@ export default function Admin() {
             summary,
             deliverables: deliverablesArray,
             description,
+            is_featured: isFeatured,
             cover_image: finalCoverUrl,
             gallery_images: finalGalleryUrls,
           },
         ]);
 
         if (insertError) throw insertError;
+
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+        setHasDraft(false);
 
         setMessage("New project added successfully!");
         setMessageType("success");
@@ -472,7 +800,7 @@ export default function Admin() {
 
       resetForm();
       await loadAllProjects();
-      setActiveTab("list");
+      setActiveTab("projects");
     } catch (err) {
       console.error("Submit Error:", err);
       showAlert("Submission Error", err.message);
@@ -481,10 +809,27 @@ export default function Admin() {
     }
   };
 
+  const filteredProjects = projectsList.filter((p) => {
+    const matchesSearch =
+      p.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.category?.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesCategory =
+      selectedCategoryFilter === "All" || p.category === selectedCategoryFilter;
+
+    const matchesFeatured = !filterFeaturedOnly || Boolean(p.is_featured);
+
+    return matchesSearch && matchesCategory && matchesFeatured;
+  });
+
+  const featuredCount = projectsList.filter((p) => p.is_featured).length;
+
   if (!authChecked) {
     return null;
   }
 
+  // ================= LOGIN SCREEN =================
   if (!isAuthenticated) {
     return (
       <main className={styles.loginWrapper}>
@@ -492,8 +837,8 @@ export default function Admin() {
           <div className={styles.lockIconBox}>
             <FaLock className={styles.lockIcon} />
           </div>
-          <h2>Super Admin Portal</h2>
-          <p>Enter security passcode to manage NEIPL website</p>
+          <h2>NEIPL Portal</h2>
+          <p>Enter security passcode to unlock dashboard</p>
           <form onSubmit={handleLogin} className={styles.loginForm}>
             <div className={styles.passwordWrapper}>
               <input
@@ -520,7 +865,7 @@ export default function Admin() {
           </form>
           <Link to="/" className={styles.backToSiteLink}>
             <FaHome />
-            Back to Main Website
+            Back to Site
           </Link>
         </div>
 
@@ -544,337 +889,704 @@ export default function Admin() {
     );
   }
 
+  // ================= MAIN DASHBOARD =================
   return (
-    <main className={styles.adminWrapper}>
-      <div className={styles.utilityBar}>
-        <Link to="/" className={styles.siteLink}>
-          <FaHome />
-          <span>View Live Site</span>
-        </Link>
-        <button onClick={handleLogout} className={styles.logoutBtn} title="Sign Out">
-          <FaSignOutAlt />
-          <span>Logout</span>
-        </button>
-      </div>
-
-      <header className={styles.adminTopBar}>
-        <div className={styles.headerText}>
-          <h1>Super Admin Dashboard</h1>
-          <p>Manage, upload, and organize projects in real-time.</p>
-        </div>
-        <div className={styles.tabGroup}>
+    <div className={styles.dashboardContainer}>
+      {/* SIDEBAR */}
+      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarActive : ""}`}>
+        <div className={styles.sidebarHeader}>
+          <Link to="/" className={styles.brandLink}>
+            <img src="/logo.png" alt="NEIPL Logo" className={styles.sidebarLogo} />
+          </Link>
           <button
-            className={activeTab === "list" ? `${styles.tabBtn} ${styles.activeTab}` : styles.tabBtn}
-            onClick={() => setActiveTab("list")}
+            type="button"
+            className={styles.sidebarCloseBtn}
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Close sidebar"
           >
-            <FaList />
-            <span>Manage Projects ({projectsList.length})</span>
-          </button>
-          <button
-            className={activeTab === "form" ? `${styles.tabBtn} ${styles.activeTab}` : styles.tabBtn}
-            onClick={openCreateForm}
-          >
-            <FaPlus />
-            <span>New Project</span>
-          </button>
-        </div>
-      </header>
-
-      {/* DYNAMIC ALERT BANNER */}
-      {message && (
-        <div
-          className={
-            messageType === "danger"
-              ? `${styles.alertBanner} ${styles.alertBannerDanger}`
-              : `${styles.alertBanner} ${styles.alertBannerSuccess}`
-          }
-        >
-          <div className={styles.alertContent}>
-            {messageType === "danger" ? (
-              <FaExclamationTriangle className={styles.alertIcon} />
-            ) : (
-              <FaCheckCircle className={styles.alertIcon} />
-            )}
-            <span>{message}</span>
-          </div>
-          <button onClick={() => setMessage("")} className={styles.closeAlertBtn}>
             <FaTimes />
           </button>
         </div>
+
+        <nav className={styles.sidebarNav}>
+          <div className={styles.navSectionLabel}>CORE MANAGEMENT</div>
+
+          <button
+            type="button"
+            className={`${styles.sidebarLink} ${activeTab === "projects" ? styles.sidebarLinkActive : ""}`}
+            onClick={() => {
+              setActiveTab("projects");
+              setSidebarOpen(false);
+            }}
+          >
+            <FaThLarge className={styles.navIcon} />
+            <span>Projects Overview</span>
+            <span className={styles.badgeCount}>{projectsList.length}</span>
+          </button>
+
+          <button
+            type="button"
+            className={`${styles.sidebarLink} ${activeTab === "form" ? styles.sidebarLinkActive : ""}`}
+            onClick={() => {
+              openCreateForm();
+            }}
+          >
+            <FaPlus className={styles.navIcon} />
+            <span>Add New Project</span>
+          </button>
+
+          <div className={styles.navSectionLabel}>SYSTEM &amp; SECURITY</div>
+
+          <button
+            type="button"
+            className={`${styles.sidebarLink} ${activeTab === "settings" ? styles.sidebarLinkActive : ""}`}
+            onClick={() => {
+              setActiveTab("settings");
+              setSidebarOpen(false);
+            }}
+          >
+            <FaCog className={styles.navIcon} />
+            <span>Admin Settings</span>
+          </button>
+        </nav>
+
+        <div className={styles.sidebarFooter}>
+          <Link to="/" className={styles.footerSiteLink}>
+            <FaHome />
+            <span>View Live Site</span>
+          </Link>
+          <button type="button" onClick={handleLogout} className={styles.footerLogoutBtn}>
+            <FaSignOutAlt />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* MOBILE BACKDROP */}
+      {sidebarOpen && (
+        <div className={styles.sidebarBackdrop} onClick={() => setSidebarOpen(false)} />
       )}
 
-      {/* TAB 1: PROJECTS LIST */}
-      {activeTab === "list" && (
-        <section className={styles.listSection}>
-          {fetchingProjects ? (
-            <div className={styles.loadingState}>
-              <FaSpinner className={styles.spinnerIcon} />
-              <span>Fetching live projects from database...</span>
-            </div>
-          ) : projectsList.length === 0 ? (
-            <div className={styles.emptyState}>
-              <FaImages className={styles.emptyIcon} />
-              <h3>No Projects Published Yet</h3>
-              <p>Your portfolio database is currently empty.</p>
-              <button className={styles.submitBtn} onClick={openCreateForm}>
-                <FaPlus />
-                Upload First Project
-              </button>
-            </div>
-          ) : (
-            <div className={styles.projectsTable}>
-              {projectsList.map((project, index) => {
-                const projectNum = String(projectsList.length - index).padStart(2, "0");
-
-                return (
-                  <div key={project.id} className={styles.projectRow}>
-                    <span className={styles.projectIndexBadge}>#{projectNum}</span>
-                    <div className={styles.rowThumb}>
-                      <img src={project.cover_image} alt={project.title} loading="lazy" />
-                    </div>
-                    <div className={styles.rowInfo}>
-                      <h3>{project.title}</h3>
-                      <div className={styles.rowBadges}>
-                        <span className={styles.badgeCategory}>{project.category}</span>
-                        <span className={styles.badgeLoc}>{project.location}</span>
-                        {project.gallery_images?.length > 0 && (
-                          <span className={styles.badgeGallery}>
-                            <FaImages />
-                            {project.gallery_images.length} Photos
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div className={styles.rowActions}>
-                      <a
-                        href={`/#${project.slug || project.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.viewLiveBtn}
-                        title="View live card on main page"
-                      >
-                        <FaExternalLinkAlt />
-                        <span className={styles.btnText}>View</span>
-                      </a>
-                      <button className={styles.editBtn} onClick={() => startEditing(project)} title="Edit project">
-                        <FaEdit />
-                        <span className={styles.btnText}>Edit</span>
-                      </button>
-                      <button
-                        className={styles.deleteBtn}
-                        onClick={() => handleDelete(project.id, project.title)}
-                        title="Delete project"
-                      >
-                        <FaTrash />
-                        <span className={styles.btnText}>Delete</span>
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* TAB 2: UPLOAD / EDIT FORM */}
-      {activeTab === "form" && (
-        <form onSubmit={handleSubmit} className={styles.uploadForm}>
-          <div className={styles.formHeader}>
-            <div>
-              <h2>{editingId ? "Edit Existing Project" : "Upload New Project"}</h2>
-              <p className={styles.formSubhead}>
-                {editingId
-                  ? "Modify details or add photos to this entry."
-                  : "Fill out details to publish directly to the live portfolio."}
-              </p>
-            </div>
-            {editingId && (
-              <button type="button" className={styles.cancelEditBtn} onClick={resetForm}>
-                <FaTimes />
-                Cancel Editing
-              </button>
-            )}
+      {/* MAIN CONTENT AREA */}
+      <main className={styles.mainContent}>
+        {/* MOBILE OPTIMIZED TOP UTILITY BAR */}
+        <header className={styles.topUtilityBar}>
+          <div className={styles.topBarLeft}>
+            <button
+              type="button"
+              className={styles.mobileMenuToggle}
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open sidebar"
+            >
+              <FaBars />
+            </button>
+            <h1 className={styles.pageHeading}>
+              {activeTab === "projects" && "Projects"}
+              {activeTab === "form" && (editingId ? "Edit Project" : "New Project")}
+              {activeTab === "settings" && "Settings"}
+            </h1>
           </div>
 
-          <div className={styles.formGrid}>
-            <div className={styles.photosCol}>
-              <div className={styles.fieldBlock}>
-                <label className={styles.fieldLabel}>Main Cover Photo *</label>
-                <label className={styles.coverDropArea}>
-                  {coverPreview ? (
-                    <div className={styles.previewImageContainer}>
-                      <img src={coverPreview} alt="Cover Preview" className={styles.imagePreview} />
-                      <div className={styles.changeOverlay}>
-                        <FaCloudUploadAlt />
-                        Change Cover Photo
-                      </div>
-                    </div>
-                  ) : (
-                    <div className={styles.dropPlaceholder}>
-                      <FaCloudUploadAlt className={styles.uploadIcon} />
-                      <span>Click to Select Main Cover Photo</span>
-                      <small style={{ color: "#B7410E", fontWeight: 600, marginTop: 6 }}>
-                        ⚡ Images &gt; 350KB auto-compressed to WEBP
-                      </small>
-                      <small style={{ color: "#94A3B8" }}>Images ≤ 350KB uploaded as original</small>
-                    </div>
-                  )}
-                  <input type="file" accept="image/*" onChange={handleCoverChange} className={styles.fileInput} />
-                </label>
+          <div className={styles.topBarRight}>
+            <Link to="/" className={styles.viewSiteButton} target="_blank" rel="noopener noreferrer">
+              <FaExternalLinkAlt />
+              <span className={styles.viewSiteText}>Live Site</span>
+            </Link>
+          </div>
+        </header>
+
+        {/* DYNAMIC ALERT BANNER */}
+        {message && (
+          <div
+            className={
+              messageType === "danger"
+                ? `${styles.alertBanner} ${styles.alertBannerDanger}`
+                : `${styles.alertBanner} ${styles.alertBannerSuccess}`
+            }
+          >
+            <div className={styles.alertContent}>
+              {messageType === "danger" ? (
+                <FaExclamationTriangle className={styles.alertIcon} />
+              ) : (
+                <FaCheckCircle className={styles.alertIcon} />
+              )}
+              <span>{message}</span>
+            </div>
+            <button type="button" onClick={() => setMessage("")} className={styles.closeAlertBtn}>
+              <FaTimes />
+            </button>
+          </div>
+        )}
+
+        {/* ================= TAB 1: PROJECTS LIST ================= */}
+        {activeTab === "projects" && (
+          <div className={styles.tabContent}>
+            {/* STATS METRIC CARDS */}
+            <div className={styles.statsGrid}>
+              <div className={styles.statCard}>
+                <div className={styles.statIconBox}>
+                  <FaLayerGroup />
+                </div>
+                <div className={styles.statInfo}>
+                  <span className={styles.statLabel}>Total Projects</span>
+                  <strong className={styles.statValue}>{projectsList.length}</strong>
+                </div>
               </div>
 
-              <div className={styles.fieldBlock}>
-                <label className={styles.fieldLabel}>Multiple Gallery Photos</label>
-                <label className={styles.galleryDropArea}>
-                  <FaImages className={styles.uploadIconSmall} />
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <span>Click to select multiple gallery photos</span>
-                    <small style={{ color: "#B7410E", fontWeight: 600, marginTop: 2 }}>
-                      ⚡ Images &gt; 350KB auto-compressed to WEBP
-                    </small>
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleGalleryChange}
-                    className={styles.fileInput}
-                  />
-                </label>
+              <div className={styles.statCard}>
+                <div className={`${styles.statIconBox} ${styles.statIconFeatured}`}>
+                  <FaStar />
+                </div>
+                <div className={styles.statInfo}>
+                  <span className={styles.statLabel}>Featured Work</span>
+                  <strong className={styles.statValue}>
+                    {featuredCount} / {MAX_FEATURED_LIMIT}
+                  </strong>
+                </div>
+              </div>
 
-                {(existingGalleryUrls.length > 0 || galleryPreviews.length > 0) && (
-                  <div className={styles.galleryPreviewGrid}>
-                    {existingGalleryUrls.map((url, index) => (
-                      <div key={`existing-${index}`} className={styles.galleryThumbCard}>
-                        <img src={url} alt="Gallery item" />
+              <div className={styles.statCard}>
+                <div className={styles.statIconBox}>
+                  <FaThLarge />
+                </div>
+                <div className={styles.statInfo}>
+                  <span className={styles.statLabel}>Categories</span>
+                  <strong className={styles.statValue}>{CATEGORIES.length}</strong>
+                </div>
+              </div>
+            </div>
+
+            {/* FILTER & SEARCH TOOLBAR */}
+            <div className={styles.toolbar}>
+              <div className={styles.searchBox}>
+                <FaSearch className={styles.searchIcon} />
+                <input
+                  type="text"
+                  placeholder="Search by title, category, or location..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className={styles.clearSearchBtn}
+                    onClick={() => setSearchQuery("")}
+                  >
+                    <FaTimes />
+                  </button>
+                )}
+              </div>
+
+              <div className={styles.filterActions}>
+                <select
+                  value={selectedCategoryFilter}
+                  onChange={(e) => setSelectedCategoryFilter(e.target.value)}
+                  className={styles.categorySelect}
+                >
+                  <option value="All">All Categories</option>
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+
+                <button
+                  type="button"
+                  className={`${styles.featuredFilterBtn} ${filterFeaturedOnly ? styles.featuredFilterActive : ""}`}
+                  onClick={() => setFilterFeaturedOnly((prev) => !prev)}
+                >
+                  <FaStar />
+                  <span>Featured ({featuredCount})</span>
+                </button>
+
+                <button type="button" className={styles.addProjectBtn} onClick={openCreateForm}>
+                  <FaPlus />
+                  <span>New Project</span>
+                </button>
+              </div>
+            </div>
+
+            {/* PROJECTS TABLE */}
+            <section className={styles.listSection}>
+              {fetchingProjects ? (
+                <div className={styles.loadingState}>
+                  <FaSpinner className={styles.spinnerIcon} />
+                  <span>Fetching live projects...</span>
+                </div>
+              ) : filteredProjects.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <FaImages className={styles.emptyIcon} />
+                  <h3>No Projects Found</h3>
+                  <p>Try adjusting your search query or filter criteria.</p>
+                  {projectsList.length === 0 && (
+                    <button type="button" className={styles.submitBtn} onClick={openCreateForm}>
+                      <FaPlus />
+                      Upload First Project
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className={styles.projectsTable}>
+                  {filteredProjects.map((project) => {
+                    const isItemFeatured = Boolean(project.is_featured);
+
+                    return (
+                      <div key={project.id} className={styles.projectRow}>
                         <button
                           type="button"
-                          className={styles.removeThumbBtn}
-                          onClick={() => removeExistingGalleryUrl(url)}
-                          title="Remove photo"
+                          className={`${styles.featuredStarBtn} ${isItemFeatured ? styles.starActive : ""}`}
+                          onClick={() => handleToggleFeatured(project.id, isItemFeatured, project.title)}
+                          title={isItemFeatured ? "Remove from Featured" : "Mark as Featured (Max 6)"}
                         >
-                          <FaTimes />
+                          {isItemFeatured ? <FaStar /> : <FaRegStar />}
                         </button>
-                        <span className={styles.savedTag}>Saved</span>
+
+                        <div className={styles.rowThumb}>
+                          <img src={project.cover_image} alt={project.title} loading="lazy" />
+                          {isItemFeatured && <span className={styles.featuredBadgePill}>Featured</span>}
+                        </div>
+
+                        <div className={styles.rowInfo}>
+                          <div className={styles.rowTitleWrap}>
+                            <h3>{project.title}</h3>
+                          </div>
+                          <div className={styles.rowBadges}>
+                            <span className={styles.badgeCategory}>{project.category}</span>
+                            <span className={styles.badgeLoc}>{project.location}</span>
+                            {project.gallery_images?.length > 0 && (
+                              <span className={styles.badgeGallery}>
+                                <FaImages />
+                                {project.gallery_images.length} Photos
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className={styles.rowActions}>
+                          <a
+                            href={`/projects`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.viewLiveBtn}
+                            title="View on site"
+                          >
+                            <FaExternalLinkAlt />
+                            <span className={styles.btnText}>View</span>
+                          </a>
+                          <button
+                            type="button"
+                            className={styles.editBtn}
+                            onClick={() => startEditing(project)}
+                            title="Edit project"
+                          >
+                            <FaEdit />
+                            <span className={styles.btnText}>Edit</span>
+                          </button>
+                          <button
+                            type="button"
+                            className={styles.deleteBtn}
+                            onClick={() => handleDelete(project.id, project.title)}
+                            title="Delete project"
+                          >
+                            <FaTrash />
+                            <span className={styles.btnText}>Delete</span>
+                          </button>
+                        </div>
                       </div>
-                    ))}
-                    {galleryPreviews.map((preview, index) => (
-                      <div key={`new-${index}`} className={styles.galleryThumbCard}>
-                        <img src={preview} alt="New preview" />
-                        <button
-                          type="button"
-                          className={styles.removeThumbBtn}
-                          onClick={() => removeGalleryFile(index)}
-                          title="Remove photo"
-                        >
-                          <FaTimes />
-                        </button>
-                        <span className={styles.newTag}>New</span>
-                      </div>
-                    ))}
-                  </div>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+          </div>
+        )}
+
+        {/* ================= TAB 2: FORM WITH AUTO-SAVED DRAFTS ================= */}
+        {activeTab === "form" && (
+          <form onSubmit={handleSubmit} className={styles.uploadForm}>
+            <div className={styles.formHeader}>
+              <div>
+                <h2>{editingId ? "Edit Project" : "Upload New Project"}</h2>
+                <p className={styles.formSubhead}>
+                  {editingId
+                    ? "Modify project details or media files."
+                    : "Fill out details to publish to the live portfolio."}
+                </p>
+              </div>
+
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                {hasDraft && !editingId && (
+                  <button
+                    type="button"
+                    className={styles.clearDraftBtn}
+                    onClick={clearDraft}
+                    title="Discard saved draft"
+                  >
+                    <FaTrash />
+                    <span>Discard Draft</span>
+                  </button>
+                )}
+
+                {editingId && (
+                  <button type="button" className={styles.cancelEditBtn} onClick={resetForm}>
+                    <FaTimes />
+                    Cancel Editing
+                  </button>
                 )}
               </div>
             </div>
 
-            <div className={styles.detailsCol}>
-              <div className={styles.inputGroup}>
-                <label>Project Title *</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Modern Residential Villa"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
+            {hasDraft && !editingId && (
+              <div className={styles.draftAlertBox}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <FaSave className={styles.draftIcon} />
+                  <span>
+                    <strong>Draft Restored:</strong> Unsaved project data preserved (Saved at {draftLastSaved}).
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <div className={styles.formGrid}>
+              <div className={styles.photosCol}>
+                <div className={styles.fieldBlock}>
+                  <label className={styles.fieldLabel}>Main Cover Photo *</label>
+                  <label className={styles.coverDropArea}>
+                    {coverPreview ? (
+                      <div className={styles.previewImageContainer}>
+                        <img src={coverPreview} alt="Cover Preview" className={styles.imagePreview} />
+                        <div className={styles.changeOverlay}>
+                          <FaCloudUploadAlt />
+                          Change Cover Photo
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={styles.dropPlaceholder}>
+                        <FaCloudUploadAlt className={styles.uploadIcon} />
+                        <span>Click to Select Main Cover Photo</span>
+                        <small className={styles.compressionNotice}>
+                          ⚡ Auto-compressed to WEBP if &gt; 350KB
+                        </small>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleCoverChange}
+                      className={styles.fileInput}
+                    />
+                  </label>
+                </div>
+
+                <div className={styles.fieldBlock}>
+                  <label className={styles.fieldLabel}>Multiple Gallery Photos</label>
+                  <label className={styles.galleryDropArea}>
+                    <FaImages className={styles.uploadIconSmall} />
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                      <span>Click to select multiple gallery photos</span>
+                      <small className={styles.compressionNotice}>
+                        ⚡ Multi-upload auto-compression
+                      </small>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleGalleryChange}
+                      className={styles.fileInput}
+                    />
+                  </label>
+
+                  {(existingGalleryUrls.length > 0 || galleryPreviews.length > 0) && (
+                    <div className={styles.galleryPreviewGrid}>
+                      {existingGalleryUrls.map((url, index) => (
+                        <div key={`existing-${index}`} className={styles.galleryThumbCard}>
+                          <img src={url} alt="Gallery item" />
+                          <button
+                            type="button"
+                            className={styles.removeThumbBtn}
+                            onClick={() => removeExistingGalleryUrl(url)}
+                            title="Remove photo"
+                          >
+                            <FaTimes />
+                          </button>
+                          <span className={styles.savedTag}>Saved</span>
+                        </div>
+                      ))}
+                      {galleryPreviews.map((preview, index) => (
+                        <div key={`new-${index}`} className={styles.galleryThumbCard}>
+                          <img src={preview} alt="New preview" />
+                          <button
+                            type="button"
+                            className={styles.removeThumbBtn}
+                            onClick={() => removeGalleryFile(index)}
+                            title="Remove photo"
+                          >
+                            <FaTimes />
+                          </button>
+                          <span className={styles.newTag}>New</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className={styles.rowTwo}>
-                <div className={styles.inputGroup}>
-                  <label>Category *</label>
-                  <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                    {CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    ))}
-                  </select>
+              <div className={styles.detailsCol}>
+                <div className={styles.featuredToggleRow}>
+                  <label className={styles.switchLabel}>
+                    <input
+                      type="checkbox"
+                      checked={isFeatured}
+                      onChange={handleFeaturedCheckboxChange}
+                    />
+                    <span className={styles.switchSlider} />
+                  </label>
+                  <div className={styles.switchTextWrap}>
+                    <strong>Highlight as Featured Project (Max 6)</strong>
+                    <p>Priority display on homepage showcase section.</p>
+                  </div>
                 </div>
+
                 <div className={styles.inputGroup}>
-                  <label>Location *</label>
+                  <label>Project Title *</label>
                   <input
                     type="text"
-                    placeholder="e.g. Baramulla, JK"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="e.g. Modern Residential Villa"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                     required
                   />
                 </div>
+
+                <div className={styles.rowTwo}>
+                  <div className={styles.inputGroup}>
+                    <label>Category *</label>
+                    <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                      {CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className={styles.inputGroup}>
+                    <label>Location *</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Baramulla, JK"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Duration / Scope</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Design &amp; Full Execution"
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Short Overview / Summary *</label>
+                  <input
+                    type="text"
+                    placeholder="Brief summary shown on project cards and modal header"
+                    value={summary}
+                    onChange={(e) => setSummary(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Key Deliverables (Enter each deliverable on a new line)</label>
+                  <textarea
+                    rows={3}
+                    placeholder={"Full architectural & structural compliance\nOn-time execution with site supervision\nHigh-durability material selection"}
+                    value={deliverables}
+                    onChange={(e) => setDeliverables(e.target.value)}
+                  />
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label>Architectural &amp; Engineering Scope</label>
+                  <textarea
+                    rows={5}
+                    placeholder={"Structural Engineering: Reinforced concrete frame with high load capacity\nRoof System: Custom gabled truss alignment for snow shedding"}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
+
+                <button type="submit" className={styles.submitBtn} disabled={loading}>
+                  {loading ? (
+                    <>
+                      <FaSpinner className={styles.spinnerIcon} />
+                      <span>Saving Project...</span>
+                    </>
+                  ) : editingId ? (
+                    "Update Project"
+                  ) : (
+                    "Publish Project"
+                  )}
+                </button>
+              </div>
+            </div>
+          </form>
+        )}
+
+        {/* ================= TAB 3: SETTINGS WITH EMAIL OTP ================= */}
+        {activeTab === "settings" && (
+          <div className={styles.settingsSection}>
+            <div className={styles.settingsCard}>
+              <div className={styles.settingsHeader}>
+                <div className={styles.settingsIconBox}>
+                  <FaKey />
+                </div>
+                <div>
+                  <h2>Change Admin Passcode</h2>
+                  <p>Secured with Email OTP verification dispatched to the master administrator inbox.</p>
+                </div>
               </div>
 
-              <div className={styles.inputGroup}>
-                <label>Duration / Scope</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Design & Full Execution"
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
-                />
-              </div>
+              {!otpSent ? (
+                /* STEP 1: DISPATCH OTP BUTTON */
+                <div className={styles.otpRequestBox}>
+                  <div className={styles.otpRequestInfo}>
+                    <FaEnvelope className={styles.otpRequestIcon} />
+                    <div>
+                      <strong>Owner Identity Verification</strong>
+                      <p>
+                        A one-time verification code will be dispatched to <strong>{import.meta.env.VITE_ADMIN_EMAIL}</strong> to authorize password changes.
+                      </p>
+                    </div>
+                  </div>
 
-              <div className={styles.inputGroup}>
-                <label>Short Overview / Summary * (Appears ABOVE Gallery)</label>
-                <input
-                  type="text"
-                  placeholder="Brief summary shown on project cards and above the gallery in drawer/modal"
-                  value={summary}
-                  onChange={(e) => setSummary(e.target.value)}
-                  required
-                />
-              </div>
+                  <button
+                    type="button"
+                    className={styles.sendOtpBtn}
+                    onClick={handleSendEmailOtp}
+                    disabled={otpSending}
+                  >
+                    {otpSending ? (
+                      <>
+                        <FaSpinner className={styles.spinnerIcon} />
+                        <span>Sending Security Code...</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaPaperPlane />
+                        <span>Send Security Code to Email</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              ) : (
+                /* STEP 2: ENTER OTP & NEW PASSCODE FORM */
+                <form onSubmit={handleVerifyOtpAndChangePassword} className={styles.settingsForm}>
+                  <div className={styles.otpNoticeBanner}>
+                    <span>
+                      Verification code sent to <strong>{import.meta.env.VITE_ADMIN_EMAIL}</strong>
+                    </span>
+                    <button
+                      type="button"
+                      className={styles.resendOtpBtn}
+                      onClick={handleSendEmailOtp}
+                      disabled={resendCooldown > 0 || otpSending}
+                    >
+                      {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : "Resend Code"}
+                    </button>
+                  </div>
 
-              <div className={styles.inputGroup}>
-                <label>Key Deliverables (Enter each point on a new line)</label>
-                <textarea
-                  rows={3}
-                  placeholder={"Full architectural & structural engineering compliance\nOn-time execution with site supervision\nHigh-durability material selection"}
-                  value={deliverables}
-                  onChange={(e) => setDeliverables(e.target.value)}
-                />
-              </div>
+                  {/* OTP INPUT (Accommodates 6 to 10 characters) */}
+                  <div className={styles.inputGroup}>
+                    <label>Email Verification Code *</label>
+                    <input
+                      type="text"
+                      maxLength={8}
+                      placeholder="Enter verification code"
+                      value={otpCode}
+                      onChange={(e) => setOtpCode(e.target.value.replace(/\s/g, ""))}
+                      className={styles.otpInput}
+                      required
+                      autoFocus
+                    />
+                  </div>
 
-              <div className={styles.inputGroup}>
-                <label>Architectural & Engineering Scope (Appears BELOW Gallery)</label>
-                <small style={{ color: "#B7410E", fontSize: "0.8rem", fontWeight: 600, display: "block", marginBottom: 6 }}>
-                  💡 Formatting Tip: Text before a colon (:) will automatically appear BOLD! (e.g. Roof System: Details)
-                </small>
-                <textarea
-                  rows={6}
-                  placeholder={"Located in Dangiwacha, JK, this project represents...\n\nStructural Engineering: Reinforced concrete frame with high load capacity\nRoof System: Custom gabled truss alignment for snow shedding\nThermal Insulation: Integrated weather barrier protection"}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div>
+                  {/* NEW PASSCODE INPUT */}
+                  <div className={styles.inputGroup}>
+                    <label>New Security Passcode *</label>
+                    <div className={styles.passwordWrapper}>
+                      <input
+                        type={showNewPassword ? "text" : "password"}
+                        placeholder="Enter new passcode (min. 6 characters)"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className={styles.togglePasswordBtn}
+                        onClick={() => setShowNewPassword((prev) => !prev)}
+                        title={showNewPassword ? "Hide passcode" : "Show passcode"}
+                      >
+                        {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                      </button>
+                    </div>
+                  </div>
 
-              <button type="submit" className={styles.submitBtn} disabled={loading}>
-                {loading ? (
-                  <>
-                    <FaSpinner className={styles.spinnerIcon} />
-                    <span>Publishing Project...</span>
-                  </>
-                ) : editingId ? (
-                  "Update Project"
-                ) : (
-                  "Publish Project"
-                )}
-              </button>
+                  {/* CONFIRM NEW PASSCODE INPUT */}
+                  <div className={styles.inputGroup}>
+                    <label>Confirm New Passcode *</label>
+                    <input
+                      type={showNewPassword ? "text" : "password"}
+                      placeholder="Repeat new passcode"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
+                    <button
+                      type="button"
+                      className={styles.cancelOtpBtn}
+                      onClick={() => {
+                        setOtpSent(false);
+                        setOtpCode("");
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className={styles.saveSettingsBtn}
+                      disabled={passwordLoading}
+                    >
+                      {passwordLoading ? (
+                        <>
+                          <FaSpinner className={styles.spinnerIcon} />
+                          <span>Verifying &amp; Updating...</span>
+                        </>
+                      ) : (
+                        "Verify & Update Passcode"
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
-        </form>
-      )}
+        )}
+      </main>
 
-      {/* REUSABLE CUSTOM POPUP MODAL */}
+      {/* REUSABLE POPUP MODAL */}
       {modal.isOpen && (
         <div className={styles.modalOverlay} onClick={closeModal}>
           <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
@@ -885,11 +1597,12 @@ export default function Admin() {
             <p className={styles.modalMessage}>{modal.message}</p>
             <div className={styles.modalActions}>
               {modal.type === "confirm" && (
-                <button className={styles.modalCancelBtn} onClick={closeModal}>
+                <button type="button" className={styles.modalCancelBtn} onClick={closeModal}>
                   {modal.cancelText}
                 </button>
               )}
               <button
+                type="button"
                 className={modal.isDanger ? `${styles.modalConfirmBtn} ${styles.modalDangerBtn}` : styles.modalConfirmBtn}
                 onClick={modal.onConfirm}
               >
@@ -899,6 +1612,6 @@ export default function Admin() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+// src/components/home/FeaturedProjects/FeaturedProjects.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -5,6 +6,7 @@ import {
   FaMapMarkerAlt,
   FaClock,
   FaArrowRight,
+  FaStar,
 } from "react-icons/fa";
 import styles from "./FeaturedProjects.module.css";
 
@@ -13,7 +15,15 @@ export default function FeaturedProjects({
   loading = false,
   onOpenModal,
 }) {
-  const featured = projects.slice(0, 6);
+  // Filter strictly for projects marked as featured in Admin
+  const explicitlyFeatured = projects.filter(
+    (p) => Boolean(p.is_featured || p.isFeatured)
+  );
+
+  // If featured projects are selected, show only those (up to 6); otherwise show latest
+  const featured = (
+    explicitlyFeatured.length > 0 ? explicitlyFeatured : projects
+  ).slice(0, 6);
 
   return (
     <section className={styles.projectsPreview} aria-labelledby="featured-projects-title">
@@ -51,6 +61,7 @@ export default function FeaturedProjects({
             {featured.map((project, idx) => {
               const cover = project.coverImage || project.cover_image || project.image;
               const projectId = project.id || project.slug || idx;
+              const isProjectFeatured = Boolean(project.is_featured || project.isFeatured);
 
               return (
                 <article
@@ -76,6 +87,32 @@ export default function FeaturedProjects({
                       decoding="async"
                     />
                     <div className={styles.imageOverlay} />
+
+                    {/* Minimalist Black Star Badge (Icon Only) */}
+                    {isProjectFeatured && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "12px",
+                          left: "12px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50%",
+                          background: "#0A0A0A",
+                          color: "#FFBB0F",
+                          border: "1px solid rgba(255, 187, 15, 0.35)",
+                          boxShadow: "0 4px 14px rgba(0, 0, 0, 0.45)",
+                          zIndex: 2,
+                        }}
+                        title="Featured Project"
+                        aria-label="Featured Project"
+                      >
+                        <FaStar style={{ fontSize: "0.8rem" }} />
+                      </span>
+                    )}
                   </div>
 
                   {/* Content Body */}
