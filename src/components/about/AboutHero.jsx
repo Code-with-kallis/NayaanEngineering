@@ -1,10 +1,9 @@
 // src/components/about/AboutHero.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaArrowDown } from "react-icons/fa";
 import styles from "./AboutHero.module.css";
 
-// Automatically bundle images from src/assets/images/about/
 const aboutImages = import.meta.glob("../../assets/images/about/*", {
   eager: true,
   import: "default",
@@ -19,74 +18,72 @@ function resolveAsset(filename, pool, fallback) {
   return fallback;
 }
 
-// Map exactly to the requested routes using the new assets/images/about directory
 const defaultOffice = resolveAsset("office.webp", aboutImages, "/assets/images/about/office.webp");
 const defaultTeam1 = resolveAsset("sajid.jpeg", aboutImages, "/assets/images/about/sajid.jpeg");
 const defaultTeam2 = resolveAsset("junaid.jpg", aboutImages, "/assets/images/about/junaid.jpg");
 
-const AboutHero = ({
-  titleDark = "Engineering What Comes ",
-  titleMuted = (
-    <>
-      Next in
-      <br />
-      Jammu &amp; Kashmir:
-    </>
-  ),
+export default function AboutHero({
+  titleDark = "Built Through Expertise ",
+  titleMuted = "& Experience",
   subtitle = "Nayaab Engineering Innovations Pvt. Ltd. combines formal corporate standards with startup agility to deliver civil construction, structural engineering, and technical design across Jammu & Kashmir.",
   galleryImages = [],
-  primaryAction = { href: "/contact", label: "Start a Project" },
-  secondaryAction = { href: "#corporate-profile", label: "Company Profile" },
-}) => {
+}) {
   const img1 = galleryImages[0] || defaultOffice;
   const img2 = galleryImages[1] || defaultTeam1;
   const img3 = galleryImages[2] || defaultTeam2;
 
+  const handleScrollToTeam = (e) => {
+    e.preventDefault();
+    const teamElement = document.getElementById("team-roster");
+    if (teamElement) {
+      if (window.lenis) {
+        window.lenis.scrollTo(teamElement, { offset: -50 });
+      } else {
+        teamElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <section className={styles.heroSection} aria-labelledby="about-hero-title">
       <div className={styles.heroContainer}>
-        {/* Left Column Text & Actions */}
+        {/* Left Column: Rectangular Clipped Box */}
         <div className={styles.heroLeftCard}>
-          <div className={`${styles.breadcrumb} ${styles.animateSlideLeft} ${styles.delay1}`}>
-            <FaHome className={styles.homeIcon} aria-hidden="true" />
-            <Link to="/" className={styles.breadcrumbLink}>Home</Link>
-            <span className={styles.slash}>/</span>
-            <strong className={styles.activeBreadcrumb}>About Us</strong>
-          </div>
+          <div className={`${styles.textWrapper} ${styles.animateSlideLeft}`}>
+            {/* Breadcrumb */}
+            <div className={styles.breadcrumb}>
+              <FaHome className={styles.homeIcon} aria-hidden="true" />
+              <Link to="/" className={styles.breadcrumbLink}>Home</Link>
+              <span className={styles.slash}>/</span>
+              <strong className={styles.activeBreadcrumb}>About Us</strong>
+            </div>
 
-          <h1 id="about-hero-title" className={`${styles.heroTitle} ${styles.animateSlideLeft} ${styles.delay2}`}>
-            <span className={styles.titleDark}>{titleDark}</span>
-            <span className={styles.titleMuted}>{titleMuted}</span>
-          </h1>
+            {/* Controlled, Compact Title */}
+            <h1 id="about-hero-title" className={styles.mainTitle}>
+              <span>{titleDark}</span>
+              <span className={styles.titleGrey}>{titleMuted}</span>
+            </h1>
 
-          <p className={`${styles.heroText} ${styles.animateSlideLeft} ${styles.delay3}`}>
-            {subtitle}
-          </p>
+            {/* Subtitle */}
+            <p className={styles.subTitle}>
+              {subtitle}
+            </p>
 
-          <div className={`${styles.ctaGroup} ${styles.animateSlideLeft} ${styles.delay4}`}>
-            {primaryAction && (
-              primaryAction.href.startsWith("#") ? (
-                <a href={primaryAction.href} className={styles.heroBtn}>
-                  {primaryAction.label}
-                </a>
-              ) : (
-                <Link to={primaryAction.href} className={styles.heroBtn}>
-                  {primaryAction.label}
-                </Link>
-              )
-            )}
-
-            {secondaryAction && (
-              secondaryAction.href.startsWith("#") ? (
-                <a href={secondaryAction.href} className={styles.heroBtnOutline}>
-                  {secondaryAction.label}
-                </a>
-              ) : (
-                <Link to={secondaryAction.href} className={styles.heroBtnOutline}>
-                  {secondaryAction.label}
-                </Link>
-              )
-            )}
+            {/* Rectangular Slide-Fill Button with Separate Outer Arrow Box */}
+            <div className={styles.ctaGroup}>
+              <a 
+                href="#team-roster" 
+                onClick={handleScrollToTeam} 
+                className={styles.ctaContainer}
+              >
+                <div className={styles.btnPrimary}>
+                  <span>Meet Our Team</span>
+                </div>
+                <div className={styles.arrowBox}>
+                  <FaArrowDown className={styles.arrowIcon} aria-hidden="true" />
+                </div>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -123,6 +120,4 @@ const AboutHero = ({
       </div>
     </section>
   );
-};
-
-export default AboutHero;
+}

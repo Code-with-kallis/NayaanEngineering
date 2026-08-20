@@ -70,10 +70,12 @@
 
 .splitDesc {
   color: #71717A;
-  font-size: clamp(0.875rem, 1.05vw, 0.95rem);
+  font-size: clamp(0.9rem, 0.15vw + 0.875rem, 1rem);
+  font-weight: 450;
   line-height: 1.65;
   margin: 0;
   max-width: 52ch;
+  text-align: right;
 }
 
 /* ===== PROJECT GRID ===== */
@@ -339,6 +341,10 @@
     grid-template-columns: 1fr;
     gap: 0.75rem;
   }
+ .splitDesc {
+    width: min(100%, 44rem);
+    text-align: left;
+  }
 
   .splitHeaderRight {
     justify-content: flex-start;
@@ -360,7 +366,10 @@
   .splitTitle {
     font-size: clamp(1.75rem, 6vw, 2.1rem);
   }
-
+  .splitDesc {
+    max-width: 100%;
+    text-align: left;
+  }
   .projectGrid {
     grid-template-columns: 1fr;
     gap: 1rem;

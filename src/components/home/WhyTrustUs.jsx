@@ -41,14 +41,13 @@ export default function WhyTrustUs() {
             <span>Why Choose Us</span>
           </div>
           <h2 className={styles.splitTitle}>
-            Why Clients &amp; Builders<br />Trust Nayaab Engineering
+            Why Clients Trust NEIPL 
           </h2>
         </div>
 
         <div className={styles.splitHeaderRight}>
           <p className={styles.splitDesc}>
-            From custom residential villas to commercial builds, we deliver end-to-end precision by combining
-            regional architectural knowledge with strict civil engineering safety standards.
+From residential to commercial builds, we combine regional expertise with precise architectural and civil engineering standards throughout.
           </p>
         </div>
       </div>

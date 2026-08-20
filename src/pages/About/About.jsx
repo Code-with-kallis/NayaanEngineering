@@ -43,11 +43,10 @@ const SECTION_CONTENT = [
   },
 ];
 
-function About() {
+export default function About() {
   const [sections, setSections] = useState([]);
   const [loadingTeam, setLoadingTeam] = useState(true);
 
-  // Asynchronously load team data on mount
   useEffect(() => {
     let isMounted = true;
 
@@ -72,7 +71,6 @@ function About() {
     };
   }, []);
 
-  // Entrance Observer for Scroll Animations
   useEffect(() => {
     document.title = "About Us & Corporate Profile | Nayaab Engineering Innovations";
 
@@ -99,24 +97,12 @@ function About() {
 
   return (
     <main id="main" className={styles.aboutPage}>
-      {/* 1. Hero Section */}
+      {/* 1. Hero Section (Clean call using component defaults) */}
       <section className={styles.heroWrapper}>
-        <AboutHero
-          titleDark="Engineering What Comes "
-          titleMuted={
-            <>
-              Next in
-              <br />
-              Jammu &amp; Kashmir:
-            </>
-          }
-          subtitle="Nayaab Engineering Innovations Pvt. Ltd. combines formal corporate standards with startup agility to deliver civil construction, structural engineering, and technical design across Jammu & Kashmir."
-          primaryAction={{ href: "/contact", label: "Start a Project" }}
-          secondaryAction={{ href: "#corporate-profile", label: "Company Profile" }}
-        />
+        <AboutHero />
       </section>
 
-      {/* 2. Corporate Profile */}
+      {/* 2. Corporate Overview & DPIIT Certification */}
       <section id="corporate-profile" className={styles.overviewSection}>
         <div className={styles.container}>
           <div className={styles.overviewGrid}>
@@ -129,10 +115,10 @@ function About() {
                 Fostering Regional Infrastructure with Engineering Precision
               </h2>
               <p className={styles.bodyParagraph}>
-                <strong>Nayaab Engineering Innovations Private Limited</strong> is a Baramulla, Jammu &amp; Kashmir-based civil engineering and construction company incorporated in May 2024. We bring together structural integrity, practical design thinking, and modern technical planning for regional development.
+                <strong>Nayaab Engineering Innovations Private Limited</strong> is a Baramulla-based engineering consultancy and contracting firm incorporated in May 2024. We integrate structural resilience, practical architectural planning, and execution standards tailored to regional terrains.
               </p>
               <p className={styles.bodyParagraph}>
-                As an active private limited enterprise and a government-recognized DPIIT startup, we provide structured project execution, civil design coordination, and turnkey solutions with corporate transparency.
+                As a recognized DPIIT startup enterprise under the Startup India initiative, we deliver transparent project management, technical site coordination, and turnkey construction solutions.
               </p>
             </div>
 
@@ -145,7 +131,7 @@ function About() {
                 </div>
               </div>
               <p className={styles.dpiitText}>
-                Officially acknowledged under Startup India Scheme in the <strong>Construction &amp; Engineering Sector</strong>.
+                Officially recognized under the Startup India scheme in the <strong>Construction &amp; Engineering Sector</strong>.
               </p>
               <div className={styles.dpiitMetaGrid}>
                 <div className={styles.dpiitMetaItem}>
@@ -170,7 +156,7 @@ function About() {
         </div>
       </section>
 
-      {/* 3. Architectural & Structural Showcase Section */}
+      {/* 3. Architectural & Structural Engineering Showcase */}
       <section className={styles.visionSection}>
         <div className={styles.container}>
           <div className={styles.visionGrid}>
@@ -195,21 +181,21 @@ function About() {
                 Built for Resilience, Engineered for Kashmir’s Terrain
               </h2>
               <p className={styles.bodyParagraph}>
-                Every blueprint and structural calculation developed at Nayaab Engineering Innovations is customized for high-altitude topography, seismic safety standards (IS 1893), and local weather resilience.
+                Every blueprint and structural calculation developed at NEIPL is customized for high-altitude topography, seismic compliance standards (IS 1893 Zone V), and local environmental demands.
               </p>
               <div className={styles.visionPillars}>
                 <div className={styles.pillarItem}>
                   <FaCheckCircle className={styles.pillarIcon} />
                   <div>
                     <strong>Parametric 3D Modeling &amp; CAD Blueprints</strong>
-                    <p>Photorealistic elevations and integrated structural drafts before site mobilization.</p>
+                    <p>Photorealistic elevations and integrated structural drafts prior to site mobilization.</p>
                   </div>
                 </div>
                 <div className={styles.pillarItem}>
                   <FaCheckCircle className={styles.pillarIcon} />
                   <div>
                     <strong>End-to-End Turnkey Execution</strong>
-                    <p>From foundation pile-testing to structural reinforcement and final architectural handover.</p>
+                    <p>From soil investigation and foundation piling to structural framing and final handover.</p>
                   </div>
                 </div>
               </div>
@@ -228,7 +214,7 @@ function About() {
             </div>
             <h2 className={styles.sectionTitle}>Company Fact Sheet</h2>
             <p className={styles.sectionDesc}>
-              Verified corporate credentials and registry information under MCA (Ministry of Corporate Affairs).
+              Verified corporate credentials and registry information under the Ministry of Corporate Affairs (MCA).
             </p>
           </div>
 
@@ -266,7 +252,7 @@ function About() {
               </div>
               <span className={styles.bentoLabel}>Core Industry</span>
               <h3 className={styles.bentoValue}>Civil Engineering</h3>
-              <p className={styles.bentoSubtext}>NIC Code 42 — Civil Construction &amp; Design</p>
+              <p className={styles.bentoSubtext}>NIC Code 42 — Civil Construction &amp; Structural Design</p>
             </div>
           </div>
         </div>
@@ -290,7 +276,7 @@ function About() {
                 <h3>Civil &amp; Structural Engineering</h3>
               </div>
               <p>
-                Comprehensive structural analysis, technical planning, and execution management for residential, commercial, and public infrastructure projects.
+                Comprehensive structural analysis, technical calculation sheets, and execution oversight for residential, commercial, and institutional projects.
               </p>
             </div>
 
@@ -300,35 +286,35 @@ function About() {
                 <h3>Architectural &amp; CAD Planning</h3>
               </div>
               <p>
-                Computer-Aided Design (CAD) drafting, 2D/3D building modeling, structural layout blueprints, and pre-construction technical documentation.
+                2D/3D building layouts, BIM coordination, structural reinforcement details, and pre-construction documentation.
               </p>
             </div>
 
             <div className={`${styles.capabilityCard} ${styles.revealOnScroll} ${styles.revealDelay3}`}>
               <div className={styles.capHeader}>
                 <FaCogs className={styles.capIcon} />
-                <h3>Construction Project Management</h3>
+                <h3>Project Supervision &amp; QA/QC</h3>
               </div>
               <p>
-                On-site supervision, quality control, material testing coordination, and timely execution following strict safety guidelines.
+                Field monitoring, non-destructive material quality control, schedule tracking, and safety compliance management.
               </p>
             </div>
 
             <div className={`${styles.capabilityCard} ${styles.revealOnScroll} ${styles.revealDelay4}`}>
               <div className={styles.capHeader}>
                 <FaShieldAlt className={styles.capIcon} />
-                <h3>Turnkey Execution &amp; Interiors</h3>
+                <h3>Turnkey Execution &amp; Fit-Outs</h3>
               </div>
               <p>
-                End-to-end site development, institutional spatial planning, commercial fit-outs, and turnkey building solutions.
+                End-to-end site developments, commercial interiors, structural retrofit work, and comprehensive spatial handovers.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. Team Roster Sections */}
-      <section className={styles.teamRosterSection}>
+      {/* 6. Team Roster (Targeted by Hero Smooth Scroll) */}
+      <section id="team-roster" className={styles.teamRosterSection}>
         <div className={styles.container}>
           <div className={`${styles.sectionHeaderCentered} ${styles.revealOnScroll}`}>
             <div className={styles.sectionEyebrowCenter}>
@@ -337,7 +323,7 @@ function About() {
             </div>
             <h2 className={styles.sectionTitle}>Meet Our Engineering &amp; Design Team</h2>
             <p className={styles.sectionDesc}>
-              A multidisciplinary collective of certified civil engineers, CAD architects, and site supervisors executing projects across Jammu &amp; Kashmir.
+              A multidisciplinary group of certified civil engineers, CAD architects, and site supervisors executing projects across Jammu &amp; Kashmir.
             </p>
           </div>
 
@@ -387,5 +373,3 @@ function About() {
     </main>
   );
 }
-
-export default About;

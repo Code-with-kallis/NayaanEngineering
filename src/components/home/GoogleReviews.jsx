@@ -1,5 +1,13 @@
 // src/components/home/GoogleReviews.jsx
 import React, { useState, useEffect, useMemo, useRef } from "react";
+import {
+  FaStar,
+  FaChevronLeft,
+  FaChevronRight,
+  FaCheckCircle,
+  FaExternalLinkAlt,
+  FaQuoteRight,
+} from "react-icons/fa";
 import styles from "./GoogleReviews.module.css";
 
 const API_URL = import.meta.env.VITE_FEATURABLE_API_URL;
@@ -18,7 +26,6 @@ const AVATAR_GRADIENTS = [
   "linear-gradient(135deg, #db2777, #be185d)",
 ];
 
-// 1. Extract Google's actual relative date
 function getReviewDate(r) {
   if (!r) return "Recently";
 
@@ -167,6 +174,9 @@ function ReviewAvatar({ photoUrl, name, index }) {
 }
 
 export default function GoogleReviews() {
+  const sectionRef = useRef(null);
+  const hasTriggeredInitialViewRef = useRef(false);
+
   const [reviews, setReviews] = useState([]);
   const [summary, setSummary] = useState({
     rating: 4.8,
@@ -175,16 +185,37 @@ export default function GoogleReviews() {
   });
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [cardsPerView, setCardsPerView] = useState(3);
+  const [cardsPerView, setCardsPerView] = useState(3.25);
 
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartX, setDragStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
+  const hasDraggedRef = useRef(false);
   const trackRef = useRef(null);
+
+  // Auto-select 2nd dot when user scrolls to section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasTriggeredInitialViewRef.current) {
+          hasTriggeredInitialViewRef.current = true;
+          setCurrentIndex((prev) => (prev === 0 ? 1 : prev));
+        }
+      },
+      {
+        threshold: 0.2,
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!API_URL) {
-      console.error("VITE_FEATURABLE_API_URL is missing in your .env file");
       setLoading(false);
       return;
     }
@@ -195,7 +226,6 @@ export default function GoogleReviews() {
         return res.json();
       })
       .then((data) => {
-        // 1. Extract reviews array
         const rawList =
           data?.reviews ||
           data?.data?.reviews ||
@@ -235,7 +265,6 @@ export default function GoogleReviews() {
           };
         });
 
-        // 2. Comprehensive deep extraction for Place Rating
         const rawApiRating =
           data?.business?.rating ||
           data?.place?.rating ||
@@ -255,7 +284,6 @@ export default function GoogleReviews() {
             ? Math.max(1, Math.min(5, Number(rawApiRating)))
             : 4.8;
 
-        // 3. Comprehensive deep extraction for Total Place Review Count
         const rawApiCount =
           data?.business?.user_ratings_total ||
           data?.business?.reviews_count ||
@@ -312,12 +340,12 @@ export default function GoogleReviews() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setCardsPerView(1);
-      } else if (window.innerWidth < 1080) {
-        setCardsPerView(2);
+      if (window.innerWidth < 640) {
+        setCardsPerView(1.15);
+      } else if (window.innerWidth < 1024) {
+        setCardsPerView(2.25);
       } else {
-        setCardsPerView(3);
+        setCardsPerView(3.35);
       }
     };
 
@@ -327,27 +355,23 @@ export default function GoogleReviews() {
   }, []);
 
   const maxIndex = useMemo(
-    () => Math.max(0, reviews.length - cardsPerView),
+    () => Math.max(0, Math.ceil(reviews.length - Math.floor(cardsPerView))),
     [reviews.length, cardsPerView]
   );
 
-  useEffect(() => {
-    if (currentIndex > maxIndex) {
-      setCurrentIndex(maxIndex);
-    }
-  }, [maxIndex, currentIndex]);
-
+  // Seamless Wrap-Around Loop
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
+    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
   };
 
   const handlePointerDown = (e) => {
-    if (reviews.length <= cardsPerView) return;
+    if (reviews.length <= Math.floor(cardsPerView)) return;
     setIsDragging(true);
+    hasDraggedRef.current = false;
     setDragStartX(e.clientX);
     setDragOffset(0);
     if (trackRef.current) {
@@ -357,7 +381,11 @@ export default function GoogleReviews() {
 
   const handlePointerMove = (e) => {
     if (!isDragging) return;
-    setDragOffset(e.clientX - dragStartX);
+    const currentDiff = e.clientX - dragStartX;
+    if (Math.abs(currentDiff) > 6) {
+      hasDraggedRef.current = true;
+    }
+    setDragOffset(currentDiff);
   };
 
   const handlePointerUp = (e) => {
@@ -378,7 +406,6 @@ export default function GoogleReviews() {
   };
 
   const totalPages = Math.max(1, maxIndex + 1);
-
   const displayRating = summary.rating || 4.8;
   const fullStarsCount = Math.floor(displayRating);
   const decimalPart = Number((displayRating % 1).toFixed(1));
@@ -387,7 +414,12 @@ export default function GoogleReviews() {
   const emptyStarsCount = Math.max(0, 5 - fullStarsCount - (hasPartialStar ? 1 : 0));
 
   return (
-    <section className={styles.reviewSection} aria-labelledby="google-reviews-title">
+    <section
+      ref={sectionRef}
+      className={styles.reviewSection}
+      aria-labelledby="google-reviews-title"
+    >
+      {/* 1. CENTERED SITE-CONTAINER FOR HEADER & SUMMARY CARD */}
       <div className={styles.container}>
         <div className={styles.header}>
           <h2 id="google-reviews-title" className={styles.googleBrandTitle}>
@@ -554,7 +586,10 @@ export default function GoogleReviews() {
             </a>
           </div>
         </div>
+      </div>
 
+      {/* 2. FULL-BLEED SLIDER (OVERFLOWS EDGE-TO-EDGE) */}
+      <div className={styles.fullBleedSlider}>
         {loading ? (
           <div className={styles.statusBox}>
             Loading Google reviews...
@@ -571,9 +606,7 @@ export default function GoogleReviews() {
               onClick={prevSlide}
               aria-label="Previous review"
             >
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-              </svg>
+              <FaChevronLeft />
             </button>
 
             <div
@@ -592,7 +625,7 @@ export default function GoogleReviews() {
                   }% + ${dragOffset}px))`,
                   transition: isDragging
                     ? "none"
-                    : "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                    : "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
               >
                 {reviews.map((review, index) => (
@@ -601,7 +634,10 @@ export default function GoogleReviews() {
                     className={styles.slideItem}
                     style={{ flex: `0 0 ${100 / cardsPerView}%` }}
                   >
+                    {/* CURVED REVIEW CARD WITH CLEAN ROUNDED BORDERS */}
                     <div className={styles.reviewCard}>
+                      <FaQuoteRight className={styles.cardWatermarkQuote} aria-hidden="true" />
+
                       <div className={styles.authorRow}>
                         <ReviewAvatar
                           photoUrl={review.authorPhotoUrl}
@@ -646,16 +682,7 @@ export default function GoogleReviews() {
 
                       <div className={styles.cardStarsRow}>
                         {Array.from({ length: review.rating || 5 }).map((_, starIndex) => (
-                          <svg
-                            key={starIndex}
-                            viewBox="0 0 24 24"
-                            width="17"
-                            height="17"
-                            fill="#FBBC04"
-                            aria-hidden="true"
-                          >
-                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                          </svg>
+                          <FaStar key={starIndex} />
                         ))}
                       </div>
 
@@ -663,22 +690,23 @@ export default function GoogleReviews() {
 
                       <div className={styles.cardFooter}>
                         <span className={styles.verifiedTextSmall}>
-                          <svg
-                            viewBox="0 0 20 20"
-                            width="12"
-                            height="12"
-                            fill="#166534"
-                            style={{ marginRight: 4 }}
-                            aria-hidden="true"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                          Verified Google Review
+                          <FaCheckCircle className={styles.checkIcon} />
+                          Verified Client
                         </span>
+
+                        <a
+                          href={GOOGLE_READ_ALL_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.viewReviewLink}
+                          onPointerDown={(e) => e.stopPropagation()}
+                          onClick={(e) => {
+                            if (hasDraggedRef.current) e.preventDefault();
+                          }}
+                        >
+                          <span>View</span>
+                          <FaExternalLinkAlt className={styles.externalIcon} />
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -692,9 +720,7 @@ export default function GoogleReviews() {
               onClick={nextSlide}
               aria-label="Next review"
             >
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
-                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-              </svg>
+              <FaChevronRight />
             </button>
 
             <div className={styles.bottomControls}>
@@ -704,9 +730,7 @@ export default function GoogleReviews() {
                 onClick={prevSlide}
                 aria-label="Previous review"
               >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-                  <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-                </svg>
+                <FaChevronLeft />
               </button>
 
               <div className={styles.dotsGroup} aria-label="Review pagination">
@@ -729,9 +753,7 @@ export default function GoogleReviews() {
                 onClick={nextSlide}
                 aria-label="Next review"
               >
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
-                  <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-                </svg>
+                <FaChevronRight />
               </button>
             </div>
           </div>

@@ -267,13 +267,13 @@ export default function Projects() {
             <span style={{ color: "#FFFFFF", fontWeight: 700 }}>Projects</span>
           </div>
         }
-        title="From Concept to"
-        titleHighlight="Concrete Reality"
-        subtitle="Explore architectural and engineering projects crafted with precision."
+        title="Work That"
+        titleHighlight="Speaks for Itself"
+        subtitle="Explore our architectural and engineering work across Jammu & Kashmir."
         actions={
           <>
             <Link to="/contact" className={heroStyles.btnPrimary}>
-              <span>Contact Us</span>
+              <span>Build With Us</span>
             </Link>
             <button
               type="button"
@@ -296,7 +296,7 @@ export default function Projects() {
 
           <div className={styles.sectionHeader}>
             <h2 id="section-title" className={styles.sectionTitle}>
-              Discover Our Completed Projects
+              Completed Projects
             </h2>
             <p className={styles.sectionDescription}>
               Browse through our portfolio of engineering, structural design, and turnkey construction developments across Kashmir.
