@@ -23,13 +23,14 @@ import heroMobile from "../../assets/images/projects/project-hero-mobile.webp";
 
 const CATEGORIES = [
   "All",
-  "Aviation",
-  "Building",
-  "Commercial",
-  "Electrical",
-  "Energy",
   "Residential",
-  "Stadium"
+  "Commercial",
+  "Institutional",
+  "Religious",
+  "Industrial",
+  "Infrastructure",
+  "Interior & Fit-Out",
+  "Renovation & Restoration"
 ];
 
 const ITEMS_PER_PAGE = 12;
@@ -351,9 +352,15 @@ export default function Projects() {
                 />
               </button>
 
-              {/* Floating Menu */}
+     {/* Floating Menu */}
               {isFilterOpen && (
-                <div className={styles.filterMenu} role="listbox" aria-label="Select discipline filter">
+                <div 
+                  className={styles.filterMenu} 
+                  role="listbox" 
+                  aria-label="Select discipline filter"
+                  data-lenis-prevent
+                  onWheel={(e) => e.stopPropagation()}
+                >
                   <div className={styles.filterMenuHeader}>
                     <span className={styles.menuHeaderTitle}>Select Discipline</span>
                     {activeCategory !== "All" && (
@@ -366,7 +373,10 @@ export default function Projects() {
                       </button>
                     )}
                   </div>
-                  <div className={styles.filterOptionsGrid}>
+                  <div 
+                    className={styles.filterOptionsGrid} 
+                    data-lenis-prevent
+                  >
                     {CATEGORIES.map((cat) => (
                       <button
                         key={cat}

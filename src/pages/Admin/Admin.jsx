@@ -35,13 +35,14 @@ import {
 import styles from "./Admin.module.css";
 
 const CATEGORIES = [
-  "Building",
-  "Commercial",
   "Residential",
-  "Aviation",
-  "Electrical",
-  "Energy",
-  "Stadium",
+  "Commercial",
+  "Institutional",
+  "Religious",
+  "Industrial",
+  "Infrastructure",
+  "Interior & Fit-Out",
+  "Renovation & Restoration"
 ];
 
 const MAX_FEATURED_LIMIT = 6;

@@ -234,16 +234,47 @@
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  width: 270px;
-  background: #0A0A0A;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  padding: 1rem;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  z-index: 50;
-  animation: fadeInMenu 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 280px;
+  max-height: 380px;
+  background: #141414;
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.filterOptionsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  padding-right: 4px;
+}
+
+/* Custom Sleek Scrollbar */
+.filterOptionsGrid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.filterOptionsGrid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.filterOptionsGrid::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 10px;
+}
+
+.filterOptionsGrid::-webkit-scrollbar-thumb:hover {
+  background: #71717a;
 }
 
 @keyframes fadeInMenu {
