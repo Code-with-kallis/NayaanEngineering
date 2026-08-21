@@ -98,25 +98,183 @@ function cleanPhoneNumber(phone) {
   return cleaned;
 }
 
-const AVATAR_COLORS = [
-  "#0284C7",
-  "#7C3AED",
-  "#059669",
-  "#D97706",
-  "#E11D48",
-  "#4F46E5",
-  "#0D9488",
-  "#EA580C",
+const AVATAR_THEMES = [
+  {
+    id: "emerald",
+    primary: "#22C55E",
+    secondary: "#10B981",
+    glow: "rgba(34, 197, 94, 0.35)",
+    bgStart: "#14281E",
+    bgEnd: "#0A140F",
+    borderStart: "#22C55E",
+    borderEnd: "#059669",
+  },
+  {
+    id: "cyan",
+    primary: "#00E5FF",
+    secondary: "#00A6FB",
+    glow: "rgba(0, 229, 255, 0.35)",
+    bgStart: "#0E2433",
+    bgEnd: "#07121A",
+    borderStart: "#00E5FF",
+    borderEnd: "#0284C7",
+  },
+  {
+    id: "violet",
+    primary: "#C084FC",
+    secondary: "#9333EA",
+    glow: "rgba(192, 132, 252, 0.35)",
+    bgStart: "#26153A",
+    bgEnd: "#120A1C",
+    borderStart: "#C084FC",
+    borderEnd: "#7E22CE",
+  },
+  {
+    id: "amber",
+    primary: "#FBBF24",
+    secondary: "#F59E0B",
+    glow: "rgba(251, 191, 36, 0.35)",
+    bgStart: "#2B210E",
+    bgEnd: "#140F06",
+    borderStart: "#FBBF24",
+    borderEnd: "#D97706",
+  },
+  {
+    id: "rose",
+    primary: "#FB7185",
+    secondary: "#E11D48",
+    glow: "rgba(251, 113, 133, 0.35)",
+    bgStart: "#2E111C",
+    bgEnd: "#17080E",
+    borderStart: "#FB7185",
+    borderEnd: "#BE123C",
+  },
+  {
+    id: "blue",
+    primary: "#38BDF8",
+    secondary: "#2563EB",
+    glow: "rgba(56, 189, 248, 0.35)",
+    bgStart: "#0E1F33",
+    bgEnd: "#08101A",
+    borderStart: "#38BDF8",
+    borderEnd: "#1D4ED8",
+  },
 ];
 
-function getAvatarColor(name) {
-  if (!name) return AVATAR_COLORS[0];
+function ClientAvatar({ name, size = 36, className = "" }) {
+  const safeName = (name || "Client").trim();
   let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  for (let i = 0; i < safeName.length; i++) {
+    hash = safeName.charCodeAt(i) + ((hash << 5) - hash);
   }
-  const index = Math.abs(hash) % AVATAR_COLORS.length;
-  return AVATAR_COLORS[index];
+  const themeIndex = Math.abs(hash) % AVATAR_THEMES.length;
+  const t = AVATAR_THEMES[themeIndex];
+  const uid = `av-${Math.abs(hash)}`;
+
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 44 44"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      style={{ flexShrink: 0, borderRadius: "50%", display: "block" }}
+      aria-hidden="true"
+    >
+      <defs>
+        <radialGradient
+          id={`${uid}-bg`}
+          cx="50%"
+          cy="30%"
+          r="70%"
+          fx="50%"
+          fy="30%"
+        >
+          <stop offset="0%" stopColor={t.bgStart} />
+          <stop offset="100%" stopColor={t.bgEnd} />
+        </radialGradient>
+        <linearGradient
+          id={`${uid}-border`}
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop offset="0%" stopColor={t.borderStart} stopOpacity="0.85" />
+          <stop offset="50%" stopColor={t.borderStart} stopOpacity="0.2" />
+          <stop offset="100%" stopColor={t.borderEnd} stopOpacity="0.7" />
+        </linearGradient>
+        <linearGradient
+          id={`${uid}-accent`}
+          x1="0%"
+          y1="0%"
+          x2="100%"
+          y2="100%"
+        >
+          <stop offset="0%" stopColor={t.primary} />
+          <stop offset="100%" stopColor={t.secondary} />
+        </linearGradient>
+        <filter id={`${uid}-glow`} x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="1.5" stdDeviation="2" floodColor={t.glow} />
+        </filter>
+      </defs>
+
+      {/* Main Glass Sphere Base */}
+      <circle cx="22" cy="22" r="21" fill={`url(#${uid}-bg)`} />
+
+      {/* Outer Metallic Luxury Ring */}
+      <circle
+        cx="22"
+        cy="22"
+        r="20.5"
+        stroke={`url(#${uid}-border)`}
+        strokeWidth="1.3"
+      />
+
+      {/* Precision Geometric Blueprint Ring */}
+      <circle
+        cx="22"
+        cy="22"
+        r="16"
+        stroke={t.primary}
+        strokeOpacity="0.12"
+        strokeWidth="0.8"
+        strokeDasharray="2 3"
+      />
+
+      {/* Executive User Silhouette Vector */}
+      <g filter={`url(#${uid}-glow)`}>
+        {/* Head */}
+        <circle cx="22" cy="14.8" r="5.2" fill={`url(#${uid}-accent)`} />
+        
+        {/* Torso & Shoulders */}
+        <path
+          d="M10.5 34 C10.5 26.5 15.5 24 22 24 C28.5 24 33.5 26.5 33.5 34 C33.5 35 32.5 35.5 31.5 35.5 L12.5 35.5 C11.5 35.5 10.5 35 10.5 34 Z"
+          fill={`url(#${uid}-accent)`}
+          fillOpacity="0.92"
+        />
+
+        {/* Executive Collar Notch */}
+        <path
+          d="M19.5 24 L22 27.5 L24.5 24"
+          stroke={t.bgEnd}
+          strokeWidth="1.3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+
+      {/* Glassmorphic Specular Light Reflection */}
+      <path
+        d="M9 13 C12 7 19 5 27 6"
+        stroke="#FFFFFF"
+        strokeWidth="1.2"
+        strokeOpacity="0.32"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
 }
 
 export default function InquiriesManager({
@@ -462,8 +620,6 @@ export default function InquiriesManager({
               filteredInquiries.map((inquiry) => {
                 const isSelected = inquiry.id === selectedInquiryId;
                 const isUnread = (inquiry.status || "unread") === "unread";
-                const avatarBg = getAvatarColor(inquiry.name);
-                const initial = (inquiry.name || "C").charAt(0).toUpperCase();
                 const snippet = (inquiry.message || "").replace(/\s+/g, " ");
 
                 return (
@@ -484,12 +640,11 @@ export default function InquiriesManager({
                     </div>
 
                     {/* SENDER AVATAR */}
-                    <div
+                    <ClientAvatar
+                      name={inquiry.name}
+                      size={36}
                       className={styles.rowAvatar}
-                      style={{ backgroundColor: avatarBg }}
-                    >
-                      {initial}
-                    </div>
+                    />
 
                     {/* ROW DETAILS */}
                     <div className={styles.rowContent}>
@@ -654,12 +809,11 @@ export default function InquiriesManager({
 
                   {/* 2. SENDER HEADER (CLEAN CLIENT INFO WITHOUT RECIPIENT LINE) */}
                   <div className={styles.senderHeaderCard}>
-                    <div
+                    <ClientAvatar
+                      name={activeInquiry.name}
+                      size={48}
                       className={styles.senderLargeAvatar}
-                      style={{ backgroundColor: getAvatarColor(activeInquiry.name) }}
-                    >
-                      {(activeInquiry.name || "C").charAt(0).toUpperCase()}
-                    </div>
+                    />
 
                     <div className={styles.senderMetaCol}>
                       <div className={styles.senderPrimaryRow}>
