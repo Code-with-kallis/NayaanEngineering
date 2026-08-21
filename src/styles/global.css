@@ -1,4 +1,4 @@
-/* src/styles/global.css — Vector-Grade Crisp Typography Reset */
+/* src/styles/global.css — Production Reset & Base Styles */
 
 *,
 *::before,
@@ -7,7 +7,7 @@
   padding: 0;
   box-sizing: border-box;
 
-  /* 1. Crisp glyph rendering & legibility */
+  /* Crisp glyph rendering & legibility */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -21,7 +21,7 @@ html {
   text-size-adjust: 100%;
 }
 
-/* Official Lenis Smooth Scroll Engine Specifications */
+/* Lenis Smooth Scroll Engine Specifications */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -49,7 +49,7 @@ body {
   min-height: 100dvh;
   overflow-x: clip;
   background-color: var(--nei-bg-page, #FFFFFF);
-  color: #000000;
+  color: var(--nei-text-body);
   font-family: var(--nei-font-body, 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   font-size: 1rem;
   font-weight: 400;
@@ -58,10 +58,10 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Headings — Ultra-Sharp Vector Contrast (Untouched Hierarchy & Fonts) */
+/* Headings — Ultra-Sharp Vector Contrast */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--nei-font-heading, 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  color: #000000;
+  color: var(--nei-text-title);
   font-weight: 800;
   line-height: 1.18;
   letter-spacing: -0.03em;
@@ -76,7 +76,7 @@ h6 { font-size: 0.875rem; font-weight: 700; text-transform: uppercase; letter-sp
 
 /* Paragraphs & Descriptions — Outfit Font for Crisp Readable Supporting Text */
 p {
-  color: #000000;
+  color: var(--nei-text-body);
   font-family: var(--nei-font-body, 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   font-weight: 400;
   line-height: 1.65;
@@ -85,9 +85,9 @@ p {
 
 /* Interactive & Media Elements */
 a {
-  color: #000000;
+  color: var(--nei-text-title);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--nei-transition-fast);
 }
 
 a:hover {
@@ -100,10 +100,10 @@ img, svg, video {
   display: block;
 }
 
+/* Form Controls — Inherit typography, accessible focus */
 button, input, textarea, select {
   font-family: inherit;
   font-size: inherit;
-  outline: none;
   color: inherit;
 }
 
@@ -113,40 +113,109 @@ button {
   background: none;
 }
 
+/* Accessible Focus: visible ring for keyboard users, hidden for mouse/touch */
+:focus-visible {
+  outline: 2px solid var(--nei-brand-primary);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* Text Selection Accent */
 ::selection {
-  background-color: #FFBB0F;
-  color: #000000;
+  background-color: var(--nei-brand-primary);
+  color: var(--nei-text-title);
 }
 
 /* Shared Container */
 .container {
   width: 100%;
-  max-width: 1280px;
+  max-width: var(--nei-container-max);
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 4vw, 3rem);
+  padding-inline: var(--nei-container-pad);
 }
 
-/* Global Mustard Scrollbar */
+/* Scrollbar — Brand Mustard */
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F4F4F5;
+  background: var(--nei-bg-surface);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #FFBB0F;
-  border-radius: 9999px;
+  background-color: var(--nei-brand-primary);
+  border-radius: var(--nei-radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #E5A70D;
+  background-color: var(--nei-brand-hover);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #FFBB0F #F4F4F5;
+  scrollbar-color: var(--nei-brand-primary) var(--nei-bg-surface);
+}
+
+/* App Layout & Constraints */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--nei-bg-page);
+  color: var(--nei-text-title);
+}
+
+main#main {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Modal/Menu Scroll Locking — Maintains scroll position without snapping */
+html.nav-menu-open,
+body.nav-menu-open {
+  overflow: hidden !important;
+  touch-action: pan-y;
+  overscroll-behavior: none;
+}
+
+/* Skip-to-Content Link — Visually hidden until keyboard focus */
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0.75rem 1.5rem;
+  overflow: visible;
+  clip: auto;
+  clip-path: none;
+  white-space: normal;
+  top: 1rem;
+  left: 1rem;
+  z-index: 9999;
+  background-color: var(--nei-brand-primary);
+  color: var(--nei-text-title);
+  font-family: var(--nei-font-heading);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: var(--nei-radius-sm);
 }

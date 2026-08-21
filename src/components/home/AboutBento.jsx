@@ -56,7 +56,7 @@ export default function AboutBento() {
             <div className={styles.cardContentRelative}>
               <div className={styles.brandHeader}>
                 <span className={styles.brandName}>
-                  Nayaab Engineering Innovations <span className={styles.pvtLtd}>Pvt. Ltd.</span>
+                  Nayaab Engineering Innovations
                 </span>
                 <div className={styles.brandLine} />
               </div>

@@ -35,13 +35,11 @@
   --nei-section-pad-y: clamp(3.5rem, 6vw, 6rem);
 
   /* ===== TYPOGRAPHY SCALE & FONT SYSTEM ===== */
-  --nei-font-family:    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --nei-font-heading:   'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --nei-font-primary:   'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --nei-font-body:      'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --nei-font-secondary: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --nei-font-meta:      'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --nei-font-mono:      'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --nei-font-meta:      var(--nei-font-mono);
 
   --nei-font-display: clamp(2.25rem, 5vw, 3.5rem);
   --nei-font-h1:      clamp(1.85rem, 3.5vw, 2.75rem);

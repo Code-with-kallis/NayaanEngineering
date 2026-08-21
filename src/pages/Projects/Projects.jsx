@@ -273,16 +273,16 @@ export default function Projects() {
         variant="standard"
         eyebrow={
           <div
-  style={{
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "0.5rem",
-    fontFamily: "'Manrope', sans-serif",
-    fontSize: "0.85rem",
-    fontWeight: 500,
-    letterSpacing: "0.01em",
-  }}
->
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              fontFamily: "var(--nei-font-body, 'Outfit', sans-serif)",
+              fontSize: "0.85rem",
+              fontWeight: 500,
+              letterSpacing: "0.01em",
+            }}
+          >
   <FaHome style={{ color: "#FFFFFF", fontSize: "0.8rem" }} />
   <Link to="/" style={{ color: "#A1A1AA", textDecoration: "none" }}>
     Home

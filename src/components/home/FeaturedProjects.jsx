@@ -36,7 +36,8 @@ export default function FeaturedProjects({
               <span>Featured Portfolio</span>
             </div>
             <h2 id="featured-projects-title" className={styles.splitTitle}>
-              Featured Work
+              Engineering In Practice
+
             </h2>
           </div>
 

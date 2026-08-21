@@ -157,14 +157,7 @@
   white-space: nowrap;
 }
 
-/* PVT. LTD. IN GREY */
-.pvtLtd {
-  color: #71717A;
-  font-weight: 700;
-  font-size: 0.9em;
-  letter-spacing: 0.04em;
-  margin-left: 0.25rem;
-}
+
 
 /* SOLID BLACK UNDERLINE WITH INCREASED GAP */
 .brandLine {
@@ -303,13 +296,11 @@
   min-height: 340px;
   background: #E4E4E7;
   overflow: hidden;
-  clip-path: polygon(
-    0 0,
-    calc(100% - 44px) 0,
-    100% 44px,
-    100% 100%,
-    0 100%
-  );
+  clip-path: polygon(0 0,
+      calc(100% - 44px) 0,
+      100% 44px,
+      100% 100%,
+      0 100%);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
 }
 
@@ -375,8 +366,8 @@
   justify-content: center;
   font-size: 0.7rem;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              background-color 0.25s ease,
-              color 0.25s ease;
+    background-color 0.25s ease,
+    color 0.25s ease;
   flex-shrink: 0;
 }
 
@@ -426,13 +417,11 @@
   .imageCard {
     grid-column: 1 / -1;
     min-height: 280px;
-    clip-path: polygon(
-      0 0,
-      calc(100% - 32px) 0,
-      100% 32px,
-      100% 100%,
-      0 100%
-    );
+    clip-path: polygon(0 0,
+        calc(100% - 32px) 0,
+        100% 32px,
+        100% 100%,
+        0 100%);
   }
 
   .bigStatNum {
@@ -530,13 +519,11 @@
   .imageCard {
     min-height: 220px;
     height: 220px;
-    clip-path: polygon(
-      0 0,
-      calc(100% - 20px) 0,
-      100% 20px,
-      100% 100%,
-      0 100%
-    );
+    clip-path: polygon(0 0,
+        calc(100% - 20px) 0,
+        100% 20px,
+        100% 100%,
+        0 100%);
   }
 
   .sectionFooter {

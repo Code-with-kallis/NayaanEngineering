@@ -76,15 +76,15 @@
 }
 
 .splitDesc {
-  color: #52525B;
-  font-family: var(--nei-font-body, 'Outfit', sans-serif);
-  font-size: clamp(0.9rem, 1.05vw, 0.975rem);
+  color: var(--nei-text-subtle, #52525B);
+  font-family: var(--nei-font-body, 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: clamp(0.95rem, 0.2vw + 0.9rem, 1.05rem);
   font-weight: 400;
   line-height: 1.65;
   margin: 0;
   max-width: 48ch;
   text-align: right;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
 }
 
 /* ===== 3-COLUMN CARD GRID (DESKTOP) ===== */
@@ -315,21 +315,21 @@
 
 .salutationText {
   color: #0A0A0A;
-  font-family: var(--nei-font-body, 'Outfit', sans-serif);
-  font-size: 0.88rem;
+  font-family: var(--nei-font-body, 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 0.925rem;
   font-weight: 600;
   margin: 0 0 0.75rem 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
 }
 
 .excerptText {
-  color: #3F3F46;
-  font-family: var(--nei-font-body, 'Outfit', sans-serif);
-  font-size: 0.915rem;
+  color: var(--nei-text-subtle, #52525B);
+  font-family: var(--nei-font-body, 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 0.925rem;
   font-weight: 400;
   line-height: 1.65;
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
 }
 
 .fullTextBlock {
@@ -340,11 +340,12 @@
 }
 
 .fullTextBlock p {
-  font-family: var(--nei-font-body, 'Outfit', sans-serif);
-  font-size: 0.915rem;
+  font-family: var(--nei-font-body, 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 0.925rem;
   font-weight: 400;
   line-height: 1.65;
-  color: #3F3F46;
+  color: var(--nei-text-subtle, #52525B);
+  letter-spacing: -0.012em;
 }
 
 @keyframes fadeInText {
@@ -359,12 +360,12 @@
 }
 
 .fullParagraph {
-  color: #3F3F46;
-  font-size: 0.9rem;
+  color: var(--nei-text-subtle, #52525B);
+  font-size: 0.925rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.65;
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.012em;
 }
 
 /* FOOTER BUTTON */
