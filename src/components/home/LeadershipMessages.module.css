@@ -152,7 +152,7 @@
   min-width: 0;
 }
 
-/* EXECUTIVE AVATAR */
+/* EXECUTIVE AVATAR (MUSTARD BACKGROUND FOR PNGS) */
 .avatarContainer {
   position: relative;
   display: inline-flex;
@@ -163,7 +163,7 @@
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: #0A0A0A;
+  background: #F5F5F3;
   border: 2.5px solid #FFFFFF;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
   overflow: hidden;
