@@ -68,7 +68,7 @@ export default async function handler(req, res) {
 
       // Email 1: Notify Admin about Unsubscription
       const adminUnsubPromise = resend.emails.send({
-        from: `Newsletter Update <${SENDER_EMAIL}>`,
+        from: `Newsletter Unsubscribe <newsletter@nayaabengineering.com>`,
         to: [ADMIN_EMAIL],
         replyTo: cleanEmail,
         subject: `Newsletter Unsubscription: ${cleanEmail}`,
@@ -170,7 +170,7 @@ export default async function handler(req, res) {
 
     // 2. DISPATCH NOTIFICATION EMAIL TO ADMIN
     const adminEmailPromise = resend.emails.send({
-      from: `Newsletter Subscriber <${SENDER_EMAIL}>`,
+      from: `Website Subscriber <newsletter@nayaabengineering.com>`,
       to: [ADMIN_EMAIL],
       replyTo: cleanEmail,
       subject: `New Newsletter Subscriber: ${cleanEmail}`,

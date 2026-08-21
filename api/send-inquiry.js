@@ -55,10 +55,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. DISPATCH NOTIFICATION EMAIL TO ADMIN (Clean, zero-image, text-first)
-    // Display name is set to "${cleanName} (Website Inquiry)" so the admin inbox shows the client name instead of "me"
+    // 1. DISPATCH NOTIFICATION EMAIL TO ADMIN
+    // Sent from inquiry@nayaabengineering.com so the inbox shows the client name instead of "me"
     const adminEmailPromise = resend.emails.send({
-      from: `${cleanName} [Website Inquiry] <${SENDER_EMAIL}>`,
+      from: `${cleanName} [Website Contact] <inquiry@nayaabengineering.com>`,
       to: [ADMIN_EMAIL],
       replyTo: cleanEmail,
       subject: `New Inquiry: ${cleanService} - ${cleanName}`,
