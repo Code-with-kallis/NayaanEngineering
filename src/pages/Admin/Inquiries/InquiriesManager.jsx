@@ -137,6 +137,18 @@ export default function InquiriesManager({
   const viewerScrollRef = useRef(null);
   const listScrollRef = useRef(null);
 
+  // 1. Disable Lenis scroll engine inside standalone Webmail so native mousewheel & middle click work smoothly
+  useEffect(() => {
+    if (window.lenis) {
+      window.lenis.stop();
+    }
+    return () => {
+      if (window.lenis) {
+        window.lenis.start();
+      }
+    };
+  }, []);
+
   const fetchInquiries = useCallback(async (isSilent = false) => {
     if (!isSilent) setLoading(true);
     else setRefreshing(true);
@@ -157,7 +169,7 @@ export default function InquiriesManager({
 
       setInquiries(clientInquiriesOnly);
 
-      // Auto select first inquiry on desktop if none selected
+      // Auto select first inquiry on desktop (>900px) if none selected
       if (!selectedInquiryId && clientInquiriesOnly.length > 0 && typeof window !== "undefined" && window.innerWidth > 900) {
         setSelectedInquiryId(clientInquiriesOnly[0].id);
       }
@@ -180,8 +192,8 @@ export default function InquiriesManager({
   const copyToClipboard = (text, label) => {
     if (!text || text === "Not Provided") return;
     navigator.clipboard.writeText(text);
-    setCopiedText(`${label} copied to clipboard!`);
-    setTimeout(() => setCopiedText(null), 2400);
+    setCopiedText(`${label} copied!`);
+    setTimeout(() => setCopiedText(null), 2200);
   };
 
   const handleUpdateStatus = async (id, nextStatus) => {
@@ -223,7 +235,7 @@ export default function InquiriesManager({
     if (showConfirm) {
       showConfirm({
         title: "Delete Inquiry",
-        message: `Are you sure you want to permanently delete this inquiry from ${clientName || "the sender"}?`,
+        message: `Are you sure you want to delete the inquiry from ${clientName || "the sender"}?`,
         confirmText: "Delete",
         isDanger: true,
         onConfirm: async () => {
@@ -289,7 +301,7 @@ export default function InquiriesManager({
   }, [inquiries, selectedInquiryId]);
 
   return (
-    <div className={styles.standaloneWebmailApp}>
+    <div className={styles.standaloneWebmailApp} data-lenis-prevent="true">
       {/* ================= 1. WEBMAIL TOP APP HEADER ================= */}
       <header className={styles.webmailAppHeader}>
         <div className={styles.headerBrandCol}>
@@ -301,17 +313,17 @@ export default function InquiriesManager({
               title="Return to Admin Dashboard"
             >
               <FaArrowLeft />
-              <span>Back to Dashboard</span>
+              <span className={styles.backBtnText}>Dashboard</span>
             </button>
           )}
 
           <div className={styles.brandTitleWrap}>
-            <span className={styles.brandTitle}>NEIPL Webmail</span>
-            <span className={styles.brandBadge}>Client Inquiries</span>
+            <span className={styles.brandTitle}>NEIPL Mail</span>
+            <span className={styles.brandBadge}>Inbox</span>
           </div>
         </div>
 
-        {/* CENTER: FOLDER TABS (INBOX, UNREAD, REPLIED) */}
+        {/* CENTER: FOLDER TABS (DESKTOP) */}
         <div className={styles.headerTabsWrap}>
           <button
             type="button"
@@ -319,7 +331,7 @@ export default function InquiriesManager({
             onClick={() => setActiveTabFilter("all")}
           >
             <FaInbox className={styles.tabIcon} />
-            <span>All Inquiries</span>
+            <span>All</span>
             <span className={styles.tabBadge}>{stats.total}</span>
           </button>
 
@@ -346,7 +358,7 @@ export default function InquiriesManager({
           </button>
         </div>
 
-        {/* RIGHT: LIVE CONTROLS */}
+        {/* RIGHT: CONTROLS */}
         <div className={styles.headerRightControls}>
           <button
             type="button"
@@ -356,7 +368,7 @@ export default function InquiriesManager({
             title="Refresh Inquiries Live"
           >
             <FaSyncAlt className={refreshing ? styles.spinnerIcon : ""} />
-            <span>{refreshing ? "Syncing..." : "Sync Live"}</span>
+            <span className={styles.syncBtnLabel}>{refreshing ? "Sync..." : "Sync"}</span>
           </button>
 
           <Link
@@ -396,7 +408,7 @@ export default function InquiriesManager({
               <FaSearch className={styles.searchIcon} />
               <input
                 type="text"
-                placeholder="Search sender, email, keywords..."
+                placeholder="Search inquiries, names, emails..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -425,21 +437,25 @@ export default function InquiriesManager({
             </select>
           </div>
 
-          {/* SCROLLABLE EMAIL ROWS (MOUSEWHEEL ENABLED) */}
-          <div className={styles.mailRowsScrollArea} ref={listScrollRef}>
+          {/* SCROLLABLE EMAIL ROWS (MOUSEWHEEL ENABLED & LENIS BYPASSED) */}
+          <div
+            className={styles.mailRowsScrollArea}
+            ref={listScrollRef}
+            data-lenis-prevent="true"
+          >
             {loading ? (
               <div className={styles.paneLoadingState}>
                 <FaSpinner className={styles.spinnerIcon} />
-                <span>Loading client inquiries...</span>
+                <span>Loading mailbox...</span>
               </div>
             ) : filteredInquiries.length === 0 ? (
               <div className={styles.paneEmptyState}>
                 <FaInbox className={styles.emptyInboxIcon} />
-                <h4>No client inquiries</h4>
+                <h4>No inquiries found</h4>
                 <p>
                   {inquiries.length === 0
                     ? "Inquiries submitted via website contact form will appear here in real-time."
-                    : "No inquiries matched your active search or category filter."}
+                    : "No inquiries matched your search or category filter."}
                 </p>
               </div>
             ) : (
@@ -504,7 +520,7 @@ export default function InquiriesManager({
           </div>
         </aside>
 
-        {/* RIGHT PANE: LIVE READING PANE (MOUSEWHEEL ENABLED & PROMINENT VISIBILITY) */}
+        {/* RIGHT PANE: LIVE READING PANE */}
         <section
           className={`${styles.readingPane} ${
             activeInquiry ? styles.readingPaneActiveMobile : ""
@@ -512,10 +528,10 @@ export default function InquiriesManager({
         >
           {activeInquiry ? (
             <div className={styles.messageViewerContainer}>
-              {/* TOP ACTION TOOLBAR */}
+              {/* TOP ACTION TOOLBAR (MOBILE & DESKTOP ALIGNED) */}
               <div className={styles.viewerToolbar}>
                 <div className={styles.toolbarLeft}>
-                  {/* MOBILE BACK BUTTON */}
+                  {/* MOBILE BACK TO INBOX BUTTON */}
                   <button
                     type="button"
                     className={styles.mobileBackBtn}
@@ -523,7 +539,7 @@ export default function InquiriesManager({
                     title="Back to inbox list"
                   >
                     <FaArrowLeft />
-                    <span>Inbox</span>
+                    <span>Back</span>
                   </button>
 
                   {/* 1-CLICK GMAIL COMPOSE LINK */}
@@ -543,7 +559,8 @@ export default function InquiriesManager({
                       title="Open Gmail to compose reply"
                     >
                       <FaReply />
-                      <span>Reply via Gmail</span>
+                      <span className={styles.btnLabelFull}>Reply via Gmail</span>
+                      <span className={styles.btnLabelShort}>Gmail</span>
                     </a>
                   )}
 
@@ -560,7 +577,8 @@ export default function InquiriesManager({
                       title="Chat on WhatsApp"
                     >
                       <FaWhatsapp />
-                      <span>WhatsApp Client</span>
+                      <span className={styles.btnLabelFull}>WhatsApp</span>
+                      <span className={styles.btnLabelShort}>WA</span>
                     </a>
                   )}
                 </div>
@@ -581,7 +599,7 @@ export default function InquiriesManager({
                     }
                   >
                     {activeInquiry.status === "unread" ? <FaEnvelopeOpen /> : <FaEnvelope />}
-                    <span>
+                    <span className={styles.btnLabelFull}>
                       {activeInquiry.status === "unread" ? "Mark Read" : "Mark Unread"}
                     </span>
                   </button>
@@ -594,13 +612,17 @@ export default function InquiriesManager({
                     title="Delete Inquiry"
                   >
                     <FaTrash />
-                    <span>Delete</span>
+                    <span className={styles.btnLabelFull}>Delete</span>
                   </button>
                 </div>
               </div>
 
               {/* LIVE SCROLLABLE MESSAGE READER BODY */}
-              <div className={styles.viewerScrollArea} ref={viewerScrollRef}>
+              <div
+                className={styles.viewerScrollArea}
+                ref={viewerScrollRef}
+                data-lenis-prevent="true"
+              >
                 <div className={styles.viewerInnerContent}>
                   {/* 1. SUBJECT & SERVICE BADGE */}
                   <div className={styles.messageSubjectHeader}>
@@ -632,7 +654,7 @@ export default function InquiriesManager({
                     </div>
                   </div>
 
-                  {/* 2. SENDER HEADER (HOSTINGER WEBMAIL STYLE) */}
+                  {/* 2. SENDER HEADER */}
                   <div className={styles.senderHeaderCard}>
                     <div
                       className={styles.senderLargeAvatar}
@@ -669,12 +691,12 @@ export default function InquiriesManager({
                   <div className={styles.clientDetailsBox}>
                     <div className={styles.clientDetailsHeader}>
                       <FaInfoCircle className={styles.detailsHeaderIcon} />
-                      <span>Contact &amp; Submission Information</span>
+                      <span>Contact &amp; Submission Details</span>
                     </div>
 
                     <div className={styles.detailGrid}>
                       <div className={styles.detailGridItem}>
-                        <span className={styles.detailGridLabel}>Client Full Name</span>
+                        <span className={styles.detailGridLabel}>Client Name</span>
                         <div className={styles.detailGridValueRow}>
                           <FaUser className={styles.detailGridIcon} />
                           <strong className={styles.detailGridValueText}>{activeInquiry.name || "Not Provided"}</strong>
@@ -682,7 +704,7 @@ export default function InquiriesManager({
                       </div>
 
                       <div className={styles.detailGridItem}>
-                        <span className={styles.detailGridLabel}>Service Requested</span>
+                        <span className={styles.detailGridLabel}>Discipline</span>
                         <div className={styles.detailGridValueRow}>
                           <FaBuilding className={styles.detailGridIcon} />
                           <span className={styles.detailGridValueText}>{activeInquiry.service || "General Inquiry"}</span>
@@ -699,7 +721,7 @@ export default function InquiriesManager({
                               type="button"
                               className={styles.copySmallBtn}
                               onClick={() => copyToClipboard(activeInquiry.email, "Email")}
-                              title="Copy Email Address"
+                              title="Copy Email"
                             >
                               <FaCopy />
                             </button>
@@ -708,7 +730,7 @@ export default function InquiriesManager({
                       </div>
 
                       <div className={styles.detailGridItem}>
-                        <span className={styles.detailGridLabel}>Phone / WhatsApp</span>
+                        <span className={styles.detailGridLabel}>Phone Number</span>
                         <div className={styles.detailGridValueRow}>
                           <FaPhoneAlt className={styles.detailGridIcon} />
                           <span className={styles.detailGridValueText}>{activeInquiry.phone || "Not Provided"}</span>
@@ -717,7 +739,7 @@ export default function InquiriesManager({
                               type="button"
                               className={styles.copySmallBtn}
                               onClick={() => copyToClipboard(activeInquiry.phone, "Phone")}
-                              title="Copy Phone Number"
+                              title="Copy Phone"
                             >
                               <FaCopy />
                             </button>
@@ -733,7 +755,7 @@ export default function InquiriesManager({
                       <FaCommentDots className={styles.messageHeaderIcon} />
                       <span>Message</span>
                     </div>
-                    <div className={styles.emailBodyText} style={{ color: "#FFFFFF", fontWeight: 600 }}>
+                    <div className={styles.emailBodyText}>
                       {activeInquiry.message ? (
                         activeInquiry.message.split("\n").map((paragraph, index) => (
                           <p
@@ -765,7 +787,7 @@ export default function InquiriesManager({
               <div className={styles.emptyMailboxIllustration}>
                 <FaEnvelope className={styles.largeMailIcon} />
               </div>
-              <h3>Select a message to view</h3>
+              <h3>Select an inquiry to view</h3>
               <p>Click on any client inquiry from the list on the left to read their complete project requirements.</p>
             </div>
           )}
