@@ -161,6 +161,15 @@
   min-height: 110px;
 }
 
+.charCounter {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #71717A;
+  margin-top: 4px;
+}
+
 .field input::placeholder,
 .field textarea::placeholder {
   color: #71717A;

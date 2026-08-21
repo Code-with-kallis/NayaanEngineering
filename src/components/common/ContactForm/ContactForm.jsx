@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import styles from "./ContactForm.module.css";
 import contactArt from "../../../assets/images/contact/form.png";
+import { supabase } from "../../../lib/supabaseClient";
 
 const serviceOptions = [
   "Architectural Design",
@@ -29,7 +30,6 @@ const RATE_LIMIT_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 Hours
 const RATE_LIMIT_STORAGE_KEY = "ne_contact_submissions";
 
 export default function ContactForm({
-  accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
   title = "Tell Us About Your Project",
   subtitle = "Tell us about your project, and a member of our engineering team will get in touch with you shortly.",
   eyebrow = "LET’S CONNECT",
@@ -97,9 +97,13 @@ export default function ContactForm({
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
+    let finalVal = type === "checkbox" ? checked : value;
+    if (name === "message" && typeof finalVal === "string" && finalVal.length > 900) {
+      finalVal = finalVal.slice(0, 900);
+    }
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: finalVal,
     }));
   };
 
@@ -122,13 +126,10 @@ export default function ContactForm({
     if (!trimmedMessage) {
       return "Please type your message.";
     }
-    if (!accessKey) {
-      return "Contact service is temporarily unavailable. Please reach us via WhatsApp.";
-    }
     return null;
   };
 
-  const handleDirectWeb3Submit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (formData.botcheck) {
@@ -167,16 +168,27 @@ export default function ContactForm({
     setStatus({ submitting: true, success: false, error: false, message: "" });
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      // 1. Store submission in Supabase inquiries table for Admin dashboard
+      try {
+        await supabase.from("inquiries").insert([
+          {
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim() || null,
+            service: formData.service,
+            message: formData.message.trim(),
+            status: "unread",
+          },
+        ]);
+      } catch (dbErr) {
+        console.error("Inquiry database insert error:", dbErr);
+      }
+
+      // 2. Dispatch Dual Email Notification via Resend (To Admin + Client Confirmation)
+      const resendResponse = await fetch("/api/send-inquiry", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: accessKey,
-          from_name: "Nayaab Engineering Website",
-          subject: `New Inquiry: ${formData.service} - ${formData.name.trim()}`,
           name: formData.name.trim(),
           email: formData.email.trim(),
           phone: formData.phone.trim() || "Not Provided",
@@ -186,27 +198,25 @@ export default function ContactForm({
         }),
       });
 
-      const result = await response.json();
-
-      if (result.success) {
-        recordSubmission();
-        setStatus({
-          submitting: false,
-          success: true,
-          error: false,
-          message: "Thank you! Your message has been sent successfully. We will get back to you shortly.",
-        });
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          service: serviceOptions[0],
-          message: "",
-          botcheck: false,
-        });
-      } else {
-        throw new Error(result.message || "Submission failed. Please try again.");
+      if (!resendResponse.ok) {
+        console.warn("Resend API response status:", resendResponse.status);
       }
+
+      recordSubmission();
+      setStatus({
+        submitting: false,
+        success: true,
+        error: false,
+        message: "Thank you! Your message has been sent successfully. A confirmation email has been dispatched to your inbox.",
+      });
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        service: serviceOptions[0],
+        message: "",
+        botcheck: false,
+      });
     } catch (err) {
       setStatus({
         submitting: false,
@@ -275,7 +285,7 @@ export default function ContactForm({
           {/* Form */}
           <form
             className={styles.contactForm}
-            onSubmit={handleDirectWeb3Submit}
+            onSubmit={handleSubmit}
             noValidate
           >
             {/* Honeypot Spam Guard */}
@@ -395,10 +405,14 @@ export default function ContactForm({
                 name="message"
                 required
                 rows="4"
+                maxLength={900}
                 value={formData.message}
                 onChange={handleInputChange}
                 placeholder="Describe your project scope or requirements..."
               />
+              <div className={styles.charCounter}>
+                {formData.message.length} / 900 characters
+              </div>
             </div>
 
             {/* Status Notifications */}

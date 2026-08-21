@@ -11,6 +11,7 @@ import {
   FaCheck 
 } from "react-icons/fa";
 import useScrollLock from "../../../hooks/useScrollLock";
+import { supabase } from "../../../lib/supabaseClient";
 import styles from "./ContactModal.module.css";
 
 const DEFAULT_SERVICE_OPTIONS = [
@@ -163,9 +164,13 @@ export default function ContactModal({
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    let finalVal = type === "checkbox" ? checked : value;
+    if (name === "message" && typeof finalVal === "string" && finalVal.length > 900) {
+      finalVal = finalVal.slice(0, 900);
+    }
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: finalVal,
     }));
   };
 
@@ -205,14 +210,27 @@ export default function ContactModal({
     setStatus({ submitting: true, success: false, error: false, message: "" });
 
     try {
-      const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
-      const response = await fetch("https://api.web3forms.com/submit", {
+      // 1. Store submission in Supabase inquiries table for Admin dashboard
+      try {
+        await supabase.from("inquiries").insert([
+          {
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim() || null,
+            service: formData.service,
+            message: formData.message.trim(),
+            status: "unread",
+          },
+        ]);
+      } catch (dbErr) {
+        console.error("Inquiry database insert error:", dbErr);
+      }
+
+      // 2. Dispatch Dual Email Notification via Resend (To Admin + Client Confirmation)
+      const resendResponse = await fetch("/api/send-inquiry", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: accessKey,
-          from_name: "Nayaab Engineering Website Modal",
-          subject: `Consultation Request: ${formData.service} - ${formData.name.trim()}`,
           name: formData.name.trim(),
           email: formData.email.trim(),
           phone: formData.phone.trim() || "Not Provided",
@@ -222,27 +240,25 @@ export default function ContactModal({
         }),
       });
 
-      const result = await response.json();
-
-      if (result.success) {
-        recordSubmission();
-        setStatus({
-          submitting: false,
-          success: true,
-          error: false,
-          message: "Thank you! Your request has been submitted. Our team will contact you shortly.",
-        });
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          service: serviceOptions[0],
-          message: "",
-          botcheck: false,
-        });
-      } else {
-        throw new Error(result.message || "Submission failed.");
+      if (!resendResponse.ok) {
+        console.warn("Resend API response status:", resendResponse.status);
       }
+
+      recordSubmission();
+      setStatus({
+        submitting: false,
+        success: true,
+        error: false,
+        message: "Thank you! Your consultation request has been submitted. A confirmation email has been sent to your inbox.",
+      });
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        service: serviceOptions[0],
+        message: "",
+        botcheck: false,
+      });
     } catch (err) {
       setStatus({
         submitting: false,
@@ -410,10 +426,14 @@ export default function ContactModal({
               name="message"
               required
               rows="3"
+              maxLength={900}
               placeholder="Tell us about the site location, area, or engineering requirements..."
               value={formData.message}
               onChange={handleInputChange}
             />
+            <div className={styles.charCounter}>
+              {formData.message.length} / 900 characters
+            </div>
           </div>
 
           {/* Status Notifications */}

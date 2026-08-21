@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
+import ContactModal from "../../components/common/ContactModal/ContactModal";
 import PageHero from "../../components/common/PageHero/PageHero";
 import heroStyles from "../../components/common/PageHero/PageHero.module.css";
 import styles from "./Projects.module.css";
@@ -43,6 +44,7 @@ export default function Projects() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [activePage, setActivePage] = useState(1);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   
   const projectsSectionRef = useRef(null);
   const filterDropdownRef = useRef(null);
@@ -296,9 +298,13 @@ export default function Projects() {
         subtitle="Explore our architectural and engineering work across Jammu & Kashmir."
         actions={
           <>
-            <Link to="/contact" className={heroStyles.btnPrimary}>
+            <button
+              type="button"
+              onClick={() => setIsContactModalOpen(true)}
+              className={heroStyles.btnPrimary}
+            >
               <span>Build With Us</span>
-            </Link>
+            </button>
             <button
               type="button"
               onClick={scrollToProjectsTop}
@@ -553,6 +559,13 @@ export default function Projects() {
         onPrev={handlePrevProject}
         currentIndex={currentModalIndex}
         totalProjects={filteredProjects.length}
+      />
+
+      {/* CONSULTATION CONTACT MODAL POPUP */}
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+        initialService="Turnkey Construction"
       />
     </div>
   );

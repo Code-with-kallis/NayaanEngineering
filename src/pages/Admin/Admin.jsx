@@ -32,6 +32,7 @@ import {
   FaEnvelope,
   FaPaperPlane,
 } from "react-icons/fa";
+import InquiriesManager from "./Inquiries/InquiriesManager";
 import styles from "./Admin.module.css";
 
 const CATEGORIES = [
@@ -121,6 +122,7 @@ export default function Admin() {
   // Sidebar and Tabs
   const [activeTab, setActiveTab] = useState("projects");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [unreadInquiriesCount, setUnreadInquiriesCount] = useState(0);
 
   // Projects list and filtering
   const [projectsList, setProjectsList] = useState([]);
@@ -212,6 +214,18 @@ export default function Admin() {
   const closeModal = () => {
     setModal((prev) => ({ ...prev, isOpen: false }));
   };
+
+  // Close modal on Escape key press
+  useEffect(() => {
+    if (!modal.isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [modal.isOpen]);
 
   // Check auth session on mount
   useEffect(() => {
@@ -399,9 +413,23 @@ export default function Admin() {
     }
   };
 
+  const fetchUnreadInquiriesCount = async () => {
+    try {
+      const { count, error } = await supabase
+        .from("inquiries")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "unread");
+
+      if (!error && typeof count === "number") {
+        setUnreadInquiriesCount(count);
+      }
+    } catch (_) {}
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       loadAllProjects();
+      fetchUnreadInquiriesCount();
     }
   }, [isAuthenticated]);
 
@@ -602,6 +630,10 @@ export default function Admin() {
   };
 
   const removeGalleryFile = (index) => {
+    const previewUrl = galleryPreviews[index];
+    if (previewUrl && previewUrl.startsWith("blob:")) {
+      try { URL.revokeObjectURL(previewUrl); } catch (_) { }
+    }
     setGalleryFiles((prev) => prev.filter((_, i) => i !== index));
     setGalleryPreviews((prev) => prev.filter((_, i) => i !== index));
   };
@@ -611,6 +643,14 @@ export default function Admin() {
   };
 
   const resetForm = () => {
+    if (coverPreview && coverPreview.startsWith("blob:")) {
+      try { URL.revokeObjectURL(coverPreview); } catch (_) { }
+    }
+    galleryPreviews.forEach((url) => {
+      if (url && url.startsWith("blob:")) {
+        try { URL.revokeObjectURL(url); } catch (_) { }
+      }
+    });
     setEditingId(null);
     setTitle("");
     setCategory("Residential");
@@ -871,15 +911,25 @@ export default function Admin() {
         </div>
 
         {modal.isOpen && (
-          <div className={styles.modalOverlay} onClick={closeModal}>
-            <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={styles.modalOverlay}
+            onClick={closeModal}
+            role="presentation"
+          >
+            <div
+              className={styles.modalCard}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="login-modal-title"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className={modal.isDanger ? styles.dangerIconBox : styles.alertIconBox}>
                 {modal.isDanger ? <FaExclamationTriangle /> : <FaInfoCircle />}
               </div>
-              <h3 className={styles.modalTitle}>{modal.title}</h3>
+              <h3 id="login-modal-title" className={styles.modalTitle}>{modal.title}</h3>
               <p className={styles.modalMessage}>{modal.message}</p>
               <div className={styles.modalActions}>
-                <button className={styles.modalConfirmBtn} onClick={modal.onConfirm}>
+                <button type="button" className={styles.modalConfirmBtn} onClick={modal.onConfirm}>
                   {modal.confirmText}
                 </button>
               </div>
@@ -896,8 +946,9 @@ export default function Admin() {
       {/* SIDEBAR */}
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarActive : ""}`}>
         <div className={styles.sidebarHeader}>
-          <Link to="/" className={styles.brandLink}>
-            <img src="/logo.png" alt="NEIPL Logo" className={styles.sidebarLogo} />
+          <Link to="/" className={styles.brandLink} aria-label="Go to homepage">
+            <img src="/logo2.png" alt="NEIPL Logo" className={styles.sidebarLogo} />
+            <span className={styles.sidebarBrandText}>NEIPL DASHBOARD</span>
           </Link>
           <button
             type="button"
@@ -923,6 +974,21 @@ export default function Admin() {
             <FaThLarge className={styles.navIcon} />
             <span>Projects Overview</span>
             <span className={styles.badgeCount}>{projectsList.length}</span>
+          </button>
+
+          <button
+            type="button"
+            className={`${styles.sidebarLink} ${activeTab === "inquiries" ? styles.sidebarLinkActive : ""}`}
+            onClick={() => {
+              setActiveTab("inquiries");
+              setSidebarOpen(false);
+            }}
+          >
+            <FaEnvelope className={styles.navIcon} />
+            <span>Client Inquiries</span>
+            {unreadInquiriesCount > 0 ? (
+              <span className={styles.badgeCountUnread}>{unreadInquiriesCount}</span>
+            ) : null}
           </button>
 
           <button
@@ -965,7 +1031,12 @@ export default function Admin() {
 
       {/* MOBILE BACKDROP */}
       {sidebarOpen && (
-        <div className={styles.sidebarBackdrop} onClick={() => setSidebarOpen(false)} />
+        <div
+          className={styles.sidebarBackdrop}
+          onClick={() => setSidebarOpen(false)}
+          role="presentation"
+          aria-hidden="true"
+        />
       )}
 
       {/* MAIN CONTENT AREA */}
@@ -983,6 +1054,7 @@ export default function Admin() {
             </button>
             <h1 className={styles.pageHeading}>
               {activeTab === "projects" && "Projects"}
+              {activeTab === "inquiries" && "Client Inquiries"}
               {activeTab === "form" && (editingId ? "Edit Project" : "New Project")}
               {activeTab === "settings" && "Settings"}
             </h1>
@@ -1166,7 +1238,7 @@ export default function Admin() {
 
                         <div className={styles.rowActions}>
                           <a
-                            href={`/projects`}
+                            href={`/projects#${project.slug || project.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.viewLiveBtn}
@@ -1585,16 +1657,35 @@ export default function Admin() {
             </div>
           </div>
         )}
+
+        {/* ================= TAB 4: CLIENT INQUIRIES & MESSAGES ================= */}
+        {activeTab === "inquiries" && (
+          <InquiriesManager
+            showAlert={showAlert}
+            showConfirm={showConfirm}
+            onUnreadCountChange={setUnreadInquiriesCount}
+          />
+        )}
       </main>
 
       {/* REUSABLE POPUP MODAL */}
       {modal.isOpen && (
-        <div className={styles.modalOverlay} onClick={closeModal}>
-          <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+        <div
+          className={styles.modalOverlay}
+          onClick={closeModal}
+          role="presentation"
+        >
+          <div
+            className={styles.modalCard}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dashboard-modal-title"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className={modal.isDanger ? styles.dangerIconBox : styles.alertIconBox}>
               {modal.isDanger ? <FaExclamationTriangle /> : <FaInfoCircle />}
             </div>
-            <h3 className={styles.modalTitle}>{modal.title}</h3>
+            <h3 id="dashboard-modal-title" className={styles.modalTitle}>{modal.title}</h3>
             <p className={styles.modalMessage}>{modal.message}</p>
             <div className={styles.modalActions}>
               {modal.type === "confirm" && (
@@ -1606,6 +1697,7 @@ export default function Admin() {
                 type="button"
                 className={modal.isDanger ? `${styles.modalConfirmBtn} ${styles.modalDangerBtn}` : styles.modalConfirmBtn}
                 onClick={modal.onConfirm}
+                autoFocus
               >
                 {modal.confirmText}
               </button>
