@@ -3,7 +3,7 @@ import { Resend } from "resend";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || process.env.RESEND;
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || process.env.VITE_ADMIN_EMAIL || "info@nayaabengineering.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "info@nayaabengineering.com";
 
 // Sender Address using verified domain nayaabengineering.com
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Nayaab Engineering <inquiries@nayaabengineering.com>";
