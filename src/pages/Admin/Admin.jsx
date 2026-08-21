@@ -699,7 +699,7 @@ export default function Admin() {
   };
 
   const openCreateForm = () => {
-    if (editingId) resetForm();
+    resetForm();
     switchTab("form");
     setSidebarOpen(false);
   };
@@ -711,12 +711,17 @@ export default function Admin() {
     setLocation(project.location || "");
     setDuration(project.duration || "");
     setSummary(project.summary || "");
-    setDeliverables(project.deliverables || "");
+    setDeliverables(
+      Array.isArray(project.deliverables)
+        ? project.deliverables.join("\n")
+        : project.deliverables || ""
+    );
     setDescription(project.description || "");
     setIsFeatured(Boolean(project.is_featured));
     setCoverFile(null);
-    setCoverPreview(null);
-    setExistingCoverUrl(project.image_url || "");
+    const coverUrl = project.cover_image || project.image_url || project.image || "";
+    setExistingCoverUrl(coverUrl);
+    setCoverPreview(coverUrl || null);
     setGalleryFiles([]);
     setGalleryPreviews([]);
     setExistingGalleryUrls(project.gallery_images || []);
@@ -1410,9 +1415,13 @@ export default function Admin() {
                 <div className={styles.fieldBlock}>
                   <label className={styles.fieldLabel}>Main Cover Photo *</label>
                   <label className={styles.coverDropArea}>
-                    {coverPreview ? (
+                    {coverPreview || existingCoverUrl ? (
                       <div className={styles.previewImageContainer}>
-                        <img src={coverPreview} alt="Cover Preview" className={styles.imagePreview} />
+                        <img
+                          src={coverPreview || existingCoverUrl}
+                          alt="Cover Preview"
+                          className={styles.imagePreview}
+                        />
                         <div className={styles.changeOverlay}>
                           <FaCloudUploadAlt />
                           Change Cover Photo
