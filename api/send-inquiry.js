@@ -6,7 +6,7 @@ const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || process.env.VITE_ADMIN_EMAIL || "info@nayaabengineering.com";
 
 // Sender Address using verified domain nayaabengineering.com
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Nayaab Engineering <info@nayaabengineering.com>";
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Nayaab Engineering <inquiries@nayaabengineering.com>";
 const LOGO_URL = "https://nayaabengineering.com/logo-full.png";
 
 function cleanPhoneNumber(phone) {
