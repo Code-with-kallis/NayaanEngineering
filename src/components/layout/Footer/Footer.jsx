@@ -39,7 +39,8 @@ const Footer = () => {
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    if (!email.trim() || submitting || alreadySubscribed) return;
+    const cleanEmail = email.trim();
+    if (!cleanEmail || submitting) return;
 
     setSubmitting(true);
     setStatus({ success: false, error: false, message: "" });

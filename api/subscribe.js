@@ -60,7 +60,7 @@ export default async function handler(req, res) {
   try {
     // 2. DISPATCH NOTIFICATION EMAIL TO ADMIN
     const adminEmailPromise = resend.emails.send({
-      from: `${cleanEmail} [Newsletter] <${SENDER_EMAIL}>`,
+      from: `Newsletter Subscriber <${SENDER_EMAIL}>`,
       to: [ADMIN_EMAIL],
       replyTo: cleanEmail,
       subject: `New Newsletter Subscriber: ${cleanEmail}`,
