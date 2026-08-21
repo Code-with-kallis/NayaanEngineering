@@ -195,6 +195,25 @@
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.sidebarDrawerMode {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
+  transform: translateX(-100%) !important;
+  box-shadow: 20px 0 50px rgba(0, 0, 0, 0.85) !important;
+  z-index: 10001 !important;
+}
+
+.sidebarDrawerMode.sidebarActive {
+  transform: translateX(0) !important;
+}
+
+.sidebarDrawerMode .sidebarCloseBtn {
+  display: block !important;
+}
+
 .sidebarHeader {
   display: flex;
   align-items: center;

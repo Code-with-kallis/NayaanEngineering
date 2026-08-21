@@ -25,6 +25,7 @@ import {
   FaSignOutAlt,
   FaExternalLinkAlt,
   FaCommentDots,
+  FaBars,
 } from "react-icons/fa";
 import styles from "./InquiriesManager.module.css";
 
@@ -122,7 +123,7 @@ export default function InquiriesManager({
   onUnreadCountChange,
   showAlert,
   showConfirm,
-  onBackToDashboard,
+  onToggleSidebar,
   onLogout,
 }) {
   const [inquiries, setInquiries] = useState([]);
@@ -305,15 +306,15 @@ export default function InquiriesManager({
       {/* ================= 1. TOP APP BAR ================= */}
       <header className={styles.topAppHeader}>
         <div className={styles.headerBrandCol}>
-          {onBackToDashboard && (
+          {onToggleSidebar && (
             <button
               type="button"
-              className={styles.backToDashboardBtn}
-              onClick={onBackToDashboard}
-              title="Return to Dashboard Overview"
+              className={styles.menuToggleBtn}
+              onClick={onToggleSidebar}
+              title="Open Navigation Menu"
             >
-              <FaArrowLeft />
-              <span className={styles.backBtnText}>Dashboard</span>
+              <FaBars className={styles.menuIcon} />
+              <span className={styles.menuBtnText}>Menu</span>
             </button>
           )}
 

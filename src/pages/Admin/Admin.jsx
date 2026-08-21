@@ -976,64 +976,15 @@ export default function Admin() {
     );
   }
 
-  // ================= STANDALONE FULLSCREEN WEBMAIL INBOX =================
-  if (activeTab === "inquiries") {
-    return (
-      <div style={{ width: "100vw", height: "100vh", overflow: "hidden", background: "#111113", position: "relative" }}>
-        <InquiriesManager
-          showAlert={showAlert}
-          showConfirm={showConfirm}
-          onUnreadCountChange={setUnreadInquiriesCount}
-          onBackToDashboard={() => switchTab("projects")}
-          onLogout={handleLogout}
-        />
-
-        {/* REUSABLE POPUP MODAL */}
-        {modal.isOpen && (
-          <div
-            className={styles.modalOverlay}
-            onClick={closeModal}
-            role="presentation"
-          >
-            <div
-              className={styles.modalCard}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="dashboard-modal-title"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className={modal.isDanger ? styles.dangerIconBox : styles.alertIconBox}>
-                {modal.isDanger ? <FaExclamationTriangle /> : <FaInfoCircle />}
-              </div>
-              <h3 id="dashboard-modal-title" className={styles.modalTitle}>{modal.title}</h3>
-              <p className={styles.modalMessage}>{modal.message}</p>
-              <div className={styles.modalActions}>
-                {modal.type === "confirm" && (
-                  <button type="button" className={styles.modalCancelBtn} onClick={closeModal}>
-                    {modal.cancelText}
-                  </button>
-                )}
-                <button
-                  type="button"
-                  className={modal.isDanger ? `${styles.modalConfirmBtn} ${styles.modalDangerBtn}` : styles.modalConfirmBtn}
-                  onClick={modal.onConfirm}
-                  autoFocus
-                >
-                  {modal.confirmText}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
-
   // ================= MAIN DASHBOARD =================
   return (
     <div className={styles.dashboardContainer}>
-      {/* SIDEBAR */}
-      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarActive : ""}`}>
+      {/* SIDEBAR (Drawer Mode in Inquiries / Standard in other tabs) */}
+      <aside
+        className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarActive : ""} ${
+          activeTab === "inquiries" ? styles.sidebarDrawerMode : ""
+        }`}
+      >
         <div className={styles.sidebarHeader}>
           <Link to="/" className={styles.brandLink} aria-label="Go to homepage">
             <img src="/logo2.png" alt="NEIPL Logo" className={styles.sidebarLogo} />
@@ -1118,20 +1069,32 @@ export default function Admin() {
         </div>
       </aside>
 
-      {/* MOBILE BACKDROP */}
+      {/* MOBILE / OVERLAY BACKDROP */}
       {sidebarOpen && (
         <div
           className={styles.sidebarBackdrop}
           onClick={() => setSidebarOpen(false)}
           role="presentation"
           aria-hidden="true"
+          style={{ zIndex: 10000 }}
         />
       )}
 
       {/* MAIN CONTENT AREA */}
-      <main className={styles.mainContent}>
-        {/* MOBILE OPTIMIZED TOP UTILITY BAR */}
-        <header className={styles.topUtilityBar}>
+      {activeTab === "inquiries" ? (
+        <div style={{ flex: 1, width: "100%", height: "100vh", overflow: "hidden", position: "relative" }}>
+          <InquiriesManager
+            showAlert={showAlert}
+            showConfirm={showConfirm}
+            onUnreadCountChange={setUnreadInquiriesCount}
+            onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
+            onLogout={handleLogout}
+          />
+        </div>
+      ) : (
+        <main className={styles.mainContent}>
+          {/* MOBILE OPTIMIZED TOP UTILITY BAR */}
+          <header className={styles.topUtilityBar}>
           <div className={styles.topBarLeft}>
             <button
               type="button"
@@ -1750,16 +1713,8 @@ export default function Admin() {
             </div>
           </div>
         )}
-
-        {/* ================= TAB 4: CLIENT INQUIRIES & MESSAGES ================= */}
-        {activeTab === "inquiries" && (
-          <InquiriesManager
-            showAlert={showAlert}
-            showConfirm={showConfirm}
-            onUnreadCountChange={setUnreadInquiriesCount}
-          />
-        )}
       </main>
+      )}
 
       {/* REUSABLE POPUP MODAL */}
       {modal.isOpen && (
