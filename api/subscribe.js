@@ -1,4 +1,4 @@
-// api/subscribe.js — Serverless Newsletter Subscription via Resend
+// api/subscribe.js — Serverless Newsletter Subscription & Unsubscription via Resend
 import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 
@@ -18,8 +18,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed. Use POST." });
   }
 
-  const { email } = req.body || {};
+  const { email, action = "subscribe" } = req.body || {};
   const cleanEmail = String(email || "").trim().toLowerCase();
+  const isUnsubscribe = action === "unsubscribe";
 
   if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail)) {
     return res.status(400).json({ error: "Please provide a valid email address." });
@@ -34,16 +35,18 @@ export default async function handler(req, res) {
     minute: "2-digit",
   });
 
-  // 1. Optionally register subscription in Supabase inquiries table for the admin dashboard
+  // 1. Register event in Supabase inquiries table
   if (supabase) {
     try {
       await supabase.from("inquiries").insert([
         {
-          name: "Newsletter Subscriber",
+          name: isUnsubscribe ? "Unsubscribed User" : "Newsletter Subscriber",
           email: cleanEmail,
           phone: null,
-          service: "Newsletter Subscription",
-          message: `Subscriber registered via website footer at ${timestamp}.`,
+          service: isUnsubscribe ? "Newsletter Unsubscribe" : "Newsletter Subscription",
+          message: isUnsubscribe
+            ? `User unsubscribed from newsletter updates at ${timestamp}.`
+            : `Subscriber registered via website footer at ${timestamp}.`,
           status: "unread",
         },
       ]);
@@ -58,6 +61,113 @@ export default async function handler(req, res) {
   }
 
   try {
+    if (isUnsubscribe) {
+      // -------------------------------------------------------------
+      // UN-SUBSCRIPTION FLOW
+      // -------------------------------------------------------------
+
+      // Email 1: Notify Admin about Unsubscription
+      const adminUnsubPromise = resend.emails.send({
+        from: `Newsletter Update <${SENDER_EMAIL}>`,
+        to: [ADMIN_EMAIL],
+        replyTo: cleanEmail,
+        subject: `Newsletter Unsubscription: ${cleanEmail}`,
+        headers: { "X-Entity-Ref-ID": `unsub-${Date.now()}` },
+        text: `NEWSLETTER UN-SUBSCRIPTION\n\nUser Email: ${cleanEmail}\nUnsubscribed At: ${timestamp}\nSource: Website Footer\n\nDatabase record has been updated.`,
+        html: `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Newsletter Unsubscription</title>
+          </head>
+          <body style="margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #FAFAFA; color: #1E293B;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; padding: 32px 28px; border-radius: 8px; border: 1px solid #E2E8F0;">
+              <div style="margin-bottom: 24px; border-bottom: 2px solid #EF4444; padding-bottom: 16px;">
+                <div style="font-size: 28px; font-weight: 900; color: #00A6FB; letter-spacing: 2px; line-height: 1;">NEI</div>
+                <div style="font-size: 13px; font-weight: 700; color: #EF4444; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px;">
+                  NAYAAB ENGINEERING INNOVATIONS &bull; UN-SUBSCRIPTION NOTICE
+                </div>
+              </div>
+              <p style="font-size: 15px; color: #0F172A; margin: 0 0 16px 0;">
+                The following user has unsubscribed from newsletter communications:
+              </p>
+              <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px;">
+                <tr>
+                  <td style="padding: 8px 0; color: #64748B; font-weight: 600; width: 32%;">Email:</td>
+                  <td style="padding: 8px 0; color: #0F172A; font-weight: 700;">${cleanEmail}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Date:</td>
+                  <td style="padding: 8px 0; color: #475569;">${timestamp}</td>
+                </tr>
+              </table>
+              <div style="border-top: 1px solid #E2E8F0; padding-top: 16px; font-size: 12px; color: #94A3B8;">
+                Automatic notice from <a href="https://nayaabengineering.com" style="color: #64748B;">Nayaab Engineering</a>.
+              </div>
+            </div>
+          </body>
+          </html>
+        `,
+      });
+
+      // Email 2: Confirm to User
+      const userUnsubPromise = resend.emails.send({
+        from: `Nayaab Engineering Innovations <${SENDER_EMAIL}>`,
+        to: [cleanEmail],
+        replyTo: ADMIN_EMAIL,
+        subject: `You have been unsubscribed — Nayaab Engineering Innovations`,
+        headers: { "X-Entity-Ref-ID": `unsub-confirm-${Date.now()}` },
+        text: `Hello,\n\nYou have been successfully unsubscribed from the Nayaab Engineering Innovations (NEIPL) newsletter.\n\nYou will no longer receive newsletter announcements from us. If this was done by mistake, you can resubscribe anytime at https://nayaabengineering.com\n\nWarm regards,\nNayaab Engineering Innovations Pvt. Ltd.`,
+        html: `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Unsubscribed Successfully</title>
+          </head>
+          <body style="margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #FAFAFA; color: #1E293B;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; padding: 32px 28px; border-radius: 8px; border: 1px solid #E2E8F0;">
+              <div style="margin-bottom: 24px; border-bottom: 2px solid #64748B; padding-bottom: 16px;">
+                <div style="font-size: 28px; font-weight: 900; color: #00A6FB; letter-spacing: 2px; line-height: 1;">NEI</div>
+                <div style="font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px;">
+                  NAYAAB ENGINEERING INNOVATIONS
+                </div>
+              </div>
+              <div style="font-size: 18px; font-weight: 800; color: #0F172A; margin-bottom: 12px;">
+                You Have Been Unsubscribed
+              </div>
+              <p style="font-size: 14px; line-height: 1.6; color: #334155; margin: 0 0 16px 0;">
+                You have been successfully removed from our newsletter distribution list. You will no longer receive architectural updates or periodic newsletter emails from <strong>Nayaab Engineering Innovations</strong>.
+              </p>
+              <p style="font-size: 13px; line-height: 1.6; color: #64748B; margin: 0 0 24px 0;">
+                If you unsubscribed by accident, you can re-subscribe anytime directly on our website.
+              </p>
+              <div style="border-top: 1px solid #E2E8F0; padding-top: 18px; font-size: 13px; color: #475569; line-height: 1.6;">
+                <strong style="color: #0F172A;">Nayaab Engineering Innovations Pvt. Ltd.</strong><br>
+                Srinagar, Jammu &amp; Kashmir &bull; <a href="https://nayaabengineering.com" style="color: #00A6FB; text-decoration: none;">nayaabengineering.com</a>
+              </div>
+            </div>
+          </body>
+          </html>
+        `,
+      });
+
+      await Promise.allSettled([adminUnsubPromise, userUnsubPromise]);
+
+      return res.status(200).json({
+        success: true,
+        action: "unsubscribe",
+        message: "You have been successfully unsubscribed from our newsletter.",
+      });
+    }
+
+    // -------------------------------------------------------------
+    // SUBSCRIPTION FLOW (Default)
+    // -------------------------------------------------------------
+
     // 2. DISPATCH NOTIFICATION EMAIL TO ADMIN
     const adminEmailPromise = resend.emails.send({
       from: `Newsletter Subscriber <${SENDER_EMAIL}>`,
@@ -210,6 +320,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
+      action: "subscribe",
       message: "Subscribed successfully and confirmation dispatched.",
       adminSent: adminResult.status === "fulfilled" && !adminResult.value?.error,
       subscriberSent: subscriberResult.status === "fulfilled" && !subscriberResult.value?.error,
@@ -218,7 +329,7 @@ export default async function handler(req, res) {
     console.error("Subscribe execution error:", err);
     return res.status(200).json({
       success: true,
-      warning: "Subscription saved, but email notification had an error.",
+      warning: "Subscription processed, but email notification had an error.",
       error: err.message,
     });
   }

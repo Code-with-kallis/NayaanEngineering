@@ -22,6 +22,7 @@ import {
 const Footer = () => {
   const year = new Date().getFullYear();
   const [email, setEmail] = useState("");
+  const [mode, setMode] = useState("subscribe"); // "subscribe" | "unsubscribe"
   const [submitting, setSubmitting] = useState(false);
   const [alreadySubscribed, setAlreadySubscribed] = useState(false);
   const [status, setStatus] = useState({
@@ -37,7 +38,7 @@ const Footer = () => {
     }
   }, []);
 
-  const handleSubscribe = async (e) => {
+  const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
     const cleanEmail = email.trim();
     if (!cleanEmail || submitting) return;
@@ -45,56 +46,79 @@ const Footer = () => {
     setSubmitting(true);
     setStatus({ success: false, error: false, message: "" });
 
+    const isUnsub = mode === "unsubscribe";
+
     try {
-      // 1. Dispatch Dual Email via /api/subscribe
+      // 1. Dispatch API call to /api/subscribe
       const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email.trim(),
+          email: cleanEmail,
+          action: isUnsub ? "unsubscribe" : "subscribe",
         }),
       });
 
       let result = {};
       try {
         result = await response.json();
-      } catch (_) {
-        // Fallback for non-JSON text responses
-      }
+      } catch (_) {}
 
-      if (response.ok && (result.success !== false)) {
-        localStorage.setItem("nei_newsletter_subscribed", "true");
-        setAlreadySubscribed(true);
-        setStatus({
-          success: true,
-          error: false,
-          message: "Thank you for subscribing! A welcome confirmation has been sent to your inbox.",
-        });
+      if (response.ok && result.success !== false) {
+        if (isUnsub) {
+          localStorage.removeItem("nei_newsletter_subscribed");
+          setAlreadySubscribed(false);
+          setStatus({
+            success: true,
+            error: false,
+            message: "You have been successfully unsubscribed from our newsletter.",
+          });
+        } else {
+          localStorage.setItem("nei_newsletter_subscribed", "true");
+          setAlreadySubscribed(true);
+          setStatus({
+            success: true,
+            error: false,
+            message: "Thank you for subscribing! A welcome confirmation has been sent to your inbox.",
+          });
+        }
         setEmail("");
       } else {
-        throw new Error(result.error || "Failed to subscribe. Please try again.");
+        throw new Error(result.error || "Request failed. Please try again.");
       }
     } catch (err) {
-      // Fallback: register directly to Supabase inquiries table if serverless API was unreachable
+      // Fallback: register directly to Supabase inquiries table
       try {
         await supabase.from("inquiries").insert([
           {
-            name: "Newsletter Subscriber",
-            email: email.trim(),
-            service: "Newsletter Subscription",
-            message: "Subscriber registered via website footer.",
+            name: isUnsub ? "Unsubscribed User" : "Newsletter Subscriber",
+            email: cleanEmail,
+            service: isUnsub ? "Newsletter Unsubscribe" : "Newsletter Subscription",
+            message: isUnsub
+              ? "User unsubscribed via website footer."
+              : "Subscriber registered via website footer.",
             status: "unread",
           },
         ]);
-        localStorage.setItem("nei_newsletter_subscribed", "true");
-        setAlreadySubscribed(true);
-        setStatus({
-          success: true,
-          error: false,
-          message: "Thank you for subscribing! We have registered your subscription.",
-        });
+        if (isUnsub) {
+          localStorage.removeItem("nei_newsletter_subscribed");
+          setAlreadySubscribed(false);
+          setStatus({
+            success: true,
+            error: false,
+            message: "You have been successfully unsubscribed.",
+          });
+        } else {
+          localStorage.setItem("nei_newsletter_subscribed", "true");
+          setAlreadySubscribed(true);
+          setStatus({
+            success: true,
+            error: false,
+            message: "Thank you for subscribing! We have registered your subscription.",
+          });
+        }
         setEmail("");
         return;
       } catch (_) {}
@@ -102,7 +126,7 @@ const Footer = () => {
       setStatus({
         success: false,
         error: true,
-        message: err.message || "Subscription failed. Please check your connection.",
+        message: err.message || "Operation failed. Please check your connection.",
       });
     } finally {
       setSubmitting(false);
@@ -247,22 +271,42 @@ const Footer = () => {
 
         {/* Column 4: Subscribe For Updates */}
         <div className={`${styles.footerColumn} ${styles.newsletterColumn}`}>
-          <h3 className={styles.columnTitle}>Subscribe for Updates</h3>
+          <h3 className={styles.columnTitle}>
+            {mode === "unsubscribe" ? "Unsubscribe from Updates" : "Subscribe for Updates"}
+          </h3>
           <p className={styles.newsletterText}>
-            Subscribe to get the latest project releases and architectural insights.
+            {mode === "unsubscribe"
+              ? "Enter your email address below to remove yourself from our newsletter list."
+              : "Subscribe to get the latest project releases and architectural insights."}
           </p>
 
-          {alreadySubscribed ? (
+          {alreadySubscribed && mode !== "unsubscribe" ? (
             <div className={styles.subscribedBadgeBox}>
-              <FaCheckCircle className={styles.subscribedCheckIcon} />
-              <span>Subscribed Successfully</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <FaCheckCircle className={styles.subscribedCheckIcon} />
+                <span>Subscribed</span>
+              </div>
+              <button
+                type="button"
+                className={styles.unsubToggleLink}
+                onClick={() => {
+                  setMode("unsubscribe");
+                  setStatus({ success: false, error: false, message: "" });
+                }}
+              >
+                Unsubscribe?
+              </button>
             </div>
           ) : (
-            <form className={styles.subscribeForm} onSubmit={handleSubscribe}>
+            <form className={styles.subscribeForm} onSubmit={handleNewsletterSubmit}>
               <div className={styles.inputWrapper}>
                 <input
                   type="email"
-                  placeholder="Enter your email address"
+                  placeholder={
+                    mode === "unsubscribe"
+                      ? "Enter email to unsubscribe"
+                      : "Enter your email address"
+                  }
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -271,12 +315,15 @@ const Footer = () => {
                 />
                 <button
                   type="submit"
-                  className={styles.subscribeButton}
-                  aria-label="Subscribe"
+                  className={mode === "unsubscribe" ? styles.unsubscribeButton : styles.subscribeButton}
+                  aria-label={mode === "unsubscribe" ? "Unsubscribe" : "Subscribe"}
                   disabled={submitting}
+                  title={mode === "unsubscribe" ? "Unsubscribe" : "Subscribe"}
                 >
                   {submitting ? (
                     <FaSpinner className={styles.spinnerIcon} />
+                  ) : mode === "unsubscribe" ? (
+                    <span style={{ fontWeight: 900, fontSize: "0.9rem" }}>✕</span>
                   ) : (
                     <FaPaperPlane />
                   )}
@@ -289,12 +336,40 @@ const Footer = () => {
                   <span>{status.message}</span>
                 </div>
               )}
+              {status.success && (
+                <div className={styles.successMessage}>
+                  <FaCheckCircle />
+                  <span>{status.message}</span>
+                </div>
+              )}
             </form>
           )}
 
-          <span className={styles.newsletterBadge}>
-            🔒 Strictly no spam. Unsubscribe anytime.
-          </span>
+          <div className={styles.unsubRow}>
+            {mode === "unsubscribe" ? (
+              <button
+                type="button"
+                className={styles.resubToggleLink}
+                onClick={() => {
+                  setMode("subscribe");
+                  setStatus({ success: false, error: false, message: "" });
+                }}
+              >
+                &larr; Back to Subscribe
+              </button>
+            ) : (
+              <button
+                type="button"
+                className={styles.unsubToggleLink}
+                onClick={() => {
+                  setMode("unsubscribe");
+                  setStatus({ success: false, error: false, message: "" });
+                }}
+              >
+                Need to unsubscribe?
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
