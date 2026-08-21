@@ -20,12 +20,11 @@ import {
   FaArrowLeft,
   FaCircle,
   FaUser,
-  FaPaperPlane,
   FaEnvelopeOpen,
   FaInfoCircle,
   FaSignOutAlt,
-  FaThLarge,
   FaExternalLinkAlt,
+  FaCommentDots,
 } from "react-icons/fa";
 import styles from "./InquiriesManager.module.css";
 
@@ -40,8 +39,6 @@ const SERVICE_CATEGORIES = [
   "Interior & Modular Design",
   "Project Planning",
   "Regulatory Approvals",
-  "Newsletter Subscription",
-  "Newsletter Unsubscribe",
 ];
 
 function formatTimeOrDate(dateStr) {
@@ -132,7 +129,7 @@ export default function InquiriesManager({
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTabFilter, setActiveTabFilter] = useState("all"); // 'all' | 'unread' | 'replied' | 'newsletter'
+  const [activeTabFilter, setActiveTabFilter] = useState("all"); // 'all' | 'unread' | 'replied'
   const [selectedService, setSelectedService] = useState("All Categories");
   const [selectedInquiryId, setSelectedInquiryId] = useState(null);
   const [copiedText, setCopiedText] = useState(null);
@@ -151,15 +148,21 @@ export default function InquiriesManager({
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-      const list = data || [];
-      setInquiries(list);
+
+      // Filter out newsletter entries — ONLY keep real client contact inquiries
+      const clientInquiriesOnly = (data || []).filter((item) => {
+        const s = (item.service || "").toLowerCase();
+        return !s.includes("newsletter") && !s.includes("subscription") && !s.includes("unsubscribe");
+      });
+
+      setInquiries(clientInquiriesOnly);
 
       // Auto select first inquiry on desktop if none selected
-      if (!selectedInquiryId && list.length > 0 && typeof window !== "undefined" && window.innerWidth > 900) {
-        setSelectedInquiryId(list[0].id);
+      if (!selectedInquiryId && clientInquiriesOnly.length > 0 && typeof window !== "undefined" && window.innerWidth > 900) {
+        setSelectedInquiryId(clientInquiriesOnly[0].id);
       }
 
-      const unreadCount = list.filter((item) => (item.status || "unread") === "unread").length;
+      const unreadCount = clientInquiriesOnly.filter((item) => (item.status || "unread") === "unread").length;
       if (onUnreadCountChange) onUnreadCountChange(unreadCount);
     } catch (err) {
       console.error("Fetch inquiries error:", err);
@@ -212,7 +215,7 @@ export default function InquiriesManager({
     }
     // Scroll viewer to top
     if (viewerScrollRef.current) {
-      viewerScrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      viewerScrollRef.current.scrollTop = 0;
     }
   };
 
@@ -248,12 +251,7 @@ export default function InquiriesManager({
     const total = inquiries.length;
     const unread = inquiries.filter((i) => (i.status || "unread") === "unread").length;
     const replied = inquiries.filter((i) => i.status === "replied").length;
-    const newsletter = inquiries.filter(
-      (i) =>
-        (i.service || "").toLowerCase().includes("newsletter") ||
-        (i.service || "").toLowerCase().includes("subscription")
-    ).length;
-    return { total, unread, replied, newsletter };
+    return { total, unread, replied };
   }, [inquiries]);
 
   const filteredInquiries = useMemo(() => {
@@ -277,9 +275,6 @@ export default function InquiriesManager({
       let matchesTab = true;
       if (activeTabFilter === "unread") matchesTab = status === "unread";
       else if (activeTabFilter === "replied") matchesTab = status === "replied";
-      else if (activeTabFilter === "newsletter") {
-        matchesTab = service.includes("newsletter") || service.includes("subscription");
-      }
 
       const matchesService =
         selectedService === "All Categories" ||
@@ -295,7 +290,7 @@ export default function InquiriesManager({
 
   return (
     <div className={styles.standaloneWebmailApp}>
-      {/* ================= 1. WEBMAIL TOP APP BAR ================= */}
+      {/* ================= 1. WEBMAIL TOP APP HEADER ================= */}
       <header className={styles.webmailAppHeader}>
         <div className={styles.headerBrandCol}>
           {onBackToDashboard && (
@@ -306,17 +301,17 @@ export default function InquiriesManager({
               title="Return to Admin Dashboard"
             >
               <FaArrowLeft />
-              <span>Dashboard</span>
+              <span>Back to Dashboard</span>
             </button>
           )}
 
           <div className={styles.brandTitleWrap}>
             <span className={styles.brandTitle}>NEIPL Webmail</span>
-            <span className={styles.brandBadge}>Client Portal</span>
+            <span className={styles.brandBadge}>Client Inquiries</span>
           </div>
         </div>
 
-        {/* CENTER: FOLDER TABS */}
+        {/* CENTER: FOLDER TABS (INBOX, UNREAD, REPLIED) */}
         <div className={styles.headerTabsWrap}>
           <button
             type="button"
@@ -324,7 +319,7 @@ export default function InquiriesManager({
             onClick={() => setActiveTabFilter("all")}
           >
             <FaInbox className={styles.tabIcon} />
-            <span>Inbox</span>
+            <span>All Inquiries</span>
             <span className={styles.tabBadge}>{stats.total}</span>
           </button>
 
@@ -349,19 +344,9 @@ export default function InquiriesManager({
             <span>Replied</span>
             <span className={styles.tabBadge}>{stats.replied}</span>
           </button>
-
-          <button
-            type="button"
-            className={`${styles.statTab} ${activeTabFilter === "newsletter" ? styles.statTabActive : ""}`}
-            onClick={() => setActiveTabFilter("newsletter")}
-          >
-            <FaPaperPlane className={styles.tabIcon} />
-            <span>Newsletter</span>
-            <span className={styles.tabBadge}>{stats.newsletter}</span>
-          </button>
         </div>
 
-        {/* RIGHT: CONTROLS */}
+        {/* RIGHT: LIVE CONTROLS */}
         <div className={styles.headerRightControls}>
           <button
             type="button"
@@ -397,7 +382,7 @@ export default function InquiriesManager({
         </div>
       </header>
 
-      {/* ================= 2. FULLSCREEN 2-PANE WEBMAIL WORKSPACE ================= */}
+      {/* ================= 2. FULLSCREEN 2-PANE WORKSPACE ================= */}
       <div className={styles.webmailBodyWorkspace}>
         {/* LEFT PANE: EMAIL FEED LIST */}
         <aside
@@ -405,7 +390,7 @@ export default function InquiriesManager({
             activeInquiry ? styles.mailListPaneHasActiveMobile : ""
           }`}
         >
-          {/* SEARCH & CATEGORY FILTER */}
+          {/* SEARCH & CATEGORY DROPDOWN */}
           <div className={styles.mailListSearchHeader}>
             <div className={styles.searchBox}>
               <FaSearch className={styles.searchIcon} />
@@ -440,21 +425,21 @@ export default function InquiriesManager({
             </select>
           </div>
 
-          {/* SCROLLABLE EMAIL ROWS */}
+          {/* SCROLLABLE EMAIL ROWS (MOUSEWHEEL ENABLED) */}
           <div className={styles.mailRowsScrollArea} ref={listScrollRef}>
             {loading ? (
               <div className={styles.paneLoadingState}>
                 <FaSpinner className={styles.spinnerIcon} />
-                <span>Loading mailbox...</span>
+                <span>Loading client inquiries...</span>
               </div>
             ) : filteredInquiries.length === 0 ? (
               <div className={styles.paneEmptyState}>
                 <FaInbox className={styles.emptyInboxIcon} />
-                <h4>No inquiries found</h4>
+                <h4>No client inquiries</h4>
                 <p>
                   {inquiries.length === 0
-                    ? "Inquiries submitted on the website will stream in here in real-time."
-                    : "No inquiries matched your search or category filter."}
+                    ? "Inquiries submitted via website contact form will appear here in real-time."
+                    : "No inquiries matched your active search or category filter."}
                 </p>
               </div>
             ) : (
@@ -473,7 +458,7 @@ export default function InquiriesManager({
                     }`}
                     onClick={() => handleSelectInquiry(inquiry)}
                   >
-                    {/* UNREAD INDICATOR */}
+                    {/* UNREAD BLUE DOT */}
                     <div className={styles.unreadIndicatorBox}>
                       {isUnread ? (
                         <FaCircle className={styles.unreadDot} title="Unread" />
@@ -510,7 +495,7 @@ export default function InquiriesManager({
                         )}
                       </div>
 
-                      <p className={styles.rowSnippet}>{snippet || "No message body provided"}</p>
+                      <p className={styles.rowSnippet}>{snippet || "No written message provided"}</p>
                     </div>
                   </article>
                 );
@@ -519,7 +504,7 @@ export default function InquiriesManager({
           </div>
         </aside>
 
-        {/* RIGHT PANE: LIVE READING PANE (FULLSCREEN — ZERO POPUPS!) */}
+        {/* RIGHT PANE: LIVE READING PANE (MOUSEWHEEL ENABLED & PROMINENT VISIBILITY) */}
         <section
           className={`${styles.readingPane} ${
             activeInquiry ? styles.readingPaneActiveMobile : ""
@@ -610,148 +595,151 @@ export default function InquiriesManager({
                 </div>
               </div>
 
-              {/* LIVE SCROLLABLE MESSAGE READER */}
+              {/* LIVE SCROLLABLE MESSAGE READER BODY */}
               <div className={styles.viewerScrollArea} ref={viewerScrollRef}>
-                {/* 1. SUBJECT & SERVICE BADGE */}
-                <div className={styles.messageSubjectHeader}>
-                  <h2 className={styles.inquirySubjectTitle}>
-                    {activeInquiry.service
-                      ? `${activeInquiry.service} — Inquiry from ${activeInquiry.name}`
-                      : `Inquiry from ${activeInquiry.name}`}
-                  </h2>
-                  <div className={styles.inquiryMetaRow}>
-                    <span className={styles.disciplineBadge}>
-                      <FaBuilding />
-                      {activeInquiry.service || "General Inquiry"}
-                    </span>
-                    <span
-                      className={`${styles.statusPill} ${
-                        activeInquiry.status === "replied"
-                          ? styles.statusPillReplied
+                <div className={styles.viewerInnerContent}>
+                  {/* 1. SUBJECT & SERVICE BADGE */}
+                  <div className={styles.messageSubjectHeader}>
+                    <h2 className={styles.inquirySubjectTitle}>
+                      {activeInquiry.service
+                        ? `${activeInquiry.service} — Inquiry from ${activeInquiry.name}`
+                        : `Inquiry from ${activeInquiry.name}`}
+                    </h2>
+                    <div className={styles.inquiryMetaRow}>
+                      <span className={styles.disciplineBadge}>
+                        <FaBuilding />
+                        {activeInquiry.service || "General Inquiry"}
+                      </span>
+                      <span
+                        className={`${styles.statusPill} ${
+                          activeInquiry.status === "replied"
+                            ? styles.statusPillReplied
+                            : activeInquiry.status === "read"
+                            ? styles.statusPillRead
+                            : styles.statusPillUnread
+                        }`}
+                      >
+                        {activeInquiry.status === "replied"
+                          ? "Replied"
                           : activeInquiry.status === "read"
-                          ? styles.statusPillRead
-                          : styles.statusPillUnread
-                      }`}
-                    >
-                      {activeInquiry.status === "replied"
-                        ? "Replied"
-                        : activeInquiry.status === "read"
-                        ? "Read"
-                        : "Unread"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* 2. SENDER HEADER (HOSTINGER WEBMAIL STYLE) */}
-                <div className={styles.senderHeaderCard}>
-                  <div
-                    className={styles.senderLargeAvatar}
-                    style={{ backgroundColor: getAvatarColor(activeInquiry.name) }}
-                  >
-                    {(activeInquiry.name || "C").charAt(0).toUpperCase()}
-                  </div>
-
-                  <div className={styles.senderMetaCol}>
-                    <div className={styles.senderPrimaryRow}>
-                      <span className={styles.senderFullName}>{activeInquiry.name}</span>
-                      {activeInquiry.email && (
-                        <span className={styles.senderEmailAddress}>
-                          &lt;{activeInquiry.email}&gt;
-                        </span>
-                      )}
-                    </div>
-
-                    <div className={styles.recipientRow}>
-                      <span className={styles.toLabel}>To:</span>
-                      <span className={styles.toValue}>
-                        info@nayaabengineering.com, neiplkashmir@gmail.com
+                          ? "Read"
+                          : "Unread"}
                       </span>
                     </div>
-
-                    <div className={styles.timestampFullRow}>
-                      <FaClock className={styles.timeIcon} />
-                      <span>{formatFullDateTime(activeInquiry.created_at)}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 3. STRUCTURED CLIENT SUBMISSION SUMMARY */}
-                <div className={styles.clientDetailsBox}>
-                  <div className={styles.clientDetailsHeader}>
-                    <FaInfoCircle className={styles.detailsHeaderIcon} />
-                    <span>Client Submission Details</span>
                   </div>
 
-                  <div className={styles.detailGrid}>
-                    <div className={styles.detailGridItem}>
-                      <span className={styles.detailGridLabel}>Full Name</span>
-                      <div className={styles.detailGridValueRow}>
-                        <FaUser className={styles.detailGridIcon} />
-                        <strong className={styles.detailGridValueText}>{activeInquiry.name || "Not Provided"}</strong>
-                      </div>
+                  {/* 2. SENDER HEADER (HOSTINGER WEBMAIL STYLE) */}
+                  <div className={styles.senderHeaderCard}>
+                    <div
+                      className={styles.senderLargeAvatar}
+                      style={{ backgroundColor: getAvatarColor(activeInquiry.name) }}
+                    >
+                      {(activeInquiry.name || "C").charAt(0).toUpperCase()}
                     </div>
 
-                    <div className={styles.detailGridItem}>
-                      <span className={styles.detailGridLabel}>Discipline / Service</span>
-                      <div className={styles.detailGridValueRow}>
-                        <FaBuilding className={styles.detailGridIcon} />
-                        <span className={styles.detailGridValueText}>{activeInquiry.service || "General Inquiry"}</span>
-                      </div>
-                    </div>
-
-                    <div className={styles.detailGridItem}>
-                      <span className={styles.detailGridLabel}>Email Address</span>
-                      <div className={styles.detailGridValueRow}>
-                        <FaEnvelope className={styles.detailGridIcon} />
-                        <span className={styles.detailGridValueText}>{activeInquiry.email || "Not Provided"}</span>
+                    <div className={styles.senderMetaCol}>
+                      <div className={styles.senderPrimaryRow}>
+                        <span className={styles.senderFullName}>{activeInquiry.name}</span>
                         {activeInquiry.email && (
-                          <button
-                            type="button"
-                            className={styles.copySmallBtn}
-                            onClick={() => copyToClipboard(activeInquiry.email, "Email")}
-                            title="Copy Email Address"
-                          >
-                            <FaCopy />
-                          </button>
+                          <span className={styles.senderEmailAddress}>
+                            &lt;{activeInquiry.email}&gt;
+                          </span>
                         )}
                       </div>
-                    </div>
 
-                    <div className={styles.detailGridItem}>
-                      <span className={styles.detailGridLabel}>Phone Number</span>
-                      <div className={styles.detailGridValueRow}>
-                        <FaPhoneAlt className={styles.detailGridIcon} />
-                        <span className={styles.detailGridValueText}>{activeInquiry.phone || "Not Provided"}</span>
-                        {activeInquiry.phone && activeInquiry.phone !== "Not Provided" && (
-                          <button
-                            type="button"
-                            className={styles.copySmallBtn}
-                            onClick={() => copyToClipboard(activeInquiry.phone, "Phone")}
-                            title="Copy Phone Number"
-                          >
-                            <FaCopy />
-                          </button>
-                        )}
+                      <div className={styles.recipientRow}>
+                        <span className={styles.toLabel}>To:</span>
+                        <span className={styles.toValue}>
+                          info@nayaabengineering.com, neiplkashmir@gmail.com
+                        </span>
+                      </div>
+
+                      <div className={styles.timestampFullRow}>
+                        <FaClock className={styles.timeIcon} />
+                        <span>{formatFullDateTime(activeInquiry.created_at)}</span>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* 4. FULL CLIENT MESSAGE BODY */}
-                <div className={styles.emailBodyCard}>
-                  <div className={styles.emailBodyHeader}>
-                    <span>Client Requirements / Message Body</span>
+                  {/* 3. STRUCTURED CLIENT CONTACT DETAILS GRID */}
+                  <div className={styles.clientDetailsBox}>
+                    <div className={styles.clientDetailsHeader}>
+                      <FaInfoCircle className={styles.detailsHeaderIcon} />
+                      <span>Contact &amp; Submission Information</span>
+                    </div>
+
+                    <div className={styles.detailGrid}>
+                      <div className={styles.detailGridItem}>
+                        <span className={styles.detailGridLabel}>Client Full Name</span>
+                        <div className={styles.detailGridValueRow}>
+                          <FaUser className={styles.detailGridIcon} />
+                          <strong className={styles.detailGridValueText}>{activeInquiry.name || "Not Provided"}</strong>
+                        </div>
+                      </div>
+
+                      <div className={styles.detailGridItem}>
+                        <span className={styles.detailGridLabel}>Service Requested</span>
+                        <div className={styles.detailGridValueRow}>
+                          <FaBuilding className={styles.detailGridIcon} />
+                          <span className={styles.detailGridValueText}>{activeInquiry.service || "General Inquiry"}</span>
+                        </div>
+                      </div>
+
+                      <div className={styles.detailGridItem}>
+                        <span className={styles.detailGridLabel}>Email Address</span>
+                        <div className={styles.detailGridValueRow}>
+                          <FaEnvelope className={styles.detailGridIcon} />
+                          <span className={styles.detailGridValueText}>{activeInquiry.email || "Not Provided"}</span>
+                          {activeInquiry.email && (
+                            <button
+                              type="button"
+                              className={styles.copySmallBtn}
+                              onClick={() => copyToClipboard(activeInquiry.email, "Email")}
+                              title="Copy Email Address"
+                            >
+                              <FaCopy />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className={styles.detailGridItem}>
+                        <span className={styles.detailGridLabel}>Phone / WhatsApp</span>
+                        <div className={styles.detailGridValueRow}>
+                          <FaPhoneAlt className={styles.detailGridIcon} />
+                          <span className={styles.detailGridValueText}>{activeInquiry.phone || "Not Provided"}</span>
+                          {activeInquiry.phone && activeInquiry.phone !== "Not Provided" && (
+                            <button
+                              type="button"
+                              className={styles.copySmallBtn}
+                              onClick={() => copyToClipboard(activeInquiry.phone, "Phone")}
+                              title="Copy Phone Number"
+                            >
+                              <FaCopy />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className={styles.emailBodyText}>
-                    {activeInquiry.message ? (
-                      activeInquiry.message.split("\n").map((paragraph, index) => (
-                        <p key={index}>{paragraph || <br />}</p>
-                      ))
-                    ) : (
-                      <p style={{ color: "#71717A", fontStyle: "italic" }}>
-                        No written message provided with this submission.
-                      </p>
-                    )}
+
+                  {/* 4. FULL CLIENT MESSAGE BODY (PROMINENT HIGH CONTRAST) */}
+                  <div className={styles.emailBodyCard}>
+                    <div className={styles.emailBodyHeader}>
+                      <FaCommentDots className={styles.messageHeaderIcon} />
+                      <span>Full Client Message &amp; Requirements</span>
+                    </div>
+                    <div className={styles.emailBodyText}>
+                      {activeInquiry.message ? (
+                        activeInquiry.message.split("\n").map((paragraph, index) => (
+                          <p key={index}>{paragraph || <br />}</p>
+                        ))
+                      ) : (
+                        <p style={{ color: "#94A3B8", fontStyle: "italic" }}>
+                          No written message provided with this submission.
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
