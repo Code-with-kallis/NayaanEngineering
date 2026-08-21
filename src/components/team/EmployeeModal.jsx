@@ -34,7 +34,6 @@ function EmployeeModal() {
     }
   }, []);
 
-  // Sync with browser history and direct link mounts
   useEffect(() => {
     checkActiveEmployee();
 
@@ -51,7 +50,6 @@ function EmployeeModal() {
     };
   }, [checkActiveEmployee]);
 
-  // Lock background scroll without resetting scroll position
   useEffect(() => {
     if (activeEmployee) {
       const originalOverflow = document.body.style.overflow;
@@ -66,8 +64,6 @@ function EmployeeModal() {
 
   const handleClose = () => {
     setActiveEmployee(null);
-    
-    // Cleanly strip query params without triggering route navigation
     const url = new URL(window.location.href);
     url.searchParams.delete("member");
     url.searchParams.delete("id");
@@ -75,7 +71,6 @@ function EmployeeModal() {
     window.history.pushState({}, "", url.pathname + (url.search ? url.search : ""));
   };
 
-  // Keyboard Escape listener
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && activeEmployee) {
@@ -101,8 +96,19 @@ function EmployeeModal() {
   } = activeEmployee;
 
   return (
-    <div className={styles.overlay} onClick={handleClose} role="dialog" aria-modal="true">
-      <div className={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+    <div 
+      className={styles.overlay} 
+      onClick={handleClose} 
+      role="dialog" 
+      aria-modal="true"
+      data-lenis-prevent
+      onTouchMove={(e) => e.stopPropagation()}
+    >
+      <div 
+        className={styles.modalCard} 
+        onClick={(e) => e.stopPropagation()}
+        data-lenis-prevent
+      >
         {/* Close Button */}
         <button 
           type="button" 
