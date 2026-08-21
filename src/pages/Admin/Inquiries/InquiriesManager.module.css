@@ -1,4 +1,18 @@
-/* src/pages/Admin/Inquiries/InquiriesManager.module.css — Dedicated Admin Client Inquiries Workspace */
+/* src/pages/Admin/Inquiries/InquiriesManager.module.css — Harmonized with Admin Dashboard Color Grading */
+
+/* ================= THEME COLOR PALETTE (IDENTICAL TO ADMIN DASHBOARD) =================
+   Main Background: #111111 (Deep Graphite)
+   Sidebar / Header / Left Pane: #0B0B0B
+   Cards / Rows / Containers: #181818
+   Elevated Elements: #1E1E1E
+   Borders: #292929
+   Primary Text: #F5F5F5
+   Secondary Text: #A3A3A3
+   Muted Text: #737373
+   Primary Accent: #22C55E (Emerald Green)
+   Accent Hover: #16A34A
+   Font Family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif
+   ======================================================================================= */
 
 .standaloneWorkspace {
   position: fixed;
@@ -8,10 +22,10 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #0B0C10;
+  background: #111111;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: #F4F4F5;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: #F5F5F5;
   box-sizing: border-box;
   z-index: 9999;
 }
@@ -20,15 +34,15 @@
    1. TOP APP HEADER
    ========================================================================== */
 .topAppHeader {
-  height: 54px;
-  min-height: 54px;
-  max-height: 54px;
+  height: 56px;
+  min-height: 56px;
+  max-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 1.25rem;
-  background: #12131A;
-  border-bottom: 1px solid #232532;
+  background: #0B0B0B;
+  border-bottom: 1px solid #292929;
   flex-shrink: 0;
   gap: 0.75rem;
   box-sizing: border-box;
@@ -46,24 +60,25 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  background: #1E202C;
-  border: 1px solid #2E3244;
-  color: #E2E8F0;
-  font-size: 0.8rem;
+  background: #181818;
+  border: 1px solid #292929;
+  color: #A3A3A3;
+  font-family: inherit;
+  font-size: 0.82rem;
   font-weight: 700;
-  padding: 0.4rem 0.75rem;
-  border-radius: 7px;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
   user-select: none;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .backToDashboardBtn:hover {
-  background: #2A2E40;
-  color: #FFFFFF;
-  border-color: #00A6FB;
+  background: #1E1E1E;
+  color: #F5F5F5;
+  border-color: #22C55E;
 }
 
 .brandTitleWrap {
@@ -73,9 +88,9 @@
 }
 
 .brandTitle {
-  font-size: 1.02rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  color: #FFFFFF;
+  color: #F5F5F5;
   letter-spacing: -0.01em;
 }
 
@@ -91,47 +106,48 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.4rem 0.75rem;
-  border-radius: 7px;
+  padding: 0.42rem 0.85rem;
+  border-radius: 8px;
   background: transparent;
   border: 1px solid transparent;
-  color: #94A3B8;
-  font-size: 0.8rem;
+  color: #A3A3A3;
+  font-family: inherit;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
   user-select: none;
 }
 
 .statTab:hover {
-  background: #1E202C;
-  color: #FFFFFF;
+  background: #181818;
+  color: #F5F5F5;
 }
 
 .statTabActive {
-  background: #1E202C !important;
-  border-color: #2E3244 !important;
-  color: #00A6FB !important;
+  background: #181818 !important;
+  border-color: #292929 !important;
+  color: #22C55E !important;
 }
 
 .tabIcon {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
 }
 
 .tabBadge {
-  background: #252838;
-  border: 1px solid #363B50;
-  color: #E2E8F0;
-  font-size: 0.7rem;
+  background: #1E1E1E;
+  border: 1px solid #292929;
+  color: #A3A3A3;
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 0.08rem 0.4rem;
+  padding: 0.08rem 0.45rem;
   border-radius: 10px;
 }
 
 .tabBadgeUnread {
-  background: #00A6FB;
-  border-color: #00A6FB;
-  color: #FFFFFF;
+  background: #22C55E;
+  border-color: #22C55E;
+  color: #111111;
 }
 
 /* RIGHT CONTROLS */
@@ -145,22 +161,24 @@
 .syncBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: #1E202C;
-  border: 1px solid #2E3244;
-  color: #E2E8F0;
-  padding: 0.4rem 0.75rem;
-  border-radius: 7px;
-  font-size: 0.78rem;
+  gap: 0.45rem;
+  background: #181818;
+  border: 1px solid #292929;
+  color: #A3A3A3;
+  font-family: inherit;
+  padding: 0.42rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
   white-space: nowrap;
 }
 
 .syncBtn:hover:not(:disabled) {
-  background: #2A2E40;
-  color: #FFFFFF;
+  background: #1E1E1E;
+  color: #F5F5F5;
+  border-color: #22C55E;
 }
 
 .spinnerIcon {
@@ -177,22 +195,23 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: #1E202C;
-  border: 1px solid #2E3244;
-  color: #94A3B8;
-  border-radius: 7px;
-  font-size: 0.82rem;
+  width: 34px;
+  height: 34px;
+  background: #181818;
+  border: 1px solid #292929;
+  color: #A3A3A3;
+  border-radius: 8px;
+  font-size: 0.85rem;
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
   flex-shrink: 0;
 }
 
 .viewSiteIconBtn:hover {
-  background: #2A2E40;
-  color: #FFFFFF;
+  background: #1E1E1E;
+  color: #F5F5F5;
+  border-color: #292929;
 }
 
 .logoutIconBtn:hover {
@@ -206,11 +225,11 @@
    ========================================================================== */
 .workspaceBody {
   width: 100vw;
-  height: calc(100vh - 54px);
+  height: calc(100vh - 56px);
   display: flex;
   flex-direction: row;
   overflow: hidden;
-  background: #0B0C10;
+  background: #111111;
   box-sizing: border-box;
 }
 
@@ -224,23 +243,23 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #0F1017;
-  border-right: 1px solid #232532;
+  background: #0B0B0B;
+  border-right: 1px solid #292929;
   overflow: hidden;
   flex-shrink: 0;
   box-sizing: border-box;
 }
 
 .listSearchHeader {
-  height: 94px;
-  min-height: 94px;
-  max-height: 94px;
-  padding: 0.75rem 0.9rem;
-  border-bottom: 1px solid #232532;
+  height: 96px;
+  min-height: 96px;
+  max-height: 96px;
+  padding: 0.75rem 0.95rem;
+  border-bottom: 1px solid #292929;
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  background: #12131A;
+  background: #0B0B0B;
   flex-shrink: 0;
   box-sizing: border-box;
 }
@@ -248,20 +267,20 @@
 .searchBox {
   display: flex;
   align-items: center;
-  background: #08090C;
-  border: 1px solid #252838;
-  border-radius: 7px;
-  padding: 0 0.6rem;
-  height: 34px;
-  gap: 0.45rem;
+  background: #111111;
+  border: 1px solid #292929;
+  border-radius: 8px;
+  padding: 0 0.65rem;
+  height: 35px;
+  gap: 0.5rem;
 }
 
 .searchBox:focus-within {
-  border-color: #00A6FB;
+  border-color: #22C55E;
 }
 
 .searchIcon {
-  color: #64748B;
+  color: #737373;
   font-size: 0.82rem;
   flex-shrink: 0;
 }
@@ -270,19 +289,20 @@
   background: transparent;
   border: none;
   outline: none;
-  color: #F8FAFC;
+  color: #F5F5F5;
+  font-family: inherit;
   font-size: 0.82rem;
   width: 100%;
 }
 
 .searchBox input::placeholder {
-  color: #64748B;
+  color: #737373;
 }
 
 .clearSearchBtn {
   background: transparent;
   border: none;
-  color: #64748B;
+  color: #737373;
   cursor: pointer;
   padding: 0;
   display: flex;
@@ -291,15 +311,16 @@
 }
 
 .clearSearchBtn:hover {
-  color: #FFFFFF;
+  color: #F5F5F5;
 }
 
 .filterDropdown {
-  background: #08090C;
-  border: 1px solid #252838;
-  color: #E2E8F0;
+  background: #111111;
+  border: 1px solid #292929;
+  color: #A3A3A3;
+  font-family: inherit;
   font-size: 0.76rem;
-  padding: 0.3rem 0.55rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 6px;
   outline: none;
   cursor: pointer;
@@ -308,13 +329,13 @@
 }
 
 .filterDropdown:focus {
-  border-color: #00A6FB;
+  border-color: #22C55E;
 }
 
 /* SCROLLABLE ROWS AREA (INDEPENDENT SMOOTH MOUSE SCROLL) */
 .inquiriesRowsScrollArea {
   flex: 1 1 0%;
-  height: calc(100% - 94px);
+  height: calc(100% - 96px);
   min-height: 0;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -329,25 +350,25 @@
 }
 
 .inquiriesRowsScrollArea::-webkit-scrollbar-track {
-  background: #0F1017;
+  background: #0B0B0B;
 }
 
 .inquiriesRowsScrollArea::-webkit-scrollbar-thumb {
-  background: #252838;
+  background: #292929;
   border-radius: 4px;
 }
 
 .inquiriesRowsScrollArea::-webkit-scrollbar-thumb:hover {
-  background: #3B425A;
+  background: #404040;
 }
 
 /* INQUIRY ROW ITEM */
 .inquiryRow {
   display: flex;
   align-items: flex-start;
-  gap: 0.7rem;
-  padding: 0.85rem 0.95rem;
-  border-bottom: 1px solid #1A1C26;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #1E1E1E;
   cursor: pointer;
   transition: background 0.12s ease;
   user-select: none;
@@ -357,16 +378,16 @@
 }
 
 .inquiryRow:hover {
-  background: #171822;
+  background: #141414;
 }
 
 .inquiryRowSelected {
-  background: #162035 !important;
-  border-left: 3.5px solid #00A6FB;
+  background: #181818 !important;
+  border-left: 3.5px solid #22C55E !important;
 }
 
 .inquiryRowUnread {
-  background: #131724;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .unreadIndicatorBox {
@@ -380,7 +401,7 @@
 
 .unreadDot {
   font-size: 0.45rem;
-  color: #00A6FB;
+  color: #22C55E;
 }
 
 .readPlaceholder {
@@ -389,8 +410,8 @@
 }
 
 .rowAvatar {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   color: #FFFFFF;
   font-weight: 800;
@@ -407,7 +428,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.18rem;
+  gap: 0.2rem;
 }
 
 .rowTopLine {
@@ -418,9 +439,9 @@
 }
 
 .rowSenderName {
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  color: #F8FAFC;
+  color: #F5F5F5;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -432,8 +453,8 @@
 }
 
 .rowTimestamp {
-  font-size: 0.7rem;
-  color: #64748B;
+  font-size: 0.72rem;
+  color: #737373;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -441,13 +462,13 @@
 .rowSubjectLine {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
 .rowServiceTag {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 600;
-  color: #93C5FD;
+  color: #A3A3A3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -456,16 +477,17 @@
 .rowRepliedBadge {
   font-size: 0.62rem;
   font-weight: 700;
-  background: rgba(34, 197, 94, 0.15);
-  color: #4ADE80;
-  padding: 0.04rem 0.32rem;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #22C55E;
+  padding: 0.04rem 0.35rem;
   border-radius: 4px;
   text-transform: uppercase;
 }
 
 .rowSnippet {
-  font-size: 0.74rem;
-  color: #64748B;
+  font-size: 0.76rem;
+  color: #737373;
   line-height: 1.35;
   white-space: nowrap;
   overflow: hidden;
@@ -474,7 +496,7 @@
 }
 
 .inquiryRowUnread .rowSnippet {
-  color: #94A3B8;
+  color: #A3A3A3;
 }
 
 .paneLoadingState,
@@ -485,26 +507,27 @@
   justify-content: center;
   padding: 4rem 1.5rem;
   text-align: center;
-  color: #64748B;
+  color: #737373;
   gap: 0.85rem;
 }
 
 .emptyInboxIcon {
   font-size: 2.4rem;
-  color: #33384D;
+  color: #292929;
 }
 
 .paneEmptyState h4 {
   margin: 0;
-  color: #E2E8F0;
+  color: #F5F5F5;
   font-size: 1rem;
+  font-weight: 700;
 }
 
 .paneEmptyState p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   line-height: 1.45;
-  color: #64748B;
+  color: #737373;
   max-width: 260px;
 }
 
@@ -517,7 +540,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #12131A;
+  background: #111111;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -532,15 +555,15 @@
 
 /* TOOLBAR */
 .viewerToolbar {
-  height: 50px;
-  min-height: 50px;
-  max-height: 50px;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.25rem;
-  border-bottom: 1px solid #232532;
-  background: #0F1017;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid #292929;
+  background: #0B0B0B;
   flex-shrink: 0;
   gap: 0.5rem;
   box-sizing: border-box;
@@ -557,7 +580,7 @@
 .toolbarRight {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
   flex-shrink: 0;
 }
 
@@ -565,12 +588,13 @@
   display: none;
   align-items: center;
   gap: 0.35rem;
-  background: #1E202C;
-  border: 1px solid #2E3244;
-  color: #E2E8F0;
-  padding: 0.35rem 0.65rem;
+  background: #181818;
+  border: 1px solid #292929;
+  color: #F5F5F5;
+  font-family: inherit;
+  padding: 0.4rem 0.75rem;
   border-radius: 6px;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
   flex-shrink: 0;
@@ -579,63 +603,72 @@
 .actionBtnGmail {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: #00A6FB;
-  color: #FFFFFF;
+  gap: 0.45rem;
+  background: #22C55E;
+  color: #111111;
+  border: 1px solid #22C55E;
   text-decoration: none;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.4rem 0.85rem;
-  border-radius: 6px;
-  transition: background 0.15s ease;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.45rem 0.95rem;
+  border-radius: 7px;
+  transition: all 0.18s ease;
   white-space: nowrap;
   flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(34, 197, 94, 0.2);
 }
 
 .actionBtnGmail:hover {
-  background: #008cd4;
+  background: #16A34A;
+  border-color: #16A34A;
 }
 
 .actionBtnWhatsapp {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: #25D366;
-  color: #FFFFFF;
+  gap: 0.45rem;
+  background: #181818;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #22C55E;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-family: inherit;
+  font-size: 0.82rem;
   font-weight: 700;
-  padding: 0.4rem 0.85rem;
-  border-radius: 6px;
-  transition: background 0.15s ease;
+  padding: 0.45rem 0.95rem;
+  border-radius: 7px;
+  transition: all 0.18s ease;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .actionBtnWhatsapp:hover {
-  background: #20BA5A;
+  background: rgba(34, 197, 94, 0.12);
+  border-color: #22C55E;
 }
 
 .actionBtnIcon {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  background: #1E202C;
-  border: 1px solid #2E3244;
-  color: #E2E8F0;
-  font-size: 0.78rem;
+  gap: 0.4rem;
+  background: #181818;
+  border: 1px solid #292929;
+  color: #A3A3A3;
+  font-family: inherit;
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 0.4rem 0.75rem;
-  border-radius: 6px;
+  padding: 0.45rem 0.85rem;
+  border-radius: 7px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s ease;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .actionBtnIcon:hover {
-  background: #2A2E40;
-  color: #FFFFFF;
+  background: #1E1E1E;
+  color: #F5F5F5;
+  border-color: #292929;
 }
 
 .actionBtnDelete:hover {
@@ -647,11 +680,11 @@
 /* SCROLLABLE VIEWER BODY (INDEPENDENT SMOOTH MOUSE SCROLL) */
 .viewerScrollArea {
   flex: 1 1 0%;
-  height: calc(100% - 50px);
+  height: calc(100% - 52px);
   min-height: 0;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: 1.75rem 2rem;
+  padding: 2rem 2.5rem;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   box-sizing: border-box;
@@ -662,38 +695,38 @@
 }
 
 .viewerScrollArea::-webkit-scrollbar-track {
-  background: #12131A;
+  background: #111111;
 }
 
 .viewerScrollArea::-webkit-scrollbar-thumb {
-  background: #252838;
+  background: #292929;
   border-radius: 4px;
 }
 
 .viewerScrollArea::-webkit-scrollbar-thumb:hover {
-  background: #3B425A;
+  background: #404040;
 }
 
 .viewerInnerContent {
-  max-width: 950px;
+  max-width: 960px;
   width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.35rem;
 }
 
 /* SUBJECT HEADER */
 .messageSubjectHeader {
-  border-bottom: 1px solid #232532;
-  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #292929;
+  padding-bottom: 1rem;
 }
 
 .inquirySubjectTitle {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.4rem;
+  margin: 0 0 0.55rem 0;
+  font-size: 1.45rem;
   font-weight: 800;
-  color: #FFFFFF;
+  color: #F5F5F5;
   line-height: 1.3;
   letter-spacing: -0.01em;
 }
@@ -701,68 +734,68 @@
 .inquiryMetaRow {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
 .disciplineBadge {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  background: rgba(0, 166, 251, 0.15);
-  border: 1px solid rgba(0, 166, 251, 0.35);
-  color: #38BDF8;
-  font-size: 0.74rem;
+  gap: 0.4rem;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #22C55E;
+  font-size: 0.76rem;
   font-weight: 700;
-  padding: 0.2rem 0.65rem;
+  padding: 0.22rem 0.7rem;
   border-radius: 20px;
   white-space: nowrap;
 }
 
 .statusPill {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  padding: 0.2rem 0.65rem;
+  padding: 0.22rem 0.7rem;
   border-radius: 20px;
   text-transform: uppercase;
 }
 
 .statusPillUnread {
-  background: rgba(0, 166, 251, 0.2);
-  color: #00A6FB;
-  border: 1px solid rgba(0, 166, 251, 0.4);
+  background: rgba(34, 197, 94, 0.12);
+  color: #22C55E;
+  border: 1px solid rgba(34, 197, 94, 0.25);
 }
 
 .statusPillRead {
-  background: rgba(148, 163, 184, 0.15);
-  color: #CBD5E1;
-  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: #1E1E1E;
+  color: #A3A3A3;
+  border: 1px solid #292929;
 }
 
 .statusPillReplied {
-  background: rgba(34, 197, 94, 0.15);
-  color: #4ADE80;
-  border: 1px solid rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.2);
+  color: #22C55E;
+  border: 1px solid #22C55E;
 }
 
 /* SENDER HEADER */
 .senderHeaderCard {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
-  background: #0E0F15;
-  border: 1px solid #232532;
-  border-radius: 10px;
-  padding: 0.95rem 1.15rem;
+  gap: 0.95rem;
+  background: #181818;
+  border: 1px solid #292929;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
 }
 
 .senderLargeAvatar {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   color: #FFFFFF;
   font-weight: 800;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -781,138 +814,47 @@
 .senderPrimaryRow {
   display: flex;
   align-items: baseline;
-  gap: 0.45rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
 .senderFullName {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 800;
-  color: #FFFFFF;
+  color: #F5F5F5;
 }
 
 .senderEmailAddress {
-  font-size: 0.82rem;
-  color: #94A3B8;
+  font-size: 0.85rem;
+  color: #A3A3A3;
 }
 
 .timestampFullRow {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.74rem;
-  color: #64748B;
+  font-size: 0.76rem;
+  color: #737373;
 }
 
 .timeIcon {
-  font-size: 0.68rem;
+  font-size: 0.7rem;
 }
 
 /* ==========================================================================
    3. STRUCTURED CLIENT SUBMISSION DETAILS GRID
    ========================================================================== */
 .clientDetailsBox {
-  background: #0E0F15;
-  border: 1px solid #232532;
-  border-radius: 10px;
-  padding: 1.15rem 1.25rem;
+  background: #181818;
+  border: 1px solid #292929;
+  border-radius: 12px;
+  padding: 1.25rem 1.35rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.95rem;
 }
 
 .clientDetailsHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.74rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #94A3B8;
-  border-bottom: 1px solid #1E202C;
-  padding-bottom: 0.45rem;
-}
-
-.detailsHeaderIcon {
-  color: #00A6FB;
-}
-
-.detailGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.detailGridItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.detailGridLabel {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #64748B;
-}
-
-.detailGridValueRow {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: #E2E8F0;
-  font-size: 0.85rem;
-}
-
-.detailGridIcon {
-  color: #00A6FB;
-  font-size: 0.78rem;
-  flex-shrink: 0;
-}
-
-.detailGridValueText {
-  color: #FFFFFF;
-  word-break: break-all;
-}
-
-.copySmallBtn {
-  background: #1E202C;
-  border: 1px solid #2E3244;
-  color: #94A3B8;
-  font-size: 0.68rem;
-  padding: 0.18rem 0.4rem;
-  border-radius: 4px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-  margin-left: 0.25rem;
-}
-
-.copySmallBtn:hover {
-  background: #00A6FB;
-  border-color: #00A6FB;
-  color: #FFFFFF;
-}
-
-/* ==========================================================================
-   4. FULL CLIENT MESSAGE BODY CARD (100% CRYSTAL CLEAR SNOW WHITE)
-   ========================================================================== */
-.emailBodyCard {
-  background: #11131C;
-  border: 1px solid #282C3D;
-  border-left: 4px solid #00A6FB;
-  border-radius: 10px;
-  padding: 1.35rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-.emailBodyHeader {
   display: flex;
   align-items: center;
   gap: 0.45rem;
@@ -920,30 +862,121 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #38BDF8;
-  border-bottom: 1px solid #1E2333;
-  padding-bottom: 0.55rem;
+  color: #A3A3A3;
+  border-bottom: 1px solid #292929;
+  padding-bottom: 0.5rem;
+}
+
+.detailsHeaderIcon {
+  color: #22C55E;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.15rem;
+}
+
+.detailGridItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.detailGridLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #737373;
+}
+
+.detailGridValueRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #F5F5F5;
+  font-size: 0.88rem;
+}
+
+.detailGridIcon {
+  color: #22C55E;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.detailGridValueText {
+  color: #F5F5F5;
+  word-break: break-all;
+}
+
+.copySmallBtn {
+  background: #1E1E1E;
+  border: 1px solid #292929;
+  color: #A3A3A3;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+  margin-left: 0.25rem;
+}
+
+.copySmallBtn:hover {
+  background: #22C55E;
+  border-color: #22C55E;
+  color: #111111;
+}
+
+/* ==========================================================================
+   4. FULL CLIENT MESSAGE BODY CARD (100% SNOW WHITE)
+   ========================================================================== */
+.emailBodyCard {
+  background: #181818;
+  border: 1px solid #292929;
+  border-left: 4px solid #22C55E;
+  border-radius: 12px;
+  padding: 1.5rem 1.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.95rem;
+}
+
+.emailBodyHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #22C55E;
+  border-bottom: 1px solid #292929;
+  padding-bottom: 0.6rem;
 }
 
 .messageHeaderIcon {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 .emailBodyText {
   font-size: 1.05rem !important;
-  line-height: 1.8 !important;
-  color: #FFFFFF !important;
-  font-weight: 600 !important;
+  line-height: 1.85 !important;
+  color: #F5F5F5 !important;
+  font-weight: 500 !important;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
 .emailBodyText p {
-  color: #FFFFFF !important;
+  color: #F5F5F5 !important;
   font-size: 1.05rem !important;
-  line-height: 1.8 !important;
-  font-weight: 600 !important;
-  margin: 0 0 0.9rem !important;
+  line-height: 1.85 !important;
+  font-weight: 500 !important;
+  margin: 0 0 0.95rem !important;
   opacity: 1 !important;
 }
 
@@ -960,7 +993,7 @@
   height: 100%;
   padding: 3rem;
   text-align: center;
-  color: #64748B;
+  color: #737373;
   gap: 0.85rem;
 }
 
@@ -968,11 +1001,12 @@
   width: 68px;
   height: 68px;
   border-radius: 50%;
-  background: #1E202C;
+  background: #181818;
+  border: 1px solid #292929;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #64748B;
+  color: #737373;
 }
 
 .largeMailIcon {
@@ -981,17 +1015,17 @@
 
 .noMessageSelectedPane h3 {
   margin: 0;
-  color: #FFFFFF;
-  font-size: 1.2rem;
+  color: #F5F5F5;
+  font-size: 1.25rem;
   font-weight: 800;
 }
 
 .noMessageSelectedPane p {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   max-width: 360px;
   line-height: 1.5;
-  color: #64748B;
+  color: #737373;
 }
 
 /* TOAST PILL */
@@ -999,17 +1033,17 @@
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  background: #14151B;
-  border: 1px solid #00A6FB;
-  color: #F8FAFC;
-  padding: 0.55rem 1rem;
+  background: #181818;
+  border: 1px solid #22C55E;
+  color: #F5F5F5;
+  padding: 0.6rem 1.15rem;
   border-radius: 8px;
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
   z-index: 99999;
   animation: slideUp 0.2s ease-out;
 }
