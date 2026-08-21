@@ -149,7 +149,7 @@
   border-radius: 50%;
   border: 3px solid #FFFFFF;
   outline: 1.5px solid #E4E4E7;
-  background: #F5F5F3;
+  background: #FFBB0F;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   flex-shrink: 0;
@@ -294,7 +294,7 @@
 }
 
 /* =========================================================================
-   MOBILE ARCHITECTURE FIX (<= 768px): SINGLE SCROLL-CONTAINER LAYOUT
+   MOBILE RESPONSIVE (<= 768px)
    ========================================================================= */
 @media (max-width: 768px) {
   .overlay {
@@ -321,23 +321,33 @@
 
   .closeBtn {
     position: fixed;
-    top: 1rem;
-    right: 1rem;
-    width: 40px;
-    height: 40px;
+    top: 0.85rem;
+    right: 0.85rem;
+    width: 38px;
+    height: 38px;
     background: #0A0A0A;
     border-color: #0A0A0A;
     color: #FFFFFF;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   }
 
+  /* Hide the department/designation badge from top bar on mobile to eliminate clutter */
+  .deptBadge {
+    display: none;
+  }
+
   .modalHeader {
     justify-content: flex-start;
-    padding-right: 4.2rem;
+    padding: 1.15rem 3.5rem 0.85rem 1.25rem;
+  }
+
+  .idTag {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.65rem;
   }
 
   .modalBody {
-    padding: 1.5rem 1.25rem 6.5rem; /* Room for comfortable scrolling past bottom navigation bars */
+    padding: 1.25rem 1.25rem 6.5rem;
   }
 
   .profileSummary {
@@ -359,7 +369,7 @@
   }
 
   .memberName {
-    font-size: 1.6rem;
+    font-size: 1.55rem;
   }
 
   .emailBtn {
