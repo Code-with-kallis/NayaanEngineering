@@ -3,7 +3,10 @@ import { Resend } from "resend";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || process.env.RESEND;
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "info@nayaabengineering.com";
+const ADMIN_EMAILS = [
+  "info@nayaabengineering.com",
+  "neiplkashmir@gmail.com"
+];
 
 // Default sender address
 const SENDER_EMAIL = process.env.RESEND_FROM_EMAIL_ADDRESS || "info@nayaabengineering.com";
@@ -56,10 +59,10 @@ export default async function handler(req, res) {
 
   try {
     // 1. DISPATCH NOTIFICATION EMAIL TO ADMIN
-    // Sent from inquiry@nayaabengineering.com so the inbox shows the client name instead of "me"
+    // Sent to both info@nayaabengineering.com and neiplkashmir@gmail.com
     const adminEmailPromise = resend.emails.send({
       from: `${cleanName} [Website Contact] <inquiry@nayaabengineering.com>`,
-      to: [ADMIN_EMAIL],
+      to: ADMIN_EMAILS,
       replyTo: cleanEmail,
       subject: `New Inquiry: ${cleanService} - ${cleanName}`,
       headers: {

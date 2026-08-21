@@ -4,7 +4,10 @@ import { createClient } from "@supabase/supabase-js";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || process.env.RESEND;
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "info@nayaabengineering.com";
+const ADMIN_EMAILS = [
+  "info@nayaabengineering.com",
+  "neiplkashmir@gmail.com"
+];
 const SENDER_EMAIL = process.env.RESEND_FROM_EMAIL_ADDRESS || "info@nayaabengineering.com";
 
 const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL;
@@ -69,7 +72,7 @@ export default async function handler(req, res) {
       // Email 1: Notify Admin about Unsubscription
       const adminUnsubPromise = resend.emails.send({
         from: `Newsletter Unsubscribe <newsletter@nayaabengineering.com>`,
-        to: [ADMIN_EMAIL],
+        to: ADMIN_EMAILS,
         replyTo: cleanEmail,
         subject: `Newsletter Unsubscription: ${cleanEmail}`,
         headers: { "X-Entity-Ref-ID": `unsub-${Date.now()}` },
@@ -116,7 +119,7 @@ export default async function handler(req, res) {
       const userUnsubPromise = resend.emails.send({
         from: `Nayaab Engineering Innovations <${SENDER_EMAIL}>`,
         to: [cleanEmail],
-        replyTo: ADMIN_EMAIL,
+        replyTo: ADMIN_EMAILS[0],
         subject: `You have been unsubscribed — Nayaab Engineering Innovations`,
         headers: { "X-Entity-Ref-ID": `unsub-confirm-${Date.now()}` },
         text: `Hello,\n\nYou have been successfully unsubscribed from the Nayaab Engineering Innovations (NEIPL) newsletter.\n\nYou will no longer receive newsletter announcements from us. If this was done by mistake, you can resubscribe anytime at https://nayaabengineering.com\n\nWarm regards,\nNayaab Engineering Innovations Pvt. Ltd.`,
@@ -171,7 +174,7 @@ export default async function handler(req, res) {
     // 2. DISPATCH NOTIFICATION EMAIL TO ADMIN
     const adminEmailPromise = resend.emails.send({
       from: `Website Subscriber <newsletter@nayaabengineering.com>`,
-      to: [ADMIN_EMAIL],
+      to: ADMIN_EMAILS,
       replyTo: cleanEmail,
       subject: `New Newsletter Subscriber: ${cleanEmail}`,
       headers: {
