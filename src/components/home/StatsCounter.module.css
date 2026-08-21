@@ -111,6 +111,7 @@
   }
 
   .statsContainer {
+    padding-inline: 0.5rem;
     align-items: flex-start;
     gap: 0.5rem;
   }
