@@ -30,6 +30,7 @@ const Footer = () => {
     error: false,
     message: "",
   });
+  const [botcheck, setBotcheck] = useState(false);
 
   useEffect(() => {
     const isSubbed = localStorage.getItem("nei_newsletter_subscribed");
@@ -42,6 +43,8 @@ const Footer = () => {
     e.preventDefault();
     const cleanEmail = email.trim();
     if (!cleanEmail || submitting) return;
+
+    if (botcheck) return;
 
     setSubmitting(true);
     setStatus({ success: false, error: false, message: "" });
@@ -58,6 +61,7 @@ const Footer = () => {
         body: JSON.stringify({
           email: cleanEmail,
           action: isUnsub ? "unsubscribe" : "subscribe",
+          botcheck: botcheck ? "bot" : undefined,
         }),
       });
 
@@ -299,6 +303,16 @@ const Footer = () => {
             </div>
           ) : (
             <form className={styles.subscribeForm} onSubmit={handleNewsletterSubmit}>
+              {/* Honeypot Bot Trap */}
+              <input
+                type="checkbox"
+                name="botcheck"
+                checked={botcheck}
+                onChange={(e) => setBotcheck(e.target.checked)}
+                style={{ display: "none" }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
               <div className={styles.inputWrapper}>
                 <input
                   type="email"
@@ -309,6 +323,7 @@ const Footer = () => {
                   }
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  maxLength={100}
                   required
                   disabled={submitting}
                   className={styles.subscribeInput}

@@ -16,17 +16,101 @@ const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supaba
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// ============================================================================
+// RATE LIMITING & SPAM MITIGATION
+// ============================================================================
+const ipRateLimitMap = new Map(); // IP -> { count, firstRequestTime }
+const recentEmailMap = new Map(); // email:action -> timestamp
+
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes window
+const MAX_REQUESTS_PER_WINDOW = 5; // Max 5 requests per 15 minutes per IP
+const DUPLICATE_COOLDOWN_MS = 60 * 1000; // 60 seconds duplicate protection
+
+function checkIpRateLimit(ip) {
+  const now = Date.now();
+  const record = ipRateLimitMap.get(ip);
+
+  // Clean old records periodically
+  if (ipRateLimitMap.size > 10000) {
+    ipRateLimitMap.clear();
+  }
+
+  if (!record) {
+    ipRateLimitMap.set(ip, { count: 1, firstRequestTime: now });
+    return false;
+  }
+
+  if (now - record.firstRequestTime > RATE_LIMIT_WINDOW_MS) {
+    ipRateLimitMap.set(ip, { count: 1, firstRequestTime: now });
+    return false;
+  }
+
+  if (record.count >= MAX_REQUESTS_PER_WINDOW) {
+    return true;
+  }
+
+  record.count += 1;
+  return false;
+}
+
+function isDuplicateRecentAction(email, action) {
+  const key = `${email}:${action}`;
+  const now = Date.now();
+  const lastTime = recentEmailMap.get(key);
+
+  if (lastTime && now - lastTime < DUPLICATE_COOLDOWN_MS) {
+    return true;
+  }
+
+  recentEmailMap.set(key, now);
+  if (recentEmailMap.size > 5000) {
+    recentEmailMap.clear();
+  }
+  return false;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed. Use POST." });
   }
 
-  const { email, action = "subscribe" } = req.body || {};
+  // 1. Client IP Detection & Rate Limiting
+  const clientIp =
+    req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    req.headers["x-real-ip"] ||
+    req.socket?.remoteAddress ||
+    "unknown_ip";
+
+  if (checkIpRateLimit(clientIp)) {
+    return res.status(429).json({
+      error: "Too many subscription requests from this device. Please wait a few minutes before trying again.",
+    });
+  }
+
+  const { email, action = "subscribe", botcheck } = req.body || {};
+
+  // 2. Honeypot Bot Check
+  if (botcheck) {
+    return res.status(200).json({ success: true, message: "Subscription received." });
+  }
+
   const cleanEmail = String(email || "").trim().toLowerCase();
   const isUnsubscribe = action === "unsubscribe";
 
-  if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail)) {
-    return res.status(400).json({ error: "Please provide a valid email address." });
+  // 3. Strict Input & Length Validation
+  if (!cleanEmail || cleanEmail.length > 100 || !EMAIL_REGEX.test(cleanEmail)) {
+    return res.status(400).json({ error: "Please provide a valid email address (max 100 characters)." });
+  }
+
+  // 4. Duplicate Submission Cooldown (Prevents rapid multi-clicking same email)
+  if (isDuplicateRecentAction(cleanEmail, action)) {
+    return res.status(200).json({
+      success: true,
+      action,
+      message: isUnsubscribe
+        ? "You have already been unsubscribed."
+        : "Thank you for subscribing! Your subscription is already registered.",
+    });
   }
 
   const timestamp = new Date().toLocaleString("en-IN", {
@@ -38,7 +122,7 @@ export default async function handler(req, res) {
     minute: "2-digit",
   });
 
-  // 1. Register event in Supabase inquiries table
+  // 5. Register event in Supabase inquiries table
   if (supabase) {
     try {
       await supabase.from("inquiries").insert([
@@ -48,8 +132,8 @@ export default async function handler(req, res) {
           phone: null,
           service: isUnsubscribe ? "Newsletter Unsubscribe" : "Newsletter Subscription",
           message: isUnsubscribe
-            ? `User unsubscribed from newsletter updates at ${timestamp}.`
-            : `Subscriber registered via website footer at ${timestamp}.`,
+            ? `User unsubscribed from newsletter updates at ${timestamp}. [IP: ${clientIp}]`
+            : `Subscriber registered via website footer at ${timestamp}. [IP: ${clientIp}]`,
           status: "unread",
         },
       ]);
@@ -75,7 +159,11 @@ export default async function handler(req, res) {
         to: ADMIN_EMAILS,
         replyTo: cleanEmail,
         subject: `Newsletter Unsubscription: ${cleanEmail}`,
-        headers: { "X-Entity-Ref-ID": `unsub-${Date.now()}` },
+        headers: {
+          "X-Entity-Ref-ID": `unsub-${Date.now()}`,
+          "Auto-Submitted": "auto-generated",
+          "X-Auto-Response-Suppress": "All",
+        },
         text: `NEWSLETTER UN-SUBSCRIPTION\n\nUser Email: ${cleanEmail}\nUnsubscribed At: ${timestamp}\nSource: Website Footer\n\nDatabase record has been updated.`,
         html: `
           <!DOCTYPE html>
@@ -121,7 +209,11 @@ export default async function handler(req, res) {
         to: [cleanEmail],
         replyTo: ADMIN_EMAILS[0],
         subject: `You have been unsubscribed — Nayaab Engineering Innovations`,
-        headers: { "X-Entity-Ref-ID": `unsub-confirm-${Date.now()}` },
+        headers: {
+          "X-Entity-Ref-ID": `unsub-confirm-${Date.now()}`,
+          "Auto-Submitted": "auto-generated",
+          "X-Auto-Response-Suppress": "All",
+        },
         text: `Hello,\n\nYou have been successfully unsubscribed from the Nayaab Engineering Innovations (NEIPL) newsletter.\n\nYou will no longer receive newsletter announcements from us. If this was done by mistake, you can resubscribe anytime at https://nayaabengineering.com\n\nWarm regards,\nNayaab Engineering Innovations Pvt. Ltd.`,
         html: `
           <!DOCTYPE html>
@@ -250,6 +342,8 @@ export default async function handler(req, res) {
       subject: `Welcome to Nayaab Engineering Innovations`,
       headers: {
         "X-Entity-Ref-ID": `welcome-${Date.now()}`,
+        "Auto-Submitted": "auto-generated",
+        "X-Auto-Response-Suppress": "All",
       },
       text: `Welcome to Nayaab Engineering Innovations (NEIPL)!\n\nThank you for subscribing to our newsletter and project updates. You will be the first to receive our latest engineering case studies, architectural showcases, and construction industry insights.\n\nExplore our portfolio: https://nayaabengineering.com/projects\nGet in touch: info@nayaabengineering.com\n\nWarm regards,\nEditorial & Client Engagement Team\nNayaab Engineering Innovations Pvt. Ltd.\nSrinagar, Jammu & Kashmir`,
       html: `

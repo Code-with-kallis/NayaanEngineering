@@ -11,6 +11,58 @@ const ADMIN_EMAILS = [
 // Default sender address
 const SENDER_EMAIL = process.env.RESEND_FROM_EMAIL_ADDRESS || "info@nayaabengineering.com";
 
+// ============================================================================
+// RATE LIMITING & SPAM MITIGATION
+// ============================================================================
+const inquiryRateLimitMap = new Map(); // IP -> { count, firstRequestTime }
+const recentInquiryMap = new Map(); // email:message_hash -> timestamp
+
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes window
+const MAX_INQUIRIES_PER_WINDOW = 5; // Max 5 inquiries per 15 minutes per IP
+const DUPLICATE_COOLDOWN_MS = 60 * 1000; // 60 seconds duplicate protection
+
+function checkInquiryRateLimit(ip) {
+  const now = Date.now();
+  const record = inquiryRateLimitMap.get(ip);
+
+  if (inquiryRateLimitMap.size > 10000) {
+    inquiryRateLimitMap.clear();
+  }
+
+  if (!record) {
+    inquiryRateLimitMap.set(ip, { count: 1, firstRequestTime: now });
+    return false;
+  }
+
+  if (now - record.firstRequestTime > RATE_LIMIT_WINDOW_MS) {
+    inquiryRateLimitMap.set(ip, { count: 1, firstRequestTime: now });
+    return false;
+  }
+
+  if (record.count >= MAX_INQUIRIES_PER_WINDOW) {
+    return true;
+  }
+
+  record.count += 1;
+  return false;
+}
+
+function isDuplicateInquiry(email, message) {
+  const key = `${email}:${message.slice(0, 50)}`;
+  const now = Date.now();
+  const lastTime = recentInquiryMap.get(key);
+
+  if (lastTime && now - lastTime < DUPLICATE_COOLDOWN_MS) {
+    return true;
+  }
+
+  recentInquiryMap.set(key, now);
+  if (recentInquiryMap.size > 5000) {
+    recentInquiryMap.clear();
+  }
+  return false;
+}
+
 function cleanPhoneNumber(phone) {
   if (!phone) return "";
   const cleaned = phone.replace(/[^0-9+]/g, "");
@@ -24,23 +76,44 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed. Use POST." });
   }
 
+  // 1. Client IP Detection & Rate Limiting
+  const clientIp =
+    req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+    req.headers["x-real-ip"] ||
+    req.socket?.remoteAddress ||
+    "unknown_ip";
+
+  if (checkInquiryRateLimit(clientIp)) {
+    return res.status(429).json({
+      error: "Too many inquiries submitted from this device. Please wait a few minutes before submitting again.",
+    });
+  }
+
   const { name, email, phone, service, message, botcheck } = req.body || {};
 
-  // Honeypot bot protection
+  // 2. Honeypot bot protection
   if (botcheck) {
     return res.status(200).json({ success: true, message: "Inquiry received." });
   }
 
-  // Validate required inputs
+  // 3. Validate required inputs
   if (!name || !email || !message) {
     return res.status(400).json({ error: "Missing required fields: name, email, or message." });
   }
 
-  const cleanName = String(name).trim();
-  const cleanEmail = String(email).trim().toLowerCase();
-  const cleanPhone = String(phone || "Not Provided").trim();
-  const cleanService = String(service || "General Engineering Consultation").trim();
+  const cleanName = String(name).trim().slice(0, 100);
+  const cleanEmail = String(email).trim().toLowerCase().slice(0, 100);
+  const cleanPhone = String(phone || "Not Provided").trim().slice(0, 30);
+  const cleanService = String(service || "General Engineering Consultation").trim().slice(0, 100);
   const cleanMessage = String(message).trim().slice(0, 900);
+
+  // 4. Duplicate Submission Check (Prevents rapid multi-clicking)
+  if (isDuplicateInquiry(cleanEmail, cleanMessage)) {
+    return res.status(200).json({
+      success: true,
+      message: "Thank you! Your inquiry has already been received.",
+    });
+  }
   const timestamp = new Date().toLocaleString("en-IN", {
     timeZone: "Asia/Kolkata",
     day: "numeric",
