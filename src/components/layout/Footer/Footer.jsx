@@ -44,34 +44,29 @@ const Footer = () => {
     setStatus({ success: false, error: false, message: "" });
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
-          from_name: "Nayaab Engineering Website",
-          subject: `New Newsletter Subscriber: ${email}`,
-          email: email,
-          message: `New subscriber email registered via Footer: ${email}`,
+          email: email.trim(),
         }),
       });
 
       const result = await response.json();
 
-      if (result.success) {
+      if (response.ok && result.success) {
         localStorage.setItem("nei_newsletter_subscribed", "true");
         setAlreadySubscribed(true);
         setStatus({
           success: true,
           error: false,
-          message: "Thank you for subscribing!",
+          message: "Thank you for subscribing! A welcome confirmation has been sent to your inbox.",
         });
         setEmail("");
       } else {
-        throw new Error(result.message || "Failed to subscribe. Please try again.");
+        throw new Error(result.error || "Failed to subscribe. Please try again.");
       }
     } catch (err) {
       setStatus({
