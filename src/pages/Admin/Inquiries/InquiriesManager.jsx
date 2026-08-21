@@ -1,5 +1,6 @@
-// src/pages/Admin/Inquiries/InquiriesManager.jsx — Luxury Hostinger Webmail Style Inbox
+// src/pages/Admin/Inquiries/InquiriesManager.jsx — Dedicated Fullscreen Hostinger Webmail
 import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import {
   FaInbox,
@@ -20,9 +21,11 @@ import {
   FaCircle,
   FaUser,
   FaPaperPlane,
-  FaCheckCircle,
   FaEnvelopeOpen,
   FaInfoCircle,
+  FaSignOutAlt,
+  FaThLarge,
+  FaExternalLinkAlt,
 } from "react-icons/fa";
 import styles from "./InquiriesManager.module.css";
 
@@ -118,7 +121,13 @@ function getAvatarColor(name) {
   return AVATAR_COLORS[index];
 }
 
-export default function InquiriesManager({ onUnreadCountChange, showAlert, showConfirm }) {
+export default function InquiriesManager({
+  onUnreadCountChange,
+  showAlert,
+  showConfirm,
+  onBackToDashboard,
+  onLogout,
+}) {
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -145,7 +154,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
       const list = data || [];
       setInquiries(list);
 
-      // Auto select first inquiry on desktop if none currently selected
+      // Auto select first inquiry on desktop if none selected
       if (!selectedInquiryId && list.length > 0 && typeof window !== "undefined" && window.innerWidth > 900) {
         setSelectedInquiryId(list[0].id);
       }
@@ -201,7 +210,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
     if ((inquiry.status || "unread") === "unread") {
       handleUpdateStatus(inquiry.id, "read");
     }
-    // Scroll viewer pane to top
+    // Scroll viewer to top
     if (viewerScrollRef.current) {
       viewerScrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
@@ -211,7 +220,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
     if (showConfirm) {
       showConfirm({
         title: "Delete Inquiry",
-        message: `Are you sure you want to permanently delete this message from ${clientName || "the sender"}?`,
+        message: `Are you sure you want to permanently delete this inquiry from ${clientName || "the sender"}?`,
         confirmText: "Delete",
         isDanger: true,
         onConfirm: async () => {
@@ -285,17 +294,37 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
   }, [inquiries, selectedInquiryId]);
 
   return (
-    <div className={styles.webmailWrapper}>
-      {/* ================= 1. TOP STATS BAR ================= */}
-      <header className={styles.topStatsBar}>
-        <div className={styles.statsLeft}>
+    <div className={styles.standaloneWebmailApp}>
+      {/* ================= 1. WEBMAIL TOP APP BAR ================= */}
+      <header className={styles.webmailAppHeader}>
+        <div className={styles.headerBrandCol}>
+          {onBackToDashboard && (
+            <button
+              type="button"
+              className={styles.backToDashboardBtn}
+              onClick={onBackToDashboard}
+              title="Return to Admin Dashboard"
+            >
+              <FaArrowLeft />
+              <span>Dashboard</span>
+            </button>
+          )}
+
+          <div className={styles.brandTitleWrap}>
+            <span className={styles.brandTitle}>NEIPL Webmail</span>
+            <span className={styles.brandBadge}>Client Portal</span>
+          </div>
+        </div>
+
+        {/* CENTER: FOLDER TABS */}
+        <div className={styles.headerTabsWrap}>
           <button
             type="button"
             className={`${styles.statTab} ${activeTabFilter === "all" ? styles.statTabActive : ""}`}
             onClick={() => setActiveTabFilter("all")}
           >
             <FaInbox className={styles.tabIcon} />
-            <span>All Inquiries</span>
+            <span>Inbox</span>
             <span className={styles.tabBadge}>{stats.total}</span>
           </button>
 
@@ -332,20 +361,44 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
           </button>
         </div>
 
-        <button
-          type="button"
-          className={styles.syncBtn}
-          onClick={() => fetchInquiries(true)}
-          disabled={refreshing}
-          title="Refresh Inquiries Live"
-        >
-          <FaSyncAlt className={refreshing ? styles.spinnerIcon : ""} />
-          <span>{refreshing ? "Syncing..." : "Live Sync"}</span>
-        </button>
+        {/* RIGHT: CONTROLS */}
+        <div className={styles.headerRightControls}>
+          <button
+            type="button"
+            className={styles.syncBtn}
+            onClick={() => fetchInquiries(true)}
+            disabled={refreshing}
+            title="Refresh Inquiries Live"
+          >
+            <FaSyncAlt className={refreshing ? styles.spinnerIcon : ""} />
+            <span>{refreshing ? "Syncing..." : "Sync Live"}</span>
+          </button>
+
+          <Link
+            to="/"
+            className={styles.viewSiteIconBtn}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="View Live Website"
+          >
+            <FaExternalLinkAlt />
+          </Link>
+
+          {onLogout && (
+            <button
+              type="button"
+              className={styles.logoutIconBtn}
+              onClick={onLogout}
+              title="Logout from Admin"
+            >
+              <FaSignOutAlt />
+            </button>
+          )}
+        </div>
       </header>
 
-      {/* ================= 2. HOSTINGER WEBMAIL SPLIT-PANE CONTAINER ================= */}
-      <div className={styles.webmailContainer}>
+      {/* ================= 2. FULLSCREEN 2-PANE WEBMAIL WORKSPACE ================= */}
+      <div className={styles.webmailBodyWorkspace}>
         {/* LEFT PANE: EMAIL FEED LIST */}
         <aside
           className={`${styles.mailListPane} ${
@@ -466,7 +519,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
           </div>
         </aside>
 
-        {/* RIGHT PANE: LIVE READING PANE (FULL DETAILS — ZERO POPUPS!) */}
+        {/* RIGHT PANE: LIVE READING PANE (FULLSCREEN — ZERO POPUPS!) */}
         <section
           className={`${styles.readingPane} ${
             activeInquiry ? styles.readingPaneActiveMobile : ""

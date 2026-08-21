@@ -940,6 +940,59 @@ export default function Admin() {
     );
   }
 
+  // ================= STANDALONE FULLSCREEN WEBMAIL INBOX =================
+  if (activeTab === "inquiries") {
+    return (
+      <div style={{ width: "100vw", height: "100vh", overflow: "hidden", background: "#111113", position: "relative" }}>
+        <InquiriesManager
+          showAlert={showAlert}
+          showConfirm={showConfirm}
+          onUnreadCountChange={setUnreadInquiriesCount}
+          onBackToDashboard={() => setActiveTab("projects")}
+          onLogout={handleLogout}
+        />
+
+        {/* REUSABLE POPUP MODAL */}
+        {modal.isOpen && (
+          <div
+            className={styles.modalOverlay}
+            onClick={closeModal}
+            role="presentation"
+          >
+            <div
+              className={styles.modalCard}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="dashboard-modal-title"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={modal.isDanger ? styles.dangerIconBox : styles.alertIconBox}>
+                {modal.isDanger ? <FaExclamationTriangle /> : <FaInfoCircle />}
+              </div>
+              <h3 id="dashboard-modal-title" className={styles.modalTitle}>{modal.title}</h3>
+              <p className={styles.modalMessage}>{modal.message}</p>
+              <div className={styles.modalActions}>
+                {modal.type === "confirm" && (
+                  <button type="button" className={styles.modalCancelBtn} onClick={closeModal}>
+                    {modal.cancelText}
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className={modal.isDanger ? `${styles.modalConfirmBtn} ${styles.modalDangerBtn}` : styles.modalConfirmBtn}
+                  onClick={modal.onConfirm}
+                  autoFocus
+                >
+                  {modal.confirmText}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   // ================= MAIN DASHBOARD =================
   return (
     <div className={styles.dashboardContainer}>

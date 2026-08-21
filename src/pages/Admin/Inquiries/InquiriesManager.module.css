@@ -1,42 +1,103 @@
-/* src/pages/Admin/Inquiries/InquiriesManager.module.css — Luxury Hostinger Webmail Style Inbox */
+/* src/pages/Admin/Inquiries/InquiriesManager.module.css — Dedicated Fullscreen Hostinger Webmail */
 
-.webmailWrapper {
-  width: 100%;
+.standaloneWebmailApp {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  background: #0E0E11;
+  overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   color: #F4F4F5;
   box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
 }
 
 /* ==========================================================================
-   1. TOP FOLDER FILTER BAR
+   1. DEDICATED TOP APP HEADER
    ========================================================================== */
-.topStatsBar {
+.webmailAppHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  background: #18181B;
-  border: 1px solid #27272A;
-  border-radius: 12px;
-  padding: 0.5rem 0.75rem;
-  flex-wrap: wrap;
+  height: 58px;
+  padding: 0 1.25rem;
+  background: #141418;
+  border-bottom: 1px solid #232329;
+  flex-shrink: 0;
+  gap: 1rem;
+  box-sizing: border-box;
 }
 
-.statsLeft {
+.headerBrandCol {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.backToDashboardBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #202026;
+  border: 1px solid #2E2E38;
+  color: #E4E4E7;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.backToDashboardBtn:hover {
+  background: #2E2E38;
+  color: #FFFFFF;
+  border-color: #00A6FB;
+}
+
+.brandTitleWrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brandTitle {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: -0.01em;
+}
+
+.brandBadge {
+  background: rgba(0, 166, 251, 0.15);
+  border: 1px solid rgba(0, 166, 251, 0.35);
+  color: #38BDF8;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+/* CENTER TABS */
+.headerTabsWrap {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  flex-wrap: wrap;
 }
 
 .statTab {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.5rem 0.85rem;
+  padding: 0.45rem 0.85rem;
   border-radius: 8px;
   background: transparent;
   border: 1px solid transparent;
@@ -49,13 +110,13 @@
 }
 
 .statTab:hover {
-  background: #27272A;
+  background: #202026;
   color: #FFFFFF;
 }
 
 .statTabActive {
-  background: #27272A !important;
-  border-color: #3F3F46 !important;
+  background: #202026 !important;
+  border-color: #2E2E38 !important;
   color: #00A6FB !important;
 }
 
@@ -64,8 +125,8 @@
 }
 
 .tabBadge {
-  background: #27272A;
-  border: 1px solid #3F3F46;
+  background: #272730;
+  border: 1px solid #383844;
   color: #E4E4E7;
   font-size: 0.72rem;
   font-weight: 700;
@@ -79,12 +140,19 @@
   color: #FFFFFF;
 }
 
+/* RIGHT CONTROLS */
+.headerRightControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .syncBtn {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  background: #27272A;
-  border: 1px solid #3F3F46;
+  background: #202026;
+  border: 1px solid #2E2E38;
   color: #E4E4E7;
   padding: 0.45rem 0.85rem;
   border-radius: 8px;
@@ -95,7 +163,7 @@
 }
 
 .syncBtn:hover:not(:disabled) {
-  background: #3F3F46;
+  background: #2E2E38;
   color: #FFFFFF;
 }
 
@@ -108,34 +176,58 @@
   to { transform: rotate(360deg); }
 }
 
-/* ==========================================================================
-   2. HOSTINGER WEBMAIL SPLIT-PANE CONTAINER (100% RELIABLE SCROLLING)
-   ========================================================================== */
-.webmailContainer {
-  display: flex;
-  flex-direction: row;
-  background: #18181B;
-  border: 1px solid #27272A;
-  border-radius: 14px;
-  height: calc(100vh - 165px);
-  min-height: 560px;
-  max-height: 880px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  box-sizing: border-box;
+.viewSiteIconBtn,
+.logoutIconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: #202026;
+  border: 1px solid #2E2E38;
+  color: #A1A1AA;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.viewSiteIconBtn:hover {
+  background: #2E2E38;
+  color: #FFFFFF;
+}
+
+.logoutIconBtn:hover {
+  background: #EF4444;
+  border-color: #EF4444;
+  color: #FFFFFF;
 }
 
 /* ==========================================================================
-   LEFT PANE: EMAIL FEED LIST
+   2. FULLSCREEN 2-PANE WORKSPACE
+   ========================================================================== */
+.webmailBodyWorkspace {
+  flex: 1;
+  height: calc(100vh - 58px);
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  background: #0E0E11;
+}
+
+/* ==========================================================================
+   LEFT PANE: EMAIL FEED LIST (100% INDEPENDENT SCROLL)
    ========================================================================== */
 .mailListPane {
-  width: 380px;
-  min-width: 330px;
-  max-width: 420px;
+  width: 390px;
+  min-width: 340px;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
-  background: #121215;
-  border-right: 1px solid #27272A;
+  background: #111115;
+  border-right: 1px solid #232329;
   height: 100%;
   min-height: 0;
   overflow: hidden;
@@ -143,12 +235,12 @@
 }
 
 .mailListSearchHeader {
-  padding: 0.85rem;
-  border-bottom: 1px solid #27272A;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #232329;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background: #18181B;
+  background: #141418;
   flex-shrink: 0;
 }
 
@@ -156,7 +248,7 @@
   display: flex;
   align-items: center;
   background: #09090B;
-  border: 1px solid #27272A;
+  border: 1px solid #272730;
   border-radius: 8px;
   padding: 0 0.65rem;
   height: 36px;
@@ -203,7 +295,7 @@
 
 .filterDropdown {
   background: #09090B;
-  border: 1px solid #27272A;
+  border: 1px solid #272730;
   color: #E4E4E7;
   font-size: 0.78rem;
   padding: 0.4rem 0.6rem;
@@ -217,7 +309,7 @@
   border-color: #00A6FB;
 }
 
-/* SCROLLABLE ROWS AREA (INDEPENDENT SCROLL) */
+/* SCROLLABLE ROWS AREA */
 .mailRowsScrollArea {
   flex: 1 1 0%;
   height: 0;
@@ -234,25 +326,25 @@
 }
 
 .mailRowsScrollArea::-webkit-scrollbar-track {
-  background: #121215;
+  background: #111115;
 }
 
 .mailRowsScrollArea::-webkit-scrollbar-thumb {
-  background: #27272A;
+  background: #272730;
   border-radius: 4px;
 }
 
 .mailRowsScrollArea::-webkit-scrollbar-thumb:hover {
-  background: #3F3F46;
+  background: #3F3F4E;
 }
 
 /* EMAIL ROW ITEM */
 .mailRow {
   display: flex;
   align-items: flex-start;
-  gap: 0.65rem;
-  padding: 0.9rem 0.85rem;
-  border-bottom: 1px solid #202023;
+  gap: 0.75rem;
+  padding: 0.95rem 1rem;
+  border-bottom: 1px solid #1E1E24;
   cursor: pointer;
   transition: background 0.12s ease;
   user-select: none;
@@ -262,16 +354,16 @@
 }
 
 .mailRow:hover {
-  background: #1C1C20;
+  background: #18181E;
 }
 
 .mailRowSelected {
-  background: #1E293B !important;
+  background: #1A2234 !important;
   border-left: 3px solid #00A6FB;
 }
 
 .mailRowUnread {
-  background: #151922;
+  background: #141720;
 }
 
 .unreadIndicatorBox {
@@ -294,12 +386,12 @@
 }
 
 .rowAvatar {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   color: #FFFFFF;
   font-weight: 700;
-  font-size: 0.84rem;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -323,7 +415,7 @@
 }
 
 .rowSenderName {
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: #F4F4F5;
   white-space: nowrap;
@@ -388,38 +480,39 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3.5rem 1.5rem;
+  padding: 4rem 1.5rem;
   text-align: center;
   color: #71717A;
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
 .emptyInboxIcon {
-  font-size: 2.2rem;
-  color: #3F3F46;
+  font-size: 2.4rem;
+  color: #383844;
 }
 
 .paneEmptyState h4 {
   margin: 0;
   color: #E4E4E7;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .paneEmptyState p {
   margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.4;
+  font-size: 0.8rem;
+  line-height: 1.45;
   color: #71717A;
+  max-width: 260px;
 }
 
 /* ==========================================================================
-   RIGHT PANE: LIVE READING PANE
+   RIGHT PANE: LIVE READING PANE (100% INDEPENDENT SCROLL)
    ========================================================================== */
 .readingPane {
   flex: 1 1 0%;
   display: flex;
   flex-direction: column;
-  background: #18181B;
+  background: #141418;
   height: 100%;
   min-height: 0;
   overflow: hidden;
@@ -438,9 +531,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.65rem 1.25rem;
-  border-bottom: 1px solid #27272A;
-  background: #141416;
+  height: 52px;
+  padding: 0 1.75rem;
+  border-bottom: 1px solid #232329;
+  background: #111115;
   flex-shrink: 0;
   gap: 0.75rem;
 }
@@ -456,8 +550,8 @@
   display: none;
   align-items: center;
   gap: 0.4rem;
-  background: #27272A;
-  border: none;
+  background: #202026;
+  border: 1px solid #2E2E38;
   color: #E4E4E7;
   padding: 0.4rem 0.75rem;
   border-radius: 6px;
@@ -473,9 +567,9 @@
   background: #00A6FB;
   color: #FFFFFF;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  padding: 0.45rem 0.9rem;
+  padding: 0.45rem 0.95rem;
   border-radius: 6px;
   transition: background 0.15s ease;
 }
@@ -491,9 +585,9 @@
   background: #25D366;
   color: #FFFFFF;
   text-decoration: none;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  padding: 0.45rem 0.9rem;
+  padding: 0.45rem 0.95rem;
   border-radius: 6px;
   transition: background 0.15s ease;
 }
@@ -505,20 +599,20 @@
 .actionBtnIcon {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: #27272A;
-  border: 1px solid #3F3F46;
+  gap: 0.45rem;
+  background: #202026;
+  border: 1px solid #2E2E38;
   color: #E4E4E7;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  padding: 0.45rem 0.75rem;
+  padding: 0.45rem 0.85rem;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .actionBtnIcon:hover {
-  background: #3F3F46;
+  background: #2E2E38;
   color: #FFFFFF;
 }
 
@@ -528,19 +622,22 @@
   color: #FFFFFF;
 }
 
-/* SCROLLABLE VIEWER AREA (INDEPENDENT SCROLL) */
+/* SCROLLABLE VIEWER BODY */
 .viewerScrollArea {
   flex: 1 1 0%;
   height: 0;
   min-height: 0;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: 1.5rem 1.75rem;
+  padding: 2rem 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
+  max-width: 1050px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .viewerScrollArea::-webkit-scrollbar {
@@ -548,27 +645,27 @@
 }
 
 .viewerScrollArea::-webkit-scrollbar-track {
-  background: #18181B;
+  background: #141418;
 }
 
 .viewerScrollArea::-webkit-scrollbar-thumb {
-  background: #27272A;
+  background: #272730;
   border-radius: 4px;
 }
 
 .viewerScrollArea::-webkit-scrollbar-thumb:hover {
-  background: #3F3F46;
+  background: #3F3F4E;
 }
 
 /* SUBJECT HEADER */
 .messageSubjectHeader {
-  border-bottom: 1px solid #27272A;
-  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #232329;
+  padding-bottom: 1rem;
 }
 
 .inquirySubjectTitle {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.35rem;
+  margin: 0 0 0.6rem 0;
+  font-size: 1.45rem;
   font-weight: 800;
   color: #FFFFFF;
   line-height: 1.3;
@@ -577,7 +674,7 @@
 .inquiryMetaRow {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.65rem;
   flex-wrap: wrap;
 }
 
@@ -588,9 +685,9 @@
   background: rgba(0, 166, 251, 0.12);
   border: 1px solid rgba(0, 166, 251, 0.3);
   color: #38BDF8;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  padding: 0.25rem 0.65rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 20px;
   white-space: nowrap;
 }
@@ -598,7 +695,7 @@
 .statusPill {
   font-size: 0.72rem;
   font-weight: 700;
-  padding: 0.25rem 0.65rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 20px;
   text-transform: uppercase;
 }
@@ -625,20 +722,20 @@
 .senderHeaderCard {
   display: flex;
   align-items: flex-start;
-  gap: 0.85rem;
-  background: #121215;
-  border: 1px solid #27272A;
+  gap: 0.95rem;
+  background: #101014;
+  border: 1px solid #232329;
   border-radius: 10px;
-  padding: 0.9rem 1.15rem;
+  padding: 1rem 1.25rem;
 }
 
 .senderLargeAvatar {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   color: #FFFFFF;
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -649,7 +746,7 @@
 .senderMetaCol {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.25rem;
   flex: 1;
   min-width: 0;
 }
@@ -662,18 +759,18 @@
 }
 
 .senderFullName {
-  font-size: 0.98rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: #FFFFFF;
 }
 
 .senderEmailAddress {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   color: #71717A;
 }
 
 .recipientRow {
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   display: flex;
   gap: 0.35rem;
   color: #71717A;
@@ -693,7 +790,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   color: #71717A;
   margin-top: 0.15rem;
 }
@@ -706,25 +803,25 @@
    3. STRUCTURED CLIENT SUBMISSION DETAILS GRID
    ========================================================================== */
 .clientDetailsBox {
-  background: #121215;
-  border: 1px solid #27272A;
+  background: #101014;
+  border: 1px solid #232329;
   border-radius: 10px;
-  padding: 1.15rem 1.25rem;
+  padding: 1.25rem 1.35rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.95rem;
 }
 
 .clientDetailsHeader {
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #A1A1AA;
-  border-bottom: 1px solid #202024;
+  border-bottom: 1px solid #1E1E24;
   padding-bottom: 0.5rem;
 }
 
@@ -735,7 +832,7 @@
 .detailGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
+  gap: 1.15rem;
 }
 
 .detailGridItem {
@@ -757,7 +854,7 @@
   align-items: center;
   gap: 0.45rem;
   color: #E4E4E7;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
 }
 
 .detailGridIcon {
@@ -772,11 +869,11 @@
 }
 
 .copySmallBtn {
-  background: #27272A;
-  border: 1px solid #3F3F46;
+  background: #202026;
+  border: 1px solid #2E2E38;
   color: #A1A1AA;
   font-size: 0.7rem;
-  padding: 0.2rem 0.4rem;
+  padding: 0.2rem 0.45rem;
   border-radius: 4px;
   cursor: pointer;
   display: inline-flex;
@@ -796,35 +893,35 @@
    4. FULL CLIENT MESSAGE BODY CARD
    ========================================================================== */
 .emailBodyCard {
-  background: #0A0A0C;
-  border: 1px solid #27272A;
+  background: #09090C;
+  border: 1px solid #232329;
   border-radius: 10px;
-  padding: 1.35rem 1.5rem;
+  padding: 1.5rem 1.75rem;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.95rem;
 }
 
 .emailBodyHeader {
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #00A6FB;
-  border-bottom: 1px solid #202024;
+  border-bottom: 1px solid #1E1E24;
   padding-bottom: 0.5rem;
 }
 
 .emailBodyText {
-  font-size: 0.95rem;
-  line-height: 1.75;
+  font-size: 0.98rem;
+  line-height: 1.8;
   color: #F4F4F5;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
 .emailBodyText p {
-  margin: 0 0 0.85rem;
+  margin: 0 0 0.95rem;
 }
 
 .emailBodyText p:last-child {
@@ -841,14 +938,14 @@
   padding: 3rem;
   text-align: center;
   color: #71717A;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .emptyMailboxIllustration {
-  width: 72px;
-  height: 72px;
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
-  background: #27272A;
+  background: #202026;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -856,20 +953,20 @@
 }
 
 .largeMailIcon {
-  font-size: 1.85rem;
+  font-size: 2rem;
 }
 
 .noMessageSelectedPane h3 {
   margin: 0;
   color: #FFFFFF;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 800;
 }
 
 .noMessageSelectedPane p {
   margin: 0;
-  font-size: 0.85rem;
-  max-width: 360px;
+  font-size: 0.86rem;
+  max-width: 380px;
   line-height: 1.5;
   color: #71717A;
 }
@@ -879,7 +976,7 @@
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background: #18181B;
+  background: #141418;
   border: 1px solid #00A6FB;
   color: #F4F4F5;
   padding: 0.65rem 1.15rem;
@@ -909,10 +1006,17 @@
    RESPONSIVE DESIGN (MOBILE & TABLET)
    ========================================================================== */
 @media (max-width: 900px) {
-  .webmailContainer {
+  .webmailAppHeader {
+    padding: 0 0.85rem;
+  }
+
+  .headerTabsWrap {
+    display: none;
+  }
+
+  .webmailBodyWorkspace {
     flex-direction: column;
-    height: 750px;
-    position: relative;
+    height: calc(100vh - 58px);
   }
 
   .mailListPane {
@@ -937,5 +1041,9 @@
 
   .mobileBackBtn {
     display: inline-flex;
+  }
+
+  .viewerScrollArea {
+    padding: 1.25rem 1rem;
   }
 }
