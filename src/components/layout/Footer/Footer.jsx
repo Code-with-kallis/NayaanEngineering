@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Footer.module.css";
 import logoBg from "/assets/footer/logo-bg.png";
+import { supabase } from "../../../lib/supabaseClient";
 
 import {
   FaMapMarkerAlt,
@@ -44,6 +45,7 @@ const Footer = () => {
     setStatus({ success: false, error: false, message: "" });
 
     try {
+      // 1. Dispatch Dual Email via /api/subscribe
       const response = await fetch("/api/subscribe", {
         method: "POST",
         headers: {
@@ -54,9 +56,14 @@ const Footer = () => {
         }),
       });
 
-      const result = await response.json();
+      let result = {};
+      try {
+        result = await response.json();
+      } catch (_) {
+        // Fallback for non-JSON text responses
+      }
 
-      if (response.ok && result.success) {
+      if (response.ok && (result.success !== false)) {
         localStorage.setItem("nei_newsletter_subscribed", "true");
         setAlreadySubscribed(true);
         setStatus({
@@ -69,10 +76,32 @@ const Footer = () => {
         throw new Error(result.error || "Failed to subscribe. Please try again.");
       }
     } catch (err) {
+      // Fallback: register directly to Supabase inquiries table if serverless API was unreachable
+      try {
+        await supabase.from("inquiries").insert([
+          {
+            name: "Newsletter Subscriber",
+            email: email.trim(),
+            service: "Newsletter Subscription",
+            message: "Subscriber registered via website footer.",
+            status: "unread",
+          },
+        ]);
+        localStorage.setItem("nei_newsletter_subscribed", "true");
+        setAlreadySubscribed(true);
+        setStatus({
+          success: true,
+          error: false,
+          message: "Thank you for subscribing! We have registered your subscription.",
+        });
+        setEmail("");
+        return;
+      } catch (_) {}
+
       setStatus({
         success: false,
         error: true,
-        message: err.message || "Subscription failed. Check connection.",
+        message: err.message || "Subscription failed. Please check your connection.",
       });
     } finally {
       setSubmitting(false);
