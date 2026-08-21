@@ -1,784 +1,98 @@
-/* src/pages/Admin/Inquiries/InquiriesManager.module.css — Luxury High-End Admin Inbox */
+/* src/pages/Admin/Inquiries/InquiriesManager.module.css — Hostinger Webmail Style Inbox */
 
-.inquiriesContainer {
+.webmailWrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-}
-
-/* ================= STATS KPI CARDS ================= */
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #F4F4F5;
+  box-sizing: border-box;
 }
 
-.statCard {
-  background: #181818;
-  border: 1px solid #292929;
-  border-radius: 14px;
-  padding: 1.25rem 1.35rem;
-  display: flex;
-  align-items: center;
-  gap: 1.15rem;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-  position: relative;
-  overflow: hidden;
-}
-
-.statCard:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  transform: translateY(-2px);
-  background: #1D1D1D;
-}
-
-.statCardActive {
-  border-color: #22C55E !important;
-  background: #1A221D !important;
-  box-shadow: 0 4px 20px rgba(34, 197, 94, 0.12);
-}
-
-.statIconBox {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: #202020;
-  border: 1px solid #2F2F2F;
-  color: #F5F5F5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-}
-
-.statCard:hover .statIconBox {
-  transform: scale(1.06);
-}
-
-.statIconUnread {
-  color: #22C55E;
-  background: rgba(34, 197, 94, 0.12);
-  border-color: rgba(34, 197, 94, 0.28);
-}
-
-.statIconReplied {
-  color: #38BDF8;
-  background: rgba(56, 189, 248, 0.12);
-  border-color: rgba(56, 189, 248, 0.28);
-}
-
-.statInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
-.statLabel {
-  font-size: 0.74rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #A3A3A3;
-}
-
-.statValue {
-  font-size: 1.65rem;
-  font-weight: 800;
-  color: #F5F5F5;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-}
-
-/* ================= TOOLBAR & CONTROLS ================= */
-.toolbarCard {
-  background: #181818;
-  border: 1px solid #292929;
-  border-radius: 14px;
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-.toolbarTopRow {
+/* ==========================================================================
+   1. TOP STATS BAR
+   ========================================================================== */
+.topStatsBar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  background: #18181B;
+  border: 1px solid #27272A;
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
   flex-wrap: wrap;
 }
 
-.segmentedTabs {
+.statsLeft {
   display: flex;
   align-items: center;
-  background: #111111;
-  border: 1px solid #292929;
-  border-radius: 10px;
-  padding: 0.25rem;
-  gap: 0.25rem;
+  gap: 0.35rem;
+  flex-wrap: wrap;
 }
 
-.segmentBtn {
+.statTab {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   padding: 0.5rem 0.85rem;
   border-radius: 8px;
   background: transparent;
-  border: none;
-  color: #A3A3A3;
-  font-family: inherit;
-  font-size: 0.825rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.18s ease;
-}
-
-.segmentBtn:hover {
-  color: #F5F5F5;
-  background: #1E1E1E;
-}
-
-.segmentBtnActive {
-  background: #242424 !important;
-  color: #22C55E !important;
-  font-weight: 800;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-.segmentBadge {
-  font-size: 0.68rem;
-  padding: 0.1rem 0.4rem;
-  border-radius: 999px;
-  background: #1E1E1E;
-  color: #A3A3A3;
-  font-weight: 800;
-}
-
-.segmentBadgeActive {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22C55E;
-}
-
-.toolbarBottomRow {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  flex-wrap: wrap;
-}
-
-.searchBox {
-  position: relative;
-  flex: 1;
-  min-width: 260px;
-  display: flex;
-  align-items: center;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 0.95rem;
-  color: #737373;
-  font-size: 0.92rem;
-}
-
-.searchBox input {
-  width: 100%;
-  padding: 0.72rem 2.4rem 0.72rem 2.5rem;
-  background: #111111;
-  border: 1px solid #292929;
-  border-radius: 9px;
-  color: #F5F5F5;
-  font-family: inherit;
-  font-size: 0.875rem;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.searchBox input:focus {
-  border-color: #22C55E;
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
-  background: #141414;
-}
-
-.clearSearchBtn {
-  position: absolute;
-  right: 0.85rem;
-  background: transparent;
-  border: none;
-  color: #737373;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: color 0.15s ease;
-}
-
-.clearSearchBtn:hover {
-  color: #F5F5F5;
-}
-
-.categorySelect {
-  padding: 0.72rem 1rem;
-  background: #111111;
-  border: 1px solid #292929;
-  border-radius: 9px;
-  color: #F5F5F5;
-  font-family: inherit;
-  font-size: 0.825rem;
-  font-weight: 700;
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.2s ease;
-}
-
-.categorySelect:focus {
-  border-color: #22C55E;
-}
-
-.refreshBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.72rem 1.05rem;
-  background: #111111;
-  border: 1px solid #292929;
-  border-radius: 9px;
-  color: #A3A3A3;
-  font-family: inherit;
-  font-size: 0.825rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.refreshBtn:hover {
-  background: #1E1E1E;
-  color: #F5F5F5;
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-/* ================= INQUIRIES FEED ================= */
-.inquiriesList {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.inquiryCard {
-  background: #181818;
-  border: 1px solid #292929;
-  border-radius: 14px;
-  padding: 1.35rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
-  position: relative;
-}
-
-.inquiryCard:hover {
-  border-color: #383838;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-.inquiryUnread {
-  border-left: 4px solid #22C55E !important;
-  background: #1A1E1B;
-}
-
-.cardHeaderRow {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.clientGroup {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.clientAvatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #2A2A2A 0%, #1A1A1A 100%);
-  border: 1px solid #333333;
-  color: #22C55E;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 1.15rem;
-  flex-shrink: 0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-}
-
-.clientInfoCol {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.clientTitleRow {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.clientName {
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: #F5F5F5;
-  margin: 0;
-  letter-spacing: -0.01em;
-}
-
-.newPill {
-  background: #22C55E;
-  color: #111111;
-  font-size: 0.62rem;
-  font-weight: 900;
-  padding: 0.12rem 0.45rem;
-  border-radius: 4px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.timestampRow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.76rem;
-  color: #737373;
-}
-
-.badgeStack {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.serviceBadge {
-  background: rgba(34, 197, 94, 0.1);
-  color: #22C55E;
-  font-size: 0.74rem;
-  font-weight: 800;
-  padding: 0.25rem 0.65rem;
-  border-radius: 6px;
-  border: 1px solid rgba(34, 197, 94, 0.25);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.statusPill {
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 0.22rem 0.6rem;
-  border-radius: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.statusPillUnread {
-  background: rgba(245, 158, 11, 0.12);
-  color: #F59E0B;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-}
-
-.statusPillRead {
-  background: #1E1E1E;
-  color: #A3A3A3;
-  border: 1px solid #2E2E2E;
-}
-
-.statusPillReplied {
-  background: rgba(56, 189, 248, 0.12);
-  color: #38BDF8;
-  border: 1px solid rgba(56, 189, 248, 0.3);
-}
-
-/* ================= CONTACT CHIPS ================= */
-.contactChipsRow {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  flex-wrap: wrap;
-}
-
-.chipItem {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: #111111;
-  border: 1px solid #292929;
-  padding: 0.35rem 0.7rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  color: #D4D4D8;
+  color: #A1A1AA;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.15s ease;
+  user-select: none;
 }
 
-.chipItem:hover {
-  background: #1D1D1D;
-  border-color: rgba(255, 255, 255, 0.2);
+.statTab:hover {
+  background: #27272A;
   color: #FFFFFF;
 }
 
-.chipIcon {
-  color: #737373;
-  font-size: 0.78rem;
+.statTabActive {
+  background: #27272A !important;
+  color: #00A6FB !important;
 }
 
-.copyHintIcon {
-  font-size: 0.7rem;
-  color: #666666;
-  margin-left: 0.2rem;
-  transition: color 0.15s ease;
+.tabBadge {
+  background: #3F3F46;
+  color: #F4F4F5;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 12px;
 }
 
-.chipItem:hover .copyHintIcon {
-  color: #22C55E;
+.tabBadgeUnread {
+  background: #00A6FB;
+  color: #FFFFFF;
 }
 
-/* ================= MESSAGE BUBBLE ================= */
-.messageBubble {
-  background: #111111;
-  border: 1px solid #242424;
-  border-radius: 10px;
-  padding: 0.95rem 1.15rem;
-  position: relative;
-}
-
-.messageQuote {
-  font-size: 0.88rem;
-  line-height: 1.55;
-  color: #D4D4D8;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ================= ACTION FOOTER ================= */
-.actionFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid #242424;
-  flex-wrap: wrap;
-}
-
-.outreachGroup {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  flex-wrap: wrap;
-}
-
-.whatsappPillBtn,
-.emailPillBtn,
-.viewBtn,
-.statusBtn,
-.deleteActionBtn {
+.syncBtn {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.5rem 0.85rem;
+  background: #27272A;
+  border: 1px solid #3F3F46;
+  color: #E4E4E7;
+  padding: 0.45rem 0.85rem;
   border-radius: 8px;
-  font-family: inherit;
   font-size: 0.8rem;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
-  text-decoration: none;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid transparent;
-  box-sizing: border-box;
+  transition: all 0.15s ease;
 }
 
-.whatsappPillBtn {
-  background: rgba(37, 211, 102, 0.12);
-  color: #25D366;
-  border-color: rgba(37, 211, 102, 0.28);
-}
-
-.whatsappPillBtn:hover {
-  background: #25D366;
-  color: #111111;
-  border-color: #25D366;
-  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
-  transform: translateY(-1px);
-}
-
-.emailPillBtn {
-  background: rgba(56, 189, 248, 0.12);
-  color: #38BDF8;
-  border-color: rgba(56, 189, 248, 0.28);
-}
-
-.emailPillBtn:hover {
-  background: #38BDF8;
-  color: #111111;
-  border-color: #38BDF8;
-  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
-  transform: translateY(-1px);
-}
-
-.viewBtn {
-  background: #22C55E;
-  color: #111111;
-  border-color: #22C55E;
-}
-
-.viewBtn:hover {
-  background: #16A34A;
-  border-color: #16A34A;
-  transform: translateY(-1px);
-}
-
-.statusBtn {
-  background: #1E1E1E;
-  color: #A3A3A3;
-  border-color: #2E2E2E;
-}
-
-.statusBtn:hover {
-  background: #282828;
-  color: #F5F5F5;
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.deleteActionBtn {
-  background: rgba(239, 68, 68, 0.1);
-  color: #EF4444;
-  border-color: rgba(239, 68, 68, 0.25);
-  padding: 0.5rem 0.65rem;
-}
-
-.deleteActionBtn:hover {
-  background: #EF4444;
+.syncBtn:hover:not(:disabled) {
+  background: #3F3F46;
   color: #FFFFFF;
-  border-color: #EF4444;
-}
-
-/* ================= DETAIL MODAL ================= */
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(11, 11, 11, 0.88);
-  backdrop-filter: blur(8px);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.modalCard {
-  background: #181818;
-  border: 1px solid #2E2E2E;
-  border-radius: 18px;
-  max-width: 640px;
-  width: 100%;
-  max-height: 88vh;
-  overflow-y: auto;
-  padding: 1.85rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.35rem;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
-  box-sizing: border-box;
-  scrollbar-width: thin;
-  scrollbar-color: #383838 #181818;
-}
-
-.modalCard::-webkit-scrollbar {
-  width: 6px;
-}
-.modalCard::-webkit-scrollbar-track {
-  background: #181818;
-  border-radius: 4px;
-}
-.modalCard::-webkit-scrollbar-thumb {
-  background: #383838;
-  border-radius: 4px;
-}
-.modalCard::-webkit-scrollbar-thumb:hover {
-  background: #22C55E;
-}
-
-.modalHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 1.15rem;
-  border-bottom: 1px solid #292929;
-}
-
-.modalHeaderLeft {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.modalCloseBtn {
-  background: transparent;
-  border: none;
-  color: #A3A3A3;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 6px;
-  transition: color 0.15s ease;
-}
-
-.modalCloseBtn:hover {
-  color: #F5F5F5;
-}
-
-.modalDetailsGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.85rem;
-  background: #111111;
-  border: 1px solid #292929;
-  border-radius: 12px;
-  padding: 1rem 1.15rem;
-}
-
-.detailItem {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.detailLabel {
-  font-size: 0.7rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #737373;
-}
-
-.detailValue {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #F5F5F5;
-  word-break: break-all;
-}
-
-.modalMessageBox {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.modalMessageContent {
-  background: #111111;
-  border: 1px solid #292929;
-  border-radius: 12px;
-  padding: 1.15rem;
-  font-size: 0.92rem;
-  line-height: 1.65;
-  color: #F5F5F5;
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  max-height: 260px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #383838 #111111;
-}
-
-.modalMessageContent::-webkit-scrollbar {
-  width: 6px;
-}
-.modalMessageContent::-webkit-scrollbar-track {
-  background: #111111;
-  border-radius: 4px;
-}
-.modalMessageContent::-webkit-scrollbar-thumb {
-  background: #383838;
-  border-radius: 4px;
-}
-.modalMessageContent::-webkit-scrollbar-thumb:hover {
-  background: #22C55E;
-}
-
-.modalActionFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 1.15rem;
-  border-top: 1px solid #292929;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-/* ================= TOAST NOTIFICATION ================= */
-.toastPill {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #22C55E;
-  color: #111111;
-  font-weight: 800;
-  font-size: 0.85rem;
-  padding: 0.6rem 1.25rem;
-  border-radius: 999px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translate(-50%, 10px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
-}
-
-/* ================= STATES ================= */
-.loadingState,
-.emptyState {
-  background: #181818;
-  border: 1px dashed #292929;
-  border-radius: 16px;
-  padding: 4rem 1.5rem;
-  text-align: center;
-  color: #A3A3A3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
 }
 
 .spinnerIcon {
-  font-size: 1.75rem;
-  color: #22C55E;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
@@ -786,80 +100,789 @@
   to { transform: rotate(360deg); }
 }
 
-.emptyIcon {
-  font-size: 2.75rem;
-  color: #292929;
+/* ==========================================================================
+   2. HOSTINGER WEBMAIL SPLIT-PANE CONTAINER
+   ========================================================================== */
+.webmailContainer {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  background: #18181B;
+  border: 1px solid #27272A;
+  border-radius: 14px;
+  height: 720px;
+  max-height: calc(100vh - 200px);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
 }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 1024px) {
-  .statsGrid {
-    grid-template-columns: repeat(3, 1fr);
+/* ==========================================================================
+   LEFT PANE: EMAIL FEED LIST
+   ========================================================================== */
+.mailListPane {
+  display: flex;
+  flex-direction: column;
+  background: #141416;
+  border-right: 1px solid #27272A;
+  height: 100%;
+  overflow: hidden;
+}
+
+.mailListSearchHeader {
+  padding: 0.85rem 0.85rem 0.65rem;
+  border-bottom: 1px solid #27272A;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: #18181B;
+  flex-shrink: 0;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  background: #09090B;
+  border: 1px solid #27272A;
+  border-radius: 8px;
+  padding: 0 0.65rem;
+  height: 36px;
+  gap: 0.5rem;
+}
+
+.searchBox:focus-within {
+  border-color: #00A6FB;
+}
+
+.searchIcon {
+  color: #71717A;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.searchBox input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #F4F4F5;
+  font-size: 0.8rem;
+  width: 100%;
+}
+
+.searchBox input::placeholder {
+  color: #71717A;
+}
+
+.clearSearchBtn {
+  background: transparent;
+  border: none;
+  color: #71717A;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.clearSearchBtn:hover {
+  color: #FFFFFF;
+}
+
+.filterDropdown {
+  background: #09090B;
+  border: 1px solid #27272A;
+  color: #E4E4E7;
+  font-size: 0.78rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.filterDropdown:focus {
+  border-color: #00A6FB;
+}
+
+.mailRowsScrollArea {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.mailRowsScrollArea::-webkit-scrollbar {
+  width: 5px;
+}
+
+.mailRowsScrollArea::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 4px;
+}
+
+.mailRowsScrollArea::-webkit-scrollbar-thumb:hover {
+  background: #3F3F46;
+}
+
+/* EMAIL ROW ITEM */
+.mailRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem 0.85rem;
+  border-bottom: 1px solid #202023;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  user-select: none;
+  position: relative;
+}
+
+.mailRow:hover {
+  background: #1C1C20;
+}
+
+.mailRowSelected {
+  background: #1E293B !important;
+  border-left: 3px solid #00A6FB;
+}
+
+.mailRowUnread {
+  background: #181C24;
+}
+
+.unreadIndicatorBox {
+  width: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.25rem;
+  flex-shrink: 0;
+}
+
+.unreadDot {
+  font-size: 0.45rem;
+  color: #00A6FB;
+}
+
+.readPlaceholder {
+  width: 6px;
+  height: 6px;
+}
+
+.rowAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.rowContent {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.rowTopLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.rowSenderName {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #F4F4F5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mailRowUnread .rowSenderName {
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.rowTimestamp {
+  font-size: 0.72rem;
+  color: #71717A;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.rowSubjectLine {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.rowServiceTag {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #93C5FD;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rowRepliedBadge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ADE80;
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.rowSnippet {
+  font-size: 0.75rem;
+  color: #71717A;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.mailRowUnread .rowSnippet {
+  color: #A1A1AA;
+}
+
+.paneLoadingState,
+.paneEmptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: #71717A;
+  gap: 0.75rem;
+}
+
+.emptyInboxIcon {
+  font-size: 2.2rem;
+  color: #3F3F46;
+}
+
+.paneEmptyState h4 {
+  margin: 0;
+  color: #E4E4E7;
+  font-size: 0.95rem;
+}
+
+.paneEmptyState p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #71717A;
+}
+
+/* ==========================================================================
+   RIGHT PANE: LIVE READING PANE
+   ========================================================================== */
+.readingPane {
+  display: flex;
+  flex-direction: column;
+  background: #18181B;
+  height: 100%;
+  overflow: hidden;
+}
+
+.messageViewerContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* TOOLBAR */
+.viewerToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1.25rem;
+  border-bottom: 1px solid #27272A;
+  background: #141416;
+  flex-shrink: 0;
+  gap: 0.75rem;
+}
+
+.toolbarLeft,
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobileBackBtn {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  background: #27272A;
+  border: none;
+  color: #E4E4E7;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.actionBtnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #00A6FB;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.actionBtnPrimary:hover {
+  background: #008cd4;
+}
+
+.actionBtnWhatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #25D366;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.actionBtnWhatsapp:hover {
+  background: #20BA5A;
+}
+
+.actionBtnIcon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #27272A;
+  border: 1px solid #3F3F46;
+  color: #E4E4E7;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.actionBtnIcon:hover {
+  background: #3F3F46;
+  color: #FFFFFF;
+}
+
+.actionBtnDelete:hover {
+  background: #EF4444;
+  border-color: #EF4444;
+  color: #FFFFFF;
+}
+
+/* SCROLL AREA */
+.viewerScrollArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.viewerScrollArea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.viewerScrollArea::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 4px;
+}
+
+.viewerScrollArea::-webkit-scrollbar-thumb:hover {
+  background: #3F3F46;
+}
+
+/* SUBJECT HEADER */
+.messageSubjectHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid #27272A;
+  padding-bottom: 1rem;
+}
+
+.messageSubjectHeader h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.3;
+}
+
+.disciplineBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(0, 166, 251, 0.12);
+  border: 1px solid rgba(0, 166, 251, 0.3);
+  color: #38BDF8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* SENDER HEADER (HOSTINGER STYLE) */
+.senderHeaderCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  background: #141416;
+  border: 1px solid #27272A;
+  border-radius: 10px;
+  padding: 0.85rem 1.15rem;
+}
+
+.senderLargeAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.senderMetaCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.senderPrimaryRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.senderFullName {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.senderEmailAddress {
+  font-size: 0.82rem;
+  color: #71717A;
+}
+
+.recipientRow {
+  font-size: 0.76rem;
+  display: flex;
+  gap: 0.35rem;
+  color: #71717A;
+}
+
+.toLabel {
+  color: #A1A1AA;
+  font-weight: 600;
+}
+
+.toValue {
+  color: #71717A;
+}
+
+.timestampFullRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  color: #71717A;
+  margin-top: 0.15rem;
+}
+
+.timeIcon {
+  font-size: 0.7rem;
+}
+
+/* CONTACT CHIPS */
+.contactChipsRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.contactChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #27272A;
+  border: 1px solid #3F3F46;
+  color: #E4E4E7;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.contactChip:hover {
+  background: #3F3F46;
+  border-color: #00A6FB;
+  color: #FFFFFF;
+}
+
+.chipIcon {
+  color: #00A6FB;
+  font-size: 0.75rem;
+}
+
+.copyIcon {
+  color: #71717A;
+  font-size: 0.7rem;
+}
+
+/* EMAIL BODY CARD */
+.emailBodyCard {
+  background: #09090B;
+  border: 1px solid #27272A;
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+
+.emailBodyText {
+  font-size: 0.94rem;
+  line-height: 1.7;
+  color: #E4E4E7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.emailBodyText p {
+  margin: 0 0 0.85rem;
+}
+
+.emailBodyText p:last-child {
+  margin-bottom: 0;
+}
+
+/* QUICK REPLY BOX */
+.quickReplyCard {
+  background: #141416;
+  border: 1px solid #27272A;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.quickReplyHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #A1A1AA;
+}
+
+.replyIcon {
+  color: #00A6FB;
+}
+
+.quickReplyTextarea {
+  background: #09090B;
+  border: 1px solid #27272A;
+  border-radius: 8px;
+  color: #F4F4F5;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.75rem;
+  outline: none;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.quickReplyTextarea:focus {
+  border-color: #00A6FB;
+}
+
+.quickReplyActionRow {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.quickSendEmailBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #00A6FB;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.quickSendEmailBtn:hover {
+  background: #008cd4;
+}
+
+.quickSendWhatsappBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #25D366;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+
+.quickSendWhatsappBtn:hover {
+  background: #20BA5A;
+}
+
+/* NO MESSAGE SELECTED EMPTY STATE */
+.noMessageSelectedPane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 3rem;
+  text-align: center;
+  color: #71717A;
+  gap: 0.85rem;
+}
+
+.emptyMailboxIllustration {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #27272A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #71717A;
+}
+
+.largeMailIcon {
+  font-size: 1.85rem;
+}
+
+.noMessageSelectedPane h3 {
+  margin: 0;
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.noMessageSelectedPane p {
+  margin: 0;
+  font-size: 0.85rem;
+  max-width: 360px;
+  line-height: 1.5;
+  color: #71717A;
+}
+
+/* TOAST PILL */
+.toastPill {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #18181B;
+  border: 1px solid #00A6FB;
+  color: #F4F4F5;
+  padding: 0.65rem 1.15rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
-@media (max-width: 768px) {
-  .statsGrid {
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE & TABLET)
+   ========================================================================== */
+@media (max-width: 900px) {
+  .webmailContainer {
     grid-template-columns: 1fr;
+    height: 750px;
+    position: relative;
   }
 
-  .toolbarTopRow {
-    flex-direction: column;
-    align-items: stretch;
+  .mailListPane {
+    display: flex;
   }
 
-  .segmentedTabs {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  .mailListPaneHasActiveMobile {
+    display: none;
   }
 
-  .segmentBtn {
-    justify-content: center;
-    padding: 0.5rem 0.4rem;
-    font-size: 0.75rem;
+  .readingPane {
+    display: none;
   }
 
-  .toolbarBottomRow {
-    flex-direction: column;
-    align-items: stretch;
+  .readingPaneActiveMobile {
+    display: flex;
   }
 
-  .categorySelect,
-  .refreshBtn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .cardHeaderRow {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .badgeStack {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .modalDetailsGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .actionFooter {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .outreachGroup {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .viewBtn,
-  .statusBtn,
-  .deleteActionBtn {
-    width: 100%;
-    justify-content: center;
+  .mobileBackBtn {
+    display: inline-flex;
   }
 }

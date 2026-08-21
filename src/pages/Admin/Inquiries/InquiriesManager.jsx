@@ -1,4 +1,4 @@
-// src/pages/Admin/Inquiries/InquiriesManager.jsx
+// src/pages/Admin/Inquiries/InquiriesManager.jsx — Hostinger Webmail Style Inbox
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import {
@@ -7,27 +7,26 @@ import {
   FaPhoneAlt,
   FaWhatsapp,
   FaTrash,
-  FaEye,
   FaCheckCircle,
   FaTimes,
   FaSearch,
   FaSyncAlt,
-  FaCalendarAlt,
-  FaTag,
   FaSpinner,
   FaCopy,
   FaCheck,
   FaReply,
   FaClock,
   FaBuilding,
-  FaDraftingCompass,
-  FaHardHat,
-  FaComments,
+  FaArrowLeft,
+  FaPrint,
+  FaPaperPlane,
+  FaExternalLinkAlt,
+  FaCircle,
 } from "react-icons/fa";
 import styles from "./InquiriesManager.module.css";
 
 const SERVICE_CATEGORIES = [
-  "All Services",
+  "All Categories",
   "Architectural Design",
   "Structural Engineering",
   "Construction Management",
@@ -37,31 +36,55 @@ const SERVICE_CATEGORIES = [
   "Interior & Modular Design",
   "Project Planning",
   "Regulatory Approvals",
+  "Newsletter Subscription",
+  "Newsletter Unsubscribe",
 ];
 
-function formatInquiryDate(dateStr) {
-  if (!dateStr) return "Recently";
+function formatTimeOrDate(dateStr) {
+  if (!dateStr) return "";
   const date = new Date(dateStr);
-  if (isNaN(date.getTime())) return "Recently";
+  if (isNaN(date.getTime())) return "";
 
   const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+  const isToday =
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
 
-  if (diffInSeconds < 60) return "Just now";
-  const diffInMinutes = Math.floor(diffInSeconds / 60);
-  if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  if (diffInHours < 24) return `${diffInHours}h ago`;
-  const diffInDays = Math.floor(diffInHours / 24);
+  if (isToday) {
+    return date.toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+  const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
   if (diffInDays === 1) return "Yesterday";
-  if (diffInDays < 7) return `${diffInDays}d ago`;
+  if (diffInDays < 7) {
+    return date.toLocaleDateString("en-IN", { weekday: "short" });
+  }
 
   return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+  });
+}
+
+function formatFullDateTime(dateStr) {
+  if (!dateStr) return "Unknown date";
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return "Unknown date";
+
+  return date.toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    weekday: "short",
     day: "numeric",
     month: "short",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    hour12: true,
   });
 }
 
@@ -73,15 +96,37 @@ function cleanPhoneNumber(phone) {
   return cleaned;
 }
 
+const AVATAR_COLORS = [
+  "#00A6FB",
+  "#7C3AED",
+  "#059669",
+  "#D97706",
+  "#DC2626",
+  "#DB2777",
+  "#2563EB",
+  "#0D9488",
+];
+
+function getAvatarColor(name) {
+  if (!name) return AVATAR_COLORS[0];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const index = Math.abs(hash) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[index];
+}
+
 export default function InquiriesManager({ onUnreadCountChange, showAlert, showConfirm }) {
   const [inquiries, setInquiries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTabFilter, setActiveTabFilter] = useState("all"); // 'all' | 'unread' | 'replied'
-  const [selectedService, setSelectedService] = useState("All Services");
-  const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const [activeTabFilter, setActiveTabFilter] = useState("all"); // 'all' | 'unread' | 'replied' | 'newsletter'
+  const [selectedService, setSelectedService] = useState("All Categories");
+  const [selectedInquiryId, setSelectedInquiryId] = useState(null);
   const [copiedText, setCopiedText] = useState(null);
+  const [quickReplyText, setQuickReplyText] = useState("");
 
   const fetchInquiries = useCallback(async (isSilent = false) => {
     if (!isSilent) setLoading(true);
@@ -97,8 +142,12 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
       const list = data || [];
       setInquiries(list);
 
-      // Report unread count back to Admin sidebar
-      const unreadCount = list.filter((item) => item.status === "unread").length;
+      // Auto select first inquiry on desktop if none selected
+      if (!selectedInquiryId && list.length > 0 && window.innerWidth > 900) {
+        setSelectedInquiryId(list[0].id);
+      }
+
+      const unreadCount = list.filter((item) => (item.status || "unread") === "unread").length;
       if (onUnreadCountChange) onUnreadCountChange(unreadCount);
     } catch (err) {
       console.error("Fetch inquiries error:", err);
@@ -107,21 +156,11 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
       setLoading(false);
       setRefreshing(false);
     }
-  }, [onUnreadCountChange, showAlert]);
+  }, [onUnreadCountChange, showAlert, selectedInquiryId]);
 
   useEffect(() => {
     fetchInquiries();
   }, [fetchInquiries]);
-
-  // Modal Escape key listener
-  useEffect(() => {
-    if (!selectedInquiry) return;
-    const handleKeyDown = (e) => {
-      if (e.key === "Escape") setSelectedInquiry(null);
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedInquiry]);
 
   const copyToClipboard = (text, label) => {
     if (!text || text === "Not Provided") return;
@@ -136,10 +175,6 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
         prev.map((item) => (item.id === id ? { ...item, status: nextStatus } : item))
       );
 
-      if (selectedInquiry && selectedInquiry.id === id) {
-        setSelectedInquiry((prev) => (prev ? { ...prev, status: nextStatus } : null));
-      }
-
       const { error } = await supabase
         .from("inquiries")
         .update({ status: nextStatus })
@@ -147,11 +182,10 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
 
       if (error) throw error;
 
-      // Update unread count
       const updatedList = inquiries.map((item) =>
         item.id === id ? { ...item, status: nextStatus } : item
       );
-      const unread = updatedList.filter((item) => item.status === "unread").length;
+      const unread = updatedList.filter((item) => (item.status || "unread") === "unread").length;
       if (onUnreadCountChange) onUnreadCountChange(unread);
     } catch (err) {
       console.error("Status update error:", err);
@@ -159,9 +193,9 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
     }
   };
 
-  const handleOpenDetails = (inquiry) => {
-    setSelectedInquiry(inquiry);
-    if (inquiry.status === "unread") {
+  const handleSelectInquiry = (inquiry) => {
+    setSelectedInquiryId(inquiry.id);
+    if ((inquiry.status || "unread") === "unread") {
       handleUpdateStatus(inquiry.id, "read");
     }
   };
@@ -169,14 +203,17 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
   const handleDeleteInquiry = (id, clientName) => {
     if (showConfirm) {
       showConfirm({
-        title: "Delete Inquiry",
-        message: `Are you sure you want to permanently delete the inquiry from ${clientName}?`,
+        title: "Delete Email",
+        message: `Are you sure you want to permanently delete this email from ${clientName || "the sender"}?`,
         confirmText: "Delete",
         isDanger: true,
         onConfirm: async () => {
           try {
             setInquiries((prev) => prev.filter((item) => item.id !== id));
-            if (selectedInquiry && selectedInquiry.id === id) setSelectedInquiry(null);
+            if (selectedInquiryId === id) {
+              const remaining = inquiries.filter((item) => item.id !== id);
+              setSelectedInquiryId(remaining.length > 0 ? remaining[0].id : null);
+            }
 
             const { error } = await supabase.from("inquiries").delete().eq("id", id);
             if (error) throw error;
@@ -195,7 +232,12 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
     const total = inquiries.length;
     const unread = inquiries.filter((i) => (i.status || "unread") === "unread").length;
     const replied = inquiries.filter((i) => i.status === "replied").length;
-    return { total, unread, replied };
+    const newsletter = inquiries.filter(
+      (i) =>
+        (i.service || "").toLowerCase().includes("newsletter") ||
+        (i.service || "").toLowerCase().includes("subscription")
+    ).length;
+    return { total, unread, replied, newsletter };
   }, [inquiries]);
 
   const filteredInquiries = useMemo(() => {
@@ -219,458 +261,448 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
       let matchesTab = true;
       if (activeTabFilter === "unread") matchesTab = status === "unread";
       else if (activeTabFilter === "replied") matchesTab = status === "replied";
+      else if (activeTabFilter === "newsletter") {
+        matchesTab = service.includes("newsletter") || service.includes("subscription");
+      }
 
       const matchesService =
-        selectedService === "All Services" ||
+        selectedService === "All Categories" ||
         service === selectedService.toLowerCase();
 
       return matchesSearch && matchesTab && matchesService;
     });
   }, [inquiries, searchQuery, activeTabFilter, selectedService]);
 
+  const activeInquiry = useMemo(() => {
+    return inquiries.find((item) => item.id === selectedInquiryId) || null;
+  }, [inquiries, selectedInquiryId]);
+
   return (
-    <div className={styles.inquiriesContainer}>
-      {/* 1. INTERACTIVE KPI CARDS */}
-      <div className={styles.statsGrid}>
-        <div
-          className={`${styles.statCard} ${activeTabFilter === "all" ? styles.statCardActive : ""}`}
-          onClick={() => setActiveTabFilter("all")}
-          title="Show All Inquiries"
-        >
-          <div className={styles.statIconBox}>
-            <FaInbox />
-          </div>
-          <div className={styles.statInfo}>
-            <span className={styles.statLabel}>Total Inquiries</span>
-            <strong className={styles.statValue}>{stats.total}</strong>
-          </div>
-        </div>
-
-        <div
-          className={`${styles.statCard} ${activeTabFilter === "unread" ? styles.statCardActive : ""}`}
-          onClick={() => setActiveTabFilter("unread")}
-          title="Show Unread Inquiries"
-        >
-          <div className={`${styles.statIconBox} ${styles.statIconUnread}`}>
-            <FaEnvelope />
-          </div>
-          <div className={styles.statInfo}>
-            <span className={styles.statLabel}>New / Unread</span>
-            <strong className={styles.statValue}>{stats.unread}</strong>
-          </div>
-        </div>
-
-        <div
-          className={`${styles.statCard} ${activeTabFilter === "replied" ? styles.statCardActive : ""}`}
-          onClick={() => setActiveTabFilter("replied")}
-          title="Show Replied Inquiries"
-        >
-          <div className={`${styles.statIconBox} ${styles.statIconReplied}`}>
-            <FaReply />
-          </div>
-          <div className={styles.statInfo}>
-            <span className={styles.statLabel}>Replied</span>
-            <strong className={styles.statValue}>{stats.replied}</strong>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. SEGMENTED TOOLBAR */}
-      <div className={styles.toolbarCard}>
-        <div className={styles.toolbarTopRow}>
-          <div className={styles.segmentedTabs}>
-            <button
-              type="button"
-              className={`${styles.segmentBtn} ${activeTabFilter === "all" ? styles.segmentBtnActive : ""}`}
-              onClick={() => setActiveTabFilter("all")}
-            >
-              <FaInbox />
-              <span>All Inquiries</span>
-              <span className={`${styles.segmentBadge} ${activeTabFilter === "all" ? styles.segmentBadgeActive : ""}`}>
-                {stats.total}
-              </span>
-            </button>
-
-            <button
-              type="button"
-              className={`${styles.segmentBtn} ${activeTabFilter === "unread" ? styles.segmentBtnActive : ""}`}
-              onClick={() => setActiveTabFilter("unread")}
-            >
-              <FaEnvelope />
-              <span>Unread</span>
-              {stats.unread > 0 && (
-                <span className={`${styles.segmentBadge} ${styles.segmentBadgeActive}`}>
-                  {stats.unread}
-                </span>
-              )}
-            </button>
-
-            <button
-              type="button"
-              className={`${styles.segmentBtn} ${activeTabFilter === "replied" ? styles.segmentBtnActive : ""}`}
-              onClick={() => setActiveTabFilter("replied")}
-            >
-              <FaReply />
-              <span>Replied</span>
-              <span className={`${styles.segmentBadge} ${activeTabFilter === "replied" ? styles.segmentBadgeActive : ""}`}>
-                {stats.replied}
-              </span>
-            </button>
-          </div>
-
-          <button
-            type="button"
-            className={styles.refreshBtn}
-            onClick={() => fetchInquiries(true)}
-            disabled={refreshing}
-            title="Refresh Inquiries"
+    <div className={styles.webmailWrapper}>
+      {/* ================= 1. TOP STATS BAR ================= */}
+      <div className={styles.topStatsBar}>
+        <div className={styles.statsLeft}>
+          <div
+            className={`${styles.statTab} ${activeTabFilter === "all" ? styles.statTabActive : ""}`}
+            onClick={() => setActiveTabFilter("all")}
           >
-            <FaSyncAlt className={refreshing ? styles.spinnerIcon : ""} />
-            <span>Sync Live</span>
-          </button>
-        </div>
+            <FaInbox />
+            <span>Inbox</span>
+            <strong className={styles.tabBadge}>{stats.total}</strong>
+          </div>
 
-        <div className={styles.toolbarBottomRow}>
-          <div className={styles.searchBox}>
-            <FaSearch className={styles.searchIcon} aria-hidden="true" />
-            <input
-              type="text"
-              placeholder="Search by client name, email, phone number, or keywords..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                className={styles.clearSearchBtn}
-                onClick={() => setSearchQuery("")}
-                aria-label="Clear search"
-              >
-                <FaTimes />
-              </button>
+          <div
+            className={`${styles.statTab} ${activeTabFilter === "unread" ? styles.statTabActive : ""}`}
+            onClick={() => setActiveTabFilter("unread")}
+          >
+            <FaEnvelope />
+            <span>Unread</span>
+            {stats.unread > 0 && (
+              <strong className={`${styles.tabBadge} ${styles.tabBadgeUnread}`}>{stats.unread}</strong>
             )}
           </div>
 
-          <select
-            value={selectedService}
-            onChange={(e) => setSelectedService(e.target.value)}
-            className={styles.categorySelect}
+          <div
+            className={`${styles.statTab} ${activeTabFilter === "replied" ? styles.statTabActive : ""}`}
+            onClick={() => setActiveTabFilter("replied")}
           >
-            {SERVICE_CATEGORIES.map((service) => (
-              <option key={service} value={service}>
-                {service}
-              </option>
-            ))}
-          </select>
+            <FaReply />
+            <span>Replied</span>
+            <strong className={styles.tabBadge}>{stats.replied}</strong>
+          </div>
+
+          <div
+            className={`${styles.statTab} ${activeTabFilter === "newsletter" ? styles.statTabActive : ""}`}
+            onClick={() => setActiveTabFilter("newsletter")}
+          >
+            <FaPaperPlane />
+            <span>Newsletter</span>
+            <strong className={styles.tabBadge}>{stats.newsletter}</strong>
+          </div>
         </div>
+
+        <button
+          type="button"
+          className={styles.syncBtn}
+          onClick={() => fetchInquiries(true)}
+          disabled={refreshing}
+          title="Sync Inquiries Live"
+        >
+          <FaSyncAlt className={refreshing ? styles.spinnerIcon : ""} />
+          <span>{refreshing ? "Syncing..." : "Refresh"}</span>
+        </button>
       </div>
 
-      {/* 3. INQUIRIES FEED */}
-      {loading ? (
-        <div className={styles.loadingState}>
-          <FaSpinner className={styles.spinnerIcon} />
-          <span>Syncing client inquiries from database...</span>
-        </div>
-      ) : filteredInquiries.length === 0 ? (
-        <div className={styles.emptyState}>
-          <FaInbox className={styles.emptyIcon} />
-          <h3>No Inquiries in this view</h3>
-          <p>
-            {inquiries.length === 0
-              ? "When visitors submit the contact form or consultation popup on your website, inquiries will stream in here automatically."
-              : "No submissions matched your active search or category filter."}
-          </p>
-        </div>
-      ) : (
-        <div className={styles.inquiriesList}>
-          {filteredInquiries.map((inquiry) => {
-            const isUnread = (inquiry.status || "unread") === "unread";
-            const initialLetter = (inquiry.name || "C").charAt(0).toUpperCase();
-            const phoneDigits = cleanPhoneNumber(inquiry.phone);
+      {/* ================= 2. HOSTINGER WEBMAIL SPLIT-PANE CONTAINER ================= */}
+      <div className={styles.webmailContainer}>
+        {/* LEFT PANE: EMAIL LIST */}
+        <aside
+          className={`${styles.mailListPane} ${
+            activeInquiry ? styles.mailListPaneHasActiveMobile : ""
+          }`}
+        >
+          {/* SEARCH & FILTER BAR */}
+          <div className={styles.mailListSearchHeader}>
+            <div className={styles.searchBox}>
+              <FaSearch className={styles.searchIcon} />
+              <input
+                type="text"
+                placeholder="Search messages, names, emails..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  className={styles.clearSearchBtn}
+                  onClick={() => setSearchQuery("")}
+                >
+                  <FaTimes />
+                </button>
+              )}
+            </div>
 
-            return (
-              <article
-                key={inquiry.id}
-                className={`${styles.inquiryCard} ${isUnread ? styles.inquiryUnread : ""}`}
-              >
-                {/* HEADER ROW */}
-                <div className={styles.cardHeaderRow}>
-                  <div className={styles.clientGroup}>
-                    <div className={styles.clientAvatar}>{initialLetter}</div>
-                    <div className={styles.clientInfoCol}>
-                      <div className={styles.clientTitleRow}>
-                        <h3 className={styles.clientName}>{inquiry.name}</h3>
-                        {isUnread && <span className={styles.newPill}>NEW</span>}
+            <select
+              value={selectedService}
+              onChange={(e) => setSelectedService(e.target.value)}
+              className={styles.filterDropdown}
+            >
+              {SERVICE_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* EMAIL ROWS FEED */}
+          <div className={styles.mailRowsScrollArea}>
+            {loading ? (
+              <div className={styles.paneLoadingState}>
+                <FaSpinner className={styles.spinnerIcon} />
+                <span>Loading mailbox...</span>
+              </div>
+            ) : filteredInquiries.length === 0 ? (
+              <div className={styles.paneEmptyState}>
+                <FaInbox className={styles.emptyInboxIcon} />
+                <h4>No emails in folder</h4>
+                <p>
+                  {inquiries.length === 0
+                    ? "Inquiries submitted via website forms will appear here in real-time."
+                    : "No messages matched your active search query."}
+                </p>
+              </div>
+            ) : (
+              filteredInquiries.map((inquiry) => {
+                const isSelected = inquiry.id === selectedInquiryId;
+                const isUnread = (inquiry.status || "unread") === "unread";
+                const avatarBg = getAvatarColor(inquiry.name);
+                const initial = (inquiry.name || "C").charAt(0).toUpperCase();
+                const snippet = (inquiry.message || "").replace(/\s+/g, " ");
+
+                return (
+                  <div
+                    key={inquiry.id}
+                    className={`${styles.mailRow} ${isSelected ? styles.mailRowSelected : ""} ${
+                      isUnread ? styles.mailRowUnread : ""
+                    }`}
+                    onClick={() => handleSelectInquiry(inquiry)}
+                  >
+                    {/* UNREAD BLUE DOT */}
+                    <div className={styles.unreadIndicatorBox}>
+                      {isUnread ? (
+                        <FaCircle className={styles.unreadDot} title="Unread" />
+                      ) : (
+                        <span className={styles.readPlaceholder} />
+                      )}
+                    </div>
+
+                    {/* SENDER AVATAR */}
+                    <div
+                      className={styles.rowAvatar}
+                      style={{ backgroundColor: avatarBg }}
+                    >
+                      {initial}
+                    </div>
+
+                    {/* SENDER & PREVIEW CONTENT */}
+                    <div className={styles.rowContent}>
+                      <div className={styles.rowTopLine}>
+                        <span className={styles.rowSenderName}>
+                          {inquiry.name || "Anonymous Client"}
+                        </span>
+                        <span className={styles.rowTimestamp}>
+                          {formatTimeOrDate(inquiry.created_at)}
+                        </span>
                       </div>
-                      <span className={styles.timestampRow}>
-                        <FaClock />
-                        {formatInquiryDate(inquiry.created_at)}
-                      </span>
+
+                      <div className={styles.rowSubjectLine}>
+                        <span className={styles.rowServiceTag}>
+                          {inquiry.service || "Engineering Inquiry"}
+                        </span>
+                        {inquiry.status === "replied" && (
+                          <span className={styles.rowRepliedBadge}>Replied</span>
+                        )}
+                      </div>
+
+                      <p className={styles.rowSnippet}>{snippet || "No message preview available"}</p>
                     </div>
                   </div>
+                );
+              })
+            )}
+          </div>
+        </aside>
 
-                  <div className={styles.badgeStack}>
-                    <span className={styles.serviceBadge}>
-                      <FaBuilding />
-                      {inquiry.service || "Engineering Inquiry"}
-                    </span>
-                    <span
-                      className={`${styles.statusPill} ${
-                        inquiry.status === "replied"
-                          ? styles.statusPillReplied
-                          : inquiry.status === "read"
-                          ? styles.statusPillRead
-                          : styles.statusPillUnread
-                      }`}
+        {/* RIGHT PANE: LIVE READING PANE (NO POPUP!) */}
+        <section
+          className={`${styles.readingPane} ${
+            activeInquiry ? styles.readingPaneActiveMobile : ""
+          }`}
+        >
+          {activeInquiry ? (
+            <div className={styles.messageViewerContainer}>
+              {/* TOP ACTION TOOLBAR */}
+              <div className={styles.viewerToolbar}>
+                <div className={styles.toolbarLeft}>
+                  {/* MOBILE BACK BUTTON */}
+                  <button
+                    type="button"
+                    className={styles.mobileBackBtn}
+                    onClick={() => setSelectedInquiryId(null)}
+                    title="Back to inbox list"
+                  >
+                    <FaArrowLeft />
+                    <span>Inbox</span>
+                  </button>
+
+                  {/* REPLY VIA EMAIL */}
+                  {activeInquiry.email && (
+                    <a
+                      href={`mailto:${activeInquiry.email}?subject=${encodeURIComponent(
+                        `Re: Your Inquiry for ${activeInquiry.service || "Nayaab Engineering Innovations"}`
+                      )}&body=${encodeURIComponent(
+                        `Dear ${activeInquiry.name},\n\nThank you for contacting Nayaab Engineering Innovations regarding ${activeInquiry.service || "your project"}.\n\n`
+                      )}`}
+                      className={styles.actionBtnPrimary}
+                      onClick={() => handleUpdateStatus(activeInquiry.id, "replied")}
+                      title="Reply via Email Client"
                     >
-                      {inquiry.status === "replied" ? "Replied" : inquiry.status === "read" ? "Read" : "Unread"}
+                      <FaReply />
+                      <span>Reply</span>
+                    </a>
+                  )}
+
+                  {/* WHATSAPP ACTION */}
+                  {cleanPhoneNumber(activeInquiry.phone).length >= 10 && (
+                    <a
+                      href={`https://wa.me/${cleanPhoneNumber(activeInquiry.phone)}?text=${encodeURIComponent(
+                        `Hello ${activeInquiry.name}, this is Nayaab Engineering Innovations regarding your project inquiry for ${activeInquiry.service || "our services"}.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.actionBtnWhatsapp}
+                      onClick={() => handleUpdateStatus(activeInquiry.id, "replied")}
+                      title="Open WhatsApp Chat"
+                    >
+                      <FaWhatsapp />
+                      <span>WhatsApp</span>
+                    </a>
+                  )}
+                </div>
+
+                <div className={styles.toolbarRight}>
+                  {/* MARK READ / UNREAD */}
+                  <button
+                    type="button"
+                    className={styles.actionBtnIcon}
+                    onClick={() =>
+                      handleUpdateStatus(
+                        activeInquiry.id,
+                        activeInquiry.status === "unread" ? "read" : "unread"
+                      )
+                    }
+                    title={
+                      activeInquiry.status === "unread" ? "Mark as Read" : "Mark as Unread"
+                    }
+                  >
+                    <FaEnvelope />
+                    <span>
+                      {activeInquiry.status === "unread" ? "Mark Read" : "Mark Unread"}
                     </span>
+                  </button>
+
+                  {/* DELETE EMAIL */}
+                  <button
+                    type="button"
+                    className={`${styles.actionBtnIcon} ${styles.actionBtnDelete}`}
+                    onClick={() => handleDeleteInquiry(activeInquiry.id, activeInquiry.name)}
+                    title="Delete Message"
+                  >
+                    <FaTrash />
+                    <span>Delete</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* MESSAGE CONTENT AREA */}
+              <div className={styles.viewerScrollArea}>
+                {/* SUBJECT TITLE */}
+                <div className={styles.messageSubjectHeader}>
+                  <h2>
+                    {activeInquiry.service
+                      ? `${activeInquiry.service} — Inquiry from ${activeInquiry.name}`
+                      : `Inquiry from ${activeInquiry.name}`}
+                  </h2>
+                  <span className={styles.disciplineBadge}>
+                    <FaBuilding />
+                    {activeInquiry.service || "General Inquiry"}
+                  </span>
+                </div>
+
+                {/* SENDER DETAILS BOX (HOSTINGER WEBMAIL STYLE) */}
+                <div className={styles.senderHeaderCard}>
+                  <div
+                    className={styles.senderLargeAvatar}
+                    style={{ backgroundColor: getAvatarColor(activeInquiry.name) }}
+                  >
+                    {(activeInquiry.name || "C").charAt(0).toUpperCase()}
+                  </div>
+
+                  <div className={styles.senderMetaCol}>
+                    <div className={styles.senderPrimaryRow}>
+                      <span className={styles.senderFullName}>{activeInquiry.name}</span>
+                      <span className={styles.senderEmailAddress}>
+                        &lt;{activeInquiry.email || "No email"}&gt;
+                      </span>
+                    </div>
+
+                    <div className={styles.recipientRow}>
+                      <span className={styles.toLabel}>To:</span>
+                      <span className={styles.toValue}>info@nayaabengineering.com, neiplkashmir@gmail.com</span>
+                    </div>
+
+                    <div className={styles.timestampFullRow}>
+                      <FaClock className={styles.timeIcon} />
+                      <span>{formatFullDateTime(activeInquiry.created_at)}</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* CONTACT CHIPS */}
+                {/* QUICK CONTACT CHIPS */}
                 <div className={styles.contactChipsRow}>
-                  {inquiry.email && (
+                  {activeInquiry.email && (
                     <button
                       type="button"
-                      className={styles.chipItem}
-                      onClick={() => copyToClipboard(inquiry.email, "Email")}
+                      className={styles.contactChip}
+                      onClick={() => copyToClipboard(activeInquiry.email, "Email")}
                       title="Click to copy Email"
                     >
                       <FaEnvelope className={styles.chipIcon} />
-                      <span>{inquiry.email}</span>
-                      <FaCopy className={styles.copyHintIcon} />
+                      <span>{activeInquiry.email}</span>
+                      <FaCopy className={styles.copyIcon} />
                     </button>
                   )}
 
-                  {inquiry.phone && inquiry.phone !== "Not Provided" && (
+                  {activeInquiry.phone && activeInquiry.phone !== "Not Provided" && (
                     <button
                       type="button"
-                      className={styles.chipItem}
-                      onClick={() => copyToClipboard(inquiry.phone, "Phone")}
+                      className={styles.contactChip}
+                      onClick={() => copyToClipboard(activeInquiry.phone, "Phone")}
                       title="Click to copy Phone"
                     >
                       <FaPhoneAlt className={styles.chipIcon} />
-                      <span>{inquiry.phone}</span>
-                      <FaCopy className={styles.copyHintIcon} />
+                      <span>{activeInquiry.phone}</span>
+                      <FaCopy className={styles.copyIcon} />
                     </button>
                   )}
                 </div>
 
-                {/* MESSAGE PREVIEW BUBBLE */}
-                <div className={styles.messageBubble}>
-                  <p className={styles.messageQuote}>"{inquiry.message}"</p>
+                {/* EMAIL BODY CONTAINER */}
+                <div className={styles.emailBodyCard}>
+                  <div className={styles.emailBodyText}>
+                    {activeInquiry.message ? (
+                      activeInquiry.message.split("\n").map((paragraph, index) => (
+                        <p key={index}>{paragraph || <br />}</p>
+                      ))
+                    ) : (
+                      <p style={{ color: "#71717A", fontStyle: "italic" }}>
+                        No written message provided with this submission.
+                      </p>
+                    )}
+                  </div>
                 </div>
 
-                {/* ACTION FOOTER */}
-                <div className={styles.actionFooter}>
-                  <div className={styles.outreachGroup}>
-                    {phoneDigits && phoneDigits.length >= 10 && (
+                {/* QUICK RESPONSE COMPOSER BAR */}
+                <div className={styles.quickReplyCard}>
+                  <div className={styles.quickReplyHeader}>
+                    <FaReply className={styles.replyIcon} />
+                    <span>Quick Response to {activeInquiry.name}</span>
+                  </div>
+
+                  <textarea
+                    rows={3}
+                    placeholder={`Type your reply to ${activeInquiry.name}...`}
+                    value={quickReplyText}
+                    onChange={(e) => setQuickReplyText(e.target.value)}
+                    className={styles.quickReplyTextarea}
+                  />
+
+                  <div className={styles.quickReplyActionRow}>
+                    {activeInquiry.email && (
                       <a
-                        href={`https://wa.me/${phoneDigits}?text=${encodeURIComponent(
-                          `Hello ${inquiry.name}, this is Nayaab Engineering Innovations regarding your project inquiry for ${inquiry.service || "our engineering services"}.`
+                        href={`mailto:${activeInquiry.email}?subject=${encodeURIComponent(
+                          `Re: Your Inquiry for ${activeInquiry.service || "Nayaab Engineering"}`
+                        )}&body=${encodeURIComponent(
+                          quickReplyText ||
+                            `Dear ${activeInquiry.name},\n\nThank you for reaching out to Nayaab Engineering Innovations.\n\nWarm regards,\nNayaab Engineering Team`
+                        )}`}
+                        className={styles.quickSendEmailBtn}
+                        onClick={() => {
+                          handleUpdateStatus(activeInquiry.id, "replied");
+                          setQuickReplyText("");
+                        }}
+                      >
+                        <FaPaperPlane />
+                        <span>Send via Email</span>
+                      </a>
+                    )}
+
+                    {cleanPhoneNumber(activeInquiry.phone).length >= 10 && (
+                      <a
+                        href={`https://wa.me/${cleanPhoneNumber(activeInquiry.phone)}?text=${encodeURIComponent(
+                          quickReplyText ||
+                            `Hello ${activeInquiry.name}, this is Nayaab Engineering Innovations regarding your project inquiry for ${activeInquiry.service || "our services"}.`
                         )}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={styles.whatsappPillBtn}
-                        onClick={() => handleUpdateStatus(inquiry.id, "replied")}
-                        title="Chat on WhatsApp"
+                        className={styles.quickSendWhatsappBtn}
+                        onClick={() => {
+                          handleUpdateStatus(activeInquiry.id, "replied");
+                          setQuickReplyText("");
+                        }}
                       >
                         <FaWhatsapp />
-                        <span>WhatsApp Client</span>
-                      </a>
-                    )}
-
-                    {inquiry.email && (
-                      <a
-                        href={`mailto:${inquiry.email}?subject=${encodeURIComponent(
-                          `Regarding your project inquiry: ${inquiry.service || "Nayaab Engineering"}`
-                        )}&body=${encodeURIComponent(
-                          `Hello ${inquiry.name},\n\nThank you for reaching out to Nayaab Engineering Innovations regarding ${inquiry.service || "your inquiry"}.\n\n`
-                        )}`}
-                        className={styles.emailPillBtn}
-                        onClick={() => handleUpdateStatus(inquiry.id, "replied")}
-                        title="Reply via Email"
-                      >
-                        <FaEnvelope />
-                        <span>Email Client</span>
+                        <span>Send via WhatsApp</span>
                       </a>
                     )}
                   </div>
-
-                  <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                    <button
-                      type="button"
-                      className={styles.statusBtn}
-                      onClick={() =>
-                        handleUpdateStatus(
-                          inquiry.id,
-                          inquiry.status === "unread" ? "read" : "unread"
-                        )
-                      }
-                      title={inquiry.status === "unread" ? "Mark as Read" : "Mark as Unread"}
-                    >
-                      <FaCheckCircle />
-                      <span>{inquiry.status === "unread" ? "Mark Read" : "Mark Unread"}</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className={styles.viewBtn}
-                      onClick={() => handleOpenDetails(inquiry)}
-                    >
-                      <FaEye />
-                      <span>View Details</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className={styles.deleteActionBtn}
-                      onClick={() => handleDeleteInquiry(inquiry.id, inquiry.name)}
-                      title="Delete Inquiry"
-                    >
-                      <FaTrash />
-                    </button>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      )}
-
-      {/* 4. DETAIL MODAL DIALOG */}
-      {selectedInquiry && (
-        <div
-          className={styles.modalOverlay}
-          onClick={() => setSelectedInquiry(null)}
-          role="presentation"
-        >
-          <div
-            className={styles.modalCard}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="inquiry-detail-title"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className={styles.modalHeader}>
-              <div className={styles.modalHeaderLeft}>
-                <div className={styles.clientAvatar}>
-                  {(selectedInquiry.name || "C").charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <h3 id="inquiry-detail-title" style={{ margin: 0, color: "#F5F5F5", fontSize: "1.15rem", fontWeight: 800 }}>
-                    {selectedInquiry.name}
-                  </h3>
-                  <span style={{ fontSize: "0.78rem", color: "#737373", display: "inline-flex", alignItems: "center", gap: 4, marginTop: 2 }}>
-                    <FaClock /> Submitted {formatInquiryDate(selectedInquiry.created_at)}
-                  </span>
                 </div>
               </div>
-              <button
-                type="button"
-                className={styles.modalCloseBtn}
-                onClick={() => setSelectedInquiry(null)}
-                aria-label="Close modal"
-              >
-                <FaTimes />
-              </button>
             </div>
-
-            <div className={styles.modalDetailsGrid}>
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Service Requested</span>
-                <span className={styles.detailValue}>
-                  {selectedInquiry.service || "General Consultation"}
-                </span>
+          ) : (
+            <div className={styles.noMessageSelectedPane}>
+              <div className={styles.emptyMailboxIllustration}>
+                <FaEnvelope className={styles.largeMailIcon} />
               </div>
-
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Inquiry Status</span>
-                <span className={styles.detailValue} style={{ textTransform: "capitalize", color: selectedInquiry.status === "unread" ? "#F59E0B" : selectedInquiry.status === "replied" ? "#38BDF8" : "#22C55E" }}>
-                  {selectedInquiry.status || "unread"}
-                </span>
-              </div>
-
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Email Address</span>
-                <span className={styles.detailValue}>{selectedInquiry.email || "Not Provided"}</span>
-              </div>
-
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>Phone / WhatsApp</span>
-                <span className={styles.detailValue}>{selectedInquiry.phone || "Not Provided"}</span>
-              </div>
+              <h3>Select a message to view</h3>
+              <p>Choose an inquiry from the list on the left to read its full message and contact details.</p>
             </div>
+          )}
+        </section>
+      </div>
 
-            <div className={styles.modalMessageBox}>
-              <span className={styles.detailLabel}>Full Client Message</span>
-              <div className={styles.modalMessageContent}>{selectedInquiry.message}</div>
-            </div>
-
-            <div className={styles.modalActionFooter}>
-              <div style={{ display: "flex", gap: "0.55rem", flexWrap: "wrap" }}>
-                {cleanPhoneNumber(selectedInquiry.phone).length >= 10 && (
-                  <a
-                    href={`https://wa.me/${cleanPhoneNumber(selectedInquiry.phone)}?text=${encodeURIComponent(
-                      `Hello ${selectedInquiry.name}, this is Nayaab Engineering Innovations regarding your project inquiry for ${selectedInquiry.service || "our services"}.`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.whatsappPillBtn}
-                    onClick={() => handleUpdateStatus(selectedInquiry.id, "replied")}
-                  >
-                    <FaWhatsapp />
-                    <span>WhatsApp</span>
-                  </a>
-                )}
-
-                {selectedInquiry.email && (
-                  <a
-                    href={`mailto:${selectedInquiry.email}?subject=${encodeURIComponent(
-                      `Regarding your project inquiry: ${selectedInquiry.service || "Nayaab Engineering"}`
-                    )}`}
-                    className={styles.emailPillBtn}
-                    onClick={() => handleUpdateStatus(selectedInquiry.id, "replied")}
-                  >
-                    <FaEnvelope />
-                    <span>Email Client</span>
-                  </a>
-                )}
-              </div>
-
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <button
-                  type="button"
-                  className={styles.statusBtn}
-                  onClick={() =>
-                    handleUpdateStatus(
-                      selectedInquiry.id,
-                      selectedInquiry.status === "replied"
-                        ? "read"
-                        : selectedInquiry.status === "read"
-                        ? "unread"
-                        : "replied"
-                    )
-                  }
-                >
-                  Status: {selectedInquiry.status || "unread"}
-                </button>
-
-                <button
-                  type="button"
-                  className={styles.deleteActionBtn}
-                  onClick={() => handleDeleteInquiry(selectedInquiry.id, selectedInquiry.name)}
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* 5. TOAST NOTIFICATION */}
+      {/* TOAST COPIED NOTIFICATION */}
       {copiedText && (
         <div className={styles.toastPill}>
           <FaCheck />
