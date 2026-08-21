@@ -526,20 +526,24 @@ export default function InquiriesManager({
                     <span>Inbox</span>
                   </button>
 
-                  {/* 1-CLICK EMAIL CLIENT LINK */}
+                  {/* 1-CLICK GMAIL COMPOSE LINK */}
                   {activeInquiry.email && (
                     <a
-                      href={`mailto:${activeInquiry.email}?subject=${encodeURIComponent(
-                        `Re: Your Inquiry for ${activeInquiry.service || "Nayaab Engineering Innovations"}`
+                      href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+                        activeInquiry.email
+                      )}&su=${encodeURIComponent(
+                        `Re: Inquiry for ${activeInquiry.service || "Nayaab Engineering Innovations"} - ${activeInquiry.name}`
                       )}&body=${encodeURIComponent(
-                        `Dear ${activeInquiry.name},\n\nThank you for reaching out to Nayaab Engineering Innovations regarding ${activeInquiry.service || "your project"}.\n\n`
+                        `Dear ${activeInquiry.name},\n\nThank you for reaching out to Nayaab Engineering Innovations regarding ${activeInquiry.service || "your inquiry"}.\n\nWarm regards,\nNayaab Engineering Team`
                       )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={styles.actionBtnPrimary}
                       onClick={() => handleUpdateStatus(activeInquiry.id, "replied")}
-                      title="Reply using default mail client"
+                      title="Open Gmail to compose reply"
                     >
                       <FaReply />
-                      <span>Reply via Email</span>
+                      <span>Reply via Gmail</span>
                     </a>
                   )}
 
@@ -727,7 +731,7 @@ export default function InquiriesManager({
                   <div className={styles.emailBodyCard}>
                     <div className={styles.emailBodyHeader}>
                       <FaCommentDots className={styles.messageHeaderIcon} />
-                      <span>Full Client Message &amp; Requirements</span>
+                      <span>Message</span>
                     </div>
                     <div className={styles.emailBodyText}>
                       {activeInquiry.message ? (
