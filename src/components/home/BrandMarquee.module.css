@@ -1,3 +1,5 @@
+/* src/components/home/BrandMarquee.module.css */
+
 .brandMarqueeSection {
   width: 100%;
   background: #FFFFFF;
@@ -5,7 +7,7 @@
   border-bottom: 1px solid #E4E4E7;
   padding-top: clamp(2rem, 3vw, 2.5rem);
   padding-bottom: clamp(1.5rem, 2.2vw, 2rem);
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--nei-font-body, 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   box-sizing: border-box;
   overflow-x: clip;
 }
@@ -47,8 +49,8 @@
   display: flex;
   align-items: center;
   width: max-content;
-  gap: clamp(1.25rem, 2vw, 1.75rem);
-  animation: brandMarqueeScroll 30s linear infinite;
+  gap: clamp(2.5rem, 4vw, 4.25rem);
+  animation: brandMarqueeScroll 32s linear infinite;
   transform: translate3d(0, 0, 0);
   will-change: transform;
 }
@@ -62,34 +64,33 @@
   }
 }
 
-/* BRAND ITEM CONTAINER */
+/* SEAMLESS BRAND ITEM (NO CARDS / DIRECT ON BACKGROUND) */
 .brandItem {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  background: #FAFAFA;
-  border: 1px solid #E4E4E7;
-  padding: 0.6rem 1.15rem;
-  border-radius: 10px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
   white-space: nowrap;
   flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: none;
 }
 
-/* LOGO HOLDER: CLEAN OFF-WHITE/BLACK HOUSING FOR REAL LOGO ICONS */
+/* LOGO HOLDER WITHOUT CARD ENCLOSURE */
 .logoHolder {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: #FFFFFF;
-  border: 1px solid #E4E4E7;
-  padding: 5px;
+  width: 26px;
+  height: 26px;
+  background: transparent;
+  border: none;
+  padding: 0;
   box-sizing: border-box;
   flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: none;
 }
 
 .brandImg {
@@ -105,7 +106,7 @@
   display: block;
 }
 
-/* TYPOGRAPHY LOCKUP */
+/* TYPOGRAPHY LOCKUP DIRECTLY ON BACKGROUND */
 .brandTextLockup {
   display: flex;
   flex-direction: column;
@@ -114,7 +115,8 @@
 }
 
 .brandPrimary {
-  font-size: 0.875rem;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
+  font-size: 0.95rem;
   font-weight: 700;
   color: #0A0A0A;
   letter-spacing: -0.01em;
@@ -122,14 +124,14 @@
 
 .brandSecondary {
   font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 500;
   color: #71717A;
 }
 
 .brandRating {
   font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: #0A0A0A;
   display: inline-flex;
@@ -168,24 +170,21 @@
   }
 
   .brandMarqueeTrack {
-    animation-duration: 22s;
-    gap: 0.85rem;
+    animation-duration: 24s;
+    gap: 1.75rem;
   }
 
   .brandItem {
-    padding: 0.45rem 0.85rem;
-    gap: 0.6rem;
-    border-radius: 8px;
+    gap: 0.55rem;
   }
 
   .logoHolder {
-    width: 28px;
-    height: 28px;
-    padding: 4px;
+    width: 22px;
+    height: 22px;
   }
 
   .brandPrimary {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .brandSecondary,

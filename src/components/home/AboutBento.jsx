@@ -1,3 +1,4 @@
+// src/components/about/AboutBento/AboutBento.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -52,21 +53,20 @@ export default function AboutBento() {
 
           {/* 2. Center: Incorporation & Leadership */}
           <div className={`${styles.bentoCard} ${styles.cardLarge}`}>
-            <img
-              src="/logo.png"
-              alt=""
-              className={styles.cardWatermarkCenter}
-              aria-hidden="true"
-            />
-
             <div className={styles.cardContentRelative}>
               <div className={styles.brandHeader}>
-                <span className={styles.brandName}>Nayaab Engineering</span>
+                <span className={styles.brandName}>
+                  Nayaab Engineering Innovations <span className={styles.pvtLtd}>Pvt. Ltd.</span>
+                </span>
+                <div className={styles.brandLine} />
               </div>
+
               <div className={styles.bigStatNum}>2024</div>
               <p className={styles.bentoText}>
-                Incorporated as a Private Limited Engineering Company (CIN: U42900JK2024PTC015987) under RoC Jammu.
+                Incorporated as a Private Limited Engineering Company (CIN: <span className={styles.cinText}>U42900JK2024PTC015987</span>) under RoC Jammu.
               </p>
+
+              {/* Standard Avatars */}
               <div className={styles.avatarStack} aria-label="Leadership team avatars">
                 <div className={styles.avatar} title="Junaid Bilal Sheikh">J</div>
                 <div className={styles.avatar} title="Aaqib Nazir Tantary">A</div>

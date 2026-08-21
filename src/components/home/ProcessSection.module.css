@@ -1,14 +1,16 @@
 /* src/components/home/ProcessSection/ProcessSection.module.css */
 
+/* ===== GLOBAL SECTION CONTAINER ===== */
 .processSection {
   width: 100%;
   margin: 0;
-  padding-block: clamp(4rem, 6vw, 5.5rem) clamp(3.5rem, 5vw, 4.5rem);
+  padding-block: clamp(4.5rem, 6.5vw, 6.5rem) clamp(4rem, 5.5vw, 5.5rem);
   padding-inline: clamp(1.5rem, 5vw, 4rem);
   box-sizing: border-box;
   background: #FAFAFA;
   border-top: 1px solid #E4E4E7;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  border-bottom: 1px solid #E4E4E7;
+  font-family: var(--nei-font-body, 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   overflow-x: clip;
 }
 
@@ -23,14 +25,14 @@
 .sectionTagRow {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
   color: #0A0A0A;
   font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.09em;
 }
 
 .tagSquareIcon {
@@ -45,7 +47,9 @@
   grid-template-columns: 1.2fr 1fr;
   gap: clamp(1.5rem, 3vw, 2.5rem);
   align-items: flex-end;
-  margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
+  margin-bottom: clamp(3.5rem, 5vw, 4.75rem);
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid #E4E4E7;
 }
 
 .splitHeaderLeft {
@@ -57,12 +61,16 @@
   font-size: clamp(2rem, 3.2vw, 3rem);
   font-weight: 800;
   line-height: 1.15;
-  color: #0A0A0A;
+  color: #000000;
   margin: 0;
   letter-spacing: -0.025em;
 }
 
-/* RIGHT-ALIGNED DESCRIPTION CONTAINER */
+.titleGrey {
+  color: #71717A;
+  font-weight: 700;
+}
+
 .splitHeaderRight {
   display: flex;
   align-items: flex-end;
@@ -70,102 +78,127 @@
   width: 100%;
 }
 
-/* Subtitle: Right-Aligned on Desktop with Subtle Contrast */
 .splitDesc {
   color: #52525B;
-font-family: 'Manrope', sans-serif;
-  font-size: clamp(0.9rem, 1.05vw, 0.975rem);
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
+  font-size: 1.12rem;
   font-weight: 400;
-  line-height: 1.65;
+  line-height: 1.7;
   margin: 0;
   max-width: 48ch;
   text-align: right;
   letter-spacing: -0.01em;
 }
 
-/* PROCESS GRID */
+/* ===== EDITORIAL DIRECT-ON-BACKGROUND GRID ===== */
 .processGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  gap: clamp(2rem, 3.5vw, 3.5rem);
   width: 100%;
   box-sizing: border-box;
 }
 
-.processCard {
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: clamp(1.5rem, 2vw, 2rem) 1.5rem;
-  border: 1px solid #E4E4E7;
+.processItem {
   display: flex;
   flex-direction: column;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  position: relative;
-  overflow: hidden;
+  background: transparent;
+  border: none;
+  padding: 0;
   box-sizing: border-box;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.3s ease;
-  clip-path: polygon(
-    0 0,
-    calc(100% - 24px) 0,
-    100% 24px,
-    100% 100%,
-    0 100%
-  );
 }
 
-.processCard:hover {
-  transform: translateY(-4px);
-  border-color: #0A0A0A;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.06);
-}
-
+/* GREY NUMBERING */
 .stepNum {
   font-family: var(--nei-font-meta, 'JetBrains Mono', monospace);
-  font-size: clamp(2.2rem, 3vw, 2.6rem);
-  font-weight: 700;
-  color: #E4E4E7;
+  font-size: clamp(2.5rem, 3.5vw, 3.2rem);
+  font-weight: 800;
+  color: #A1A1AA;
   line-height: 1;
-  margin-bottom: 1.25rem;
-  letter-spacing: -0.04em;
-  transition: color 0.3s ease;
+  letter-spacing: -0.05em;
+  margin-bottom: 0.85rem;
+  transition: color 0.2s ease;
 }
 
-.processCard:hover .stepNum {
-  color: rgb(255, 187, 15);
+.processItem:hover .stepNum {
+  color: #71717A;
+}
+
+.stepDivider {
+  width: 100%;
+  height: 2px;
+  background: #0A0A0A;
+  margin-bottom: 1.35rem;
 }
 
 .stepTitle {
-  font-size: 1.125rem;
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
+  font-size: 1.22rem;
   font-weight: 700;
   color: #0A0A0A;
-  margin: 0 0 0.5rem 0;
-  line-height: 1.3;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.32;
   letter-spacing: -0.015em;
+  min-height: 3.2rem;
 }
 
-/* Card Descriptions: Refined Balanced Weight */
 .stepDesc {
   color: #52525B;
   font-family: var(--nei-font-body, 'Outfit', sans-serif);
-  font-size: 0.875rem;
+  font-size: 0.98rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.68;
   margin: 0;
   word-break: normal;
   overflow-wrap: break-word;
   letter-spacing: -0.01em;
 }
 
-/* =========================================================
+/* =========================================================================
    RESPONSIVE BREAKPOINTS
-   ========================================================= */
+   ========================================================================= */
+
+/* Tablet Landscape & Laptops (1024px – 901px) */
 @media (max-width: 1024px) {
+  .processSection {
+    padding-inline: 2rem;
+  }
+
+  .splitHeaderContainer {
+    grid-template-columns: 1.15fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .splitTitle {
+    font-size: 2.25rem;
+  }
+
+  .splitDesc {
+    font-size: 0.95rem;
+    max-width: 42ch;
+  }
+
+  .processGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem 2rem;
+  }
+
+  .stepTitle {
+    min-height: auto;
+    font-size: 1.15rem;
+  }
+
+  .stepDesc {
+    font-size: 0.94rem;
+  }
+}
+
+/* Tablet Portrait (900px – 769px) */
+@media (max-width: 900px) {
   .splitHeaderContainer {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
-    margin-bottom: 2.25rem;
+    gap: 0.85rem;
   }
 
   .splitHeaderRight {
@@ -179,13 +212,14 @@ font-family: 'Manrope', sans-serif;
 
   .processGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
+    gap: 2.5rem 1.75rem;
   }
 }
 
+/* Mobile Screens (<= 768px) */
 @media (max-width: 768px) {
   .processSection {
-    padding-block: 3rem 2.25rem;
+    padding-block: 3.25rem 2.5rem;
     padding-inline: 1.25rem;
   }
 
@@ -196,35 +230,29 @@ font-family: 'Manrope', sans-serif;
   .splitDesc {
     text-align: left;
     max-width: 100%;
+    font-size: 0.92rem;
   }
 
   .processGrid {
     grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .processCard {
-    padding: 1.35rem 1.15rem;
-    border-radius: 14px;
-    clip-path: polygon(
-      0 0,
-      calc(100% - 16px) 0,
-      100% 16px,
-      100% 100%,
-      0 100%
-    );
+    gap: 2.25rem;
   }
 
   .stepNum {
-    font-size: 2rem;
-    margin-bottom: 0.85rem;
+    font-size: 2.2rem;
+  }
+
+  .stepDivider {
+    margin-bottom: 1rem;
   }
 
   .stepTitle {
-    font-size: 1.05rem;
+    min-height: auto;
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
   }
 
   .stepDesc {
-    font-size: 0.85rem;
+    font-size: 0.94rem;
   }
 }
