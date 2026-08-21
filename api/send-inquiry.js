@@ -5,8 +5,8 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY || process.env.RESEND;
 const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "info@nayaabengineering.com";
 
-// Sender Address using verified domain nayaabengineering.com
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Nayaab Engineering <inquiries@nayaabengineering.com>";
+// Default sender address
+const SENDER_EMAIL = process.env.RESEND_FROM_EMAIL_ADDRESS || "info@nayaabengineering.com";
 
 function cleanPhoneNumber(phone) {
   if (!phone) return "";
@@ -56,8 +56,9 @@ export default async function handler(req, res) {
 
   try {
     // 1. DISPATCH NOTIFICATION EMAIL TO ADMIN (Clean, zero-image, text-first)
+    // Display name is set to "${cleanName} (Website Inquiry)" so the admin inbox shows the client name instead of "me"
     const adminEmailPromise = resend.emails.send({
-      from: FROM_EMAIL,
+      from: `${cleanName} [Website Inquiry] <${SENDER_EMAIL}>`,
       to: [ADMIN_EMAIL],
       replyTo: cleanEmail,
       subject: `New Inquiry: ${cleanService} - ${cleanName}`,
@@ -123,15 +124,14 @@ export default async function handler(req, res) {
               <a href="mailto:${cleanEmail}?subject=Re: Your Inquiry with Nayaab Engineering Innovations" style="display: inline-block; background-color: #00A6FB; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 700; text-decoration: none; margin-right: 8px; margin-bottom: 8px;">
                 Reply via Email
               </a>
-              ${
-                waPhone && waPhone.length >= 10
-                  ? `<a href="https://wa.me/${waPhone}?text=${encodeURIComponent(
-                      `Hello ${cleanName}, this is Nayaab Engineering Innovations regarding your project inquiry for ${cleanService}.`
-                    )}" target="_blank" style="display: inline-block; background-color: #25D366; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 700; text-decoration: none; margin-bottom: 8px;">
+              ${waPhone && waPhone.length >= 10
+          ? `<a href="https://wa.me/${waPhone}?text=${encodeURIComponent(
+            `Hello ${cleanName}, this is Nayaab Engineering Innovations regarding your project inquiry for ${cleanService}.`
+          )}" target="_blank" style="display: inline-block; background-color: #25D366; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 700; text-decoration: none; margin-bottom: 8px;">
                       Open WhatsApp
                     </a>`
-                  : ""
-              }
+          : ""
+        }
             </div>
 
             <!-- FOOTER -->
@@ -147,7 +147,7 @@ export default async function handler(req, res) {
 
     // 2. DISPATCH BRANDED CONFIRMATION EMAIL TO CLIENT (Clean, zero-image, text-first)
     const clientEmailPromise = resend.emails.send({
-      from: FROM_EMAIL,
+      from: `Nayaab Engineering Innovations <${SENDER_EMAIL}>`,
       to: [cleanEmail],
       replyTo: ADMIN_EMAIL,
       subject: `Thank you for contacting Nayaab Engineering Innovations`,
