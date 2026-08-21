@@ -1640,20 +1640,22 @@
 /* ================= RESPONSIVE MEDIA QUERIES ================= */
 @media (max-width: 1024px) {
   .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    transform: translateX(-100%);
-    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.8);
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    transform: translateX(-100%) !important;
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.85) !important;
+    z-index: 99999 !important;
   }
 
   .sidebarActive {
-    transform: translateX(0);
+    transform: translateX(0) !important;
   }
 
   .sidebarCloseBtn {
-    display: block;
+    display: block !important;
   }
 
   .mobileMenuToggle {
@@ -1661,11 +1663,11 @@
   }
 
   .sidebarBackdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(4px);
-    z-index: 90;
+    position: fixed !important;
+    inset: 0 !important;
+    background: rgba(0, 0, 0, 0.75) !important;
+    backdrop-filter: blur(4px) !important;
+    z-index: 99990 !important;
   }
 
   .formGrid {

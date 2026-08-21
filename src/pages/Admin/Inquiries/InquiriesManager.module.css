@@ -15,10 +15,7 @@
    ======================================================================================= */
 
 .standaloneWorkspace {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -27,7 +24,7 @@
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   color: #F5F5F5;
   box-sizing: border-box;
-  z-index: 9999;
+  position: relative;
 }
 
 /* ==========================================================================
