@@ -1,3 +1,4 @@
+// src/pages/Home/Home.jsx
 import React, { useState, useEffect, useCallback } from "react";
 import { Helmet } from "react-helmet-async";
 import Hero from "../../components/home/Hero";
@@ -13,6 +14,7 @@ import GoogleReviews from "../../components/home/GoogleReviews";
 import TickerBanner from "../../components/home/TickerBanner";
 import ContactForm from "../../components/common/ContactForm/ContactForm";
 import ProjectDrawer from "../../components/projects/ProjectDrawer";
+import EmployeeModal from "../../components/team/EmployeeModal";
 import { supabase } from "../../lib/supabaseClient";
 import styles from "./Home.module.css";
 
@@ -219,7 +221,7 @@ export default function Home() {
       {/* 12. CONTACT FORM */}
       <ContactForm />
 
-      {/* 13. MODAL DRAWER */}
+      {/* 13. PROJECT DRAWER */}
       <ProjectDrawer
         isOpen={!!selectedProject}
         project={selectedProject}
@@ -229,6 +231,9 @@ export default function Home() {
         currentIndex={currentModalIndex}
         totalProjects={projects.length}
       />
+
+      {/* 14. EMPLOYEE MODAL (LISTENS TO ?member=neipl-xxxx) */}
+      <EmployeeModal />
     </>
   );
 }

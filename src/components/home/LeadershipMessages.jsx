@@ -1,37 +1,36 @@
+// src/components/home/LeadershipMessages.jsx
 import React, { useState } from "react";
-import { FaSquare, FaQuoteLeft, FaChevronDown, FaInstagram } from "react-icons/fa";
-import ceoImg from "../../assets/images/team/neipl-0104.png";
-import techImg from "../../assets/images/team/neipl-0103.png";
+import { FaSquare, FaQuoteLeft, FaChevronDown, FaArrowRight } from "react-icons/fa";
 import opsImg from "../../assets/images/team/neipl-0102.png";
+import techImg from "../../assets/images/team/neipl-0103.png";
+import ceoImg from "../../assets/images/team/neipl-0104.png";
 import styles from "./LeadershipMessages.module.css";
 
 const leadershipData = [
   {
-    id: "ceo",
-    name: "Er. Junaid Bilal Sheikh",
-    role: "Managing Director",
-    image: ceoImg,
-    instagramUrl: "https://www.instagram.com/_junaid99/?hl=en",
-    badge: "Executive Vision",
-    salutation: "Dear Valued Clients and Partners,",
+    id: "ops-director",
+    memberId: "neipl-0102",
+    name: "Er. Saajid Rashid Malik",
+    role: "Director – Construction & Site Operations",
+    image: opsImg,
+    badge: "Site & Execution",
+    salutation: "Dear Clients and Partners,",
     excerpt:
-      "At Nayaab, we believe that every successful project begins with a clear vision, careful planning, and unwavering commitment. Since our inception, our goal has been to provide innovative, reliable, and high-quality engineering, architectural, construction, and interior solutions that exceed expectations.",
+      "At Nayaab Engineering Innovations Pvt. Ltd., we understand that exceptional construction is built on meticulous planning, disciplined execution, and uncompromising quality. Our responsibility is to ensure that every project is delivered with precision, safety, and efficiency while meeting the highest engineering standards.",
     fullMessage: [
-      "It is my pleasure to welcome you to Nayaab Engineering Innovations Pvt. Ltd.",
-      "At Nayaab, we believe that every successful project begins with a clear vision, careful planning, and unwavering commitment. Since our inception, our goal has been to provide innovative, reliable, and high-quality engineering, architectural, construction, and interior solutions that exceed expectations.",
-      "We understand that every project is unique. Whether it is a residential home, commercial development, institutional building, or infrastructure project, we approach every assignment with professionalism, technical expertise, creativity, and attention to detail. Our experienced team works closely with clients at every stage—from concept and design to execution and completion—ensuring transparency, quality, and timely delivery.",
-      "Our success is built on trust, integrity, and long-term relationships. We continuously embrace modern technologies, sustainable practices, and innovative design approaches to deliver solutions that are functional, aesthetically pleasing, and economically viable.",
-      "To our clients, thank you for your confidence in us. To our partners and stakeholders, thank you for your continued support. Your trust motivates us to strive for excellence and raise the standards of engineering and construction with every project we undertake.",
-      "As we move forward, we remain committed to innovation, quality craftsmanship, customer satisfaction, and creating lasting value for the communities we serve.",
-      "We look forward to building your vision—together.",
+      "At Nayaab Engineering Innovations Pvt. Ltd., we understand that exceptional construction is built on meticulous planning, disciplined execution, and uncompromising quality. Our responsibility is to ensure that every project is delivered with precision, safety, and efficiency while meeting the highest engineering standards.",
+      "From site preparation to project completion, our construction team focuses on quality workmanship, timely execution, effective resource management, and strict adherence to safety practices. Every stage of construction is carefully monitored to ensure that the final outcome reflects our commitment to excellence.",
+      "We believe that clear communication, transparency, and accountability are essential to the success of every project. By working closely with our clients, consultants, and project teams, we ensure that expectations are met and challenges are addressed proactively.",
+      "Our goal is not only to construct buildings but to deliver durable, sustainable, and high-quality developments that stand the test of time.",
+      "Thank you for placing your trust in Nayaab Engineering Innovations Pvt. Ltd. We remain committed to delivering projects that exceed expectations and create lasting value.",
     ],
   },
   {
     id: "tech-director",
+    memberId: "neipl-0103",
     name: "Er. Aaqib Nazir Tantary",
     role: "Director – Engineering & Technical Operations",
     image: techImg,
-    instagramUrl: "https://www.instagram.com/aaqibtantray/?hl=en",
     badge: "Technical Operations",
     salutation: "Dear Clients and Partners,",
     excerpt:
@@ -46,21 +45,23 @@ const leadershipData = [
     ],
   },
   {
-    id: "ops-director",
-    name: "Er. Saajid Rashid Malik",
-    role: "Director – Construction & Site Operations",
-    image: opsImg,
-    instagramUrl: "https://www.instagram.com/saajid_malik/?hl=en",
-    badge: "Site & Execution",
-    salutation: "Dear Clients and Partners,",
+    id: "ceo",
+    memberId: "neipl-0104",
+    name: "Er. Junaid Bilal Sheikh",
+    role: "Managing Director",
+    image: ceoImg,
+    badge: "Executive Vision",
+    salutation: "Dear Valued Clients and Partners,",
     excerpt:
-      "At Nayaab Engineering Innovations Pvt. Ltd., we understand that exceptional construction is built on meticulous planning, disciplined execution, and uncompromising quality. Our responsibility is to ensure that every project is delivered with precision, safety, and efficiency while meeting the highest engineering standards.",
+      "At Nayaab, we believe that every successful project begins with a clear vision, careful planning, and unwavering commitment. Since our inception, our goal has been to provide innovative, reliable, and high-quality engineering, architectural, construction, and interior solutions that exceed expectations.",
     fullMessage: [
-      "At Nayaab Engineering Innovations Pvt. Ltd., we understand that exceptional construction is built on meticulous planning, disciplined execution, and uncompromising quality. Our responsibility is to ensure that every project is delivered with precision, safety, and efficiency while meeting the highest engineering standards.",
-      "From site preparation to project completion, our construction team focuses on quality workmanship, timely execution, effective resource management, and strict adherence to safety practices. Every stage of construction is carefully monitored to ensure that the final outcome reflects our commitment to excellence.",
-      "We believe that clear communication, transparency, and accountability are essential to the success of every project. By working closely with our clients, consultants, and project teams, we ensure that expectations are met and challenges are addressed proactively.",
-      "Our goal is not only to construct buildings but to deliver durable, sustainable, and high-quality developments that stand the test of time.",
-      "Thank you for placing your trust in Nayaab Engineering Innovations Pvt. Ltd. We remain committed to delivering projects that exceed expectations and create lasting value.",
+      "It is my pleasure to welcome you to Nayaab Engineering Innovations Pvt. Ltd.",
+      "At Nayaab, we believe that every successful project begins with a clear vision, careful planning, and unwavering commitment. Since our inception, our goal has been to provide innovative, reliable, and high-quality engineering, architectural, construction, and interior solutions that exceed expectations.",
+      "We understand that every project is unique. Whether it is a residential home, commercial development, institutional building, or infrastructure project, we approach every assignment with professionalism, technical expertise, creativity, and attention to detail. Our experienced team works closely with clients at every stage—from concept and design to execution and completion—ensuring transparency, quality, and timely delivery.",
+      "Our success is built on trust, integrity, and long-term relationships. We continuously embrace modern technologies, sustainable practices, and innovative design approaches to deliver solutions that are functional, aesthetically pleasing, and economically viable.",
+      "To our clients, thank you for your confidence in us. To our partners and stakeholders, thank you for your continued support. Your trust motivates us to strive for excellence and raise the standards of engineering and construction with every project we undertake.",
+      "As we move forward, we remain committed to innovation, quality craftsmanship, customer satisfaction, and creating lasting value for the communities we serve.",
+      "We look forward to building your vision—together.",
     ],
   },
 ];
@@ -70,6 +71,14 @@ export default function LeadershipMessages() {
 
   const toggleExpand = (id) => {
     setExpandedCard((prev) => (prev === id ? null : id));
+  };
+
+  const handleOpenMemberModal = (memberId, e) => {
+    e.stopPropagation();
+    const url = new URL(window.location.href);
+    url.searchParams.set("member", memberId);
+    window.history.pushState({}, "", url.pathname + url.search);
+    window.dispatchEvent(new Event("popstate"));
   };
 
   return (
@@ -114,35 +123,40 @@ export default function LeadershipMessages() {
                 }}
                 aria-expanded={isExpanded}
               >
-                {/* TOP HEADER: Avatar with Profile Badge + Name/Role + Mustard Quote Box */}
+                {/* TOP HEADER */}
                 <div className={styles.cardHeader}>
                   <div className={styles.headerLeft}>
                     <div className={styles.avatarContainer}>
-                      <div className={styles.avatar}>
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className={styles.avatarImg}
-                          loading="lazy"
-                        />
-                      </div>
-                      {item.instagramUrl && (
-                        <a
-                          href={item.instagramUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.instagramBadge}
-                          title={`Follow ${item.name} on Instagram`}
-                          aria-label={`${item.name} Instagram profile`}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <FaInstagram className={styles.instagramIcon} />
-                        </a>
-                      )}
+                      <button
+                        type="button"
+                        className={styles.avatarBtn}
+                        title={`View ${item.name}'s profile`}
+                        onClick={(e) => handleOpenMemberModal(item.memberId, e)}
+                        aria-label={`Open ${item.name} profile modal`}
+                      >
+                        <div className={styles.avatar}>
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className={styles.avatarImg}
+                            loading="lazy"
+                          />
+                        </div>
+                        <span className={styles.profileBadge} aria-hidden="true">
+                          <FaArrowRight className={styles.profileBadgeIcon} />
+                        </span>
+                      </button>
                     </div>
 
                     <div className={styles.authorInfo}>
-                      <h3 className={styles.authorName}>{item.name}</h3>
+                      <button
+                        type="button"
+                        className={styles.authorNameBtn}
+                        onClick={(e) => handleOpenMemberModal(item.memberId, e)}
+                        title={`View ${item.name}'s profile`}
+                      >
+                        <h3 className={styles.authorName}>{item.name}</h3>
+                      </button>
                       <p className={styles.authorRole}>{item.role}</p>
                     </div>
                   </div>

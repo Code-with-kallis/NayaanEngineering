@@ -152,22 +152,33 @@
   min-width: 0;
 }
 
-/* EXECUTIVE AVATAR (MUSTARD BACKGROUND FOR PNGS) */
+/* EXECUTIVE AVATAR WITH MODAL BADGE */
 .avatarContainer {
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
 }
 
+.avatarBtn {
+  position: relative;
+  display: inline-flex;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
 .avatar {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: #F5F5F3;
+  background: #F5F5F3; /* Change this color for the profile picture background */
   border: 2.5px solid #FFFFFF;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
   overflow: hidden;
   position: relative;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .avatarImg {
@@ -179,7 +190,11 @@
   transform: scale(1.04);
 }
 
-.instagramBadge {
+.avatarBtn:hover .avatar {
+  transform: scale(1.05);
+}
+
+.profileBadge {
   position: absolute;
   bottom: -1px;
   right: -3px;
@@ -188,11 +203,10 @@
   border-radius: 50%;
   background: #0A0A0A;
   border: 2px solid #FFFFFF;
-  color: #FAFAFA;
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
   z-index: 2;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
@@ -200,14 +214,14 @@
               color 0.2s ease;
 }
 
-.instagramIcon {
-  font-size: 0.72rem;
-  display: block;
+.profileBadgeIcon {
+  font-size: 0.65rem;
+  transform: rotate(-45deg);
 }
 
-.instagramBadge:hover {
-  background: #0A0A0A;
-  color: rgb(255, 187, 15);
+.avatarBtn:hover .profileBadge {
+  background: #FFBB0F;
+  color: #0A0A0A;
   transform: scale(1.15);
 }
 
@@ -217,7 +231,17 @@
   min-width: 0;
 }
 
+.authorNameBtn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
 .authorName {
+  font-family: var(--nei-font-body, 'Outfit', sans-serif);
   font-size: 1.025rem;
   font-weight: 700;
   color: #0A0A0A;
@@ -227,6 +251,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.2s ease;
+}
+
+.authorNameBtn:hover .authorName {
+  color: #71717A;
 }
 
 .authorRole {
@@ -398,7 +427,7 @@
   }
 }
 
-/* ===== MOBILE VIEW (<= 768px): NO CARDS, EDITORIAL STACK ===== */
+/* ===== MOBILE VIEW (<= 768px): EDITORIAL STACK (NO CARDS) ===== */
 @media (max-width: 768px) {
   .leadershipSection {
     padding-block: 3.25rem 2.5rem;
@@ -421,7 +450,6 @@
     gap: 2.25rem;
   }
 
-  /* Remove Card Boundaries on Mobile */
   .messageCard {
     background: transparent;
     border: none;
@@ -455,15 +483,15 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
-  .instagramBadge {
+  .profileBadge {
     width: 22px;
     height: 22px;
     bottom: -1px;
     right: -2px;
   }
 
-  .instagramIcon {
-    font-size: 0.65rem;
+  .profileBadgeIcon {
+    font-size: 0.6rem;
   }
 
   .authorName {
