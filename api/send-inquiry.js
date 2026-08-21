@@ -266,11 +266,20 @@ export default async function handler(req, res) {
     });
 
     // Execute both in parallel
-    await Promise.allSettled([adminEmailPromise, clientEmailPromise]);
+    const [adminResult, clientResult] = await Promise.allSettled([adminEmailPromise, clientEmailPromise]);
+
+    if (adminResult.status === "rejected" || adminResult.value?.error) {
+      console.error("Admin email dispatch error:", adminResult.reason || adminResult.value?.error);
+    }
+    if (clientResult.status === "rejected" || clientResult.value?.error) {
+      console.error("Client email dispatch error:", clientResult.reason || clientResult.value?.error);
+    }
 
     return res.status(200).json({
       success: true,
       message: "Inquiry registered and emails dispatched successfully.",
+      adminSent: adminResult.status === "fulfilled" && !adminResult.value?.error,
+      clientSent: clientResult.status === "fulfilled" && !clientResult.value?.error,
     });
   } catch (err) {
     console.error("Resend execution error:", err);
