@@ -244,7 +244,7 @@ export default async function handler(req, res) {
     const subscriberEmailPromise = resend.emails.send({
       from: `Nayaab Engineering Innovations <${SENDER_EMAIL}>`,
       to: [cleanEmail],
-      replyTo: ADMIN_EMAIL,
+      replyTo: ADMIN_EMAILS[0],
       subject: `Welcome to Nayaab Engineering Innovations`,
       headers: {
         "X-Entity-Ref-ID": `welcome-${Date.now()}`,

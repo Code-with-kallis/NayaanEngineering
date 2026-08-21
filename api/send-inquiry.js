@@ -152,7 +152,7 @@ export default async function handler(req, res) {
     const clientEmailPromise = resend.emails.send({
       from: `Nayaab Engineering Innovations <${SENDER_EMAIL}>`,
       to: [cleanEmail],
-      replyTo: ADMIN_EMAIL,
+      replyTo: ADMIN_EMAILS[0],
       subject: `Thank you for contacting Nayaab Engineering Innovations`,
       headers: {
         "X-Entity-Ref-ID": `client-inquiry-${Date.now()}`,
