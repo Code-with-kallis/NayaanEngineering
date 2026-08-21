@@ -907,8 +907,8 @@
    4. FULL CLIENT MESSAGE BODY CARD (PROMINENT HIGH CONTRAST)
    ========================================================================== */
 .emailBodyCard {
-  background: #0E0F15;
-  border: 1px solid #232532;
+  background: #11131C;
+  border: 1px solid #282C3D;
   border-left: 4px solid #00A6FB;
   border-radius: 12px;
   padding: 1.5rem 1.75rem;
@@ -924,9 +924,9 @@
   font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: #38BDF8;
-  border-bottom: 1px solid #1E202C;
+  border-bottom: 1px solid #1E2333;
   padding-bottom: 0.6rem;
 }
 
@@ -935,20 +935,25 @@
 }
 
 .emailBodyText {
-  font-size: 1.05rem;
-  line-height: 1.85;
-  color: #FFFFFF;
-  font-weight: 500;
+  font-size: 1.08rem !important;
+  line-height: 1.85 !important;
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
 .emailBodyText p {
-  margin: 0 0 1rem;
+  color: #FFFFFF !important;
+  font-size: 1.08rem !important;
+  line-height: 1.85 !important;
+  font-weight: 600 !important;
+  margin: 0 0 1rem !important;
+  opacity: 1 !important;
 }
 
 .emailBodyText p:last-child {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 
 /* NO MESSAGE SELECTED EMPTY STATE */

@@ -727,16 +727,28 @@ export default function InquiriesManager({
                     </div>
                   </div>
 
-                  {/* 4. FULL CLIENT MESSAGE BODY (PROMINENT HIGH CONTRAST) */}
+                  {/* 4. FULL CLIENT MESSAGE BODY (100% CRYSTAL CLEAR SNOW WHITE) */}
                   <div className={styles.emailBodyCard}>
                     <div className={styles.emailBodyHeader}>
                       <FaCommentDots className={styles.messageHeaderIcon} />
                       <span>Message</span>
                     </div>
-                    <div className={styles.emailBodyText}>
+                    <div className={styles.emailBodyText} style={{ color: "#FFFFFF", fontWeight: 600 }}>
                       {activeInquiry.message ? (
                         activeInquiry.message.split("\n").map((paragraph, index) => (
-                          <p key={index}>{paragraph || <br />}</p>
+                          <p
+                            key={index}
+                            style={{
+                              color: "#FFFFFF",
+                              fontSize: "1.08rem",
+                              lineHeight: "1.85",
+                              fontWeight: 600,
+                              margin: "0 0 1rem 0",
+                              opacity: 1,
+                            }}
+                          >
+                            {paragraph || <br />}
+                          </p>
                         ))
                       ) : (
                         <p style={{ color: "#94A3B8", fontStyle: "italic" }}>
