@@ -1,5 +1,5 @@
-// src/pages/Admin/Inquiries/InquiriesManager.jsx — Hostinger Webmail Style Inbox
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+// src/pages/Admin/Inquiries/InquiriesManager.jsx — Luxury Hostinger Webmail Style Inbox
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 import {
   FaInbox,
@@ -20,6 +20,9 @@ import {
   FaCircle,
   FaUser,
   FaPaperPlane,
+  FaCheckCircle,
+  FaEnvelopeOpen,
+  FaInfoCircle,
 } from "react-icons/fa";
 import styles from "./InquiriesManager.module.css";
 
@@ -95,14 +98,14 @@ function cleanPhoneNumber(phone) {
 }
 
 const AVATAR_COLORS = [
-  "#00A6FB",
+  "#0284C7",
   "#7C3AED",
   "#059669",
   "#D97706",
-  "#DC2626",
-  "#DB2777",
-  "#2563EB",
+  "#E11D48",
+  "#4F46E5",
   "#0D9488",
+  "#EA580C",
 ];
 
 function getAvatarColor(name) {
@@ -124,6 +127,9 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
   const [selectedService, setSelectedService] = useState("All Categories");
   const [selectedInquiryId, setSelectedInquiryId] = useState(null);
   const [copiedText, setCopiedText] = useState(null);
+
+  const viewerScrollRef = useRef(null);
+  const listScrollRef = useRef(null);
 
   const fetchInquiries = useCallback(async (isSilent = false) => {
     if (!isSilent) setLoading(true);
@@ -195,13 +201,17 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
     if ((inquiry.status || "unread") === "unread") {
       handleUpdateStatus(inquiry.id, "read");
     }
+    // Scroll viewer pane to top
+    if (viewerScrollRef.current) {
+      viewerScrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   const handleDeleteInquiry = (id, clientName) => {
     if (showConfirm) {
       showConfirm({
-        title: "Delete Email",
-        message: `Are you sure you want to permanently delete this email from ${clientName || "the sender"}?`,
+        title: "Delete Inquiry",
+        message: `Are you sure you want to permanently delete this message from ${clientName || "the sender"}?`,
         confirmText: "Delete",
         isDanger: true,
         onConfirm: async () => {
@@ -276,46 +286,50 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
 
   return (
     <div className={styles.webmailWrapper}>
-      {/* ================= 1. TOP FOLDER FILTER BAR ================= */}
-      <div className={styles.topStatsBar}>
+      {/* ================= 1. TOP STATS BAR ================= */}
+      <header className={styles.topStatsBar}>
         <div className={styles.statsLeft}>
-          <div
+          <button
+            type="button"
             className={`${styles.statTab} ${activeTabFilter === "all" ? styles.statTabActive : ""}`}
             onClick={() => setActiveTabFilter("all")}
           >
-            <FaInbox />
-            <span>All Mail</span>
-            <strong className={styles.tabBadge}>{stats.total}</strong>
-          </div>
+            <FaInbox className={styles.tabIcon} />
+            <span>All Inquiries</span>
+            <span className={styles.tabBadge}>{stats.total}</span>
+          </button>
 
-          <div
+          <button
+            type="button"
             className={`${styles.statTab} ${activeTabFilter === "unread" ? styles.statTabActive : ""}`}
             onClick={() => setActiveTabFilter("unread")}
           >
-            <FaEnvelope />
+            <FaEnvelope className={styles.tabIcon} />
             <span>Unread</span>
             {stats.unread > 0 && (
-              <strong className={`${styles.tabBadge} ${styles.tabBadgeUnread}`}>{stats.unread}</strong>
+              <span className={`${styles.tabBadge} ${styles.tabBadgeUnread}`}>{stats.unread}</span>
             )}
-          </div>
+          </button>
 
-          <div
+          <button
+            type="button"
             className={`${styles.statTab} ${activeTabFilter === "replied" ? styles.statTabActive : ""}`}
             onClick={() => setActiveTabFilter("replied")}
           >
-            <FaReply />
+            <FaReply className={styles.tabIcon} />
             <span>Replied</span>
-            <strong className={styles.tabBadge}>{stats.replied}</strong>
-          </div>
+            <span className={styles.tabBadge}>{stats.replied}</span>
+          </button>
 
-          <div
+          <button
+            type="button"
             className={`${styles.statTab} ${activeTabFilter === "newsletter" ? styles.statTabActive : ""}`}
             onClick={() => setActiveTabFilter("newsletter")}
           >
-            <FaPaperPlane />
-            <span>Subscribers</span>
-            <strong className={styles.tabBadge}>{stats.newsletter}</strong>
-          </div>
+            <FaPaperPlane className={styles.tabIcon} />
+            <span>Newsletter</span>
+            <span className={styles.tabBadge}>{stats.newsletter}</span>
+          </button>
         </div>
 
         <button
@@ -326,9 +340,9 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
           title="Refresh Inquiries Live"
         >
           <FaSyncAlt className={refreshing ? styles.spinnerIcon : ""} />
-          <span>{refreshing ? "Syncing..." : "Refresh"}</span>
+          <span>{refreshing ? "Syncing..." : "Live Sync"}</span>
         </button>
-      </div>
+      </header>
 
       {/* ================= 2. HOSTINGER WEBMAIL SPLIT-PANE CONTAINER ================= */}
       <div className={styles.webmailContainer}>
@@ -374,11 +388,11 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
           </div>
 
           {/* SCROLLABLE EMAIL ROWS */}
-          <div className={styles.mailRowsScrollArea}>
+          <div className={styles.mailRowsScrollArea} ref={listScrollRef}>
             {loading ? (
               <div className={styles.paneLoadingState}>
                 <FaSpinner className={styles.spinnerIcon} />
-                <span>Loading messages...</span>
+                <span>Loading mailbox...</span>
               </div>
             ) : filteredInquiries.length === 0 ? (
               <div className={styles.paneEmptyState}>
@@ -386,8 +400,8 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                 <h4>No inquiries found</h4>
                 <p>
                   {inquiries.length === 0
-                    ? "Inquiries submitted on the website will stream in here."
-                    : "No emails matched your active search or filter."}
+                    ? "Inquiries submitted on the website will stream in here in real-time."
+                    : "No inquiries matched your search or category filter."}
                 </p>
               </div>
             ) : (
@@ -399,7 +413,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                 const snippet = (inquiry.message || "").replace(/\s+/g, " ");
 
                 return (
-                  <div
+                  <article
                     key={inquiry.id}
                     className={`${styles.mailRow} ${isSelected ? styles.mailRowSelected : ""} ${
                       isUnread ? styles.mailRowUnread : ""
@@ -429,30 +443,30 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                         <span className={styles.rowSenderName}>
                           {inquiry.name || "Anonymous Client"}
                         </span>
-                        <span className={styles.rowTimestamp}>
+                        <time className={styles.rowTimestamp}>
                           {formatTimeOrDate(inquiry.created_at)}
-                        </span>
+                        </time>
                       </div>
 
                       <div className={styles.rowSubjectLine}>
                         <span className={styles.rowServiceTag}>
-                          {inquiry.service || "Engineering Inquiry"}
+                          {inquiry.service || "General Inquiry"}
                         </span>
                         {inquiry.status === "replied" && (
                           <span className={styles.rowRepliedBadge}>Replied</span>
                         )}
                       </div>
 
-                      <p className={styles.rowSnippet}>{snippet || "No message provided"}</p>
+                      <p className={styles.rowSnippet}>{snippet || "No message body provided"}</p>
                     </div>
-                  </div>
+                  </article>
                 );
               })
             )}
           </div>
         </aside>
 
-        {/* RIGHT PANE: LIVE READING PANE (FULL DETAILS FILLED BY CLIENT — NO POPUP!) */}
+        {/* RIGHT PANE: LIVE READING PANE (FULL DETAILS — ZERO POPUPS!) */}
         <section
           className={`${styles.readingPane} ${
             activeInquiry ? styles.readingPaneActiveMobile : ""
@@ -471,7 +485,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                     title="Back to inbox list"
                   >
                     <FaArrowLeft />
-                    <span>Back</span>
+                    <span>Inbox</span>
                   </button>
 
                   {/* 1-CLICK EMAIL CLIENT LINK */}
@@ -524,7 +538,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                       activeInquiry.status === "unread" ? "Mark as Read" : "Mark as Unread"
                     }
                   >
-                    <FaEnvelope />
+                    {activeInquiry.status === "unread" ? <FaEnvelopeOpen /> : <FaEnvelope />}
                     <span>
                       {activeInquiry.status === "unread" ? "Mark Read" : "Mark Unread"}
                     </span>
@@ -544,40 +558,38 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
               </div>
 
               {/* LIVE SCROLLABLE MESSAGE READER */}
-              <div className={styles.viewerScrollArea}>
-                {/* 1. SUBJECT & DISCIPLINE HEADING */}
+              <div className={styles.viewerScrollArea} ref={viewerScrollRef}>
+                {/* 1. SUBJECT & SERVICE BADGE */}
                 <div className={styles.messageSubjectHeader}>
-                  <div>
-                    <h2 className={styles.inquirySubjectTitle}>
-                      {activeInquiry.service
-                        ? `${activeInquiry.service} — Inquiry from ${activeInquiry.name}`
-                        : `Inquiry from ${activeInquiry.name}`}
-                    </h2>
-                    <div className={styles.inquiryMetaRow}>
-                      <span className={styles.disciplineBadge}>
-                        <FaBuilding />
-                        {activeInquiry.service || "General Inquiry"}
-                      </span>
-                      <span
-                        className={`${styles.statusPill} ${
-                          activeInquiry.status === "replied"
-                            ? styles.statusPillReplied
-                            : activeInquiry.status === "read"
-                            ? styles.statusPillRead
-                            : styles.statusPillUnread
-                        }`}
-                      >
-                        {activeInquiry.status === "replied"
-                          ? "Replied"
+                  <h2 className={styles.inquirySubjectTitle}>
+                    {activeInquiry.service
+                      ? `${activeInquiry.service} — Inquiry from ${activeInquiry.name}`
+                      : `Inquiry from ${activeInquiry.name}`}
+                  </h2>
+                  <div className={styles.inquiryMetaRow}>
+                    <span className={styles.disciplineBadge}>
+                      <FaBuilding />
+                      {activeInquiry.service || "General Inquiry"}
+                    </span>
+                    <span
+                      className={`${styles.statusPill} ${
+                        activeInquiry.status === "replied"
+                          ? styles.statusPillReplied
                           : activeInquiry.status === "read"
-                          ? "Read"
-                          : "Unread"}
-                      </span>
-                    </div>
+                          ? styles.statusPillRead
+                          : styles.statusPillUnread
+                      }`}
+                    >
+                      {activeInquiry.status === "replied"
+                        ? "Replied"
+                        : activeInquiry.status === "read"
+                        ? "Read"
+                        : "Unread"}
+                    </span>
                   </div>
                 </div>
 
-                {/* 2. SENDER INFORMATION CARD (HOSTINGER WEBMAIL STYLE) */}
+                {/* 2. SENDER HEADER (HOSTINGER WEBMAIL STYLE) */}
                 <div className={styles.senderHeaderCard}>
                   <div
                     className={styles.senderLargeAvatar}
@@ -610,11 +622,16 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                   </div>
                 </div>
 
-                {/* 3. STRUCTURED CLIENT SUBMISSION DETAILS */}
+                {/* 3. STRUCTURED CLIENT SUBMISSION SUMMARY */}
                 <div className={styles.clientDetailsBox}>
+                  <div className={styles.clientDetailsHeader}>
+                    <FaInfoCircle className={styles.detailsHeaderIcon} />
+                    <span>Client Submission Details</span>
+                  </div>
+
                   <div className={styles.detailGrid}>
                     <div className={styles.detailGridItem}>
-                      <span className={styles.detailGridLabel}>Client Full Name</span>
+                      <span className={styles.detailGridLabel}>Full Name</span>
                       <div className={styles.detailGridValueRow}>
                         <FaUser className={styles.detailGridIcon} />
                         <strong className={styles.detailGridValueText}>{activeInquiry.name || "Not Provided"}</strong>
@@ -622,7 +639,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                     </div>
 
                     <div className={styles.detailGridItem}>
-                      <span className={styles.detailGridLabel}>Service Requested</span>
+                      <span className={styles.detailGridLabel}>Discipline / Service</span>
                       <div className={styles.detailGridValueRow}>
                         <FaBuilding className={styles.detailGridIcon} />
                         <span className={styles.detailGridValueText}>{activeInquiry.service || "General Inquiry"}</span>
@@ -639,7 +656,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                             type="button"
                             className={styles.copySmallBtn}
                             onClick={() => copyToClipboard(activeInquiry.email, "Email")}
-                            title="Copy Email"
+                            title="Copy Email Address"
                           >
                             <FaCopy />
                           </button>
@@ -648,7 +665,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                     </div>
 
                     <div className={styles.detailGridItem}>
-                      <span className={styles.detailGridLabel}>Phone / WhatsApp</span>
+                      <span className={styles.detailGridLabel}>Phone Number</span>
                       <div className={styles.detailGridValueRow}>
                         <FaPhoneAlt className={styles.detailGridIcon} />
                         <span className={styles.detailGridValueText}>{activeInquiry.phone || "Not Provided"}</span>
@@ -657,7 +674,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                             type="button"
                             className={styles.copySmallBtn}
                             onClick={() => copyToClipboard(activeInquiry.phone, "Phone")}
-                            title="Copy Phone"
+                            title="Copy Phone Number"
                           >
                             <FaCopy />
                           </button>
@@ -670,7 +687,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                 {/* 4. FULL CLIENT MESSAGE BODY */}
                 <div className={styles.emailBodyCard}>
                   <div className={styles.emailBodyHeader}>
-                    <span>Client Message / Requirements</span>
+                    <span>Client Requirements / Message Body</span>
                   </div>
                   <div className={styles.emailBodyText}>
                     {activeInquiry.message ? (
@@ -692,7 +709,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                 <FaEnvelope className={styles.largeMailIcon} />
               </div>
               <h3>Select a message to view</h3>
-              <p>Click on any client inquiry from the list on the left to read their complete project details.</p>
+              <p>Click on any client inquiry from the list on the left to read their complete project requirements.</p>
             </div>
           )}
         </section>
