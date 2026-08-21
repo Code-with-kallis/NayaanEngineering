@@ -179,6 +179,8 @@ export default async function handler(req, res) {
       subject: `New Newsletter Subscriber: ${cleanEmail}`,
       headers: {
         "X-Entity-Ref-ID": `sub-${Date.now()}`,
+        "Auto-Submitted": "auto-generated",
+        "X-Auto-Response-Suppress": "All",
       },
       text: `NEW NEWSLETTER SUBSCRIBER\n\nSubscriber Email: ${cleanEmail}\nRegistered At: ${timestamp}\nSource: Website Footer\n\nTo view all subscriptions, check your Admin Dashboard at https://nayaabengineering.com/admin`,
       html: `

@@ -67,6 +67,8 @@ export default async function handler(req, res) {
       subject: `New Inquiry: ${cleanService} - ${cleanName}`,
       headers: {
         "X-Entity-Ref-ID": `inquiry-${Date.now()}`,
+        "Auto-Submitted": "auto-generated",
+        "X-Auto-Response-Suppress": "All",
       },
       text: `NEW INQUIRY NOTIFICATION\n\nClient Name: ${cleanName}\nEmail: ${cleanEmail}\nPhone: ${cleanPhone}\nDiscipline: ${cleanService}\nReceived: ${timestamp}\n\nMessage:\n${cleanMessage}`,
       html: `
