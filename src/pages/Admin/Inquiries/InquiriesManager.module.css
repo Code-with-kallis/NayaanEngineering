@@ -1,6 +1,6 @@
-/* src/pages/Admin/Inquiries/InquiriesManager.module.css — Dedicated Fullscreen Hostinger Webmail */
+/* src/pages/Admin/Inquiries/InquiriesManager.module.css — Dedicated Admin Client Inquiries Workspace */
 
-.standaloneWebmailApp {
+.standaloneWorkspace {
   position: fixed;
   top: 0;
   left: 0;
@@ -17,9 +17,9 @@
 }
 
 /* ==========================================================================
-   1. DEDICATED TOP APP HEADER
+   1. TOP APP HEADER
    ========================================================================== */
-.webmailAppHeader {
+.topAppHeader {
   height: 54px;
   min-height: 54px;
   max-height: 54px;
@@ -69,26 +69,14 @@
 .brandTitleWrap {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
   white-space: nowrap;
 }
 
 .brandTitle {
-  font-size: 0.95rem;
+  font-size: 1.02rem;
   font-weight: 800;
   color: #FFFFFF;
   letter-spacing: -0.01em;
-}
-
-.brandBadge {
-  background: rgba(0, 166, 251, 0.15);
-  border: 1px solid rgba(0, 166, 251, 0.35);
-  color: #38BDF8;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 0.12rem 0.45rem;
-  border-radius: 10px;
-  text-transform: uppercase;
 }
 
 /* CENTER TABS (DESKTOP) */
@@ -216,7 +204,7 @@
 /* ==========================================================================
    2. FULLSCREEN 2-PANE WORKSPACE
    ========================================================================== */
-.webmailBodyWorkspace {
+.workspaceBody {
   width: 100vw;
   height: calc(100vh - 54px);
   display: flex;
@@ -227,9 +215,9 @@
 }
 
 /* ==========================================================================
-   LEFT PANE: EMAIL FEED LIST
+   LEFT PANE: CLIENT INQUIRIES FEED LIST
    ========================================================================== */
-.mailListPane {
+.inquiriesListPane {
   width: 380px;
   min-width: 330px;
   max-width: 420px;
@@ -243,7 +231,7 @@
   box-sizing: border-box;
 }
 
-.mailListSearchHeader {
+.listSearchHeader {
   height: 94px;
   min-height: 94px;
   max-height: 94px;
@@ -324,7 +312,7 @@
 }
 
 /* SCROLLABLE ROWS AREA (INDEPENDENT SMOOTH MOUSE SCROLL) */
-.mailRowsScrollArea {
+.inquiriesRowsScrollArea {
   flex: 1 1 0%;
   height: calc(100% - 94px);
   min-height: 0;
@@ -336,25 +324,25 @@
   overscroll-behavior: contain;
 }
 
-.mailRowsScrollArea::-webkit-scrollbar {
+.inquiriesRowsScrollArea::-webkit-scrollbar {
   width: 6px;
 }
 
-.mailRowsScrollArea::-webkit-scrollbar-track {
+.inquiriesRowsScrollArea::-webkit-scrollbar-track {
   background: #0F1017;
 }
 
-.mailRowsScrollArea::-webkit-scrollbar-thumb {
+.inquiriesRowsScrollArea::-webkit-scrollbar-thumb {
   background: #252838;
   border-radius: 4px;
 }
 
-.mailRowsScrollArea::-webkit-scrollbar-thumb:hover {
+.inquiriesRowsScrollArea::-webkit-scrollbar-thumb:hover {
   background: #3B425A;
 }
 
-/* EMAIL ROW ITEM */
-.mailRow {
+/* INQUIRY ROW ITEM */
+.inquiryRow {
   display: flex;
   align-items: flex-start;
   gap: 0.7rem;
@@ -368,16 +356,16 @@
   background: transparent;
 }
 
-.mailRow:hover {
+.inquiryRow:hover {
   background: #171822;
 }
 
-.mailRowSelected {
+.inquiryRowSelected {
   background: #162035 !important;
   border-left: 3.5px solid #00A6FB;
 }
 
-.mailRowUnread {
+.inquiryRowUnread {
   background: #131724;
 }
 
@@ -438,7 +426,7 @@
   text-overflow: ellipsis;
 }
 
-.mailRowUnread .rowSenderName {
+.inquiryRowUnread .rowSenderName {
   font-weight: 800;
   color: #FFFFFF;
 }
@@ -485,7 +473,7 @@
   margin: 0;
 }
 
-.mailRowUnread .rowSnippet {
+.inquiryRowUnread .rowSnippet {
   color: #94A3B8;
 }
 
@@ -542,7 +530,7 @@
   overflow: hidden;
 }
 
-/* TOOLBAR (NEVER WRAPS ON MOBILE OR DESKTOP) */
+/* TOOLBAR */
 .viewerToolbar {
   height: 50px;
   min-height: 50px;
@@ -588,7 +576,7 @@
   flex-shrink: 0;
 }
 
-.actionBtnPrimary {
+.actionBtnGmail {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -604,7 +592,7 @@
   flex-shrink: 0;
 }
 
-.actionBtnPrimary:hover {
+.actionBtnGmail:hover {
   background: #008cd4;
 }
 
@@ -626,10 +614,6 @@
 
 .actionBtnWhatsapp:hover {
   background: #20BA5A;
-}
-
-.btnLabelShort {
-  display: none;
 }
 
 .actionBtnIcon {
@@ -764,7 +748,7 @@
 /* SENDER HEADER */
 .senderHeaderCard {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.85rem;
   background: #0E0F15;
   border: 1px solid #232532;
@@ -789,7 +773,7 @@
 .senderMetaCol {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.25rem;
   flex: 1;
   min-width: 0;
 }
@@ -812,30 +796,12 @@
   color: #94A3B8;
 }
 
-.recipientRow {
-  font-size: 0.76rem;
-  display: flex;
-  gap: 0.35rem;
-  color: #64748B;
-  flex-wrap: wrap;
-}
-
-.toLabel {
-  color: #94A3B8;
-  font-weight: 600;
-}
-
-.toValue {
-  color: #64748B;
-}
-
 .timestampFullRow {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   font-size: 0.74rem;
   color: #64748B;
-  margin-top: 0.1rem;
 }
 
 .timeIcon {
@@ -1060,10 +1026,10 @@
 }
 
 /* ==========================================================================
-   5. COMPLETE 100% RESPONSIVE DESIGN (MOBILE & TABLET)
+   5. MOBILE & TABLET RESPONSIVENESS (ICON-ONLY ACTIONS ON MOBILE)
    ========================================================================== */
 @media (max-width: 850px) {
-  .webmailAppHeader {
+  .topAppHeader {
     padding: 0 0.75rem;
     height: 50px;
     min-height: 50px;
@@ -1071,10 +1037,6 @@
   }
 
   .headerTabsWrap {
-    display: none;
-  }
-
-  .brandBadge {
     display: none;
   }
 
@@ -1089,19 +1051,19 @@
     justify-content: center;
   }
 
-  .webmailBodyWorkspace {
+  .workspaceBody {
     flex-direction: column;
     height: calc(100vh - 50px);
   }
 
-  .mailListPane {
+  .inquiriesListPane {
     width: 100%;
     max-width: 100%;
     min-width: 100%;
     display: flex;
   }
 
-  .mailListPaneHasActiveMobile {
+  .inquiriesListPaneHasActiveMobile {
     display: none !important;
   }
 
@@ -1118,6 +1080,11 @@
     display: inline-flex;
   }
 
+  /* ICON-ONLY ON MOBILE */
+  .desktopOnlyText {
+    display: none !important;
+  }
+
   .viewerToolbar {
     height: 48px;
     min-height: 48px;
@@ -1126,22 +1093,16 @@
     gap: 0.35rem;
   }
 
-  .btnLabelFull {
-    display: none;
-  }
-
-  .btnLabelShort {
-    display: inline;
-  }
-
-  .actionBtnPrimary,
+  .actionBtnGmail,
   .actionBtnWhatsapp {
-    padding: 0.35rem 0.6rem;
-    font-size: 0.75rem;
+    padding: 0.4rem 0.55rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
   }
 
   .actionBtnIcon {
-    padding: 0.35rem 0.55rem;
+    padding: 0.4rem 0.55rem;
+    font-size: 0.85rem;
   }
 
   .viewerScrollArea {

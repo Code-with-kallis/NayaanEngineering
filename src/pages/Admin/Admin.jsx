@@ -119,10 +119,40 @@ export default function Admin() {
   const [passcode, setPasscode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Sidebar and Tabs
-  const [activeTab, setActiveTab] = useState("projects");
+  // Sidebar and Hash-based Tabs
+  const getTabFromHash = () => {
+    const hash = window.location.hash.toLowerCase();
+    if (hash === "#client-inquiries" || hash === "#inquiries") return "inquiries";
+    if (hash === "#form" || hash === "#new-project") return "form";
+    if (hash === "#settings") return "settings";
+    return "projects";
+  };
+
+  const [activeTab, setActiveTab] = useState(getTabFromHash);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadInquiriesCount, setUnreadInquiriesCount] = useState(0);
+
+  // Sync hash with activeTab
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveTab(getTabFromHash());
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  const switchTab = (tab) => {
+    setActiveTab(tab);
+    if (tab === "inquiries") {
+      window.location.hash = "client-inquiries";
+    } else if (tab === "projects") {
+      window.location.hash = "projects";
+    } else if (tab === "form") {
+      window.location.hash = "new-project";
+    } else if (tab === "settings") {
+      window.location.hash = "settings";
+    }
+  };
 
   // Projects list and filtering
   const [projectsList, setProjectsList] = useState([]);
@@ -670,7 +700,7 @@ export default function Admin() {
 
   const openCreateForm = () => {
     if (editingId) resetForm();
-    setActiveTab("form");
+    switchTab("form");
     setSidebarOpen(false);
   };
 
@@ -681,15 +711,16 @@ export default function Admin() {
     setLocation(project.location || "");
     setDuration(project.duration || "");
     setSummary(project.summary || "");
-    setDeliverables(Array.isArray(project.deliverables) ? project.deliverables.join("\n") : "");
+    setDeliverables(project.deliverables || "");
     setDescription(project.description || "");
     setIsFeatured(Boolean(project.is_featured));
-    setExistingCoverUrl(project.cover_image || "");
-    setCoverPreview(project.cover_image || null);
-    setExistingGalleryUrls(project.gallery_images || []);
+    setCoverFile(null);
+    setCoverPreview(null);
+    setExistingCoverUrl(project.image_url || "");
     setGalleryFiles([]);
     setGalleryPreviews([]);
-    setActiveTab("form");
+    setExistingGalleryUrls(project.gallery_images || []);
+    switchTab("form");
     setSidebarOpen(false);
   };
 
@@ -948,7 +979,7 @@ export default function Admin() {
           showAlert={showAlert}
           showConfirm={showConfirm}
           onUnreadCountChange={setUnreadInquiriesCount}
-          onBackToDashboard={() => setActiveTab("projects")}
+          onBackToDashboard={() => switchTab("projects")}
           onLogout={handleLogout}
         />
 
@@ -1020,7 +1051,7 @@ export default function Admin() {
             type="button"
             className={`${styles.sidebarLink} ${activeTab === "projects" ? styles.sidebarLinkActive : ""}`}
             onClick={() => {
-              setActiveTab("projects");
+              switchTab("projects");
               setSidebarOpen(false);
             }}
           >
@@ -1033,7 +1064,7 @@ export default function Admin() {
             type="button"
             className={`${styles.sidebarLink} ${activeTab === "inquiries" ? styles.sidebarLinkActive : ""}`}
             onClick={() => {
-              setActiveTab("inquiries");
+              switchTab("inquiries");
               setSidebarOpen(false);
             }}
           >
@@ -1061,7 +1092,7 @@ export default function Admin() {
             type="button"
             className={`${styles.sidebarLink} ${activeTab === "settings" ? styles.sidebarLinkActive : ""}`}
             onClick={() => {
-              setActiveTab("settings");
+              switchTab("settings");
               setSidebarOpen(false);
             }}
           >
