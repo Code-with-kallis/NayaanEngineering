@@ -7,7 +7,6 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "info@nayaabengineering.com";
 
 // Sender Address using verified domain nayaabengineering.com
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Nayaab Engineering <inquiries@nayaabengineering.com>";
-const LOGO_URL = "https://nayaabengineering.com/logo-full.png";
 
 function cleanPhoneNumber(phone) {
   if (!phone) return "";
@@ -56,210 +55,158 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 1. DISPATCH NOTIFICATION EMAIL TO ADMIN
+    // 1. DISPATCH NOTIFICATION EMAIL TO ADMIN (Clean, zero-image, text-first)
     const adminEmailPromise = resend.emails.send({
       from: FROM_EMAIL,
       to: [ADMIN_EMAIL],
       replyTo: cleanEmail,
       subject: `New Inquiry: ${cleanService} - ${cleanName}`,
-      text: `NEW PROJECT INQUIRY\n\nClient Name: ${cleanName}\nEmail: ${cleanEmail}\nPhone: ${cleanPhone}\nService: ${cleanService}\nReceived: ${timestamp}\n\nClient Message:\n${cleanMessage}`,
+      headers: {
+        "X-Entity-Ref-ID": `inquiry-${Date.now()}`,
+      },
+      text: `NEW INQUIRY NOTIFICATION\n\nClient Name: ${cleanName}\nEmail: ${cleanEmail}\nPhone: ${cleanPhone}\nDiscipline: ${cleanService}\nReceived: ${timestamp}\n\nMessage:\n${cleanMessage}`,
       html: `
         <!DOCTYPE html>
-        <html>
+        <html lang="en">
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>New Project Inquiry</title>
+          <title>New Inquiry Notification</title>
         </head>
-        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #090A0E; color: #F5F5F5; margin: 0; padding: 24px 12px;">
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr>
-              <td align="center">
-                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background: #131722; border: 1px solid #202738; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.5);">
-                  
-                  <!-- HEADER WITH CENTERED LOGO -->
-                  <tr>
-                    <td align="center" style="background: #0E1118; padding: 32px 24px 24px 24px; border-bottom: 2px solid #00A6FB;">
-                      <a href="https://nayaabengineering.com" target="_blank" style="text-decoration: none; display: inline-block;">
-                        <img src="${LOGO_URL}" alt="Nayaab Engineering Innovations" width="140" style="display: block; max-width: 140px; height: auto; border: 0; margin: 0 auto 14px auto;" />
-                      </a>
-                      <div style="display: inline-block; background: rgba(0, 166, 251, 0.12); border: 1px solid rgba(0, 166, 251, 0.3); color: #00A6FB; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 999px; letter-spacing: 1px; text-transform: uppercase;">
-                        NEW CLIENT INQUIRY
-                      </div>
-                    </td>
-                  </tr>
+        <body style="margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #FAFAFA; color: #1E293B;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; padding: 32px 28px; border-radius: 8px; border: 1px solid #E2E8F0;">
+            
+            <!-- BRANDING HEADER -->
+            <div style="margin-bottom: 24px; border-bottom: 2px solid #00A6FB; padding-bottom: 16px;">
+              <div style="font-size: 28px; font-weight: 900; color: #00A6FB; letter-spacing: 2px; line-height: 1;">NEI</div>
+              <div style="font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px;">
+                NAYAAB ENGINEERING INNOVATIONS &bull; NEW INQUIRY
+              </div>
+            </div>
 
-                  <!-- BODY CONTENT -->
-                  <tr>
-                    <td style="padding: 28px 24px;">
-                      
-                      <!-- CLIENT META TABLE -->
-                      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background: #0B0D12; border: 1px solid #202738; border-radius: 12px; margin-bottom: 20px; overflow: hidden;">
-                        <tr>
-                          <td style="padding: 12px 16px; border-bottom: 1px solid #1C2230; font-size: 11px; font-weight: 800; color: #8C99AE; text-transform: uppercase; letter-spacing: 0.5px; width: 35%;">Client Name</td>
-                          <td style="padding: 12px 16px; border-bottom: 1px solid #1C2230; font-size: 14px; font-weight: 700; color: #FFFFFF;">${cleanName}</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 12px 16px; border-bottom: 1px solid #1C2230; font-size: 11px; font-weight: 800; color: #8C99AE; text-transform: uppercase; letter-spacing: 0.5px;">Email Address</td>
-                          <td style="padding: 12px 16px; border-bottom: 1px solid #1C2230; font-size: 14px; font-weight: 700; color: #00A6FB;">
-                            <a href="mailto:${cleanEmail}" style="color: #00A6FB; text-decoration: none;">${cleanEmail}</a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 12px 16px; border-bottom: 1px solid #1C2230; font-size: 11px; font-weight: 800; color: #8C99AE; text-transform: uppercase; letter-spacing: 0.5px;">Phone / WhatsApp</td>
-                          <td style="padding: 12px 16px; border-bottom: 1px solid #1C2230; font-size: 14px; font-weight: 700; color: #FFFFFF;">${cleanPhone}</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 12px 16px; border-bottom: 1px solid #1C2230; font-size: 11px; font-weight: 800; color: #8C99AE; text-transform: uppercase; letter-spacing: 0.5px;">Discipline / Service</td>
-                          <td style="padding: 12px 16px; border-bottom: 1px solid #1C2230; font-size: 14px; font-weight: 800; color: #00A6FB;">${cleanService}</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 12px 16px; font-size: 11px; font-weight: 800; color: #8C99AE; text-transform: uppercase; letter-spacing: 0.5px;">Submission Time</td>
-                          <td style="padding: 12px 16px; font-size: 13px; font-weight: 600; color: #94A3B8;">${timestamp}</td>
-                        </tr>
-                      </table>
+            <!-- INQUIRY DETAILS -->
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px;">
+              <tr>
+                <td style="padding: 8px 0; color: #64748B; font-weight: 600; width: 32%;">Client Name:</td>
+                <td style="padding: 8px 0; color: #0F172A; font-weight: 700;">${cleanName}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Email:</td>
+                <td style="padding: 8px 0; color: #00A6FB; font-weight: 700;">
+                  <a href="mailto:${cleanEmail}" style="color: #00A6FB; text-decoration: none;">${cleanEmail}</a>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Phone / WhatsApp:</td>
+                <td style="padding: 8px 0; color: #0F172A; font-weight: 700;">${cleanPhone}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Service / Discipline:</td>
+                <td style="padding: 8px 0; color: #00A6FB; font-weight: 800;">${cleanService}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; color: #64748B; font-weight: 600;">Received Time:</td>
+                <td style="padding: 8px 0; color: #475569;">${timestamp}</td>
+              </tr>
+            </table>
 
-                      <!-- MESSAGE BOX -->
-                      <div style="background: #0B0D12; border: 1px solid #202738; border-radius: 12px; padding: 18px; margin-bottom: 24px;">
-                        <div style="font-size: 11px; font-weight: 800; color: #8C99AE; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Client Message</div>
-                        <p style="font-size: 14px; line-height: 1.6; color: #E2E8F0; white-space: pre-wrap; margin: 0;">${cleanMessage}</p>
-                      </div>
+            <!-- CLIENT MESSAGE -->
+            <div style="margin-bottom: 28px;">
+              <div style="font-size: 12px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
+                Client Message:
+              </div>
+              <div style="border-left: 3px solid #00A6FB; padding: 12px 16px; background-color: #F8FAFC; border-radius: 0 6px 6px 0; font-size: 14px; line-height: 1.6; color: #1E293B; white-space: pre-wrap;">${cleanMessage}</div>
+            </div>
 
-                      <!-- DIRECT ACTIONS -->
-                      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-                        <tr>
-                          <td align="center" style="padding: 4px 0;">
-                            <a href="mailto:${cleanEmail}?subject=Re: Your Inquiry with Nayaab Engineering Innovations" style="display: inline-block; background: #00A6FB; color: #FFFFFF; padding: 12px 24px; border-radius: 8px; font-size: 13px; font-weight: 800; text-decoration: none; letter-spacing: 0.5px; text-transform: uppercase; margin: 0 4px 8px 4px;">
-                              ✉️ Reply via Email
-                            </a>
-                            ${
-                              waPhone && waPhone.length >= 10
-                                ? `<a href="https://wa.me/${waPhone}?text=${encodeURIComponent(
-                                    `Hello ${cleanName}, this is Nayaab Engineering Innovations regarding your project inquiry for ${cleanService}.`
-                                  )}" target="_blank" style="display: inline-block; background: #25D366; color: #111111; padding: 12px 24px; border-radius: 8px; font-size: 13px; font-weight: 800; text-decoration: none; letter-spacing: 0.5px; text-transform: uppercase; margin: 0 4px 8px 4px;">
-                                    💬 Open WhatsApp
-                                  </a>`
-                                : ""
-                            }
-                          </td>
-                        </tr>
-                      </table>
+            <!-- ACTION BUTTONS -->
+            <div style="padding-top: 12px; margin-bottom: 24px;">
+              <a href="mailto:${cleanEmail}?subject=Re: Your Inquiry with Nayaab Engineering Innovations" style="display: inline-block; background-color: #00A6FB; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 700; text-decoration: none; margin-right: 8px; margin-bottom: 8px;">
+                Reply via Email
+              </a>
+              ${
+                waPhone && waPhone.length >= 10
+                  ? `<a href="https://wa.me/${waPhone}?text=${encodeURIComponent(
+                      `Hello ${cleanName}, this is Nayaab Engineering Innovations regarding your project inquiry for ${cleanService}.`
+                    )}" target="_blank" style="display: inline-block; background-color: #25D366; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; font-size: 13px; font-weight: 700; text-decoration: none; margin-bottom: 8px;">
+                      Open WhatsApp
+                    </a>`
+                  : ""
+              }
+            </div>
 
-                    </td>
-                  </tr>
+            <!-- FOOTER -->
+            <div style="border-top: 1px solid #E2E8F0; padding-top: 16px; font-size: 12px; color: #94A3B8;">
+              This notification was generated automatically by the <a href="https://nayaabengineering.com" style="color: #64748B; text-decoration: underline;">Nayaab Engineering Website</a>.
+            </div>
 
-                  <!-- FOOTER -->
-                  <tr>
-                    <td align="center" style="background: #0E1118; padding: 18px 24px; border-top: 1px solid #202738; font-size: 12px; color: #64748B;">
-                      Nayaab Engineering Innovations Portal &bull; Automated Inquiry Dispatch<br>
-                      <a href="https://nayaabengineering.com/admin" style="color: #8C99AE; text-decoration: underline; margin-top: 4px; display: inline-block;">Open Admin Dashboard</a>
-                    </td>
-                  </tr>
-
-                </table>
-              </td>
-            </tr>
-          </table>
+          </div>
         </body>
         </html>
       `,
     });
 
-    // 2. DISPATCH BRANDED CONFIRMATION EMAIL TO CLIENT
+    // 2. DISPATCH BRANDED CONFIRMATION EMAIL TO CLIENT (Clean, zero-image, text-first)
     const clientEmailPromise = resend.emails.send({
       from: FROM_EMAIL,
       to: [cleanEmail],
       replyTo: ADMIN_EMAIL,
       subject: `Thank you for contacting Nayaab Engineering Innovations`,
-      text: `Dear ${cleanName},\n\nThank you for reaching out to Nayaab Engineering Innovations (NEIPL). We have successfully received your project inquiry regarding ${cleanService}.\n\nOur engineering team will review your requirements and connect with you within 24 business hours.\n\nWarm regards,\nClient Engagement Team\nNayaab Engineering Innovations Pvt. Ltd.`,
+      headers: {
+        "X-Entity-Ref-ID": `client-inquiry-${Date.now()}`,
+      },
+      text: `Dear ${cleanName},\n\nThank you for reaching out to Nayaab Engineering Innovations (NEIPL). We have successfully received your inquiry regarding ${cleanService}.\n\nOur engineering and architectural team is reviewing your requirements and will connect with you within 24 business hours.\n\nSummary:\nService: ${cleanService}\nPhone: ${cleanPhone}\nDate: ${timestamp}\n\nWarm regards,\nClient Engagement Team\nNayaab Engineering Innovations Pvt. Ltd.\nSrinagar, Jammu & Kashmir\nhttps://nayaabengineering.com`,
       html: `
         <!DOCTYPE html>
-        <html>
+        <html lang="en">
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Inquiry Confirmation</title>
         </head>
-        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F8FAFC; color: #1E293B; margin: 0; padding: 24px 12px;">
-          <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
-            <tr>
-              <td align="center">
-                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 580px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.06);">
-                  
-                  <!-- HEADER WITH CENTERED LOGO -->
-                  <tr>
-                    <td align="center" style="background: #090A0E; padding: 36px 24px 28px 24px; border-bottom: 3px solid #00A6FB;">
-                      <a href="https://nayaabengineering.com" target="_blank" style="text-decoration: none; display: inline-block;">
-                        <img src="${LOGO_URL}" alt="Nayaab Engineering Innovations" width="150" style="display: block; max-width: 150px; height: auto; border: 0; margin: 0 auto 12px auto;" />
-                      </a>
-                      <div style="color: #94A3B8; font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600;">
-                        Architectural &bull; Structural &bull; Turnkey Engineering
-                      </div>
-                    </td>
-                  </tr>
+        <body style="margin: 0; padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #FAFAFA; color: #1E293B;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #FFFFFF; padding: 32px 28px; border-radius: 8px; border: 1px solid #E2E8F0;">
+            
+            <!-- BRANDING HEADER -->
+            <div style="margin-bottom: 24px; border-bottom: 2px solid #00A6FB; padding-bottom: 16px;">
+              <div style="font-size: 28px; font-weight: 900; color: #00A6FB; letter-spacing: 2px; line-height: 1;">NEI</div>
+              <div style="font-size: 13px; font-weight: 700; color: #475569; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px;">
+                NAYAAB ENGINEERING INNOVATIONS
+              </div>
+            </div>
 
-                  <!-- BODY CONTENT -->
-                  <tr>
-                    <td style="padding: 32px 28px; line-height: 1.6;">
-                      
-                      <div style="font-size: 18px; font-weight: 800; color: #0F172A; margin-bottom: 12px;">
-                        Dear ${cleanName},
-                      </div>
+            <!-- GREETING & BODY -->
+            <div style="font-size: 16px; font-weight: 800; color: #0F172A; margin-bottom: 12px;">
+              Dear ${cleanName},
+            </div>
 
-                      <p style="font-size: 14px; color: #475569; margin: 0 0 16px 0;">
-                        Thank you for contacting <strong>Nayaab Engineering Innovations (NEIPL)</strong>. We have successfully received your project inquiry regarding <strong>${cleanService}</strong>.
-                      </p>
+            <p style="font-size: 14px; line-height: 1.6; color: #334155; margin: 0 0 16px 0;">
+              Thank you for contacting <strong>Nayaab Engineering Innovations (NEIPL)</strong>. We have successfully received your project inquiry regarding <strong>${cleanService}</strong>.
+            </p>
 
-                      <p style="font-size: 14px; color: #475569; margin: 0 0 20px 0;">
-                        Our senior engineering and architectural team is currently reviewing your project requirements. A dedicated project specialist will connect with you within <strong>24 business hours</strong> to discuss the next milestones for your build.
-                      </p>
+            <p style="font-size: 14px; line-height: 1.6; color: #334155; margin: 0 0 20px 0;">
+              Our senior engineering and architectural team is reviewing your project details. A dedicated specialist will reach out to you within <strong>24 business hours</strong> to discuss the next steps for your build.
+            </p>
 
-                      <!-- SUMMARY RECAP CARD -->
-                      <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; margin-bottom: 20px; overflow: hidden;">
-                        <tr>
-                          <td colspan="2" style="background: #F1F5F9; padding: 10px 16px; font-size: 11px; font-weight: 800; color: #0F172A; text-transform: uppercase; letter-spacing: 0.5px;">
-                            Inquiry Summary
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 10px 16px; font-size: 12px; color: #64748B; border-bottom: 1px solid #E2E8F0; width: 35%;">Service</td>
-                          <td style="padding: 10px 16px; font-size: 13px; font-weight: 700; color: #0F172A; border-bottom: 1px solid #E2E8F0;">${cleanService}</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 10px 16px; font-size: 12px; color: #64748B; border-bottom: 1px solid #E2E8F0;">Contact Phone</td>
-                          <td style="padding: 10px 16px; font-size: 13px; font-weight: 600; color: #0F172A; border-bottom: 1px solid #E2E8F0;">${cleanPhone}</td>
-                        </tr>
-                        <tr>
-                          <td style="padding: 10px 16px; font-size: 12px; color: #64748B;">Date Received</td>
-                          <td style="padding: 10px 16px; font-size: 13px; color: #475569;">${timestamp}</td>
-                        </tr>
-                      </table>
+            <!-- SUBMISSION RECAP -->
+            <div style="border-left: 3px solid #00A6FB; padding: 12px 16px; background-color: #F8FAFC; border-radius: 0 6px 6px 0; margin-bottom: 20px; font-size: 13px; line-height: 1.7; color: #475569;">
+              <strong style="color: #0F172A;">Inquiry Summary:</strong><br>
+              &bull; <strong>Service:</strong> ${cleanService}<br>
+              &bull; <strong>Contact Phone:</strong> ${cleanPhone}<br>
+              &bull; <strong>Submitted On:</strong> ${timestamp}
+            </div>
 
-                      <p style="font-size: 13px; color: #64748B; margin: 0 0 24px 0;">
-                        Need to share architectural blueprints, site maps, or have an urgent query? Feel free to reply directly to this email or connect with us on WhatsApp.
-                      </p>
+            <p style="font-size: 13px; line-height: 1.6; color: #64748B; margin: 0 0 24px 0;">
+              If you have site plans, architectural drawings, or urgent questions, feel free to reply directly to this email or reach us on WhatsApp.
+            </p>
 
-                      <!-- SIGNATURE -->
-                      <div style="border-top: 1px solid #E2E8F0; padding-top: 18px;">
-                        <div style="font-size: 14px; font-weight: 800; color: #0F172A;">Client Engagement Team</div>
-                        <div style="font-size: 13px; color: #64748B; margin-top: 2px;">Nayaab Engineering Innovations Pvt. Ltd.</div>
-                        <div style="font-size: 12px; color: #94A3B8; margin-top: 2px;">Srinagar, Jammu &amp; Kashmir &bull; <a href="https://nayaabengineering.com" style="color: #00A6FB; text-decoration: none;">nayaabengineering.com</a></div>
-                      </div>
+            <!-- SIGNATURE -->
+            <div style="border-top: 1px solid #E2E8F0; padding-top: 18px; font-size: 13px; color: #475569; line-height: 1.6;">
+              <strong style="color: #0F172A;">Client Engagement Team</strong><br>
+              Nayaab Engineering Innovations Pvt. Ltd.<br>
+              Srinagar, Jammu &amp; Kashmir &bull; <a href="https://nayaabengineering.com" style="color: #00A6FB; text-decoration: none;">nayaabengineering.com</a>
+            </div>
 
-                    </td>
-                  </tr>
-
-                  <!-- FOOTER -->
-                  <tr>
-                    <td align="center" style="background: #F1F5F9; padding: 20px 24px; font-size: 12px; color: #64748B; border-top: 1px solid #E2E8F0;">
-                      &copy; ${new Date().getFullYear()} Nayaab Engineering Innovations Pvt. Ltd. All rights reserved.
-                    </td>
-                  </tr>
-
-                </table>
-              </td>
-            </tr>
-          </table>
+          </div>
         </body>
         </html>
       `,
