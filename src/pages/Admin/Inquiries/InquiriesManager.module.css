@@ -11,7 +11,7 @@
 }
 
 /* ==========================================================================
-   1. TOP STATS BAR
+   1. TOP FOLDER FILTER BAR
    ========================================================================== */
 .topStatsBar {
   display: flex;
@@ -101,7 +101,7 @@
 }
 
 /* ==========================================================================
-   2. HOSTINGER WEBMAIL SPLIT-PANE CONTAINER
+   2. HOSTINGER WEBMAIL SPLIT-PANE CONTAINER (PERFECT SCROLLING ARCHITECTURE)
    ========================================================================== */
 .webmailContainer {
   display: grid;
@@ -109,8 +109,9 @@
   background: #18181B;
   border: 1px solid #27272A;
   border-radius: 14px;
-  height: 720px;
-  max-height: calc(100vh - 200px);
+  height: 750px;
+  min-height: 520px;
+  max-height: calc(100vh - 160px);
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   box-sizing: border-box;
@@ -125,6 +126,7 @@
   background: #141416;
   border-right: 1px solid #27272A;
   height: 100%;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -203,15 +205,24 @@
   border-color: #00A6FB;
 }
 
+/* SCROLLABLE ROWS AREA */
 .mailRowsScrollArea {
   flex: 1;
+  height: 100%;
+  min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mailRowsScrollArea::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
+}
+
+.mailRowsScrollArea::-webkit-scrollbar-track {
+  background: #141416;
 }
 
 .mailRowsScrollArea::-webkit-scrollbar-thumb {
@@ -234,6 +245,7 @@
   transition: background 0.12s ease;
   user-select: none;
   position: relative;
+  flex-shrink: 0;
 }
 
 .mailRow:hover {
@@ -395,6 +407,7 @@
   flex-direction: column;
   background: #18181B;
   height: 100%;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -402,6 +415,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -500,18 +514,26 @@
   color: #FFFFFF;
 }
 
-/* SCROLL AREA */
+/* SCROLLABLE VIEWER AREA */
 .viewerScrollArea {
   flex: 1;
+  height: 100%;
+  min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 1.5rem 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  -webkit-overflow-scrolling: touch;
 }
 
 .viewerScrollArea::-webkit-scrollbar {
   width: 6px;
+}
+
+.viewerScrollArea::-webkit-scrollbar-track {
+  background: #18181B;
 }
 
 .viewerScrollArea::-webkit-scrollbar-thumb {
@@ -525,20 +547,23 @@
 
 /* SUBJECT HEADER */
 .messageSubjectHeader {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
   border-bottom: 1px solid #27272A;
-  padding-bottom: 1rem;
+  padding-bottom: 0.85rem;
 }
 
-.messageSubjectHeader h2 {
-  margin: 0;
+.inquirySubjectTitle {
+  margin: 0 0 0.5rem 0;
   font-size: 1.35rem;
   font-weight: 800;
   color: #FFFFFF;
   line-height: 1.3;
+}
+
+.inquiryMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
 }
 
 .disciplineBadge {
@@ -550,10 +575,35 @@
   color: #38BDF8;
   font-size: 0.75rem;
   font-weight: 700;
-  padding: 0.3rem 0.75rem;
+  padding: 0.25rem 0.65rem;
   border-radius: 20px;
   white-space: nowrap;
-  flex-shrink: 0;
+}
+
+.statusPill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.statusPillUnread {
+  background: rgba(0, 166, 251, 0.2);
+  color: #00A6FB;
+  border: 1px solid rgba(0, 166, 251, 0.4);
+}
+
+.statusPillRead {
+  background: rgba(161, 161, 170, 0.15);
+  color: #D4D4D8;
+  border: 1px solid rgba(161, 161, 170, 0.3);
+}
+
+.statusPillReplied {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ADE80;
+  border: 1px solid rgba(34, 197, 94, 0.35);
 }
 
 /* SENDER HEADER (HOSTINGER STYLE) */
@@ -612,6 +662,7 @@
   display: flex;
   gap: 0.35rem;
   color: #71717A;
+  flex-wrap: wrap;
 }
 
 .toLabel {
@@ -636,56 +687,103 @@
   font-size: 0.7rem;
 }
 
-/* CONTACT CHIPS */
-.contactChipsRow {
+/* ==========================================================================
+   3. STRUCTURED CLIENT SUBMISSION DETAILS GRID
+   ========================================================================== */
+.clientDetailsBox {
+  background: #141416;
+  border: 1px solid #27272A;
+  border-radius: 10px;
+  padding: 1.15rem 1.25rem;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.detailGridItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.detailGridLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #71717A;
+}
+
+.detailGridValueRow {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  flex-wrap: wrap;
+  gap: 0.45rem;
+  color: #E4E4E7;
+  font-size: 0.86rem;
 }
 
-.contactChip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
+.detailGridIcon {
+  color: #00A6FB;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.detailGridValueText {
+  color: #F4F4F5;
+  word-break: break-all;
+}
+
+.copySmallBtn {
   background: #27272A;
   border: 1px solid #3F3F46;
-  color: #E4E4E7;
-  padding: 0.35rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.78rem;
+  color: #A1A1AA;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.15s ease;
+  margin-left: 0.25rem;
 }
 
-.contactChip:hover {
-  background: #3F3F46;
+.copySmallBtn:hover {
+  background: #00A6FB;
   border-color: #00A6FB;
   color: #FFFFFF;
 }
 
-.chipIcon {
-  color: #00A6FB;
-  font-size: 0.75rem;
-}
-
-.copyIcon {
-  color: #71717A;
-  font-size: 0.7rem;
-}
-
-/* EMAIL BODY CARD */
+/* ==========================================================================
+   4. FULL CLIENT MESSAGE BODY CARD
+   ========================================================================== */
 .emailBodyCard {
   background: #09090B;
   border: 1px solid #27272A;
   border-radius: 10px;
-  padding: 1.5rem;
+  padding: 1.35rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.emailBodyHeader {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #00A6FB;
+  border-bottom: 1px solid #27272A;
+  padding-bottom: 0.5rem;
 }
 
 .emailBodyText {
-  font-size: 0.94rem;
-  line-height: 1.7;
-  color: #E4E4E7;
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: #F4F4F5;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -696,90 +794,6 @@
 
 .emailBodyText p:last-child {
   margin-bottom: 0;
-}
-
-/* QUICK REPLY BOX */
-.quickReplyCard {
-  background: #141416;
-  border: 1px solid #27272A;
-  border-radius: 10px;
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.quickReplyHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #A1A1AA;
-}
-
-.replyIcon {
-  color: #00A6FB;
-}
-
-.quickReplyTextarea {
-  background: #09090B;
-  border: 1px solid #27272A;
-  border-radius: 8px;
-  color: #F4F4F5;
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: 0.75rem;
-  outline: none;
-  resize: vertical;
-  line-height: 1.5;
-}
-
-.quickReplyTextarea:focus {
-  border-color: #00A6FB;
-}
-
-.quickReplyActionRow {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  flex-wrap: wrap;
-}
-
-.quickSendEmailBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: #00A6FB;
-  color: #FFFFFF;
-  text-decoration: none;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.45rem 1rem;
-  border-radius: 6px;
-  transition: background 0.15s ease;
-}
-
-.quickSendEmailBtn:hover {
-  background: #008cd4;
-}
-
-.quickSendWhatsappBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: #25D366;
-  color: #FFFFFF;
-  text-decoration: none;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.45rem 1rem;
-  border-radius: 6px;
-  transition: background 0.15s ease;
-}
-
-.quickSendWhatsappBtn:hover {
-  background: #20BA5A;
 }
 
 /* NO MESSAGE SELECTED EMPTY STATE */

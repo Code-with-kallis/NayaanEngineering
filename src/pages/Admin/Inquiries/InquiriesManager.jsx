@@ -7,7 +7,6 @@ import {
   FaPhoneAlt,
   FaWhatsapp,
   FaTrash,
-  FaCheckCircle,
   FaTimes,
   FaSearch,
   FaSyncAlt,
@@ -18,10 +17,9 @@ import {
   FaClock,
   FaBuilding,
   FaArrowLeft,
-  FaPrint,
-  FaPaperPlane,
-  FaExternalLinkAlt,
   FaCircle,
+  FaUser,
+  FaPaperPlane,
 } from "react-icons/fa";
 import styles from "./InquiriesManager.module.css";
 
@@ -126,7 +124,6 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
   const [selectedService, setSelectedService] = useState("All Categories");
   const [selectedInquiryId, setSelectedInquiryId] = useState(null);
   const [copiedText, setCopiedText] = useState(null);
-  const [quickReplyText, setQuickReplyText] = useState("");
 
   const fetchInquiries = useCallback(async (isSilent = false) => {
     if (!isSilent) setLoading(true);
@@ -142,8 +139,8 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
       const list = data || [];
       setInquiries(list);
 
-      // Auto select first inquiry on desktop if none selected
-      if (!selectedInquiryId && list.length > 0 && window.innerWidth > 900) {
+      // Auto select first inquiry on desktop if none currently selected
+      if (!selectedInquiryId && list.length > 0 && typeof window !== "undefined" && window.innerWidth > 900) {
         setSelectedInquiryId(list[0].id);
       }
 
@@ -279,7 +276,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
 
   return (
     <div className={styles.webmailWrapper}>
-      {/* ================= 1. TOP STATS BAR ================= */}
+      {/* ================= 1. TOP FOLDER FILTER BAR ================= */}
       <div className={styles.topStatsBar}>
         <div className={styles.statsLeft}>
           <div
@@ -287,7 +284,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
             onClick={() => setActiveTabFilter("all")}
           >
             <FaInbox />
-            <span>Inbox</span>
+            <span>All Mail</span>
             <strong className={styles.tabBadge}>{stats.total}</strong>
           </div>
 
@@ -316,7 +313,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
             onClick={() => setActiveTabFilter("newsletter")}
           >
             <FaPaperPlane />
-            <span>Newsletter</span>
+            <span>Subscribers</span>
             <strong className={styles.tabBadge}>{stats.newsletter}</strong>
           </div>
         </div>
@@ -326,7 +323,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
           className={styles.syncBtn}
           onClick={() => fetchInquiries(true)}
           disabled={refreshing}
-          title="Sync Inquiries Live"
+          title="Refresh Inquiries Live"
         >
           <FaSyncAlt className={refreshing ? styles.spinnerIcon : ""} />
           <span>{refreshing ? "Syncing..." : "Refresh"}</span>
@@ -335,19 +332,19 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
 
       {/* ================= 2. HOSTINGER WEBMAIL SPLIT-PANE CONTAINER ================= */}
       <div className={styles.webmailContainer}>
-        {/* LEFT PANE: EMAIL LIST */}
+        {/* LEFT PANE: EMAIL FEED LIST */}
         <aside
           className={`${styles.mailListPane} ${
             activeInquiry ? styles.mailListPaneHasActiveMobile : ""
           }`}
         >
-          {/* SEARCH & FILTER BAR */}
+          {/* SEARCH & CATEGORY FILTER */}
           <div className={styles.mailListSearchHeader}>
             <div className={styles.searchBox}>
               <FaSearch className={styles.searchIcon} />
               <input
                 type="text"
-                placeholder="Search messages, names, emails..."
+                placeholder="Search sender, email, keywords..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -356,6 +353,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                   type="button"
                   className={styles.clearSearchBtn}
                   onClick={() => setSearchQuery("")}
+                  aria-label="Clear search"
                 >
                   <FaTimes />
                 </button>
@@ -375,21 +373,21 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
             </select>
           </div>
 
-          {/* EMAIL ROWS FEED */}
+          {/* SCROLLABLE EMAIL ROWS */}
           <div className={styles.mailRowsScrollArea}>
             {loading ? (
               <div className={styles.paneLoadingState}>
                 <FaSpinner className={styles.spinnerIcon} />
-                <span>Loading mailbox...</span>
+                <span>Loading messages...</span>
               </div>
             ) : filteredInquiries.length === 0 ? (
               <div className={styles.paneEmptyState}>
                 <FaInbox className={styles.emptyInboxIcon} />
-                <h4>No emails in folder</h4>
+                <h4>No inquiries found</h4>
                 <p>
                   {inquiries.length === 0
-                    ? "Inquiries submitted via website forms will appear here in real-time."
-                    : "No messages matched your active search query."}
+                    ? "Inquiries submitted on the website will stream in here."
+                    : "No emails matched your active search or filter."}
                 </p>
               </div>
             ) : (
@@ -408,7 +406,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                     }`}
                     onClick={() => handleSelectInquiry(inquiry)}
                   >
-                    {/* UNREAD BLUE DOT */}
+                    {/* UNREAD INDICATOR */}
                     <div className={styles.unreadIndicatorBox}>
                       {isUnread ? (
                         <FaCircle className={styles.unreadDot} title="Unread" />
@@ -425,7 +423,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                       {initial}
                     </div>
 
-                    {/* SENDER & PREVIEW CONTENT */}
+                    {/* ROW DETAILS */}
                     <div className={styles.rowContent}>
                       <div className={styles.rowTopLine}>
                         <span className={styles.rowSenderName}>
@@ -445,7 +443,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                         )}
                       </div>
 
-                      <p className={styles.rowSnippet}>{snippet || "No message preview available"}</p>
+                      <p className={styles.rowSnippet}>{snippet || "No message provided"}</p>
                     </div>
                   </div>
                 );
@@ -454,7 +452,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
           </div>
         </aside>
 
-        {/* RIGHT PANE: LIVE READING PANE (NO POPUP!) */}
+        {/* RIGHT PANE: LIVE READING PANE (FULL DETAILS FILLED BY CLIENT — NO POPUP!) */}
         <section
           className={`${styles.readingPane} ${
             activeInquiry ? styles.readingPaneActiveMobile : ""
@@ -473,40 +471,40 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                     title="Back to inbox list"
                   >
                     <FaArrowLeft />
-                    <span>Inbox</span>
+                    <span>Back</span>
                   </button>
 
-                  {/* REPLY VIA EMAIL */}
+                  {/* 1-CLICK EMAIL CLIENT LINK */}
                   {activeInquiry.email && (
                     <a
                       href={`mailto:${activeInquiry.email}?subject=${encodeURIComponent(
                         `Re: Your Inquiry for ${activeInquiry.service || "Nayaab Engineering Innovations"}`
                       )}&body=${encodeURIComponent(
-                        `Dear ${activeInquiry.name},\n\nThank you for contacting Nayaab Engineering Innovations regarding ${activeInquiry.service || "your project"}.\n\n`
+                        `Dear ${activeInquiry.name},\n\nThank you for reaching out to Nayaab Engineering Innovations regarding ${activeInquiry.service || "your project"}.\n\n`
                       )}`}
                       className={styles.actionBtnPrimary}
                       onClick={() => handleUpdateStatus(activeInquiry.id, "replied")}
-                      title="Reply via Email Client"
+                      title="Reply using default mail client"
                     >
                       <FaReply />
-                      <span>Reply</span>
+                      <span>Reply via Email</span>
                     </a>
                   )}
 
-                  {/* WHATSAPP ACTION */}
+                  {/* 1-CLICK WHATSAPP CHAT */}
                   {cleanPhoneNumber(activeInquiry.phone).length >= 10 && (
                     <a
                       href={`https://wa.me/${cleanPhoneNumber(activeInquiry.phone)}?text=${encodeURIComponent(
-                        `Hello ${activeInquiry.name}, this is Nayaab Engineering Innovations regarding your project inquiry for ${activeInquiry.service || "our services"}.`
+                        `Hello ${activeInquiry.name}, this is Nayaab Engineering Innovations regarding your project inquiry for ${activeInquiry.service || "our engineering services"}.`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className={styles.actionBtnWhatsapp}
                       onClick={() => handleUpdateStatus(activeInquiry.id, "replied")}
-                      title="Open WhatsApp Chat"
+                      title="Chat on WhatsApp"
                     >
                       <FaWhatsapp />
-                      <span>WhatsApp</span>
+                      <span>WhatsApp Client</span>
                     </a>
                   )}
                 </div>
@@ -532,12 +530,12 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                     </span>
                   </button>
 
-                  {/* DELETE EMAIL */}
+                  {/* DELETE INQUIRY */}
                   <button
                     type="button"
                     className={`${styles.actionBtnIcon} ${styles.actionBtnDelete}`}
                     onClick={() => handleDeleteInquiry(activeInquiry.id, activeInquiry.name)}
-                    title="Delete Message"
+                    title="Delete Inquiry"
                   >
                     <FaTrash />
                     <span>Delete</span>
@@ -545,22 +543,41 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                 </div>
               </div>
 
-              {/* MESSAGE CONTENT AREA */}
+              {/* LIVE SCROLLABLE MESSAGE READER */}
               <div className={styles.viewerScrollArea}>
-                {/* SUBJECT TITLE */}
+                {/* 1. SUBJECT & DISCIPLINE HEADING */}
                 <div className={styles.messageSubjectHeader}>
-                  <h2>
-                    {activeInquiry.service
-                      ? `${activeInquiry.service} — Inquiry from ${activeInquiry.name}`
-                      : `Inquiry from ${activeInquiry.name}`}
-                  </h2>
-                  <span className={styles.disciplineBadge}>
-                    <FaBuilding />
-                    {activeInquiry.service || "General Inquiry"}
-                  </span>
+                  <div>
+                    <h2 className={styles.inquirySubjectTitle}>
+                      {activeInquiry.service
+                        ? `${activeInquiry.service} — Inquiry from ${activeInquiry.name}`
+                        : `Inquiry from ${activeInquiry.name}`}
+                    </h2>
+                    <div className={styles.inquiryMetaRow}>
+                      <span className={styles.disciplineBadge}>
+                        <FaBuilding />
+                        {activeInquiry.service || "General Inquiry"}
+                      </span>
+                      <span
+                        className={`${styles.statusPill} ${
+                          activeInquiry.status === "replied"
+                            ? styles.statusPillReplied
+                            : activeInquiry.status === "read"
+                            ? styles.statusPillRead
+                            : styles.statusPillUnread
+                        }`}
+                      >
+                        {activeInquiry.status === "replied"
+                          ? "Replied"
+                          : activeInquiry.status === "read"
+                          ? "Read"
+                          : "Unread"}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
-                {/* SENDER DETAILS BOX (HOSTINGER WEBMAIL STYLE) */}
+                {/* 2. SENDER INFORMATION CARD (HOSTINGER WEBMAIL STYLE) */}
                 <div className={styles.senderHeaderCard}>
                   <div
                     className={styles.senderLargeAvatar}
@@ -572,14 +589,18 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                   <div className={styles.senderMetaCol}>
                     <div className={styles.senderPrimaryRow}>
                       <span className={styles.senderFullName}>{activeInquiry.name}</span>
-                      <span className={styles.senderEmailAddress}>
-                        &lt;{activeInquiry.email || "No email"}&gt;
-                      </span>
+                      {activeInquiry.email && (
+                        <span className={styles.senderEmailAddress}>
+                          &lt;{activeInquiry.email}&gt;
+                        </span>
+                      )}
                     </div>
 
                     <div className={styles.recipientRow}>
                       <span className={styles.toLabel}>To:</span>
-                      <span className={styles.toValue}>info@nayaabengineering.com, neiplkashmir@gmail.com</span>
+                      <span className={styles.toValue}>
+                        info@nayaabengineering.com, neiplkashmir@gmail.com
+                      </span>
                     </div>
 
                     <div className={styles.timestampFullRow}>
@@ -589,37 +610,68 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                   </div>
                 </div>
 
-                {/* QUICK CONTACT CHIPS */}
-                <div className={styles.contactChipsRow}>
-                  {activeInquiry.email && (
-                    <button
-                      type="button"
-                      className={styles.contactChip}
-                      onClick={() => copyToClipboard(activeInquiry.email, "Email")}
-                      title="Click to copy Email"
-                    >
-                      <FaEnvelope className={styles.chipIcon} />
-                      <span>{activeInquiry.email}</span>
-                      <FaCopy className={styles.copyIcon} />
-                    </button>
-                  )}
+                {/* 3. STRUCTURED CLIENT SUBMISSION DETAILS */}
+                <div className={styles.clientDetailsBox}>
+                  <div className={styles.detailGrid}>
+                    <div className={styles.detailGridItem}>
+                      <span className={styles.detailGridLabel}>Client Full Name</span>
+                      <div className={styles.detailGridValueRow}>
+                        <FaUser className={styles.detailGridIcon} />
+                        <strong className={styles.detailGridValueText}>{activeInquiry.name || "Not Provided"}</strong>
+                      </div>
+                    </div>
 
-                  {activeInquiry.phone && activeInquiry.phone !== "Not Provided" && (
-                    <button
-                      type="button"
-                      className={styles.contactChip}
-                      onClick={() => copyToClipboard(activeInquiry.phone, "Phone")}
-                      title="Click to copy Phone"
-                    >
-                      <FaPhoneAlt className={styles.chipIcon} />
-                      <span>{activeInquiry.phone}</span>
-                      <FaCopy className={styles.copyIcon} />
-                    </button>
-                  )}
+                    <div className={styles.detailGridItem}>
+                      <span className={styles.detailGridLabel}>Service Requested</span>
+                      <div className={styles.detailGridValueRow}>
+                        <FaBuilding className={styles.detailGridIcon} />
+                        <span className={styles.detailGridValueText}>{activeInquiry.service || "General Inquiry"}</span>
+                      </div>
+                    </div>
+
+                    <div className={styles.detailGridItem}>
+                      <span className={styles.detailGridLabel}>Email Address</span>
+                      <div className={styles.detailGridValueRow}>
+                        <FaEnvelope className={styles.detailGridIcon} />
+                        <span className={styles.detailGridValueText}>{activeInquiry.email || "Not Provided"}</span>
+                        {activeInquiry.email && (
+                          <button
+                            type="button"
+                            className={styles.copySmallBtn}
+                            onClick={() => copyToClipboard(activeInquiry.email, "Email")}
+                            title="Copy Email"
+                          >
+                            <FaCopy />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className={styles.detailGridItem}>
+                      <span className={styles.detailGridLabel}>Phone / WhatsApp</span>
+                      <div className={styles.detailGridValueRow}>
+                        <FaPhoneAlt className={styles.detailGridIcon} />
+                        <span className={styles.detailGridValueText}>{activeInquiry.phone || "Not Provided"}</span>
+                        {activeInquiry.phone && activeInquiry.phone !== "Not Provided" && (
+                          <button
+                            type="button"
+                            className={styles.copySmallBtn}
+                            onClick={() => copyToClipboard(activeInquiry.phone, "Phone")}
+                            title="Copy Phone"
+                          >
+                            <FaCopy />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* EMAIL BODY CONTAINER */}
+                {/* 4. FULL CLIENT MESSAGE BODY */}
                 <div className={styles.emailBodyCard}>
+                  <div className={styles.emailBodyHeader}>
+                    <span>Client Message / Requirements</span>
+                  </div>
                   <div className={styles.emailBodyText}>
                     {activeInquiry.message ? (
                       activeInquiry.message.split("\n").map((paragraph, index) => (
@@ -632,62 +684,6 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                     )}
                   </div>
                 </div>
-
-                {/* QUICK RESPONSE COMPOSER BAR */}
-                <div className={styles.quickReplyCard}>
-                  <div className={styles.quickReplyHeader}>
-                    <FaReply className={styles.replyIcon} />
-                    <span>Quick Response to {activeInquiry.name}</span>
-                  </div>
-
-                  <textarea
-                    rows={3}
-                    placeholder={`Type your reply to ${activeInquiry.name}...`}
-                    value={quickReplyText}
-                    onChange={(e) => setQuickReplyText(e.target.value)}
-                    className={styles.quickReplyTextarea}
-                  />
-
-                  <div className={styles.quickReplyActionRow}>
-                    {activeInquiry.email && (
-                      <a
-                        href={`mailto:${activeInquiry.email}?subject=${encodeURIComponent(
-                          `Re: Your Inquiry for ${activeInquiry.service || "Nayaab Engineering"}`
-                        )}&body=${encodeURIComponent(
-                          quickReplyText ||
-                            `Dear ${activeInquiry.name},\n\nThank you for reaching out to Nayaab Engineering Innovations.\n\nWarm regards,\nNayaab Engineering Team`
-                        )}`}
-                        className={styles.quickSendEmailBtn}
-                        onClick={() => {
-                          handleUpdateStatus(activeInquiry.id, "replied");
-                          setQuickReplyText("");
-                        }}
-                      >
-                        <FaPaperPlane />
-                        <span>Send via Email</span>
-                      </a>
-                    )}
-
-                    {cleanPhoneNumber(activeInquiry.phone).length >= 10 && (
-                      <a
-                        href={`https://wa.me/${cleanPhoneNumber(activeInquiry.phone)}?text=${encodeURIComponent(
-                          quickReplyText ||
-                            `Hello ${activeInquiry.name}, this is Nayaab Engineering Innovations regarding your project inquiry for ${activeInquiry.service || "our services"}.`
-                        )}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.quickSendWhatsappBtn}
-                        onClick={() => {
-                          handleUpdateStatus(activeInquiry.id, "replied");
-                          setQuickReplyText("");
-                        }}
-                      >
-                        <FaWhatsapp />
-                        <span>Send via WhatsApp</span>
-                      </a>
-                    )}
-                  </div>
-                </div>
               </div>
             </div>
           ) : (
@@ -696,7 +692,7 @@ export default function InquiriesManager({ onUnreadCountChange, showAlert, showC
                 <FaEnvelope className={styles.largeMailIcon} />
               </div>
               <h3>Select a message to view</h3>
-              <p>Choose an inquiry from the list on the left to read its full message and contact details.</p>
+              <p>Click on any client inquiry from the list on the left to read their complete project details.</p>
             </div>
           )}
         </section>
