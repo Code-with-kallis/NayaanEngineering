@@ -529,15 +529,19 @@ export default function InquiriesManager({
             <span className={styles.syncBtnLabel}>{refreshing ? "Syncing..." : "Sync"}</span>
           </button>
 
-          <Link
-            to="/"
+          <a
+            href={
+              typeof window !== "undefined" && (window.location.hostname.includes("localhost") || window.location.hostname === "127.0.0.1")
+                ? `${window.location.protocol}//localhost${window.location.port ? `:${window.location.port}` : ""}/`
+                : "https://nayaabengineering.com/"
+            }
             className={styles.viewSiteIconBtn}
             target="_blank"
             rel="noopener noreferrer"
             title="View Live Website"
           >
             <FaExternalLinkAlt />
-          </Link>
+          </a>
 
           {onLogout && (
             <button

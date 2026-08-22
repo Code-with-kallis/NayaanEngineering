@@ -51,6 +51,16 @@ const COMPRESSION_THRESHOLD_BYTES = 350 * 1024; // 350 KB
 const INACTIVITY_TIMEOUT_MS = 10 * 60 * 1000; // 10 Minutes Auto-Logout
 const DRAFT_STORAGE_KEY = "neipl_admin_project_draft";
 
+export const getLiveSiteUrl = () => {
+  if (typeof window === "undefined") return "https://nayaabengineering.com";
+  const hostname = window.location.hostname.toLowerCase();
+  if (hostname.includes("localhost") || hostname === "127.0.0.1") {
+    const port = window.location.port ? `:${window.location.port}` : "";
+    return `${window.location.protocol}//localhost${port}/`;
+  }
+  return "https://nayaabengineering.com/";
+};
+
 const compressImageIfNeeded = (file, maxWidth = 1920, quality = 0.8) => {
   return new Promise((resolve) => {
     if (!file || !file.type.startsWith("image/")) {
@@ -119,12 +129,13 @@ export default function Admin() {
   const [passcode, setPasscode] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Sidebar and Hash-based Tabs
+  // Sidebar and Hash/Path-based Tabs
   const getTabFromHash = () => {
     const hash = window.location.hash.toLowerCase();
-    if (hash === "#client-inquiries" || hash === "#inquiries") return "inquiries";
-    if (hash === "#form" || hash === "#new-project") return "form";
-    if (hash === "#settings") return "settings";
+    const pathname = window.location.pathname.toLowerCase();
+    if (hash === "#client-inquiries" || hash === "#inquiries" || pathname.startsWith("/inquiries")) return "inquiries";
+    if (hash === "#form" || hash === "#new-project" || pathname.startsWith("/new-project") || pathname.startsWith("/form")) return "form";
+    if (hash === "#settings" || pathname.startsWith("/settings")) return "settings";
     return "projects";
   };
 
@@ -940,10 +951,10 @@ export default function Admin() {
               Unlock Dashboard
             </button>
           </form>
-          <Link to="/" className={styles.backToSiteLink}>
+          <a href={getLiveSiteUrl()} className={styles.backToSiteLink}>
             <FaHome />
             Back to Site
-          </Link>
+          </a>
         </div>
 
         {modal.isOpen && (
@@ -1058,10 +1069,15 @@ export default function Admin() {
         </nav>
 
         <div className={styles.sidebarFooter}>
-          <Link to="/" className={styles.footerSiteLink}>
+          <a
+            href={getLiveSiteUrl()}
+            className={styles.footerSiteLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaHome />
             <span>View Live Site</span>
-          </Link>
+          </a>
           <button type="button" onClick={handleLogout} className={styles.footerLogoutBtn}>
             <FaSignOutAlt />
             <span>Logout</span>
@@ -1113,10 +1129,15 @@ export default function Admin() {
           </div>
 
           <div className={styles.topBarRight}>
-            <Link to="/" className={styles.viewSiteButton} target="_blank" rel="noopener noreferrer">
+            <a
+              href={getLiveSiteUrl()}
+              className={styles.viewSiteButton}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <FaExternalLinkAlt />
               <span className={styles.viewSiteText}>Live Site</span>
-            </Link>
+            </a>
           </div>
         </header>
 
